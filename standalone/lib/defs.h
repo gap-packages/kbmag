@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <inttypes.h>
+
 #define MAXINT 		2147483647
 #define MAXSHORT 	32767
 #define MAXUSHORT 	65535
@@ -17,7 +19,7 @@
 
 #define tmalloc(D,T,N) {D = (T *) malloc(sizeof(T)*(N)); \
  kbm_store_ptrs++;\
-  if (D==0) { fprintf(stderr,"Malloc failed to allocate %d bytes.\n",\
+  if (D==0) { fprintf(stderr,"Malloc failed to allocate %"PRIuPTR" bytes.\n",\
   sizeof(T)*(N)); exit(2);}}
 #define tfree(D) {if (D) {free( (char *) D); D=0; kbm_store_ptrs--;}}
 
