@@ -11,8 +11,7 @@ COPTS = -O
 targets: all
 
 bindir:
-	if test ! -d bin;  then mkdir bin;  fi
-	if test ! -d bin/@GAPARCH@;  then mkdir bin/@GAPARCH@;  fi
+	mkdir -p bin/@GAPARCH@;
 
 all: bindir
 	cd standalone/lib; $(MAKE) CC="$(CC)" COPTS="$(COPTS)"
