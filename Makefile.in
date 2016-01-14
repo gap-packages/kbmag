@@ -1,6 +1,5 @@
 # General makefile for GAP4 KBMAG share package -
 # all executables are put into the bin directory.
-RM = /bin/rm
 BIN = bin/@GAPARCH@
 
 CC = gcc
@@ -19,13 +18,13 @@ clean:
 distclean:
 	cd standalone/lib; $(MAKE) clean
 	cd standalone/src; $(MAKE) clean
-	$(RM) -f $(BIN)/*
-	cd standalone/ag_data; $(RM) -f *.* 
-	cd standalone/kb_data; $(RM) -f *.* 
-	cd standalone/fsa_data; $(RM) -f *.* 
-	cd standalone/subgp_data; $(RM) -f *.[a-r,t-z]* *.suc* *.sub*.* *.ec
-	cd standalone/doc; $(RM) -f *.aux *.toc *.log *.dvi
-	cd doc; $(RM) -f *.aux *.toc *.log *.dvi
+	rm -rf bin htm
+	rm standalone/ag_data/*.* 
+	rm standalone/kb_data/*.* 
+	rm standalone/fsa_data/*.* 
+	cd standalone/subgp_data; rm -f *.[a-r,t-z]* *.suc* *.sub*.* *.ec
+	cd standalone/doc; rm -f *.aux *.toc *.log *.dvi
+	cd doc; rm -f *.aux *.toc *.log *.dvi
 
 test:
 	cd standalone/kb_data; ../../$(BIN)/kbprog nilp2; rm nilp2.*
