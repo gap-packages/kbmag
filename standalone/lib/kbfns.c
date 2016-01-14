@@ -7,17 +7,15 @@
  * across from src/kbprog.c
  */
 
+#include <sys/time.h>
+#include <sys/resource.h>
+
 #define MAXCYCLES       16384
 #include "defs.h"
 #include "fsa.h"
 #include "rws.h"
 #include "externals.h"
 
-#ifdef SYSTEMV
-#define HZTIME 		100
-#else
-#define HZTIME		60
-#endif
 #define MAXREDUCELEN	32767
 #define MAXREDUCELENFAC 200
 #define MAXCYCLES	16384
@@ -971,8 +969,9 @@ repeat:
   if (rwsptr->double_states)
      build_quicktable(rwsptr);
   /* otherwise maxstates won't get doubled! */
-  times(&(rwsptr->time_buffer));
-  i = rwsptr->time_buffer.tms_utime / HZTIME;
+  struct rusage tmp;
+  getrusage(RUSAGE_SELF, &tmp);
+  i = tmp.ru_utime.tv_sec;
         if (kbm_print_level>=2)
     printf(
         "  #%d eqns; total len: lhs, rhs = %d, %d; %d states; %d secs.\n",
@@ -2103,8 +2102,9 @@ should_we_halt(rwsptr)
 rewriting_system *rwsptr;
 /* Try to decide whether we should halt, using number of word-differences. */
 { int  i, ndiff, t;
-  times(&(rwsptr->time_buffer));
-  t = rwsptr->time_buffer.tms_utime / HZTIME;
+  struct rusage tmp;
+  getrusage(RUSAGE_SELF, &tmp);
+  t = tmp.ru_utime.tv_sec;
   rwsptr->num_cycles++;
   if (rwsptr->num_cycles >= MAXCYCLES) {
     rwsptr->halting = TRUE;

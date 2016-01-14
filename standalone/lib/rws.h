@@ -117,7 +117,6 @@ typedef struct {
 		      * since number of word-differences increased.  */
   int halting_factor;
   int min_time;
-  struct tms      time_buffer;
   boolean halting;		/* true when time to halt */
   boolean do_conf_test;
   boolean lostinfo;		/* true when definign relations thrown away */

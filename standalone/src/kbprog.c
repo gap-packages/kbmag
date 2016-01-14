@@ -231,11 +231,6 @@ CHANGES TO KBPROG
 #include "rws.h"
 #include "definitions.h"
 
-#ifdef SYSTEMV
-#define HZTIME     100
-#else
-#define HZTIME    60
-#endif
 #define MAXREDUCELENFAC 200
 #define MAXCYCLES  16384
 
