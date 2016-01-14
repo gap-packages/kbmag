@@ -45,4 +45,7 @@ doc:
         tex manual;bibtex manual;\
 	../../../doc/manualindex manual;tex manual;tex manual;
 
+Makefile: configure Makefile.in
+	./configure "@GAPPATH@"
+
 .PHONY: targets bindir all clean distclean test doc
