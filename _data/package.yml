@@ -1,46 +1,28 @@
-name: GitHubPagesForGAP
-version: 0.1
-date: 21/03/2014
-description: A GitHubPages generator for GAP packages
+name: kbmag
+version: 1.5
+date: 06/01/2009
+description: Knuth-Bendix on Monoids and Automatic Groups
 
 authors:
-    - name: Max Horn
-      url: http://www.quendi.de/math
-    - name: A. U. Thor
+    - name: Derek Holt
+      url: http://homepages.warwick.ac.uk/staff/D.F.Holt/
 
 maintainers:
-    - name: Max Horn
-      url: http://www.quendi.de/math
-    - name: Jan Itor
+    - name: Derek Holt
+      url: http://homepages.warwick.ac.uk/staff/D.F.Holt/
 
-GAP: ">=4.5.5"
+GAP: ">=4.7"
 
-needed-pkgs:
-    - name: "GAPDoc"
-      version: ">= 1.2"
-      url: "http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc"
-    - name: "IO"
-      version: ">= 4.1"
-      url: "http://neunhoef.github.io/io/"
-
-suggested-pkgs:
-    - name: "orb"
-      version: ">= 4.2"
-      url: "http://neunhoef.github.io/orb/"
-
-www: http://fingolfin.github.io/GitHubPagesForGAP/
-readme: http://fingolfin.github.io/GitHubPagesForGAP/README
-packageinfo: http://fingolfin.github.io/GitHubPagesForGAP/PackageInfo.g
-github: https://github.com/fingolfin/GitHubPagesForGAP
+www: https://gap-packages.github.io/kbmag
+readme: https://gap-packages.github.io/kbmag/README
+packageinfo: https://gap-packages.github.io/kbmag/PackageInfo.g
 
 downloads:
     - name: .tar.gz
-      url: https://github.com/fingolfin/GitHubPagesForGAP/releases/download/v0.1/GitHubPagesForGAP-0.1.tar.gz
-    - name: .tar.bz2
-      url: https://github.com/fingolfin/GitHubPagesForGAP/releases/download/v0.1/GitHubPagesForGAP-0.1.tar.bz2
+      url: https://github.com/gap-packages/kbmag/releases/download/v1.5/kbmag-1.5.tar.gz
 
-abstract: This is a pseudo package that contains no actual  <span class="pkgname">GAP</span> code. Instead, it is a template for other  GAP packages that allows to quickly setup GitHub pages.
+abstract: The <span class="pkgname">kbmag</span> package is a       <span class="pkgname">GAP</span> interface to some `C' programs   for running the Knuth-Bendix completion program on finite semigroup,   monoid or group presentations, and for attempting to compute  automatic   structures of finitely presented groups
 
-status: other
-doc-html: doc/chap0.html
+status: accepted
+doc-html: htm/chapters.htm
 doc-pdf: doc/manual.pdf
