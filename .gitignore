@@ -1,0 +1,5 @@
+/Makefile
+/bin
+/standalone/lib/*.o
+/standalone/lib/*.a
+/standalone/src/*.o
