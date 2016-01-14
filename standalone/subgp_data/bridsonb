@@ -1,0 +1,9 @@
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [x1,X1,t,T],
+  inverses := [X1,x1,T,t],
+  equations := [
+                 [T^3*x1*t,x1*T^2*x1]
+               ]
+);

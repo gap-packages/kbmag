@@ -1,0 +1,283 @@
+%%File fsa.tex
+\Chapter{Programs for Manipulating Finite State Automata}
+In this chapter, we describe the utility functions that are provided for
+manipulating finite state automata.
+All of these except 'fsafilter', 'nfadeterminize' and 'midfadeterminize'
+accept only deterministic automata as input.
+For explanation of all of the standard options,
+see Section "Exit Status of Programs and Meanings of Some Options".
+
+{\em Acknowledgement}\:\ 
+The code for 'fsagrowth' was written by Laurent Bartholdi
+
+\Section{fsafilter}
+
+'fsafilter [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-csn] [<filename>]'
+
+This merely reads in a finite state automaton and prints it out again.
+It is used partly for testing, but also if one wants to change the format
+of an automaton from dense to sparse or vice-versa.
+If the optional <filename> argument is present, then input is from <filename>
+and output to <filename>'.filter'. Otherwise, input is from 'stdin' and
+output to 'stdout'.
+
+If the '-csn' option is called, then the numbers of the states in the
+transition table of the output are included as comments after the lists
+of transitions for each state. This can help to increase the readability
+of a file defining an automaton with a large number of states.
+
+\Section{fsamin}
+
+'fsamin [-ip d/s] [-op d/s] [-silent] [-v] [-l] [<filename>]'
+
+A finite state automaton is read in, minimized and then printed out again.
+If the optional <filename> argument is present, then input is from <filename>
+and output to <filename>'.min'. Otherwise, input is from 'stdin' and
+output to 'stdout'.
+
+\Section{fsalabmin}
+
+'fsalabmin [-ip d/s] [-op d/s] [-silent] [-v] [-l] [<filename>]'
+
+This is a minimization program for finite state automata which may have
+more than the standard two state categories (accepting and non-accepting),
+and the output automataon has a minimal number of states subject to
+the condition that any word read by the initial and output automata
+leads to states having the same category.
+
+The input automaton must have state set of type  <labeled>, and the labels
+of the staes are used to specify the categories. One of these categories
+corresponds to label 0, which means no label. Preferably, the accepting states
+of the automaton should consist of a union of those states having certain
+labels. If this is not the case, then the accepted languages of the input
+and output automata will not necessarily be the same.
+
+If the optional <filename> argument is present, then input is from <filename>
+and output to <filename>'.labmin'. Otherwise, input is from 'stdin' and
+output to 'stdout'.
+
+\Section{fsabfs}
+
+'fsabfs [-ip d/s] [-op d/s] [-silent] [-v] [-l] [<filename>]'
+
+A finite state automaton is read in, and then its states are permuted into
+bfs-order (bfs = breadth-first-search), and it is printed out again.
+This means that the states are numbered $1,2, \ldots, ns$, and if one
+scans the transition-table, in order of increasing states, then the states
+occur in increasing order. 'fsamin' and 'fsabfs' used together can be used
+to check whether two deterministic automata with the same alphabet
+have the same language.
+First apply 'fsamin' and then 'fsabfs'.
+If they have the same language, then the resulting automata should be identical.
+If the optional <filename> argument is present, then input is from <filename>
+and output to <filename>'.bfs'. Otherwise, input is from 'stdin' and
+output to 'stdout'.
+
+\Section{fsacount}
+
+'fsacount  [-ip d/s] [-silent] [-v] [<filename>]'
+
+A finite state automaton is read in,
+the size of the accepted language is counted, and the answer (which may
+of course be infinite) is output to 'stdout'.
+Input is from <filename> if
+the optional argument is present, and otherwise from 'stdin'.
+
+\Section{fsaenumerate}
+
+'fsaenumerate  [-ip d/s] [-bfs/-dfs] <min> <max> [<filename>]'
+
+A finite state automaton is read in from 'stdin' or from the file <filename>
+if the optional argument is present.
+<min> and <max> should be non-negative integers with <min> $\le$ <max>.
+The words in the accepted language having lengths at least <min> and at
+most <max> are enumerated, and output as a list of words to 'stdout' or
+to the file <filename>'.enumerate'.
+
+If the option '-dfs' is called (depth-first search -- the default),
+then the words
+in the list will be in lexicographical order, whereas with '[-bfs]'
+(breadth-first-search), they will be in order of increasing length, and in
+lexicographical order for each individual length (i.e. in shortlex order).
+Depth-first-search is marginally quicker.
+
+\Section{fsalequal}
+
+'fsalequal [-ip d/s] [-silent] [-v] <filename1> <filename2>'
+
+Two finite state automata are read in from the files <filename1> and
+<filename2>. This program tests whether they have the same language.
+The exit code is 0 if they do, and 2 if not.
+(To have the same language they must have identical alphabets.)
+
+\Section{fsaand}
+
+'fsaand [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-l]\
+ <filename1>'\\
+'| || || || || || || |<filename2> <outfilename>'
+
+Two finite state automata, which must have the same alphabet,
+are read in from the files <filename1> and <filename2>. An automaton that
+accepts a word $w$ in the alphabet if and only if both of the input automata
+accept $w$ is computed, minimized, and output to the file <outfilename>.
+
+\Section{fsaor}
+
+'fsaor [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-l]\
+ <filename1>'\\
+'| || || || || || |<filename2> <outfilename>'
+
+Two finite state automata, which must have the same alphabet, are read in from
+the files <filename1> and <filename2>. An automaton that accepts a word $w$ in
+the alphabet if and only if at least one of the input automata
+accept $w$ is computed, minimized, and output to the file <outfilename>.
+
+\Section{fsaandnot}
+
+'fsaandnot [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-l]\
+ <filename1>'\\
+'| || || || || || |<filename2> <outfilename>'
+
+Two finite state automata, which must have the same alphabet, are read in from
+the files <filename1> and <filename2>. An automaton that accepts a word $w$ in
+the alphabet if and only if the first input automaton
+accepts $w$ and the second input automaton does not accept $w$
+is computed, minimized, and output to the file <outfilename>.
+
+\Section{fsanot}
+
+'fsanot [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-l] <filename>'
+
+A finite state automaton is read in from the file <filename>, and an automaton
+with the same alphabet, which accepts a word $w$ if and only if the input
+automaton does not accept $w$, is calculated and output to <filename>'.not'.
+
+\Section{fsaconcat}
+
+'fsaconcat [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] <filename1>'\\
+'| || || || || || |<filename2> <outfilename>'
+
+Two finite state automata, which must have the same alphabet, are read in from
+the files <filename1> and <filename2>. An automaton that accepts a word $w$ in
+the alphabet if and only if $w = w_1w_2$, where $w_1$ and $w_2$ are in
+the respective languages of the input automata,
+is computed, minimized, and output to the file <outfilename>.
+
+\Section{fsastar}
+
+'fsastar [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] <filename>'
+
+A finite state automaton is read in from the file <filename>, and an automaton
+with the same alphabet, which accepts a word $w$ if and only if 
+$w \in L^\*$, where $L$ is the language of the input automaton,
+is calculated, minimized, and output to <filename>'.star'.
+
+\Section{fsareverse}
+
+'fsareverse [-s] [-midfa] [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-l]'\\
+'| || || || || || |<filename>'
+
+A finite state automaton is read in from the file <filename>, and an automaton
+with the same alphabet, which accepts a word $w$ if and only if the input
+automaton accepts the reversed word $w^R$, is calculated and output to
+<filename>'.reverse'.
+
+If '-s' is used, then the states of the output automaton (which will
+not be minimized) will be labeled as lists of integers, which specify
+the corresponding subsets of the states of the input automaton.
+
+If '-midfa' is used, then the output automaton will be a midfa,
+and the initial states  will correspond to the accepting states of the
+input automaton.
+
+\Section{fsaexists}
+
+'fsaexists [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-l] <filename>'
+
+A two-variable finite state automaton is read in from the file <filename>,
+and a one-variable automaton, which accepts a word $v$ if and only if the input
+automaton accepts $(v,w)$ for some word $w$,
+is calculated and output to <filename>'.exists'.
+
+\Section{fsaswapcoords}
+
+'fsaswapcoords [-op d/s] [-silent] [-v] [-l] [<filename1> <filename2>]'
+
+A two-variable finite state automaton is read in from <stdin> or from
+the file <filename1> if specified. A new automaton that accepts a pair of
+words $(v,w)$ if and only if the original automataon accepts $(w,v)$ is
+computed, and output to 'stdout' or to the file <filename2> if specified.
+(This could, for example, be used before 'fsaexists', if it was desired to
+quantify over the second coordinate of a two-variable automataon, rather
+than the first.)
+
+\Section{fsaprune}
+
+'fsaprune [-ip d/s] [-op d/s] [-silent] [-v] [-a] [<filename>]'
+
+A finite state automaton is read in, and a modified automaton computed
+and then printed out. The output automaton accepts a word $w$ if and
+only if the input automaton accepts $w$ and infinitely many words having
+$w$ as a prefix.
+
+If |-a| is used, then the computation starts by making all states of the
+automaton accepting (and the program runs quicker with this option set).
+Equivalently, with |-a|, the output automaton accepts a word $w$ if and
+only if the input automaton accepts infinitely many words having
+$w$ as a prefix.
+
+This program is useful, for example, for finding geodesics to the boundary in
+word-hyperbolic groups.
+
+If the optional <filename> argument is present, then input is from <filename>
+and output to <filename>'.prune'. Otherwise, input is from 'stdin' and
+output to 'stdout'.
+
+\Section{fsagrowth}
+
+'fsagrowth [-op d/s] [-silent] [-v] [-primes x,y,...] <filename>'
+
+'fsagrowth' computes the rational growth function of a finite state automaton.
+The input is from <filename> (or from 'stdin' if the optional argument is not
+present), which should contain a finite state automaton.
+The output is to <filename>'.growth' or to 'stdout', and contains the quotient
+of two integral polynomials in the variable $X$. The coefficient  of $X^n$ in
+the Taylor expansion of this polynomial is equal to the number of accepted
+words of the automaton length $n$.
+
+In fact, to avoid the danger of integer overflow, the calculations are not done
+over the integers, but modulo a sequence of primes. If, on lifting to the
+integers, different primes give different results, then the coefficients of
+the polynomials are too large, and the results are likely to be wrong.
+A warning message is printed when this happens, and the exit code is 2.
+By default, three primes slightly less than $2^{15}$ are used, but the
+user can input the primes to be used by using the '-primes x,y,...' option.
+The list of primes here should be comma-separate, with no space.
+
+The code for this program was written by Laurent Bartholdi.
+
+\Section{nfadeterminize}
+'nfadeterminize [-s] [-op d/s] [-silent] [-v] [-l] [<filename>]'
+
+'nfadeterminize' read a (possibly) non-deterministic automaton from
+'stdin', or from <filename> if the optional argument is present.
+It computes and minimizes an equivalent deterministic
+automaton with the same language and outputs the result to 'stdout'
+or to <filename>'.determinize'. The input automaton, which will
+normally be stored in sparse format, may contain $\varepsilon$-transitions,
+which should be specified by giving them the generator number 0.
+
+If the '-s' option is called, then the states of the output automaton
+(which will not be minimized) will be labeled as lists of integers, which
+specify the corresponding subsets of the states of the input automaton.
+The other options are standard.
+
+\Section{midfadeterminize}
+
+'midfadeterminize [-ip d/s[<dr>]] [-op d/s] [-silent] [-v] [-l] [<filename>]'
+
+This is in fact a special case of 'nfadeterminize'.
+A midfa (multiple initial state determinstic finite state automaton) is read
+from 'stdin' or <filename>, and a minimized deterministic automaton that
+accepts the same language is output to 'stdout' or to
+<filename>'.midfadeterminize'.

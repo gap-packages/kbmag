@@ -1,0 +1,11 @@
+#Von Dyck (3,3,3) group - infinite euclidean - small tidyint works better
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  tidyint := 20,
+  generatorOrder := [a,A,b,B],
+  inverses := [A,a,B,b],
+  equations := [
+    [a^3,IdWord], [b^3,IdWord], [(a*b)^3,IdWord]
+  ]
+);

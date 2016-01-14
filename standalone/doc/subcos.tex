@@ -1,0 +1,180 @@
+%%File subcos.tex
+\Chapter{Subgroup and Coset Files}
+\Section{Subgroup files}
+
+In this and the following two chapters, $G$ will denote a group (or
+monoid) defined by a rewriting system in the file <groupname>, and $H$ a
+subgroup (or submonoid) of $G$.
+
+For any computation involving subgroups (or submonoids) of
+a group or monoid, the user must first prepare an input file that
+defines generators of the substructure $H$ as words in the generators of
+the parent structure $G$.  These substructure generators may also be given
+their own names (which we shall refer to as $H$-generators), which must
+of course be distinct from those of the generators of $G$ (which we shall
+call $G$-generators). If the file containing the rewriting system for $G$ is
+called <groupname>, then the file containing the definitions (and possibly
+names) of the generators of $H$ should be called <groupname>.<subname>, where
+it is recommended that <subname> has the string 'sub' as a prefix. Some
+examples can be found in the directory 'subgp\_data'. For example, there is a
+file called 'ab2' that defines the 2-generator free abelian group.
+
+|
+#free abelian group of rank 2
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,A,B],
+  inverses := [A,B,a,b],
+  equations := [ [b*a,a*b] ]
+);
+|
+and one called 'ab2.sub' that defines a subgroup of index 6.
+
+|
+_RWS_Sub := rec(
+  subGenerators:=[a^2*b^3, a^4*b^9],
+  subGeneratorNames:=[x,y]
+);
+|
+
+The syntax is self-explanatory. Note that the $G$-generators are <a>, <b>,
+<A> and <B>, and the $H$-generators <x> and <y>.
+It is important that no generator should be named '\_H' (which is
+unlikely anyway), since that will be used by the program 'makecosfile'
+(see below) as a symbol that represents the substructure $H$ itself.
+The 'subGenerators' list may not be empty or have gaps.
+The 'subGeneratorNames' field is optional but, if present, the list defined
+must have the same length as that defined by 'subGenerators', and have no gaps.
+Another optional field, not present in this example, is
+'subGeneratorInverseNames'. This list must have the same length as
+'subGeneratorNames', but it may have gaps. The names occurring in it
+must all occur in 'subGeneratorNames'. It is used to record the fact that
+certain of these generators are inverse to each other; it is the
+user\'s responsibility to ensure that this information is accurate.
+An example of a file with this feature, specifying another subgroup of the same
+group, is as follows.
+
+|
+_RWS_Sub := rec(
+  subGenerators:=[a^2, A^2, b^5, B^5],
+  subGeneratorNames:=[x,X,y,Y],
+  subGeneratorInverseNames:=[X,x,Y,y]
+);
+|
+
+It is not actually necessary to specify inverse generators for subgroups
+explicitly in this fashion, since the program 'makecosfile' will adjoin
+them automatically if required.
+
+At present, all that can be done with a substructure file is to apply the
+program 'makecosfile' to it to produce a coset rewriting system.
+Other facilities (such as computing intersections of certain subgroups)
+may be provided in the near future. Note, however, that the most important
+application is probably for the computation of automatic structures for coset
+systems and subgroup presentations. If this is done using the shell script
+'autcos', then the user does not need to run 'makecosfile', since it is done
+automatically by 'autcos'.
+
+\Section{makecosfile}
+
+'makecosfile [-sg] [-ni] <groupname> [<subname>]'
+
+Since cosets of submonoids of monoids do not in general appear to behave
+in a manner suitable for use with with the coset rewriting systems
+that are output by 'makecosfile' (for example, if $L$ is a  submonoid of $M$
+and $x \in L$, then it does not follow in general that $Lx=L$), we shall
+assume that we are dealing with a subgroup $H$ of a group $G$. The program
+itself will not attempt to verify this, however, and it is not necessary
+for all generators to have inverses defined in the input file.
+
+'makecosfile' takes its input from the file <groupname>, which should contain a
+declaration of a record defining a rewriting-system, in the format described
+in Chapter "Introduction", and from <groupname>.<subname>, which should
+contain a list of subgroup generators and (optionally) names for them,
+as described in the preceding section. Output is to the file
+<groupname>.<cosname>, and consists of a coset rewriting system,
+which will be described in the next paragraph. <cosname> is defined
+as follows. If (as is recommended), <subname> has the form 'sub'<string>
+for some (possibly empty) string <string>, then <cosname> =
+'cos'<string>. Otherwise, <cosname> = <subname>'\_cos'.
+Currently, the rewriting system is not allowed to have a weighted-lex ordering.
+The default for <subname> is just 'sub', and then
+<cosname> = 'cos'.
+
+A coset rewriting system contains the same generators and equations as the
+original one defined in <groupname>, and also some additional generators
+and equations. In particular, a new symbol named '\_H' (which is not really
+a generator of $G$ or of $H$, but is nevertheless defined as one)
+will be added that represents $H$ itself.
+
+If the option '-sg' is not called, then this will be the only new generator,
+and the new equations will have the form '[\_H\*<w>,\_H]', where <w> is
+a word defining one of the subgroup generators, as listed in the
+subgroup file. The new symbol '\_H' has no inverse, and so it does not
+cancel on the left, and the new equation represents the coset equation
+$Hw=H$. The ordering for a coset rewriting system is
+always '``wreathprod\'\'', where the level of '\_H' is 1, and those of
+the $G$-generators are increased by one if necessary to make them
+greater than that of '\_H'. (This is why weighted-lex orderings are not
+possible.) In the first example in the preceding section, the
+output file 'is ab2.cos'.
+
+|
+_RWS := rec(
+           isRWS := true,
+     isConfluent := false,
+         tidyint := 10,
+  generatorOrder := [a,b,A,B,_H],
+        ordering := "wreathprod",
+           level := [2,2,2,2,1],
+        inverses := [A,B,a,b,],
+       equations := [
+         [b*a,a*b],
+         [_H*a^2*b^3,_H],
+         [_H*a^4*b^9,_H]
+       ]
+);
+|
+
+If the option '-sg' (for ``subgroup generators\'\') is called, then the
+record defined in the subgroup file must contain a
+'subGeneratorNames' field. The names specified in this list
+will also be introduced as new generators in the coset rewriting system,
+with level 1. The new equations will now have the form '[\_H\*<w>,<x>\*\_H]',
+where <x> is the new name for the subgroup generator <w>. In this
+situation, the symbol '\_H' is being used purely as a separator, and the
+equation represents an exact equation in the group if '\_H' is ignored.
+In general, words in the group can be represented as '<v>\*\_H\*<w>', where
+<v> is a word in the $H$-generators, and <w> is a word in the $G$-generators.
+This represents the element $vw$ of $G$.
+
+By default, if the subgroup file does not contain a
+'subGeneratorInverseNames' field, then inverses of the $H$-generators will be
+appended as further $H$-generators. (The inverse symbol for
+$H$-generator $x$ is named $x^{-1}$.) If the '-ni' option is called,
+however, then these inverse generators are not introduced. By default,
+the output of 'makecosfile' applied with the '-sg' option to the example
+above is as follows.
+
+|
+_RWS_Cos := rec(
+           isRWS := true,
+     isConfluent := false,
+         tidyint := 10,
+  generatorOrder := [a,b,A,B,_H,x,y,x^-1,y^-1],
+        ordering := "wreathprod",
+           level := [2,2,2,2,1,1,1,1,1],
+        inverses := [A,B,a,b,,x^-1,y^-1,x,y],
+       equations := [
+         [b*a,a*b],
+         [_H*a^2*b^3,x*_H],
+         [_H*a^4*b^9,y*_H]
+       ]
+);
+|
+
+Coset rewriting systems are used as input to the program 'kbprogcos', either
+as a standalone (as described in the next chapter), or with the '-wd' option
+as part of the automatic coset system package described in Chapter
+"The Automatic Coset System and Subgroup Presentation Package".

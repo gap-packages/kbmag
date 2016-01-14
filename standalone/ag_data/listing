@@ -1,0 +1,8 @@
+#Listing's knot group
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [d,D,f,F],
+  inverses := [D,d,F,f],
+  equations := [ [f*d*F*d*f*D*F*d*F*D,IdWord] ]
+);

@@ -1,0 +1,11 @@
+#Group of Mark Sapir
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [u,U,b,B,v,V],
+  inverses := [U,u,B,b,V,v],
+  equations := [
+    [u^2,v^2],
+    [b^2*v*b*u,u*B*v]
+  ]
+);

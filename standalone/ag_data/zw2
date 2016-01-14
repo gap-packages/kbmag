@@ -1,0 +1,12 @@
+# Z wr C2 with - only works with correct gen order.
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [b,B,a,A,t],
+  inverses := [B,b,A,a,t],
+  equations := [
+    [t^2,IdWord],
+    [b*a,a*b],
+    [t*a*t,b]
+  ]
+);

@@ -1,0 +1,9 @@
+#Fibonacci group F(2,6) - infinite euclidean
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B,c,C,d,D,e,E,f,F],
+  inverses := [A,a,B,b,C,c,D,d,E,e,F,f],
+  equations := [[a*b,c], [b*c,d], [c*d,e], [d*e,f], [e*f,a],  [f*a,b]
+  ]
+);

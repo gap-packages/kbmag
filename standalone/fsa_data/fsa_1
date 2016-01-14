@@ -1,0 +1,16 @@
+fsa_1 := rec (
+	isFSA := true,
+	alphabet := rec (type := "simple", size := 2),
+	states := rec (type := "simple", size := 3),
+	flags := [ "DFA" ],
+	initial := [ 1 ],
+	accepting := [ 2, 3 ],
+	table := rec(
+	  format := "sparse",
+	  transitions:=[
+	     [ [2, 2] ],
+	     [ [1, 2], [2, 3] ],
+	     [ [1, 2], [2, 3] ]
+	  ]
+	)
+);

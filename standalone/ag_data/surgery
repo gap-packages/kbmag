@@ -1,0 +1,13 @@
+#Thurston knot 23 with surgery.
+#Quite hard - use -l with autgroup
+K23S := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [x,X,y,Y,t,T],
+  inverses := [X,x,Y,y,T,t],
+  equations := [
+    [t*x*T*X*Y*X,IdWord],
+    [t*y*T*Y*X,IdWord],
+    [X*Y*x*y*X*Y*x*y*T*T*T,IdWord]	
+  ]
+);

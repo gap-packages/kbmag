@@ -1,0 +1,409 @@
+% rewriting equations of the form
+%File autcos.tex
+\Chapter{The Automatic Coset System and Subgroup Presentation Package}
+
+The aim of this package is firstly to calculate the finite state automata
+associated with an automatic coset system for a suitable subgroup $H$ of a
+short-lex automatic group $G$, and secondly to calculate a
+presentation of $H$. At the end of a successful calculation, five automata
+will be stored. These are the first and second word-difference machines, the
+coset word-acceptor, and two versions of the general-multiplier for the coset
+structure. The word-difference machines and one version of the multiplier
+are midfa (multiple-initial-state deterministic automata). This means that
+their transition tables are deterministic, but they may have more than one
+initial states. The coset word-acceptor (which accepts the short-lex least
+word that lies in each right coset of $H$ in $G$) and the other version of the
+multiplier are standard deterministic automata.  The multiplier is a
+two-variable automaton over the set of monoid generators of $G$ that accepts a
+pair of words $(w_1,w_2)$ in these generators if and only if $w_1$ and $w_2$
+are accepted by the coset word-acceptor, and the right cosets $Hw_1x$ and
+$Hw_2$ are equal for some monoid generator $x$ of $G$. As is the case with the
+general multiplier for an ordinary automatic structure, the success states
+of the multiplier are labeled by the generators $x$.
+Currently, the only reference for the theory of automatic coset systems is the
+Ph.D. thesis of Ian Redfern \cite{Red93}. It is proved there that quasiconvex
+subgroups of word-hyperbolic groups always have short-lex automatic coset
+systems.
+
+The resulting automata can be used for reducing words $w$ to the unique
+minimal word $v$ in the group under the short-lex ordering, such that $Hv=Hw$.
+In particular, this enables the generalised word-problem to be solved for the
+subgroup $H$ of $G$. They can also be used for counting and enumerating the
+accepted language.
+See Sections "wordreduce -cos (automatic coset systems)", and
+"fsacount and fsaenumerate (automatic coset systems)" for details.
+(In fact the multiplier automaton is not needed for any of these processes,
+but it forms part of the automatic coset system from a
+theoretical viewpoint, so we regard it as part of the output of the
+calculation.)
+
+There are two possibilities for computing the automatic coset system.
+The simplest is to use the program 'autcos', which is in fact a
+Unix Bourne-shell script, which runs the C-programs involved,
+and attempts to make a sensible choice of options.
+The other possibility is to run the programs 'makecosfile' (with the '-sg'
+option), 'kbprogcos\ -wd', 'gpmakefsa\ -cos', 'gpaxioms\ -cos' and possibly
+'gpsubpres' individually, and to select the options oneself.
+'kbprogcos -wd' runs the Knuth--Bendix process on the coset rewriting system
+for the subgroup $H$ of $G$, and calculates the resulting word-differences
+arising from the equations generated.
+
+For the complete process to be successful, the
+the set of all word-differences arising from these equations,
+and the set of all words $v$ in $H$ that occur in the rewriting equations of
+the form '[\_H'$w_1,v$'\_H'$w_2$']' must both be finite;
+however, 'kbprogcos -wd' itself will normally run forever, generating
+infinitely many equations, and so sensible halting criteria must be devised.
+Clearly one wants to halt as soon as all of the
+word-differences and words $v$ in $H$ have been found, if possible. Further
+details are given in Section "kbprogcos -wd". 'gpmakefsa\ -cos' uses the
+word-difference output by 'kbprogcos\ -wd' to compute the word-acceptor and
+multiplier automata.
+It performs some checks on these which can reveal if the set of
+word-differences (or subgroup words) used was not in fact complete, and find
+some of the missing ones. It can then try again with the extended sets of
+word-differences. After this process completes successfully, the program
+'gpaxioms\ -cos' performs the axiom-checking process, which proves the
+correctness of the automata calculated.
+
+If a presentation of the subgroup $H$ is required, then it can be computed
+using the program 'gpsubpres' (see "gpsubpres"). Currently this will be on
+a set of generators for $H$ determined by the program. (This is in fact
+corresponds to the final set of initial states that occur in the midfa version
+of the generalised multiplier.) It is hoped that it
+will eventually be possible to compute such a presentation on the set
+generators of $H$ originally specified by the user in the file defining $H$.
+The presentation will be highly redundant, with multiple occurences of each
+relator and its cyclic conjugates. It is therefore output as a {\GAP}
+definition of a finitely presented group, so that it can read in by {\GAP}
+and simplified if required.
+
+If the file containing the coset rewriting system is named
+<groupname>'.'<cosame>, then all files created by the programs will have names
+of form <groupname>'.'<cosname>'.'<suffix>, except for that containing the
+presentation of $H$, which will be named <groupname>'.'<subname>'.pres'.
+
+\Section{autcos}
+
+'autcos  [-l] [-v] [-silent] [-diff1] [-f] [-p] [-pref <prefix>] <groupname>'\\
+'| || || || || || || |[<subname>]'
+
+Compute the finite state automata that constitute an automatic coset system,
+for a suitable subgroup $H$ of a short-lex automatic group $G$.
+Input is taken from the files <groupname> and <groupname>'.'<subname>.
+As with 'makecosfile', the default for <subname> is 'sub'.
+The first of these files should contain a declaration of a record defining a
+rewriting-system for $G$, in the format described in Chapter "Introduction".
+Since $G$ is a group $G$, all monoid generators must have
+inverses listed explicitly. The second input file should contain a record
+defining a subgroup $H$ of $G$ in the format described in Chapter
+"Subgroup and Coset Files", andthe 'subGeneratorNames' field must be present.
+Output is to the files <groupname>'.'<cosname>'.midiff1',
+<groupname>'.'<cosname>'.midiff2' (midfa word-difference machines),
+<groupname>'.'<cosname>'.wa' (coset word-acceptor),
+<groupname>'.'<cos-name>'.migm' and <groupname>'.'<cosname>'.gm'
+(midfa genemral multiplier and deterministic general multiplier), and
+possibly <groupname>'.'<subname>'.pres' (subgroup presentation), where
+the string <cosname> is derived from <subname> by substituting
+'cos' for 'sub' as described in Chapter "Subgroup and Coset Files".
+
+*Options*\\
+For a general description of the options '[-l]', '[-v]' and '[-silent]',
+see Section
+"Exit Status of Programs and Meanings of Some Options".
+For greater flexibility in choice of options, run the programs
+'makesubfile\ -sg', 'kbprogcos\ -wd', 'gpmakefsa\ -cos', 'gpaxioms\ -cos' and
+'gpsubpres' individually, rather than using 'autcos'. 
+
+\begin{description}
+\item[|-l |]
+This causes 'gpmakefsa\ -cos', 'gpaxioms\ -cos' and 'gpsubpres' to be run with
+the '-l' option, which means large hash-tables.
+However, '-l' also causes 'kbprogcos\ -wd' to be run
+with larger parameters, and you are advised to use it only after you
+have tried first without it, since it will cause easy examples to take
+much longer to run.
+\item[|-diff1|]
+This causes 'gpmakefsa\ -cos' to be run with the '-diff1' option. See Section
+"gpmakefsa -cos" for further details.
+\item[|-f |] This causes 'gpmakefsa\ -cos' and 'gpaxioms\ -cos' to be run with
+the '-f' option. See Sections "gpmakefsa -cos" and "gpaxioms -cos" for
+further details. This is the option to choose if you need to save space,
+and don\'t mind waiting a bit longer.
+\item[|-p|] Calculate a presentation of the subgroup $H$. This is likely to be
+the most time- and space-consuming part of the whole computation, and is not
+done by default.
+\item[|-pref| <prefix>] Name the finite presentation of the subgroup
+$H$ that is output in {\GAP} format <prefix>, and its generators
+<prefix>'1', <prefix>'2', etc. The default for <prefix> is '\_x'. 
+\end{description}
+\Section{kbprogcos -wd}
+'kbprogcos -wd [-t <tidyint>] [-me <maxeqns>] [-ms <maxstates>]\
+[-mwd <maxwdiffs>]'\\
+'| || || || || || || |[-hf <halting\_factor>] [-mt <min\_time>]\
+[-rk <minlen> <mineqns>]'\\
+'| || || || || || || |[-v] [-silent] [-cn <confnum>] <groupname> [<cosname>]'
+
+Some of these options are of course the same as for when 'kbprogcos' is being
+used as a stand-alone Knuth--Bendix program for cosets of subgroups --
+see Section "kbprogcos". The default value of <cosname> is 'cos'.
+
+'kbprogcos\ -wd' takes its input from the file <groupname>.<cosname>,
+which should contain a declaration of a record defining a coset
+rewriting-system for a subgroup $H$ of a group $G$, in the format described in
+Chapter "Subgroup and Coset Files". See also Section "kbprogcos", for a
+definition of a coset rewriting system. To obtain meaningful results,
+$H$-generators must be present in the rewriting system.
+The ordering must be |"wreathprod"|, and all $H$-generators  and all
+$G$-generators must have the same levels $l_H$ and $l_G$, with $l_H \< l_G$.
+Since $G$ and $H$ must both be groups, all $G$-generators and all
+$H$-generators must have inverses, and the inverse function must be involutory.
+The separator symbol '\_H' should not, of course, have an inverse.
+This input file will normally be generated by running 'makecosfile' with the
+'-sg' option.
+
+The Knuth--Bendix completion process is carried out on the coset rewriting
+system.
+However, unlike in the standalone usage of 'kbprogcos', the extended set of
+equations and the reduction automaton are not output. Instead, the two
+word-difference automata arising from the equations are output when the program
+halts. These are printed to the two files <groupname>'.midiff1' and
+<groupname>'.midiff2'. The difference between them is that the first automaton
+contains only those word-differences and transitions that arise from the
+equations themselves. For the second automaton, the set of word-differences
+arising from the equations is closed under inversion, and all possible
+transitions are included. So the second automaton has both more states and
+generally more transitions per state than the first. For their uses, see
+Section "gpmakefsa -cos" below.
+
+These word-difference automata are midfa; that is they have deterministic
+transition tables, but multiple initial states. They are two-variable automata
+in the $G$-generators only. The equations in the $G$-generators are
+handled as they are in 'kbprog -wd'. The coset equations
+'[\_H'$w_1,v$'\_H'$w_2$']', where $w_1$ and $w_2$ are words in the
+$G$-generators and $v$ is a word in the $H$-generators, are handled slightly
+differently. The word $v$ is rewritten as a word in the $G$-generators, and
+then becomes an initial state of the word-difference machines, which leads
+to success on reading the pair of $G$-words '['$w_1,w_2$']'. The equations
+in the $H$-generators only are not used. 
+
+As with 'kbprog -wd', this program will not usually complete with a
+confluent set of equations, but will continue indefinitely, and so halting
+criteria have to be chosen. This can only be usefully done if the sets of
+word-differences and initial states arising from the equations are both
+finite. This is known theoreticaly to be the case for quasiconvex subgroups
+of word-hyperbolic groups, but fortunately it appears to be true also
+for many other subgroups of short-lex automatic groups.
+The general idea is to wait until these sets appears to have become constant,
+and then stop.
+
+The methods available for interrupting 'kbprogcos -wd', or for specifying
+halting criteria with command-line options, are essentially the same as for
+'kbprog -wd', and the reader should refer to Section "kbprog -wd" for guidance.
+The other options are also the same as there.
+
+*Exit status*\\
+The exit staus is 0 if 'kbprog' completes with a confluent set of equations,
+or if it halts because the condition in the '-hf <halting\_factor>' option
+has been fulfilled,
+2 if it halts and outputs because some other limit has
+been exceeded, or it has received an interrupt signal, and 1 if it exits
+without output, with an error message.
+This information is used by the shell-script 'autcos'.
+
+\Section{gpmakefsa -cos}
+
+'gpmakefsa  -cos [-diff1/-diff2] [-me <maxeqns>] [-mwd <maxwdiffs>] [-l]'\\
+'| || || || || || || || || || |[-ip d/s[dr]] [-opwa d/s] [-opgm d/s]\
+[-v] [-silent]'\\
+'| || || || || || || || || || |<groupname> [<cosname>]'
+
+Construct the coset word-acceptor and general multiplier finite state automata
+for the coset automatic system, of which the rewriting-system defining
+the group and subgroup is in the file <groupname>.<cosname>.
+The default value of <cosname> is 'cos'.
+It assumes that 'kbprogcos\ -wd' has already been run on the system.
+Input is from <groupname>.<cosname>'.midiff2' and, if
+the '-diff1' option is called, also from <groupname>.<cosname>'.midiff1'. The
+coset word-acceptor is output to <groupname>.<cosname>'.wa' and the general
+coset multiplier to <groupname>.<cosname>'.migm' and
+<groupname>.<cosname>'.gm' in its midfa and determinstic versions,
+respectively.  Certain correctness tests are carried out on the
+constructed automata. If they fail, then new word-differences will be
+found and <groupname>.<cosname>'.midiff2' (and possibly also
+<groupname>.<cosname>'.midiff1')
+will be updated, and the multiplier (and possibly the word-acceptor)
+will then be re-calculated.
+
+There are programs available which construct these automata individually,
+and also one which performs the correctness test, but it is unlikely that
+you will want to use them. They are mentioned briefly in
+Section "Other coset automata programs".
+
+The choice of input, as controlled by the '-diff1' and '-diff2'
+options ('-diff2' is the default) is essentially the same as
+for 'gpmakefsa' without the '-cos' option; see Section "gpmakefsa".
+The correctness check on the multiplier is also similar. The
+midfa version of the multiplier is constructed first, and the
+determinstic version is constructed from this, and used for the
+correctness test. Thus both versions need to be constructed for
+each call of the correctness test.
+All other options are as for 'gpmakefsa', but note that the
+'-f' option is not available in the cosets version.
+
+\Section{gpaxioms -cos}
+
+'gpaxioms [-cos] [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l] [-n]'\\
+'| || || || || || || || || || |<groupname> [<cosname>]'
+
+This program performs the axiom-checking process on the coset word-acceptor and
+general multiplier of the automatic coset system, of which the
+rewriting-system defining the group and subgroup is in the file
+<groupname>.<cosname>. The default value of <cosname> is 'cos'.
+It assumes that 'kbprogcos\ -wd' and 'gpmakefsa\ -cos' have already been run
+on the system.
+It takes its input from <groupname> and <groupname>.<cosname>'.gm'. 
+There is no output to files (although plenty of intermediate files are
+created and later removed during the course of the calculation).
+
+If successful, there will be no output apart from routine reports, and the exit
+status will be 0. If unsuccessful, a message will be printed to 'stdout'
+reporting that a relation test failed for one of the group relations, and
+the exit status will be 2.
+
+The |-n| option is the same as in Section "gpaxioms".
+The other options are all standard, and described in Section 
+"Exit Status of Programs and Meanings of Some Options".
+\Section{gpmimult}
+
+'gpmimult [-ip d/s] [-op d/s] [-silent] [-v] [-l] [-pref <prefix>]'\\
+'| || || || || || || || || || |<groupname> [<cosname>]'
+
+This calculates the individual midfa coset multiplier automata, for the monoid
+generators of the group, of which the rewriting-system
+defining the group and subgroup is in the file <groupname>.<cosname>.
+The default value of <cosname> is 'cos'.
+It assumes that 'autcos' (or the programs 'kbprogcos\ -wd', 'gpmakefsa\ -cos'
+and 'gpaxioms\ -cos') have already been run successfully on the system.
+Input is from <groupname>.<cosname>.'migm', and output is to
+<groupname>.<cosname>'.mim'<n>
+(one file for each multiplier), for $n = 1, \ldots , ng+1$, where $ng$ is
+the number of monoid generators of the group. The final multiplier is
+the coset equality multiplier, which accepts $(u,v)$ if and only if
+$u = v$ and $u$ is accepted by the coset word-acceptor.
+
+The labels for the initial states of these multipliers correspond
+precisely to the generators of $H$ on which a presentation of $H$
+can be calculated by the program 'gpsubpres' (see below). They are
+described as words in the $G$-generators in the file
+<groupname>.<cosname>.'migm', but in the individual mutliplier
+files, they are given new and distinct names of the form
+<prefix>'1', <prefix>'2', etc.
+The string <prefix> can be set with the '-pref' option, the
+default being '\_x'. All other options are standard.
+
+\Section{gpsubpres}
+'gpsubpres [-ip d/s] [-op d/s] [-silent] [-v] [-l] [-pref <prefix>]'\\
+'| || || || || || || || || || |<groupname> [<subname>]'
+
+Calculate a presentation of the subgroup $H$ of the group $G$ as defined
+by the rewriting system for $G$ in the file <groupname> and the
+definition of the subgroup $H$ in the file <groupname>.<subname>.
+Here <cosname> is derived from <subname> by substituting
+'cos' for 'sub' as described in Chapter "Subgroup and Coset Files".
+It assumes that 'autcos' (or the programs 'makesubfile\ -sg', 'kbprogcos\ -wd',
+'gpmakefsa\ -cos' and 'gpaxioms\ -cos') have already been run successfully on
+$G$ and $H$.
+Input is from <groupname> and <groupname>.<cosname>'.migm'
+(where <cosname> is derived from <subname> as described in
+Chapter "Subgroup and Coset Files" or Section "autcos"), and output
+is to the file <groupname>.<subname>'.pres'.
+
+The output presentation, which will usually contain many superfluous and
+repeated relators, is a {\GAP} definition of a finitely presented group, which
+can be read in by {\GAP} and simplified if required. The name of the group in
+this definition is <prefix>, and its generators are named <prefix>'1',
+<prefix>'2', etc.  The string <prefix> is equal to '\_x' by default, but can be
+set by using the '-pref' option.  The other options are the same as for
+'gpaxioms'.
+
+\Section{wordreduce -cos (automatic coset systems)}
+'wordreduce [-cos] [-kbprog/-diff1/-diff2] [-mrl <maxreducelen>]'\\
+'| || || || || || || || || || || |<groupname> [<cosname>]'
+
+This program can be used either on the output of 'kbprogcos' or on the output
+of the automatic coset system package. The '-kbprog' option refers to the former
+use, which is described in Section "wordreduce -cos (Knuth--Bendix)".
+The '-kbprog' usage is considerably quicker, but it is only guaranteed
+accurate when a finite confluent set of equations has been calculated. 
+The automatic coset system programs are normally only used when such a set
+cannot be found, in which case the usage here is the only
+accurate one available.
+The '-kbprog' usage is the default if the file <groupname>'.kbprog' is present.
+To be certain of using the intended algorithm, call one of the flags
+'-diff1', '-diff2' explicitly.
+If <groupname>.<cosname>'.kbprog' is not present, then input will be from
+<groupname>.<cosname>'.midiff2' by default, and otherwise from
+<groupname>.<cosname>'.midiff1'.
+
+It is assumed that the file <groupname>.<cosname> contains a coset
+rewriting-system for a subgroup $H$ of a short-lex automatic group $G$,
+and that 'autcos' (or the programs 'kbprogcos\ -wd', 'gpmakefsa\ -cos'
+and 'gpaxioms\ -cos') have already been run successfully on the system.
+The '-diff1' option should only be used for input if  'autcos' or
+'gpmakefsa\ -cos' was run successfully with the '-diff1' option, in which
+case it will be the most efficient. (Otherwise you might get wrong answers.)
+
+The words to be reduced by 'wordreduce\ -cos' must either be in the
+$G$-generators of the coset system alone, in which case the reduction
+will be to the short-lex minimal representative of the word in $G$, or
+they must have the form $w_1$'\_H'$w_2$, where $w_1$ and $w_2$ are both words
+in the $G$-generators, in which case the reduction will be to a word
+$w_1^\prime$'\_H'$w_2^\prime$, where $w_1w_2$ and $w_1^\prime w_2^\prime$ are
+equal elements in $G$, and $w_2^\prime$ is the short-lex least word that
+represents an element of the coset $Hw_2$.  It can therefore be used to solve
+the membership problem for the subgroup $H$ of $G$.
+Note that the usage is not quite the same as in Section
+"wordreduce -cos (Knuth--Bendix)", since the names for the $H$-generators
+cannot be used.
+
+The option '-mrl\ <maxreducelen>' puts a maximum length on the words to
+be reduced. The default is 32767.
+
+\Section{fsacount and fsaenumerate (automatic coset systems)}
+
+If 'autcos' (or the programs 'kbprogcos\ -wd', 'gpmakefsa\ -cos'
+and 'gpaxioms\ -cos') have already been run successfully on the 
+coset rewriting system for the subgroup $H$ of the group $G$
+in the file <groupname>.<cosname>, then running
+'fsacount <groupname>.<cosname>.wa'
+or 'fsaenumerate <min> <max> <groupname>.<cosname>.wa'
+will calculate the index of $H$ in $G$, or enumerate words that are the
+short-lex least representatives of the cosets of $H$ in $G$, and
+have lengths between <min> and <max>.
+For description of options, see Section
+"Exit Status of Programs and Meanings of Some Options".
+
+\Section{Other coset automata programs}
+
+The other programs in the package will be simply listed here. For
+further details, look at their source files in the 'src' directory.
+\begin{description}
+\item['gpwa\ -cos'] Calculate coset word-acceptor.
+\item['gpmigenmult'] Calculate midfa general coset multiplier.
+\item['midfadeterminize'] To calculate the deterministic general coset
+multiplier.
+\item['gpcheckmult\ -cos'] Carry out the correctness test on the
+general coset multiplier.
+\item['gpmigenmult2'] Calculate the midfa general coset multiplier for words
+of length 2.
+\item['gpmimult2'] Calculate a particular midfa coset multiplier for a word of
+length 2.
+\item['gpmicomp'] Calculate the midfa composite of two midfa multiplier
+coset automata.
+\end{description}
+
+\Section{Examples (automatic coset systems)}
+
+There is a collection of examples of short-lex automatic groups  and subgroups
+on which 'autcos' will complete in the directory 'subgp\_data'.

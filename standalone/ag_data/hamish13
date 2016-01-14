@@ -1,0 +1,10 @@
+#One of a family of groups proposed by Hamish Short
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B,c,C],
+  inverses := [A,a,B,b,C,c],
+  equations := [
+    [C*A*c*a*C^3*B*c^3*b,c]
+  ]
+);

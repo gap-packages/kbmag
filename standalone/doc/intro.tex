@@ -1,0 +1,385 @@
+%%File intro.tex
+\Chapter{Introduction}
+\Section{What is KBMAG?}
+{\KBMAG} (pronounced ``Kay-bee-mag\'\')
+stands for *Knuth--Bendix on Monoids, and Automatic Groups*.
+The purpose of this manual is to provide instructions for its use as a
+stand-alone package.  It is also usable from within Version 3 of the {\GAP}
+system (see \cite{Sch92}), and instructions for its use in that setting appear
+as a chapter of the {\GAP} manual in the directory 'gapdoc'.
+Some information on the interface with {\GAP} is also described in Chapter
+"The Interface with GAP" of this manual.
+
+The applications of {\KBMAG} can be divided into six inter-relating
+categories. These are covered in detail in the Chapters
+"The Knuth--Bendix Program for Monoids",
+"The Automatic Groups Package",
+"The Knuth--Bendix Program for Cosets of Subgroups",
+"The Automatic Coset System and Subgroup Presentation Package",
+"Creating Subgroup Word Acceptors", and
+"Programs for Manipulating Finite State Automata",
+but we will summarize them here.
+Note that the third, fourth and fifth applications, relating to subgroups and
+cosets, were new in Version 2.
+
+Firstly, the program 'kbprog' can be used by itself to carry out the
+Knuth--Bendix completion procedure on monoids defined by a finite presentation
+and, in particular, on finitely presented groups. The user has a choice
+between the short-lex ordering and the recursive-path ordering on strings.
+Weighted lex and wreath-product orderings, are also available.
+The latter are defined on pages 46 -- 50 of \cite{Sims94}.
+(It would be easy to make other orderings available if there were ever any
+demand.) The implementation is designed more with speed of execution in mind
+than with minimizing space requirements; thus, a finite state automaton is
+always used to carry out word reduction, which can be space-consuming,
+particularly when the number of generators is large. For a more flexible
+Knuth--Bendix package, with more general orderings available, and a
+choice of word-reduction procedures, the user could try the Rutgers
+Knuth--Bendix package {\rkbp} written by Charles Sims. 
+After running the program, the current set of reduction rules can be used to
+reduce words in the monoid generators. If the rewriting-system produced is
+confluent, then words will be correctly reduced to their irreducible normal
+form under the given ordering, and so the word problem can be solved efficiently
+in the monoid.
+
+Secondly, the package can be used to compute the finite state automata
+that constitute the automatic structure of a short-lex automatic group.
+This supercedes the olderexisting Warwick {\Automata} package for this purpose;
+the current program is generally faster than {\Automata}, and successful with
+more examples. For general information about automatic groups, see
+\cite{ECHLPT92}, and for more detailed information about the algorithms
+used in {\Automata}, see \cite{EHR91} or \cite{Holt94}. There are 
+no fundamentally new algorithms employed in {\KBMAG}, but several
+improvements have been made to the various components. The most
+noticeable change is that a single multiplier automaton is now computed,
+with the states labeled to indicate for which generators they are success
+states, rather than a separate multiplier for each generator (although the
+separate multipliers can still be computed if desired).
+
+Computing an automatic structure is done in several steps, which are
+carried out by a number of individual 'C'-programs. A Bourne Shell script,
+called 'autgroup' has been provided to run these programs in the correct
+sequence with, hopefully, a sensible default choice of options. As an
+alternative to the use of this shell script, the individual programs can of
+course be run separately. The first step is to run the program
+'kbprog', but with the ``word-difference\'\'\ option, which is required
+for automatic group calculations. The next program (which can itself be
+divided up into different parts if required) computes the word-acceptor
+and multiplier automata for the group. The final program (which can again
+be split into parts), is the so-called axiom-checking process, which proves
+that the automata that have been calculated are correct.
+If the process runs to completion, then the automata can be used to reduce
+words in the group generators to their irreducible normal forms under the
+short-lex ordering, and so the word problem in the group can be solved
+efficiently. It is also possible to compute the rational growth function
+for the group by applying the program 'fsagrowth' (see Chapter 8) to its
+word-acceptor.
+
+If the group happens to be word-hyperbolic then,
+after computing the automatic structure as described above, it is
+possible to run a program 'gpgeowa', which computes an automaton that accepts
+all geodesic words in the group generators and a 2-variable automaton that
+accepts all pairs of geodesic words which represent the same group element.
+In fact, by a result of Papsoglu~(\cite{PAP}), if 'gpgeowa'
+succeeds, then it effectively verifies the word-hyperbolicity of the
+group.
+ 
+Thirdly, there is a variant of 'kbprog' named 'kbprogcos' that is designed to
+work on the right cosets of a subgroup of the input group, at the same time
+as on the group itself. (The input structure could, more generally, be a
+monoid, but in order for the calculations carried out by the program to
+make any mathematical sense, it is probably necessary for the substructure to be
+a group.) In case of completion, a presentation of the subgroup
+can be calculated on the given subgroup generators.  This will always work in
+case of a subgroup of finite index, but the better known Reidemeister-Schreier
+and Todd-Coxeter related methods for subgroup presentations are likely to be
+superior in this case (see, for example, \cite {Neu81}).
+
+Fourthly, there are programs for calculating the finite state automata
+that constitute an automatic coset system for certain subgroups $H$ of
+short-lex automatic groups $G$. In particular, the coset word-acceptor, that
+accepts the unique short-lex minimal word that lies in each right coset
+of $H$ in $G$, and the coset general multiplier, that accepts the pair of words
+$(w_1,w_2)$ if and only if $w_1$ and $w_2$ are accepted by the coset
+word-acceptor and $Hw_1x=Hw_2$ for some monoid generator $x$ of $G$, are
+constructed. In successful cases, a presentation of $H$ can also be computed. 
+
+The first programs to calculate these structures
+were written by Ian Redfern and described by him in his Ph.D.thesis
+(\cite{Red93}), together with some nice graphical applications to drawing
+limit sets of Kleinian groups. He also proved that automatic coset systems
+exist for all quasiconvex subgroups of word-hyperbolic groups. (Apart from
+this, there appear to be no theoretical results that will predict for
+which subgroups $H$ automatic coset systems will exist but, by running the
+programs, we find that they do indeed exist in many cases.)
+The programs in {\KBMAG} employ a different method that uses finite state
+automata that have deterministic transition tables, but may have more than one
+initial state. It has the advantage over Redfern\'s that the structures
+computed can be proved correct.
+
+As in the case of ordinary automatic structures, these calculations are
+done in several steps, and a Bourne Shell script is provided, called
+'autcos', that  runs the appropriate programs in the correct order, with
+a sensible default choice of options. The  steps correspond roughly to those of
+'autgroup', the first being 'kbprogcos' with the ``word-difference\'\'
+option.  There is an optional additional step at the end to compute a
+presentation of the subgroup $H$. This usually contains many redundant
+generators and relators, and is output as a file that can be read immediately
+by {\GAP}, so that the presenation can be simplified. It is planned, at some
+stage in the future, the facility to compute a presentation using the original
+given generators of $H$ will be provided.
+
+The fifth application is for the construction of a finite state automaton
+that accepts a unique word for each element of a suitable subgroup $H$ of
+a short-lex automatic group $G$. An automatic structure must first be computed
+for $G$ by using 'autcos' or its constituents, and the word-acceptor for $H$
+will accept precisely those words that lie in $H$ and are accepted by the
+word-acceptor for $G$. Theoretically, it will work whenever $H$ is a
+quasiconvex subgroup of $G$. The algorithm employed has some features in
+common with that described in Section 2 of \cite{Kar94} (see there also for
+theoretical details and further references). In particular, the
+correctness verification part of it is identical to that described in
+\cite{Kar94}, but for the construction of the word-acceptor for $H$,
+{\KBMAG} uses Knuth-Bendix based methods rather than Todd-Coxeter coset
+enumeration.
+
+The sixth and final application of the package is for general manipulation of
+finite state automata. Most of the routines provided operate on
+deterministic automata. However, there is a program 'nfadeterminize',
+which inputs a non-deterministic automaton and outputs a deterministic
+one with the same language. 
+There is also a program 'midfadeterminize' that handles the
+important special case in which the input automaton is
+a multiple-initial-state automaton with deterministic transition table
+(see above).
+
+There are programs for carrying out logical operations
+on automata (in fact, some of the functions that they call are also used
+in the automatic group calculations).  There are also programs to count
+and to enumerate the language of a finite state automaton. These are
+likely to be interesting to apply to the automata associated with
+an automatic group, or to the reduction automaton output by 'kbprog' in
+its stand-alone mode. There are a number of other, more dedicated,
+packages that are available for manipulating finite state automata and
+regular expressions. One such is {\Automate} (see \cite{Rie87} or
+\cite{ChH91}), and another {\Grail} (see ??) developed at Ontario.
+
+\Section{File formats}
+The programs in {\KBMAG} generally do all of their serious input and output
+from files, and only print diagnostics to 'stdout'. These files conform to
+the format of the Version 3 of the {\GAP} system \cite{Sch92} and so are
+readable from within {\GAP}. See the {\GAP} manual chapter in the 'gapdoc'
+directory, or Chapter "The Interface with GAP" for details of how to use
+{\KBMAG} from within {\GAP}.
+
+Two principal types of objects are handled, rewriting-systems and
+finite state automata. Each file contains a single {\GAP} declaration, which
+defines one object of one of these two types. This takes the general form
+
+'<identifier> \:= rec(<list>);'
+
+where <list> is a comma-separated list
+of field-definitions that specify the values of the fields of the object
+being defined. The two types of object are distinguished by the first
+such definition, which must be either
+
+|isRWS := true| \hspace{1cm}  or \hspace{1cm}  |isFSA := true|
+
+for rewriting-systems and finite state automata, respectively.
+Subgroups of the group or monoid defined by a rewriting system can also be
+defined in a separate file, as described in Chapter
+"Subgroup and Coset Files".
+
+To use the interface with {\GAP} in its current form, the name of a
+rewriting-system (i.e. the value of <identifier>) has to be '\_RWS'.
+This is because the relevant {\GAP} functions have '\_RWS' defined as an
+external variable, and expect a declaration of this form.
+
+Formal definitions of these formats have not yet been written down.
+There is a text document giving an informal, and not completely up-to-data
+description of the finite state automaton format in the {\KBMAG}
+directory 'doc'. Examples of files containing rewriting-systems can be
+found in the directories 'kb\_data' and 'ag\_data', and examples of
+finite state automata in 'fsa\_data'. Rather than attempt a description
+here, we suggest that the reader takes a look at some of these files.
+
+{\sf Handy Tip\:} Reading the transition table directly from a file that
+contains the definition of an automaton with a large number of states
+can be difficult, because the rows of the table are not numbered in the
+file. Such numbering can be introduced as comments, by running the
+program 'fsafilter' with the '-csn' option; see Section "fsafilter".
+An alternative and more versatile way of accessing the information
+about the automaton is to read it into {\GAP} and then use the {\GAP}
+functions provided; see Chapter "The Interface with GAP".
+
+For the Knuth--Bendix and automatic group applications, the user has to
+supply a rewriting-system that defines a monoid or group in a file as input.
+For applications related to cosets of subgroups, an additional file
+defining generators of the subgroup must also be supplied.
+The programs produce new files containing rewriting-systems or automata.
+In general, the user\'s file will contain a declaration of the above type,
+and the computed files will contain a declaration of form
+
+'<identifier>.<suffix> \:= rec(<list>);'
+
+for the same <identifier>, so that if the user reads these files from
+within {\GAP}, and the input file is read first, then, from {\GAP}\'s
+viewpoint, the computed files will define new components of the original
+record. (As mentioned above, for use with {\GAP}, the value of
+<identifier> should always be '\_RWS'.)
+
+The best method (and the one always employed by the author)
+of creating an input file is to copy an existing one and edit it.
+Let us briefly look at an example and discuss it.
+
+|
+#Free nilpotent group of rank 2 and class 2
+_RWS := rec(
+           isRWS := true,
+  generatorOrder := [c,C,b,B,a,A],
+        inverses := [C,c,B,b,A,a],
+        ordering := "recursive",
+       equations := [
+         [b*a,a*b*c], [c*a,a*c], [c*b,b*c]
+       ]
+);
+|
+
+The first line is a comment, and is ignored by programs. (In general,
+comments are preceded by the `\#\'\ symbol and last to the end of the line.)
+To comply with the current {\GAP} interface, we name our rewriting-system
+'\_RWS'.
+As we saw above, the first field definition merely states that this is a
+definition of a rewriting system.
+
+The |ordering|\ field specifies which
+ordering on strings in the input alphabet is to be used by the Knuth--Bendix
+program. Although there is a default ordering, which is '\"shortlex\"',
+this field is required by the {\GAP} interface, so it is recommended that
+it should always be included.
+It is also possible
+to define the ordering by means of a command-line option to 'kbprog'
+however. The convention for this, and various other fields, is that
+command-line options override settings in the file in case of conflict.
+Full details of these options are given in Chapters
+"The Knuth--Bendix Program for Monoids" and "The Automatic Groups Package".
+
+The remaining three fields provide the definition of the group or monoid.
+First comes a list of generators. They must generate the structure as a monoid,
+even if it is a group; this means inverses should be included in the generator
+list. The field is named |generatorOrder|\ to emphasize the fact that the
+order is relevant - it will affect the ordering of strings in the alphabet.
+The names of the generators should be alphanumeric strings. In fact,
+dots and underscores are also allowed, for compatability with {\GAP}.
+Case is significant. It is recommended to use single letters, and use
+case-change for inversion, as we have done in this example. Another
+recommended policy is to use a common prefix followed by numbers; for
+example, a file output by {\GAP} might have its generators named
+'G.1, G.2, ..., G.n' for some $n \ge 0$. It is also permissible to name a
+generator <name>'\^-1', where <name> is the name of another generator, and
+the two are mutually inverse.
+
+The |inverses|\ field supplies the list of two-sided inverses of the
+generators, in the same order as the generators. This field must be present,
+but, in general, not all generators need have inverses, so the list could
+be empty, or contain gaps. For example, if only the first and third
+generators have inverses, and these are named 'i1' and 'i2', then the list
+would be written as '[i1,,i2]'.  However, if generator 'A' is listed as the
+inverse of 'a', then 'a' must also be listed as the inverse of 'A'.
+There is currently no mechanism for inputting one-sided inverses (although
+that would be useful information for 'kbprog' under some circumstances, and so
+it may be introduced in the future).
+In the automatic groups applications, the structure must be a group, and all
+generators must have inverses specified in the list.
+(Currently, there is no way of specifying a default convention, such as
+inversion equals case-change. We may introduce such a convention in
+future, but this will depend on whether it can be made meaningful to
+{\GAP}.)
+
+Finally, there comes the |equations|\ field. This consists of a list of
+lists. Each inner list constitutes a defining relation for the
+monoid, and should have two entries, which are words in the generators,
+and are the left and right hand sides of the relation.
+The empty word is denoted (as in {\GAP}) by 'IdWord'.
+The word may contain brackets to any level, and positive powers.
+So, for example 'a\*(b\*(A\*c)\^4)\^3\*c\^12' is a valid word in the generators
+in the example above.
+Since the word is in the monoid generators, not all of which will
+necessarily have inverses, negative powers are not permitted.
+However, if a generator is named 'a\^-1', for example, then the <n>-th 
+power of it should be written as 'a\^-'<n> rather than as 'a\^-1\^'<n>.
+
+It is not necessary to include defining relations of type
+'[a\*A,IdWord]' in the list of equations, where the generators 'a' and 'A'
+have been already been specified as mutually inverse in the ``|inverses|\'\'
+field, and this has not been done in the example above. On the other hand
+it does no harm if you do include them, and they will be included in
+lists of equations output by 'kbprog'.
+
+There are a number of other optional fields, which do not occur in this example,
+and provide further detailed instructions for the Knuth--Bendix program.
+See the description of this program in Section "kbprog" for details.
+
+For a description of the format of files defining subgroups, see
+Chapter "Subgroup and Coset Files".
+
+\Section{Exit Status of Programs and Meanings of Some Options}
+
+The exit status of nearly all of the programs is 0 if successful and
+1 if unsuccessful, and the program aborts with an error message
+to 'stderr', without outputting to file.
+One or two of the programs can also exit with status 2, which means that
+something unusual but non-fatal has occurred. The two most important are
+'kbprog' and 'gpaxioms'; see Sections "kbprog", "kbprog -wd", and
+"gpaxioms".
+
+Many of the options to the individual programs in {\KBMAG} have the same
+meaning wherever they occur. To avoid repeating them over and over again, we
+list some of them here.
+\begin{description}
+\item[|-v |]
+The verbose option. A certain amount of extra information on progress of
+calculation is printed out to stdout.
+(By default, only the main results of calculations are printed out as
+comments to stdout.)
+\item[|-silent|]
+There is no output at all to 'stdout'.
+The only output to the terminal is error messages when the program
+aborts for some reason.
+\item[|-vv |]
+The very-verbose option. A huge amount of diagnostic information is printed out,
+much of which may seem incomprehensible.
+\item[|-l |]
+Large hash-tables. When constructing finite state automata, the states
+are identified as sequences of integers, sometimes of varying length.
+The sequences are stored in open hash-tables. Space is allocated as
+required in blocks. The default size of the block is $2^{18}$ bytes;
+with the '-l' option it becomes $2^{21}$ bytes. This makes things
+run more efficiently when constructing very large automata.
+There is also a '-h' option (huge hash-tables).
+\item[|-ip d|]
+Store finite state automata in dense format, which means that the
+transition table is stored as an $ne \times ns$ array, where $ne$ and
+$ns$ are the sizes of the alphabet  and state-set, respectively.
+This is always the default, and is the fastest. It can be expensive on
+space, however, particularly when the alphabet is large. If you run out
+of space, or a program starts to swap heavily, then it may be worth trying
+sparse storage.
+\item[|-ip s|[<dr>]]
+Store finite state automata in sparse format. This means that the
+transitions from each state are stored as a sequence of edge-target
+pairs. With large automata, with large alphabet (which means size more
+than about 5 or 6), it normally requires significantly less space than
+dense format. The '[<dr>]' option (dense rows) is a compromise.
+Here <dr> should be a positive integer (something like 1000 might be a good
+choice). The transitions from the first <dr> states are stored in dense
+format, and the remainder in sparse format.
+\item[|-op d|]
+Automata are written to files in dense format. This is the default
+for one-variable automata (such as the word acceptor in an automatic
+group).
+\item[|-op s|]
+Automata are written to files in sparse format. This is the default
+for two-variable automata (such as the multiplier in an automatic
+group).
+\end{description}

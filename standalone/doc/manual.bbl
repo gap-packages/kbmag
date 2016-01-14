@@ -1,0 +1,63 @@
+\begin{thebibliography}{}
+
+\bibitem {ChH91}
+J.M.\ Champarnaud and G.\ Hansel,
+``Automate: A computing package for automata and finite semigroups'',
+{\it J.\ Symbolic\ Computation} {\bf 12} (1991), 197-220.
+
+\bibitem {EHR91}
+D.F.\ Holt, D.B.A.\ Epstein and S.\ Rees,
+``The use of Knuth-Bendix
+methods to solve the word problem in automatic groups'',
+{\it J.\ Symbolic\ Computation} {\bf 12} (1991), 397-414.
+
+\bibitem {ECHLPT92}
+D.B.A.\ Epstein, J.W.\ Cannon, D.F.\ Holt, S.\ Levy,
+M.S.\ Paterson and W.P.\ Thurston,
+``{\it Word Processing and Group Theory}'',
+Jones and Bartlett, 1992.
+
+\bibitem {Holt94}
+Derek\ F.\ Holt, `The Warwick automatic groups software',
+in {\em Geometric and Computational Perspectives on Infinite Groups},
+(Gilbert Baumslag, David Epstein, Robert Gilman, Hamish Short,
+Charles Sims,eds.), DIMACS Series in
+Discrete Mathematics and Theoretical Computer Science {\bf 25}, AMS 1995,
+69--82.
+
+\bibitem {Kar94}
+Ilya\ Karpovich, `Detecting quasiconvexity: algorithmic aspects',
+in {\em Geometric and Computational Perspectives on Infinite Groups},
+(Gilbert Baumslag, David Epstein, Robert Gilman, Hamish Short,
+Charles Sims,eds.), DIMACS Series in
+Discrete Mathematics and Theoretical Computer Science {\bf 25}, AMS 1995,
+91--99.
+
+\bibitem{Neu81} J. Neub{\accent127 u}ser,
+`An elementary introduction to coset table methods in
+computational group theory',
+in {\em Groups - St Andrews 1981}, LMS Lecture Note Series 71,
+(C.M. Campbell and E. F. Robertson, eds.), CUP, 1982, 1-45.
+
+\bibitem{PAP}, P. Papasoglu,
+{\em Strongly geodesically automatic groups are hyperbolic},
+(Warwick preprint) (1994) (to appear).
+
+\bibitem{Red93} Ian D.\ Redfern, {\em Automatic Coset Systems}, Ph.D. Thesis,
+University of Warwick, 1993.
+
+\bibitem {Rie87}
+C.A.\ Riecke, ``{\it Automate: Adventures in Automata and Semigroup Theory}'',
+Technical Report \#41, Univ. Nebraska, Lincoln, 1987.
+
+\bibitem {Sch92}
+M.\ Sch{\accent127 o}nert et. al., `{\it {\GAP} -- Groups, Algorithms, and
+Programming}', Lehrstuhl D f{\accent127 u}r Mathematik, RWTH Aachen, Germany,
+first edition, 1992.
+
+\bibitem {Sims94}
+Charles\ C.\ Sims,
+``{\it Computation with Finitely Presented Groups}'',
+Cambridge, 1994.
+
+\end{thebibliography}

@@ -1,0 +1,10 @@
+#Von Dyck (2,3,5) group - isomorphic to A_5
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,B],
+  inverses := [a,B,b],
+  equations := [
+   [b*b,B], [a*B*a*B*a,b*a*b*a*b]
+  ]
+);

@@ -1,0 +1,28 @@
+_RWS := 
+rec (
+           isRWS := true,
+  generatorOrder := [a,A,b,B,d,D,e,E,f,F,_H,x,X,y,Y,r,R,s,S,t,T],
+        ordering := "wreathprod",
+	level := [2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1],
+        inverses := [A,a,B,b,D,d,E,e,F,f,,X,x,Y,y,R,r,S,s,T,t],
+       equations := [
+[_H*a*B*a*b*a,x*_H],
+[_H*b,y*_H],
+[_H*d,r*_H], [_H*e,s*_H], [_H*f,t*_H],
+         [a^2*E*d,D^4],
+         [b^3,d*B],
+         [a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b*E^4,
+          D^25*e],
+         [a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^\
+2*E,
+          D^30*e^6],
+         [a*b*a*B*a*B*a*b^2*a*b*a*b*a*B*a*B*a*b^2*a*b^2*a*B*F*E^3,
+          D^26*e^2],
+         [D*A,A*D],
+         [E*A,A*E],
+         [F*A,A*F],
+         [D*B,B*D],
+         [E*B,B*E],
+         [F*B,B*F]
+       ]
+);

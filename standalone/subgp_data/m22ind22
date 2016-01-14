@@ -1,0 +1,19 @@
+_RWS := 
+rec (
+           isRWS := true,
+  generatorOrder := [a,A,b,B,_H],
+        ordering := "wreathprod",
+	level := [2,2,2,2,1],
+        inverses := [A,a,B,b],
+       equations := [
+[_H*a*B*a*b*a,_H],
+[_H*b,_H],
+         [a^2,IdWord],
+         [b^3,B],
+         [a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b*a*b,IdWord],
+         [a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^2*a*b*a*b^\
+2,
+          IdWord],
+         [a*b*a*B*a*B*a*b^2*a*b*a*b*a*B*a*B*a*b^2*a*b^2*a*B,IdWord]
+       ]
+);

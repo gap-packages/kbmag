@@ -1,0 +1,124 @@
+\indexentry {kbmag}{3}
+\indexentry {Creating a rewriting system@Creating a rewriting system|indexit}{4}
+\indexentry {rewriting systems!creating}{4}
+\indexentry {KBMAGRewritingSystem@`KBMAGRewritingSystem'}{4}
+\indexentry {Elementary functions on rewriting systems@Elementary functions on rewriting systems|indexit}{4}
+\indexentry {rewriting systems!elementary functions}{4}
+\indexentry {IsKBMAGRewritingSystemRep@`IsKBMAGRewritingSystemRep'}{4}
+\indexentry {IsConfluent@`IsConfluent'}{4}
+\indexentry {SemigroupOfRewritingSytem@`SemigroupOfRewritingSytem'}{4}
+\indexentry {FreeStructureOfSystem@`FreeStructureOfSystem'}{4}
+\indexentry {WordMonoidOfRewritingSystem@`WordMonoidOfRewritingSystem'}{4}
+\indexentry {ExternalWordToInternalWordOfRewritingSystem@`ExternalWordToInternalWordOfRewritingSystem'}{5}
+\indexentry {InternalWordToExternalWordOfRewritingSystem@`InternalWordToExternalWordOfRewritingSystem'}{5}
+\indexentry {Alphabet@`Alphabet'}{5}
+\indexentry {Rules@`Rules'}{5}
+\indexentry {ResetRewritingSystem@`ResetRewritingSystem'}{5}
+\indexentry {Setting the ordering@Setting the ordering|indexit}{5}
+\indexentry {rewriting systems!setting the ordering}{5}
+\indexentry {SetOrderingOfKBMAGRewritingSystem@`SetOrderingOfKBMAGRewritingSystem'}{5}
+\indexentry {ReorderAlphabetOfKBMAGRewritingSystem@`ReorderAlphabetOfKBMAGRewritingSystem'}{5}
+\indexentry {OrderingOfKBMAGRewritingSystem@`OrderingOfKBMAGRewritingSystem'}{5}
+\indexentry {OrderingOfRewritingSystem@`OrderingOfRewritingSystem'}{5}
+\indexentry {Control parameters@Control parameters|indexit}{6}
+\indexentry {rewriting systems!control parameters}{6}
+\indexentry {InfoRWS V@`InfoRWS V'}{6}
+\indexentry {OptionsRecordOfKBMAGRewritingSystem@`OptionsRecordOfKBMAGRewritingSystem'}{6}
+\indexentry {The Knuth-Bendix program@The Knuth-Bendix program|indexit}{7}
+\indexentry {Knuth-Bendix program}{7}
+\indexentry {KnuthBendix@`KnuthBendix'}{7}
+\indexentry {MakeConfluent@`MakeConfluent'}{7}
+\indexentry {ReductionAutomaton@`ReductionAutomaton'}{8}
+\indexentry {The automatic groups program@The automatic groups program|indexit}{8}
+\indexentry {automatic groups program}{8}
+\indexentry {AutomaticStructure@`AutomaticStructure'}{8}
+\indexentry {WordAcceptor@`WordAcceptor'}{8}
+\indexentry {FirstWordDifferenceAutomaton@`FirstWordDifferenceAutomaton'}{8}
+\indexentry {SecondWordDifferenceAutomaton@`SecondWordDifferenceAutomaton'}{8}
+\indexentry {GeneralMultiplier@`GeneralMultiplier'}{8}
+\indexentry {Word reduction@Word reduction|indexit}{8}
+\indexentry {IsReducedWord@`IsReducedWord'}{8}
+\indexentry {IsReducedForm@`IsReducedForm'}{8}
+\indexentry {ReducedForm@`ReducedForm'}{9}
+\indexentry {ReducedWord@`ReducedWord'}{9}
+\indexentry {Counting and enumerating irreducible words@Counting and enumerating irreducible words|indexit}{9}
+\indexentry {Size@`Size'}{9}
+\indexentry {Order@`Order'}{9}
+\indexentry {EnumerateReducedWords@`EnumerateReducedWords'}{9}
+\indexentry {GrowthFunction@`GrowthFunction'}{9}
+\indexentry {Rewriting System Examples@Rewriting System Examples|indexit}{10}
+\indexentry {rewriting systems!examples}{10}
+\indexentry {Subgroups, cosets and subgroup presentations@Subgroups, cosets and subgroup presentations|indexit}{17}
+\indexentry {SubgroupOfKBMAGRewritingSystem@`SubgroupOfKBMAGRewritingSystem'}{17}
+\indexentry {ResetRewritingSystemOnCosets@`ResetRewritingSystemOnCosets'}{17}
+\indexentry {The Knuth-Bendix program on cosets@The Knuth-Bendix program on cosets|indexit}{17}
+\indexentry {Knuth-Bendix program on cosets}{17}
+\indexentry {KnuthBendixOnCosets@`KnuthBendixOnCosets'}{17}
+\indexentry {KnuthBendixOnCosetsWithSubgroupRewritingSystem@`KnuthBendixOnCosetsWithSubgroupRewritingSystem'}{17}
+\indexentry {RewritingSystemOfSubgroupOfKBMAGRewritingSystem@`RewritingSystemOfSubgroupOfKBMAGRewritingSystem'}{17}
+\indexentry {The automatic cosets program@The automatic cosets program|indexit}{17}
+\indexentry {automatic cosets program}{17}
+\indexentry {AutomaticStructureOnCosets@`AutomaticStructureOnCosets'}{17}
+\indexentry {AutomaticStructureOnCosetsWithSubgroupPresentation@`AutomaticStructureOnCosetsWithSubgroupPresentation'}{17}
+\indexentry {PresentationOfSubgroupOfKBMAGRewritingSystem@`PresentationOfSubgroupOfKBMAGRewritingSystem'}{18}
+\indexentry {Word reduction on cosets@Word reduction on cosets|indexit}{18}
+\indexentry {IsReducedCosetRepresentative@`IsReducedCosetRepresentative'}{18}
+\indexentry {ReducedFormOfCosetRepresentative@`ReducedFormOfCosetRepresentative'}{18}
+\indexentry {ReducedCosetRepresentative@`ReducedCosetRepresentative'}{18}
+\indexentry {Counting and enumerating irreducible words for cosets@Counting and enumerating irreducible words for cosets|indexit}{18}
+\indexentry {Index@`Index'}{18}
+\indexentry {EnumerateReducedCosetRepresentatives@`EnumerateReducedCosetRepresentatives'}{18}
+\indexentry {GrowthFunctionOfCosetRepresentatives@`GrowthFunctionOfCosetRepresentatives'}{19}
+\indexentry {Examples of the Use of Rewriting System On Cosets@Examples of the Use of Rewriting System On Cosets|indexit}{19}
+\indexentry {rewriting systems on cosets!examples}{19}
+\indexentry {Functions for manipulating finite state automata@Functions for manipulating finite state automata|indexit}{20}
+\indexentry {finite state automata}{20}
+\indexentry {IsInitializedFSA@`IsInitializedFSA'}{21}
+\indexentry {InitializeFSA@`InitializeFSA'}{21}
+\indexentry {FSA@`FSA'}{21}
+\indexentry {WriteFSA@`WriteFSA'}{21}
+\indexentry {IsDeterministicFSA@`IsDeterministicFSA'}{21}
+\indexentry {AlphabetFSA@`AlphabetFSA'}{21}
+\indexentry {StatesFSA@`StatesFSA'}{21}
+\indexentry {NumberOfStatesFSA@`NumberOfStatesFSA'}{21}
+\indexentry {NumberOfLettersFSA@`NumberOfLettersFSA'}{21}
+\indexentry {SizeOfAlphabetFSA@`SizeOfAlphabetFSA'}{21}
+\indexentry {AcceptingStatesFSA@`AcceptingStatesFSA'}{22}
+\indexentry {InitialStatesFSA@`InitialStatesFSA'}{22}
+\indexentry {DenseDTableFSA@`DenseDTableFSA'}{22}
+\indexentry {SparseTableFSA@`SparseTableFSA'}{22}
+\indexentry {TargetDFA@`TargetDFA'}{22}
+\indexentry {TargetsFSA@`TargetsFSA'}{22}
+\indexentry {SourcesFSA@`SourcesFSA'}{22}
+\indexentry {WordTargetDFA@`WordTargetDFA'}{22}
+\indexentry {IsAcceptedWordDFA@`IsAcceptedWordDFA'}{22}
+\indexentry {AddStateFSA@`AddStateFSA'}{22}
+\indexentry {DeleteStateFSA@`DeleteStateFSA'}{22}
+\indexentry {PermuteStatesFSA@`PermuteStatesFSA'}{22}
+\indexentry {AddLetterFSA@`AddLetterFSA'}{22}
+\indexentry {DeleteLetterFSA@`DeleteLetterFSA'}{23}
+\indexentry {PermuteLettersFSA@`PermuteLettersFSA'}{23}
+\indexentry {AddEdgeFSA@`AddEdgeFSA'}{23}
+\indexentry {DeleteEdgeFSA@`DeleteEdgeFSA'}{23}
+\indexentry {SetAcceptingFSA@`SetAcceptingFSA'}{23}
+\indexentry {SetInitialFSA@`SetInitialFSA'}{23}
+\indexentry {IsAccessibleFSA@`IsAccessibleFSA'}{23}
+\indexentry {AccessibleFSA@`AccessibleFSA'}{23}
+\indexentry {IsTrimFSA@`IsTrimFSA'}{23}
+\indexentry {TrimFSA@`TrimFSA'}{23}
+\indexentry {IsBFSFSA@`IsBFSFSA'}{23}
+\indexentry {BFSFSA@`BFSFSA'}{23}
+\indexentry {LSizeDFA@`LSizeDFA'}{23}
+\indexentry {LEnumerateDFA@`LEnumerateDFA'}{24}
+\indexentry {DeterminizeFSA@`DeterminizeFSA'}{24}
+\indexentry {MinimizeFSA@`MinimizeFSA'}{24}
+\indexentry {NotFSA@`NotFSA'}{24}
+\indexentry {StarFSA@`StarFSA'}{24}
+\indexentry {ReverseFSA@`ReverseFSA'}{24}
+\indexentry {ExistsFSA@`ExistsFSA'}{24}
+\indexentry {SwapCoordsFSA@`SwapCoordsFSA'}{24}
+\indexentry {AndFSA@`AndFSA'}{24}
+\indexentry {OrFSA@`OrFSA'}{24}
+\indexentry {ConcatFSA@`ConcatFSA'}{24}
+\indexentry {LanguagesEqualFSA@`LanguagesEqualFSA'}{24}
+\indexentry {GrowthFSA@`GrowthFSA'}{24}

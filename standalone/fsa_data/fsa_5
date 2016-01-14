@@ -1,0 +1,36 @@
+fsa_5 := rec (
+# This is the word-acceptor for the free group on two generators a,b
+# A and B are the inverses of a and b respectively.
+# The accepted language consists of all strings that do not have
+# aA, Aa, bB or Bb as a substring.
+           isFSA := true,
+        alphabet := rec (
+              type := "identifiers",
+              size := 4,
+            format := "dense",
+             names := [a,A,b,B]
+               ),
+          states := rec (
+	# This is a contrived example to illustrate the labeled type.
+              type := "labeled",
+              size := 5,
+	    labels := rec(type:="strings", size:=2, format:="dense",
+		          names:=["early state","late state"]
+                      ),
+            format := "dense",
+       setToLabels := [1,1,,2,2]
+               ),
+           flags := ["DFA","minimized","BFS"],
+         initial := [1],
+       accepting := [1..5],
+           table := rec(
+		format := "dense deterministic",
+	   transitions := [
+		      [2,3,4,5],
+                      [2,0,4,5],
+                      [0,3,4,5],
+                      [2,3,4,0],
+                      [2,3,0,5]
+                     ]
+	       )
+);

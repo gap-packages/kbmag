@@ -1,0 +1,26 @@
+#Coxeter group  O - 5 - O  -  O  -  O - 5 - O
+#This is an example that requires autgroup / gpmakefsa to be run
+#with -diff1 flag set - also use the -l flag
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,c,d,e],
+  inverses := [a,b,c,d,e],
+  equations := [
+    [a*a,IdWord],
+    [b*b,IdWord],
+    [c*c,IdWord],
+    [d*d,IdWord],
+    [e*e,IdWord],
+    [b*a*b*a*b,a*b*a*b*a],
+    [c*a,a*c],
+    [d*a,a*d],
+    [e*a,a*e],
+    [c*b*c,b*c*b],
+    [d*b,b*d],
+    [e*b,b*e],
+    [d*c*d,c*d*c],
+    [e*c,c*e],
+    [e*d*e*d*e,d*e*d*e*d]
+  ]
+);

@@ -1,0 +1,16 @@
+# F21 SL32 P27 triangle of groups
+_RWS:= rec(
+        isRWS:=true,
+        generatorOrder:=[x,X,y,Y,z,Z],
+        inverses:=[X,x,Y,y,Z,z],
+        ordering:="shortlex",
+        equations:=[[x*x*x,IdWord],
+                    [y*y*y,IdWord],
+                    [z*z*z,IdWord],
+                    [z*x*z,x*z*x],
+                    [x*y*X*Y,y*X],
+                    [(y*z)^2,Z*Y],
+                    [(y*Z)^2,z*Y]]
+
+
+);

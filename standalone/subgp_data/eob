@@ -1,0 +1,16 @@
+# group Gamma-3
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [b,a,A,c,C],
+  inverses := [b,A,a,C,c],
+  equations := [
+    [b^2,IdWord],
+    [(a*b)^3,IdWord],
+    [A*C*a*c,IdWord],
+    [(a*c*b*C^2*b)^2,IdWord],
+    [(a*c*b*C*b)^3,IdWord],
+    [A^2*C*b*c*b*C*b*C*b*c*b,IdWord]
+]
+);
+

@@ -1,0 +1,43 @@
+fsa_6 := rec (
+# This is the word-difference machine arising in the automatic structure
+# of the free group on two generators.
+# It is included here to illustrate the product set record type.
+           isFSA := true,
+        alphabet := rec (
+              type := "product",
+              size := 24,
+             arity := 2,
+           padding := _,
+              base := rec (
+                type := "identifiers",
+                size := 4,
+              format := "dense",
+               names := [a,A,b,B]
+                 )
+               ),
+          states := rec (
+              type := "words",
+              size := 5,
+	    format := "sparse",
+          alphabet := [a,A,b,B],
+             names := [[ 1, IdWord],
+                       [ 2, a],
+                       [ 3, A],
+                       [ 4, b],
+                       [ 5, B]
+                      ]
+               ),
+           flags := ["DFA"],
+         initial := [1],
+       accepting := [1],
+           table := rec(
+		format := "sparse",
+	   transitions := [
+                    [[ 5, 3 ],[ 10, 2 ],[ 15, 5 ],[ 20, 4 ]],
+                    [[ 5, 1 ]],
+                    [[ 10, 1 ]],
+                    [[ 15, 1 ]],
+                    [[ 20, 1 ]]
+           ]
+	)
+);

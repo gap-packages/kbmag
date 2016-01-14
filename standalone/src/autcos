@@ -1,0 +1,242 @@
+#! /bin/sh
+#File - autcos
+#First set the path directory
+DIR=`echo $0 | sed -e 's/[^\/]*$//'`
+#echo $DIR
+if test -f ${DIR}kbprogcos
+    then
+                # found the necessary programs, so do nothing.
+                :
+        else
+                # Cant find the programs used in automata so give a warning.
+                echo Warning. Running ${DIR}automata
+                echo ${DIR}kbprogcos not found
+                echo Using versions in path.
+                DIR=
+fi
+MAKECOSFILE=${DIR}makecosfile
+KBPROGCOS=${DIR}kbprogcos
+GPMAKEFSA=${DIR}gpmakefsa
+GPAXIOMS=${DIR}gpaxioms
+GPSUBPRES=${DIR}gpsubpres
+#Now find the options
+diff1=false
+large=false
+verbose=false
+veryverbose=false
+silent=false
+subpres=false
+savespace=false
+prefix=false
+prefname=
+getprefname=false
+groupname=
+subsuffix=
+for i
+  do
+    if test $getprefname = true
+    then 	prefname=$i
+		getprefname=false
+    else
+      case $i in
+  	-l|-large)		large=true;;
+  	-v|-verbose)		verbose=true;;
+  	-vv|-veryverbose)	veryverbose=true;;
+  	-s|-silent)		silent=true;;
+  	-d|-d1|-diff1)		diff1=true;;
+  	-f|-savespace)		savespace=true;;
+  	-p|-subpres)		subpres=true;;
+  	-pref|-prefix)		prefix=true; getprefname=true;;
+  	-*)     echo Usage:
+             echo autcos [-large] [-verbose] [-veryverbose] [-silent] [-diff1]
+    echo \ \ \ \ \ \ \ [-savespace] [-p] [-pref prefix] groupname [subsuffix]
+                exit 1;;
+  	*) 	if test $subsuffix
+  		then echo Usage:
+ 	  echo autcos [-large] [-verbose] [-veryverbose] [-silent] [-diff1]
+    echo \ \ \ \ \ \ \ [-savespace] [-p] [-pref prefix] groupname [subsuffix]
+  		     exit 1
+  	 	elif test $groupname
+  		then subsuffix=$i
+  		else groupname=$i
+  		fi;;
+      esac
+    fi
+  done
+
+if test -z "$groupname"
+then  echo Usage:
+      echo autcos  [-large] [-verbose] [-veryverbose] [-silent] [-diff1]
+      echo \ \ \ \ \ \ \ [-savespace] [-p] [-pref prefix] groupname [subsuffix]
+      exit 1
+fi
+
+if test ! -r $groupname
+then	echo Error: cannot read file $groupname
+	exit 1
+fi
+
+if test -z "$subsuffix"
+then	subsuffix="sub"
+fi
+
+subname=${groupname}.$subsuffix
+
+if test ! -r $subname
+then	echo Error: cannot read file $subname
+	exit 1
+fi
+
+$MAKECOSFILE -sg $groupname $subsuffix
+
+case $subsuffix in
+sub*) cossuffix=`echo $subsuffix | sed 's/^sub/cos/'`;;
+   *) cossuffix=${subsuffix}_cos;;
+esac
+
+cosname=${groupname}.$cossuffix
+
+if test ! -r $cosname
+then	echo Error: cannot read file $cosname
+	exit 1
+fi
+
+if test $large != true
+then 	kbprogcosflags=" -mt 5 -hf 100 -t 30 -me 200 -ms 1000 -wd "
+	if test $veryverbose = true
+	then kbprogcosflags=${kbprogcosflags}" -vv "
+	elif test $verbose = true
+	then kbprogcosflags=${kbprogcosflags}" -v "
+	elif test $silent = true
+	then kbprogcosflags=${kbprogcosflags}" -silent "
+	fi
+	if test $silent != true
+	then	echo \#Running Knuth-Bendix Program:
+		echo "  "$KBPROGCOS $kbprogcosflags $groupname $cossuffix
+	fi
+	$KBPROGCOS $kbprogcosflags $groupname $cossuffix
+fi
+if test  $? != 0 || test $large = true
+then
+	if  test $large != true && test $silent != true
+	then echo
+	fi
+	kbprogcosflags=" -mt 20 -hf 100 -cn 0 -wd "
+	if test $veryverbose = true
+	then kbprogcosflags=${kbprogcosflags}" -vv "
+	elif test $verbose = true
+	then kbprogcosflags=${kbprogcosflags}" -v "
+	elif test $silent = true
+	then kbprogcosflags=${kbprogcosflags}" -silent "
+	fi
+	if test $large = true
+	then	kbprogcosflags=${kbprogcosflags}" -me 262144 -t 500 "
+		if test $silent != true
+		then	echo \#Running Knuth-Bendix Program 
+                  echo "  "$KBPROGCOS $kbprogcosflags $groupname $cossuffix
+        	fi
+	else
+		if test $silent != true
+		then	echo \#Re-running Knuth-Bendix Program 
+               	  echo "  "$KBPROGCOS $kbprogcosflags $groupname $cossuffix
+        	fi
+	fi
+	$KBPROGCOS $kbprogcosflags $groupname $cossuffix
+	if test  $? != 0
+	then echo \#Knuth-Bendix program failed or was inconclusive. Giving up.
+		exit 1
+	fi
+fi
+if test $silent != true
+then echo
+fi
+
+if test $large = true
+then gpmakefsaflags=" -cos -l "
+else gpmakefsaflags=" -cos "
+fi
+if test $veryverbose = true
+then gpmakefsaflags=${gpmakefsaflags}" -vv "
+elif test $verbose = true
+then gpmakefsaflags=${gpmakefsaflags}" -v "
+elif test $silent = true
+then gpmakefsaflags=${gpmakefsaflags}" -silent "
+fi
+if test $diff1 = true
+then gpmakefsaflags=${gpmakefsaflags}" -diff1 "
+fi
+if test $silent != true
+then echo \#Running program to construct word-acceptor and multiplier automata 
+echo "  "$GPMAKEFSA $gpmakefsaflags $groupname $cossuffix
+fi
+$GPMAKEFSA $gpmakefsaflags $groupname $cossuffix
+if test  $? != 0
+then
+echo \#Program to construct word-acceptor and multiplier automata failed. \
+Giving up.
+exit 1
+fi
+if test $silent != true
+then echo
+fi
+
+if test $large = true
+then gpaxiomsflags=" -cos -l "
+else gpaxiomsflags=" -cos "
+fi
+if test $veryverbose = true
+then gpaxiomsflags=${gpaxiomsflags}" -vv "
+elif test $verbose = true
+then gpaxiomsflags=${gpaxiomsflags}" -v "
+elif test $silent = true
+then gpaxiomsflags=${gpaxiomsflags}" -silent "
+fi
+if test $savespace = true
+then gpaxiomsflags=${gpaxiomsflags}" -ip s -f "
+fi
+if test $silent != true
+then	echo \#Running program to verify axioms on the automatic structure
+echo "  "$GPAXIOMS $gpaxiomsflags $groupname $cossuffix
+fi
+$GPAXIOMS $gpaxiomsflags $groupname $cossuffix
+case $? in
+	0) echo "0;" > ${cosname}.success;;
+	2) echo \#Program to verify axioms on the automatic structure failed.
+	   echo \#Please report this example to dfh@maths.warwick.ac.uk
+	   exit 2;;
+	*) exit 1;;
+esac
+
+if $subpres = true
+then
+  if test $large = true
+  then gpsubpresflags=" -l "
+  else gpsubpresflags=
+  fi
+  if test $veryverbose = true
+  then gpsubpresflags=${gpsubpresflags}" -vv "
+  elif test $verbose = true
+  then gpsubpresflags=${gpsubpresflags}" -v "
+  elif test $silent = true
+  then gpsubpresflags=${gpsubpresflags}" -silent "
+  fi
+  if test $savespace = true
+  then gpsubpresflags=${gpsubpresflags}" -ip s "
+  fi
+  if test $prefix = true
+  then gpsubpresflags=${gpsubpresflags}" -pref $prefname"
+  fi
+  if test $silent != true
+  then	echo \#Running program to calculate subgroup relators
+  echo "  "$GPSUBPRES $gpsubpresflags $groupname $subsuffix
+  fi
+  $GPSUBPRES $gpsubpresflags $groupname $subsuffix
+  case $? in
+  	0) echo "0;" > ${cosname}.success
+  	   exit 0;;
+  	*) echo \#Program to compute subgroup presentation failed
+  	   exit 1;;
+  esac
+else
+  exit 0
+fi

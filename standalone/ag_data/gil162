@@ -1,0 +1,13 @@
+# Frobenius group  2*3  acting on elementary abelian  3^3  
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [t,T,x,X,a,A],
+  inverses := [T,t,X,x,A,a],
+  equations := [
+        [x*x*x,IdWord],  
+        [t*t,IdWord],
+        [T*x*t, x*x],
+        [a*a*a, IdWord], [a*t,t*a], [a*X*a*x,X*a*x*a]
+ ]
+);

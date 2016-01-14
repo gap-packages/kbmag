@@ -1,0 +1,11 @@
+#Fibonacci group F(2,9).
+#Very difficult example for autgroup
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B,c,C,d,D,e,E,f,F,g,G,h,H,i,I],
+  inverses := [A,a,B,b,C,c,D,d,E,e,F,f,G,g,H,h,I,i],
+  equations := [[a*b,c], [b*c,d], [c*d,e], [d*e,f], [e*f,g], [f*g,h],
+                [g*h,i], [h*i,a], [i*a,b]
+               ]
+);

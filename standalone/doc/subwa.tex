@@ -1,0 +1,183 @@
+%%File subwa.tex
+\Chapter{Creating Subgroup Word Acceptors}
+\Section{Subgroup word acceptors}
+The programs described in this chapter are for creating word-acceptors for
+suitable subgroups $H$ of short-lex automatic groups $G$. Such a
+word-acceptor is a finite state automaton with alphabet equal to the
+monoid generating set for $G$, which accepts precisely those words that lie
+in $H$ and are accepted by the word-acceptor for the short-lex automatic
+structure of $G$. Thus they accept a unique word for each element of $H$.
+An arbitrary word in the $G$-generators can then be tested for membership in $H$
+by first reducing to its $G$-normal form (using 'wordreduce') and then
+testing for acceptance by the word-acceptor for $H$. Thus the membership
+problem (that is the generalized word problem) can be solved for $H$.
+
+Theoretically, if $G$ is short-lex automatic, and its automatic structure
+has been computed using 'autgroup' (or its constituents), then this method
+will work precisely when $H$ is a quasiconvex subgroup of $G$. The algorithm
+used consists of two parts, the construction of a candidate $W_H$ for the
+word-acceptor, and a correctness verification. In case of failure of the
+second part, one or more $G$-reduced words are calculated that lie in $H$
+but are not accepted by $W_H$, and these can be used when the
+construction part is repeated. Thus the two parts of the procedure are run
+alternately until the correctness test succeeds. The method is based
+roughly on that described by Ilya Karpovich in \cite{Kar94}. The correctness
+testing part is identical to that described there, but the construction part
+uses Knuth-Bendix based methods, rather than Todd-Coxeter coset enumeration
+(which was suggested by Karpovich), since this is more in keeping with the
+{\KBMAG} package as a whole.
+
+The user can either run the program 'gpsubwa' (described in the following
+section), which is a shell script that calls the two component programs
+repeatedly until the correctness test is passed, or alternatively these
+two components 'gpmakesubwa' and 'gpchecksubwa' (described in the remaining
+sections of the chapter) can be run directly by the user. This allows a
+slightly more flexible choice of options, but does not apear to be really
+necessary in most examples. In fact, in the examples supplied in the
+{\KBMAG} 'subgp\_data' directory, only 'l28.sub' fails to pass the
+correctness test first time.
+
+In either case, before running either 'gpsubwa' or 'gpmakesubwa',
+the user must first run 'autgroup' or its constituents
+(see Chapter "The Automatic Groups Package") on the group $G$, and must
+provide a means for performing coset reduction of words <w> in the
+$G$-generators to their short-lex least representative word <v> with
+$Hw = Hv$. There are two possible ways of achieving this. The first is
+to run 'autcos' (or its constituents) on the subgroup $H$ of $G$, as
+described in Chapter
+"The Automatic Coset System and Subgroup Presentation Package".
+If successful, this assures correct coset reduction for all words <w>.
+However, this may be too time-consuming, or even impossible, in
+some examples. In general, it is sufficient to run 'kbprogcos' (see
+Section "kbprogcos") on the cosets of $H$ in $G$ for a sufficiently
+long time to enable the coset reduction of the required words to
+be computed accurately using the reduction automaton that is output
+by 'kbprogcos'. Of course the user has no theoretical means of
+knowing how long this will be, and 'kbprogcos' will not normally
+complete naturally. In practice this does not normally seem to be a problem,
+however, and if 'gpsubwa' completes successfully, then the results are
+theoretically guaranteed to be correct, irrespective of which
+coset reduction method was used. Of course, if 'kbprogcos' had not
+been run for long enough, then 'gpsubwa' would never complete, or would exit
+abnormally with an error message containing the phrase
+|error tracing word|.  If, in a particular example, 'gpsubwa' appears to be
+looping indefinitely, or it exits with such a message, then the user should try
+re-running 'kbprogcos' for longer than before.
+
+
+\Section{gpsubwa}
+
+'gpsubwa [-diff1/-diff1c] [-diff1cos/-diff2cos] [-l] [-v] [-silent] [-f]'\\
+'| || || || || || || || |<groupname> [<subname>]'
+
+'gpsubwa' attempts to compute a subgroup word-acceptor for the subgroup $H$ of
+the short-lex automatic group $G$, where the rewriting system for $G$ is
+defined in <groupname>, and the generators for $H$ are defined in the file,
+<groupname>.<subname>, where <subname> defaults to 'sub'.
+(See Chapter "Subgroup and Coset Files" for information on the format of
+the latter file.) The computed automaton is output to the file
+<groupname>.<subname>'.wa'.
+
+'gpsubwa' requires the word-acceptor and general multiplier for the short-lex
+automatic structure of $G$, which it inputs from the files <groupname>'.wa'
+and <groupname>'.gm'.  These need to be computed
+first by running 'autgroup' or its constituents. It also requires
+word-reduction automata for $G$ and for cosets of $H$ in $G$, as described
+above. These are input, respectively,  from <groupname>'.diff2' and
+<groupname>.<cosname>'.kbprog' by default, but these defaults may be changed
+by using the appropriate options (see below). Here <cosname> is derived
+from <subname> by substituting the string 'cos' for 'sub' as described in
+Chapter "Subgroup and Coset Files".
+
+'gpsubwa' is a Bourne-shell script that runs the two programs 'gpmakesubwa'
+and 'gpchecksubwa', documented in the following two sections, alternately.
+
+*Options*\\
+\begin{description}
+\item[|-diff1/-diff1c|] Take the input automaton for word-reduction in $G$
+from <groupname>'.diff1' or <groupname>'.diff1c', rather than from
+<groupname.>'diff2'.
+\item[|-diff1cos/-diff2cos|] Take the input automaton for coset word-reduction
+of words in $G$ as coset representatives of $H$ in $G$ from
+<groupname.cosname>'.diff1' or <groupname.cosname>'.diff2', rather than from
+<groupname>.<cosname>'.kbprog'. These require 'autcos' or its
+constituents (see Chapter 
+"The Automatic Coset System and Subgroup Presentation Package")
+to have been run first on the subgroup $H$ of $G$.
+\item[|-f |] Save space where possible (at the cost of increased cpu-time)
+when running the program 'gpchecksubwa', by calling its options
+'-ip s' and '-f' (see below).
+\end{description}
+The remaining options are standard.
+
+\Section{gpmakesubwa}
+
+'gpmakesubwa [-w] [-diff1/-diff2/-diff1c] [-kbprogcos/-diff1cos/-diff2cos]'\\
+'| || || || || || || || || || || || |[-mrl <maxreducelen>] [-nc nochange]\
+[-l] [-v] [-silent]'\\
+'| || || || || || || || || || || || |[-ms <maxstates>] <groupname>\
+[<subname>]'
+
+'gpmakesubwa' constructs a candidate $W_H$ for the subgroup word-acceptor
+for the subgroup $H$ of the short-lex automatic group $G$. This is the first
+of the two programs run by the Bourne-shell script 'gpsubwa' (see above).
+Its input and output files, and several of the options are the same as
+described above for 'gpsubwa'. The additional options are as follows.
+
+*Options*\\
+\begin{description}
+\item[|-w |] This must be used if 'gpmakesubwa' and 'gpchecksubwa' have already
+been run on this example, and 'gpchecksubwa' has reported that the
+current candidate word-acceptor, $W_H$, constructed by 'gpmakesubwa' is
+incorrect. 'gpchecksubwa' will then have output some $G$-reduced words that
+lie in $H$ but are not accepted by $W_H$ to the file
+<groupname.subname>'.words'.  These words are then read in by 'gpmakesubwa',
+and it will ensure that they are accepted by the next candidate constructed.
+\item[|-nc| <nochange>]| |\newline
+$W_H$ is computed by considering $G$-reduced words
+that lie in $H$, by repeatedly multiplying the generators of $H$ and
+any additional words output by 'gpchecksubwa' together, and altering
+$W_H$ if necessary so that it accepts these words.
+When <nochange> such words have been considered without causing any
+change in $W_H$, the program halts and outputs $W_H$.
+The initial default is 64, but this is increased to a
+maximum of 4096 if additional words output by 'gpchecksubwa' are used.
+It can be made even higher if required by using this option.
+\item[|-ms| <maxstates>]| |\newline
+This resets the maximum number of states allowed in the candidate subgroup
+word-acceptor from the default (32767) to <maxstates>.
+Again, it is unlikely for this to be necessary.
+\item[|-mrl| <maxreducelen>]| |\newline
+This resets the maximul length of words allowed in the program from the default
+(4095) to <maxreducelen>. It is unlikely for this to be necessary.
+\end{description}
+
+\Section{gpchecksubwa}
+
+'gpchecksubwa [-ip d/s[<dr>]] [-op d/s] [-l] [-v] [-silent] [-f]\
+[-m <maxwords>]'\\
+'| || || || || || || || || || || || || |<groupname> [<subname>]'
+
+'gpchecksubwa' reads in a candidate word acceptor $W_H$ produced by
+'gpmakesubwa' from the file <groupname.subname>'.wa', and checks it for
+correctness. If it finds it is correct, then it exits with exit-status 0.
+It it finds it is incorrect, then it exits with status 2, and also
+outputs a list of $G$-reduced words that lie in $H$ but are not accepted
+by $W_H$ to the file <groupname.subname>'.words'.
+(As usual, exit status 1 is used when some kind of fatal error, such as
+missing input file, or syntax error in input file occurs.)
+The general multiplier for the short-lex automatic structure of $G$ is
+required, and is input from <groupname>'.gm'. A number of temporary
+multiplier files for $G$, like those produced by 'gpaxioms' (see
+Section "gpaxioms"), are computed and output, but are removed before
+the program exits (assuming it exits normally).
+
+*Options*\\
+These are all standard, except for the following.
+\begin{description}
+\item[|-f |] This is the same as for 'gpmakefsa' or 'gpaxioms'. See Sections
+"gpmakefsa" and "gpaxioms".
+\item[|-m| <maxwords>]| |\newline
+Abort after finding <maxwords> $G$-reduced words that lie in $H$ but are
+not accepted by $W_H$. The default is 2048.
+\end{description}

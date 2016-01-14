@@ -1,0 +1,170 @@
+#! /bin/sh
+#File - autgroup
+#First set the path directory
+DIR=`echo $0 | sed -e 's/[^\/]*$//'`
+#echo $DIR
+if test -f ${DIR}kbprog
+    then
+                # found the necessary programs, so do nothing.
+                :
+        else
+                # Cant find the programs used in automata so give a warning.
+                echo Warning. Running ${DIR}automata
+                echo ${DIR}kbprog not found
+                echo Using versions in path.
+                DIR=
+fi
+KBPROG=${DIR}kbprog
+GPMAKEFSA=${DIR}gpmakefsa
+GPAXIOMS=${DIR}gpaxioms
+#Now find the options
+diff1=false
+large=false
+verbose=false
+veryverbose=false
+silent=false
+filestorage=false
+groupname=
+for i
+  do case $i in
+	-l|-large)		large=true;;
+	-v|-verbose)		verbose=true;;
+	-vv|-veryverbose)	veryverbose=true;;
+	-s|-silent)		silent=true;;
+	-d|-d1|-diff1)		diff1=true;;
+	-f|-filestorage)	filestorage=true;;
+	-*)	     echo Usage:
+                     echo autgroup [-large] [-verbose] [-veryverbose] [-silent]\
+                        [-diff1] [-filestorage] groupname
+                     exit 1;;
+	*) 	if test $groupname
+		then echo Usage:
+		     echo autgroup [-large] [-verbose] [-veryverbose] [-silent]\
+			[-diff1] [-filestorage] groupname
+		     exit 1
+		else groupname=$i
+		fi;;
+     esac
+  done
+
+if test -z "$groupname"
+then  echo Usage:
+      echo autgroup  [-large] [-verbose] [-veryverbose] [-silent]\
+                        [-diff1] [-filestorage] groupname
+      exit 1
+fi
+
+if test ! -r $groupname
+then	echo Error: cannot read file \"$i\"
+	exit 1
+fi
+
+if test $large != true
+then 	kbprogflags=" -mt 5 -hf 100 -t 20 -me 200 -ms 1000 -wd "
+	if test $veryverbose = true
+	then kbprogflags=${kbprogflags}" -vv "
+	elif test $verbose = true
+	then kbprogflags=${kbprogflags}" -v "
+	elif test $silent = true
+	then kbprogflags=${kbprogflags}" -silent "
+	fi
+	if test $silent != true
+	then	echo \#Running Knuth-Bendix Program:
+		echo "  "$KBPROG $kbprogflags $groupname
+	fi
+	$KBPROG $kbprogflags $groupname
+fi
+if test  $? != 0 || test $large = true
+then
+	if  test $large != true && test $silent != true
+	then echo
+	fi
+	kbprogflags=" -mt 20 -hf 100 -cn 0 -wd "
+	if test $veryverbose = true
+	then kbprogflags=${kbprogflags}" -vv "
+	elif test $verbose = true
+	then kbprogflags=${kbprogflags}" -v "
+	elif test $silent = true
+	then kbprogflags=${kbprogflags}" -silent "
+	fi
+	if test $large = true
+	then	kbprogflags=${kbprogflags}" -me 262144 -t 500 "
+		if test $silent != true
+		then	echo \#Running Knuth-Bendix Program 
+                	echo "  "$KBPROG $kbprogflags $groupname
+        	fi
+	else
+		if test $silent != true
+		then	echo \#Re-running Knuth-Bendix Program 
+                	echo "  "$KBPROG $kbprogflags $groupname
+        	fi
+	fi
+	$KBPROG $kbprogflags $groupname
+	if test  $? != 0
+	then echo \#Knuth-Bendix program failed or was inconclusive. Giving up.
+		exit 1
+	fi
+fi
+if test $silent != true
+then echo
+fi
+
+if test $large = true
+then gpmakefsaflags=" -l "
+else gpmakefsaflags=
+fi
+if test $veryverbose = true
+then gpmakefsaflags=${gpmakefsaflags}" -vv "
+elif test $verbose = true
+then gpmakefsaflags=${gpmakefsaflags}" -v "
+elif test $silent = true
+then gpmakefsaflags=${gpmakefsaflags}" -silent "
+fi
+if test $diff1 = true
+then gpmakefsaflags=${gpmakefsaflags}" -diff1 "
+fi
+if test $filestorage = true
+then gpmakefsaflags=${gpmakefsaflags}" -f "
+fi
+if test $silent != true
+then echo \#Running program to construct word-acceptor and multiplier automata 
+echo "  "$GPMAKEFSA $gpmakefsaflags $groupname
+fi
+$GPMAKEFSA $gpmakefsaflags $groupname
+if test  $? != 0
+then
+echo \#Program to construct word-acceptor and multiplier automata failed. \
+Giving up.
+exit 1
+fi
+if test $silent != true
+then echo
+fi
+
+if test $large = true
+then gpaxiomsflags=" -l "
+else gpaxiomsflags=
+fi
+if test $veryverbose = true
+then gpaxiomsflags=${gpaxiomsflags}" -vv "
+elif test $verbose = true
+then gpaxiomsflags=${gpaxiomsflags}" -v "
+elif test $silent = true
+then gpaxiomsflags=${gpaxiomsflags}" -silent "
+fi
+if test $filestorage = true
+then gpaxiomsflags=${gpaxiomsflags}" -f -ip s "
+fi
+if test $silent != true
+then	echo \#Running program to verify axioms on the automatic structure
+echo "  "$GPAXIOMS $gpaxiomsflags $groupname
+fi
+$GPAXIOMS $gpaxiomsflags $groupname
+case $? in
+	0) echo "0;" > ${groupname}.success
+	   exit 0;;
+	2) echo \#Program to verify axioms on the automatic structure failed.
+	   echo \#Please report this example to dfh@maths.warwick.ac.uk
+	   exit 2;;
+	*) exit 1;;
+esac

@@ -1,0 +1,12 @@
+#Not sure what group this is!
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B,c,C],
+  inverses := [A,a,B,b,C,c],
+  equations := [
+    [C*b*c*A,IdWord],
+    [A*B*c*b*a*C,IdWord],
+    [a*C*a*c*A*B,IdWord]
+  ]
+);

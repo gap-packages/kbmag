@@ -1,0 +1,11 @@
+#Finite group L(2,8)
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,B,c,C],
+  inverses := [a,B,b,C,c],
+  equations := [
+    [b*b,B], [B*a*B*a*B*a*B,a*b*a*b*a*b*a], [c,B*(a*b)^3],
+    [c*B*c*b*a,a*c*B*c*b]
+  ]
+);

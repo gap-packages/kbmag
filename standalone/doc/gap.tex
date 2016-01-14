@@ -1,0 +1,247 @@
+%%File gap.tex
+\Chapter{The Interface with GAP}
+
+The information in this chapter refers to Version 3 of {\GAP}.
+No attempt has been made yet to link t{\KBMAG} to Version 4.
+This will hopefully happen eventually.
+
+There are two ways in which this interface can be used.
+In the first, files are read into {\GAP} that have been created externally.
+A {\GAP} conversion function 'ReadRWS' has been provided for this purpose.
+This function assumes that the name of the rewriting system (i.e. the left
+hand side of the declaration contained in the file) is |_RWS|, so this
+name should always be used for files that are to be accessed by {\GAP}.
+
+The second only works currently for groups (since monoids do not yet
+exists as a {\GAP} type). Documentation for this method can also be found as
+a chapter in the {\GAP} manual in the 'gapdoc' directory of {\KBMAG}.
+The applications of {\KBMAG} involving subgroups of groups; that is those
+documented in Chapters
+"The Knuth--Bendix Program for Cosets of Subgroups",
+"The Automatic Coset System and Subgroup Presentation Package" and
+"Creating Subgroup Word Acceptors"
+of this manual, have not yet been incorporated within the interface.
+A finitely presented group, $G$ say, is first
+defined within {\GAP}, and then the {\GAP} function 'FpGroupToRWS' is called
+on $G$, and a corresponding rewriting system is returned.
+It can be called with an optional boolean second-variable, for example
+
+|R := FpGroupToRWS(G,true);|
+
+in which case inverses of generators are
+printed using a case-change convention. Otherwise, inverses are printed in
+the usual way by appending the suffix |^-1| to the generator name.
+
+Since the internal storage of rewriting-systems in particular is
+different from the structure defined in the external file (for example,
+words are stored internally as lists of integers), the user should not
+attempt to create rewriting systems directly internally to {\GAP},
+but should either read them in from external files, or create them using the
+function 'FpGroupToRWS'.
+
+An implementation of finitely presented monoids within {\GAP} is currently
+being written, and this too will eventually have an interface with
+rewriting-systems.
+ 
+The library files in the directory called 'gap' contain elementary functions
+for manipulating finite state automata and rewriting-systems.
+Anyone who wishes to use these seriously, should look in the files 'fsa.g' and
+'rws.g'. A finite state automaton must either be typed in
+interactively, or (better) put into a file first, and read in. Of course,
+the automatic group programs calculate finite state automata, and the
+functions are probably mainly useful for playing with these. It important to
+know that, before using any of the other {\GAP} functions on an automaton <fsa>,
+the function 'InitializeFSA(<fsa>)' must be called. Some of the functions,
+like those that count or enumerate the language of a finite state automaton,
+perform the same operations as the corresponding standalone 'C'-programs,
+but they will usually be much slower than the standalones. Nevertheless,
+it is often convenient to be able to do such things without having to go
+through the process of writing to file, running external program, and then
+reading the answer back in.
+
+After installing the package, but before starting to use the {\GAP} functions,
+go into the {\GAP} directory and type 'makeinit'. This will create the
+required 'init.g' file for the {\GAP} library.
+This file should be read in from {\GAP} before using the functions.
+
+The use of the library is best illustrated by providing a report of an
+actual session, with comments interspersed.
+The first example illustrates the use of 'kbprog' from {\GAP}.
+First create the following external file called 'S3' (which, we shall assume
+is in the directory |../kb_data|).
+
+|
+_RWS := rec(
+           isRWS := true,
+  generatorOrder := [a,b],
+        inverses := [a,b],
+        ordering := "shortlex",
+       equations := [
+         [b*a*b,a*b*a]
+       ]
+);
+|
+
+Now start {\GAP} and proceed as follows.
+
+|
+gap> Read("init.g");
+gap> S3 := ReadRWS("../kb_data/S3");
+#Reads in the file, and converts it to an internal rewriting-system.
+#However, it is still displayed as in the external file!
+rec(
+           isRWS := true,
+  generatorOrder := [a,b],
+        inverses := [a,b],
+        ordering := "shortlex",
+       equations := [
+         [b*a*b,a*b*a]
+       ]
+)
+
+gap> #Now we run the Knuth-Bendix program using the function 'KB', which
+gap> #calls the external program "kbprog".
+
+gap> KB(S3);
+#System is confluent.
+#Halting with 3 equations.
+true
+gap> #S3 now contains the confluent set of equations.
+gap> S3;
+rec (
+           isRWS := true,
+     isConfluent := true,
+        ordering := "shortlex",
+  generatorOrder := [a,b],
+        inverses := [a,b],
+       equations := [
+         [a^2,IdWord],
+         [b^2,IdWord],
+         [b*a*b,a*b*a]
+       ]
+)
+
+gap> #Now we can do some word-reductions.
+gap> ReduceWordRWS(S3,(a*b)^3);
+IdWord
+gap> ReduceWordRWS(S3,a*b*a);
+a*b*a
+gap> ReduceWordRWS(S3,b*a*b*a);
+a*b
+gap> SizeRWS(S3);
+6
+gap> EnumerateRWS(S3,0,5);
+[ IdWord, a, a*b, a*b*a, b, b*a ]
+|
+
+The next example illustrates the use of the automatic group package from {\GAP}.
+This example is not quite so trivial as the preceding one. The group is the
+fundamental group of the complement of the Borromean rings, which is a
+three-dimensional hyperbolic manifold. The word-acceptor was used to enumerate
+the words of length up to 4. This was used to speed up the calculations
+required for drawing views of a tesselation of hyperbolic space by regular
+dodecahedra, which can be seen in the video ``Not Knot\'\'.
+
+First make the following file, called |BR| (in the directory |../ag_data|).
+|
+_RWS := rec(
+ isRWS := true,
+ ordering := "shortlex",
+ generatorOrder := [a,A,b,B,c,C,d,D,e,E,f,F],
+ inverses := [A,a,B,b,C,c,D,d,E,e,F,f],
+ equations := [
+  [a*a*a*a,IdWord], [b*b*b*b,IdWord], [c*c*c*c,IdWord],
+  [d*d*d*d,IdWord], [e*e*e*e,IdWord], [f*f*f*f,IdWord],
+  [a*b*A*e,IdWord], [b*c*B*f,IdWord], [c*d*C*a,IdWord],
+  [d*e*D*b,IdWord], [e*f*E*c,IdWord], [f*a*F*d,IdWord]
+ ]
+);
+|
+
+Now start {\GAP} and proceed as follows.
+
+|
+gap> Read("init.g");
+gap> BR := ReadRWS("../ag_data/BR");
+rec(
+           isRWS := true,
+  generatorOrder := [a,A,b,B,c,C,d,D,e,E,f,F],
+        inverses := [A,a,B,b,C,c,D,d,E,e,F,f],
+        ordering := "shortlex",
+       equations := [
+         [a^4,IdWord],
+         [b^4,IdWord],
+         [c^4,IdWord],
+         [d^4,IdWord],
+         [e^4,IdWord],
+         [f^4,IdWord],
+         [a*b*A*e,IdWord],
+         [b*c*B*f,IdWord],
+         [c*d*C*a,IdWord],
+         [d*e*D*b,IdWord],
+         [e*f*E*c,IdWord],
+         [f*a*F*d,IdWord]
+       ]
+)
+
+gap> #Now we run the automatic group program using the function 'AutGroup',
+gap> #which calls the external program "autgroup".
+
+gap> AutGroup(BR);
+
+.....   (output omitted)   .....
+
+gap> SizeRWS(BR);
+"infinity"
+
+gap> #First do a few reductions.
+gap> ReduceWordRWS(BR,a*B*c*D*e*F);
+a*B*a*c^2*e
+gap> ReduceWordRWS(BR,(a*c*e)^5);
+a*c*a*B*c*a*B*c*a*B*c*a*B*c*e
+
+gap> #Now we enumerate words in the group up to length 4.
+gap> #``SortEnumerate\'\'\ puts them in order of increasing length.
+gap> SortEnumerateRWS(BR,0,4);
+[ IdWord, a, A, b, B, c, C, d, D, e, E, f, F, a^2, a*b, a*B, a*c, a*C, a*d, 
+  a*D, a*e, a*E, a*f, a*F, A*b, A*B, A*c, A*C, A*d, A*D, A*e, A*E, A*f, A*F, 
+  b*a, b^2, b*c, b*C, b*d, b*D, b*e, b*E, b*f, b*F, B*a, B*c, B*C, B*d, B*D, 
+  B*e, B*E, B*f, B*F, c*a, c*A, c*b, c^2, c*e, c*E, c*f, c*F, C*a, C*A, C*b, 
+  C*d, C*D, C*e, C*E, C*f, C*F, d*a, d*A, d*b, d*B, d*c, d^2, d*f, d*F, D*a, 
+  D*A, D*b, D*B, D*c, D*e, D*E, D*f, D*F, e*A, e*b, e*B, e*c, e*C, e*d, e^2, 
+  E*A, E*b, E*B, E*c, E*C, E*d, E*f, E*F, f*B, f*c, f*C, f*d, f*D, f*e, f^2, 
+  F*a, F*A, F*B, F*c, F*C, F*e, a^2*b, a^2*B, a^2*c, a^2*C, a^2*d, a^2*D, 
+
+  .....  (much output omitted)   .....
+
+  F*e*b*f, F*e*b*F, F*e*B*a, F*e*B*c, F*e*B*C, F*e*B*d, F*e*B*D, F*e*B*e, 
+  F*e*B*E, F*e*B*f, F*e*B*F, F*e*c*a, F*e*c*A, F*e*c*b, F*e*c^2, F*e*c*E, 
+  F*e*c*f, F*e*c*F, F*e*C*A, F*e*C*b, F*e*C*d, F*e*C*D, F*e*C*E, F*e*C*f, 
+  F*e*C*F, F*e*d*a, F*e*d*A, F*e*d*b, F*e*d*B, F*e*d*c, F*e*d*F ]
+
+gap> #Finally, let\'s see how many words there are of different lengths.
+gap> for ct in [0..6] do
+> Print(SizeEnumerateRWS(BR,ct,ct),"\n");
+> od;
+1
+12
+102
+812
+6402
+50412
+396902
+gap> quit;
+|
+
+{\bf UPDATE}\:\ It is now possible to install
+{\KBMAG} as a share-libraryin Version 3 of {\GAP}.
+Instuctions for this are in the 'README' file in
+the main {\KBMAG} directory.
+
+{\bf NEW}\:\ The file 'wordorder.g' written by Sarah Rees contains some
+experimental routines for finding the automatic structure of groups using
+orderings other than short-lex, such as weighted lex, and inverse-pair
+wreath product. There is currently at least one bug in this, in that
+they will not complete successfully if a generator reduces (under
+thsi ordering) to a word of length greater than one. The interested
+user is advised to seek help by e-mail!

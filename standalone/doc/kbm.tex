@@ -1,0 +1,391 @@
+%%File kbm.tex
+\Chapter{The Knuth--Bendix Program for Monoids}
+\Section{kbprog}
+
+'kbprog  [-r] [-ro] [-t <tidyint>] [-me <maxeqns>] [-ms <maxstates>]'\\
+'| || || || || || || |[-mrl <maxreducelen>] [-mlr <maxlenleft> <maxlenright>]\
+[-mo <maxoverlaplen>]'\\
+'| || || || || || || |[-sort <maxoplen>] [-v] [-ve] [-silent]\
+[-rk <minlen> <mineqns>]'\\
+'| || || || || || || |[-lex] [-rec] [-rtrec] [-cn <confnum>] <monoidname>'
+
+The program 'kbprog' has zillions of options. Only those that are relevant
+to its use as a stand-alone Knuth--Bendix program on monoids are listed here.
+Those pertaining to its use as part of the the automatic groups package are
+dealt with in Chapter "The Automatic Groups Package".
+
+'kbprog' takes its input from the file <monoidname>, which should contain a
+declaration of a record defining a rewriting-system, in the format described
+in Chapter "Introduction". Output is to two files, <monoidname>'.kbprog' and
+<monoidname>'.reduce'. The first contains an updated declaration of the
+original rewriting-system, in which the |equations|\ field contains the
+list of all reduction equations found so far. If the process has completed,
+and the system is now confluent, then a new field |isConfluent| will
+have appeared, and will be set equal to 'true'. In the equations,
+the left hand side will always be greater than the right hand side in the
+ordering on strings that is being used (see options below).
+The second file contains a finite state automaton,
+which can be used, together with the contents of the first file,
+to reduce words in the monoid generators. This is done using the
+program 'wordreduce' (see Section "wordreduce (Knuth--Bendix)").
+
+If the system is confluent, then these reductions will be to the unique
+minimal word under the ordering being used that is equal in the monoid to the
+input word. We can therefore solve the word problem in the monoid. In this
+case, the language of the automaton will be this set of minimal words.
+If the monoid is finite, then its order can be determined by using the
+program 'fsacount' (see Section "fsacount (Knuth--Bendix)").
+In any case, the words accepted
+can be enumerated up to a specified length with the program 'fsaenumerate'
+(see Section "fsaenumerate (Knuth--Bendix)").
+
+The Knuth--Bendix process will more often than not run forever by default,
+and so some conditions have to be specified under which it will stop.
+These take the form of limits that are placed on certain variables,
+such as the number of reduction equations. 
+These limits can be given values by the user, either by use of command-line
+options, or with a field setting in the input file
+(and the former takes priority in case of conflict).
+Wherever possible, if the program halts because one of the limits is exceeded,
+it will print a message informing the user what has happened,
+and output its current set of equations and the reduction machine.
+
+It is also possible to halt the program interactively at any stage, by
+sending it a single interrupt signal (which usually means typing Control-C).
+If you do this, then it will halt and output at the next convenient
+opportunity, and so you may have to wait a while. If you send two interrupt
+signals, then it will abort immediately without outputting.
+
+*Options*\\
+For most of the command-line options, the same effect can also be achieved by 
+use of a corresponding field setting in the input file. In case of conflict,
+the convention is that options set via the command-line override the setting in
+the input file. Note, however,  that the two most complicated ordering options,
+the weighted-lex ordering and the wreath-product ordering, can only
+be sensibly set within the input file, because they require the generators
+to be given weights and levels, respectively, in these two cases.
+See the options '-wtlex' and '-wreath' below, for further details.
+\begin{description}
+\item[|-r |]
+This means resume after a previous run in which the output set of equations
+was not confluent. Input will be taken from <monoidname>|.kbprog| instead of
+from <monoidname>. The output will go to the same place, so the old
+<monoidname>|.kbprog| will be overwritten.
+It is useful if the program halted on a previous run due to some limit
+being exceeded, and you wish to resume with a higher limit.
+\item[|-ro |]
+This is similar to |-r|, but in addition to taking the 
+input from <monoidname>|.kbprog|, the original equations, in the file
+<monoidname>, will also be read in and re-inserted at the end of the list.
+This is sometimes necessary or advisable, if on the previous run not all
+equations have been output, or some have been rejected because they were too
+long. In that situation, there is a danger that the monoid defined by
+the equations may have changed, and it can always be reset to the original
+by re-inserting the original equations.
+The output will go to the usual place, so the old
+<monoidname>|.kbprog| will be overwritten.
+\item[|-t| <tidyint>] | |\newline
+After finding <tidyint> new reduction equations, the program interrupts
+the main process of looking for overlaps, to tidy up the existing set of
+equations. This means eliminating any redundant equations and performing
+some reductions on their left and right hand sides to make the set as
+compact as possible. (The point is that equations discovered later often
+make older equations redundant or too long.) The default value of
+<tidyint> is 100, and it can be altered with this option. Different values
+work better on different examples. This parameter can also be set by
+including a |tidyint| field in the input file.
+\item[|-me| <maxeqns>] | |\newline
+This puts a limit on the number of reduction equations.
+The default is 32767.
+If exceeded, the program will stop and output the current equations.
+It can also be set as the field 'maxeqns' in the input file.
+\item[|-ms| <maxstates>] | |\newline
+This is less important, and not usually needed.
+It sets a limit on the number of states of the finite state automaton
+used for word reduction.
+If exceeded, the program will stop and output the current equations.
+By default, there is no limit, and the space allocated is increased
+dynamically as required. Occasionally, the space required can increase too fast
+for the program to cope; in this case, you can try setting a higher limit.
+It can also be set as the field 'maxstates' in the input file.
+The space needed for the reduction automaton can also be restricted by
+using the |-rk| (Rabin-Karp reduction) option - see below.
+\item[|-mrl| <maxreducelen>] | |\newline
+Again, this is not needed very often. It is the maximum allowed length that
+a word can reach during reduction. By default it is 32767.
+If exceeded, the program is forced to abort without outputting.
+It is only likely to be exceeded if you are using a recursive ordering on words.
+It can also be set as the field 'maxreducelen' in the input file.
+\item[|-mo| <maxoverlaplen>] | |\newline
+If this is used, then only overlaps of total length at most <maxoverlap>
+are processed.
+Of course this may cause the overlap search to complete on a set
+of equations that is not confluent. If this happens, you can always resume
+with a higher (or no) limit.
+This parameter can also be set as the field 'maxoverlaplen' in the input file.
+\item[|-mlr| <maxlenleft> <maxlenright>] | |\newline
+If this is used, then only equations in which the left and right hand sides
+have lengths at most <maxlenleft> and <maxlenright>, respectively, are
+kept. Of course this may cause the overlap search to complete on a set
+of equations that is not confluent. If this happens, you can always resume
+with higher limits. In some examples, particularly those involving
+collapse (i.e. a large intermediate set of equations, which later simplifies
+to a small set), it can result in a confluent set being found much more
+quickly. It is most often useful when using a recursive ordering on words. 
+Another danger with this option is that sometimes discarding equations can
+result in information being lost, and the monoid defined by the equations
+changes. If this may have happened, a warning message will be printed at
+the end. In this case, the recommended policy is to re-run with the 
+|-ro| option. In later versions it will be possible to do this automatically.
+This option can also be set as a field in the input file.
+The syntax for this is
+
+'maxstoredlen \:= [<maxlenleft>,<maxlenright>]'
+\item[|-sort| <maxoplen>] | |\newline
+This causes equations to be output in order of increasing length of their
+left hand sides, rather than the default, which is to output them in the
+order in which they were found. <maxoplen> should be a non-negative integer.
+If it is positive, then only equations with left hand sides having length
+at most <maxoplen> are output. If it is zero, then all equations are output.
+Of course, if <maxoplen> is positive, there is a danger that the monoid
+defined by the output equations may be different from the original.
+In this case, the safest thing is to edit the output file,
+re-insert the original relations and re-run (possibly with higher length
+limits). In later versions it will be possible to do this automatically.
+This option can also be set as fields in the input file.
+The syntax for this is
+
+'sorteqns \:= true, maxoplen \:= <maxoplen>'
+\item[|-rk| <minlen> <mineqns>] | |\newline
+Use the Rabin-Karp algorithm for word-reduction on words having length at least
+<minlen>, provided that there are at least <mineqns> equations.
+This uses less space than the default reduction automaton, but it is
+distinctly slower, so it should only be used when you are seriously short of
+memory.
+In fact, if the program halts and outputs for any reason, then
+the full reduction automaton is output as normal, so it is only really
+useful for examples in which collapse occurs - i.e. at some intermediate
+stage of the calculation there is a very large set of equations, which later
+reduces to a much smaller confluent set. However, this situation is not
+uncommon when analysing pathological presentations of finite groups, and
+this is one situation where the performance of the Knuth-Bendix algorithm can
+be superior to that of Todd-Coxeter coset enumeration.
+The best settings for <minlen> and <mineqns> vary from example to
+example - generally speaking, the smaller <minlen> is, the slower things
+will be, so set it as high as possible subject to not running out of memory.
+<mineqns> should be set higher than you expect the final numebr of
+equations to be.
+This option can also be set as a field in the input file.
+The syntax for this is
+
+'RabinKarp \:= [<minlen>,<mineqns>]'
+\item[|-v |]
+The verbose option. Regular reports on the current number of equations, etc. are
+output. This is to be recommended for interactive use.
+This parameter can also be set by including a |verbose| field in the input
+file, and setting it equal to 'true'.
+\item[|-ve |]
+The verbose-equations option. In addition to the output produced under
+|-v|, each new equation is printed as it is found, together with the
+numbers of the two equations for which the overlap gave rise to this
+new equation. This can be useful in small examples for reconstructing
+the derivation of a particular equation in the monoid.
+\item[|-silent|]
+There is no output at all to 'stdout'. In particular, the reason for
+halting will not be printed.
+This parameter can also be set by including a |silent| field in the input
+file, and setting it equal to 'true'.
+\item[|-lex|]
+Use the short-lex ordering on strings. This is the default ordering.
+Shorter words come before longer, and for words of equal length,
+lexicographical ordering is used, using the given ordering of the generators.
+It can also be set as a field in the input file. The syntax for this is
+
+|ordering := "shortlex"|
+\item[|-rec, -rtrec|]
+Use a recursive ordering on strings. 
+There are various ways to define this. Perhaps the quickest is as
+follows. Let $u$ and $v$ be strings in the generators.
+If one of $u$ and $v$, say $v$,  is empty, then $u \ge v$.
+Otherwise, let $u=u^\prime a$ and $v=v^\prime b$,
+where $a$ and $b$ are generators.
+Then $u > v$ if and only if one of the following holds\:
+\begin {description}
+\item[(i)] $a = b$ and $u^\prime > v^\prime$;
+\item[(ii)] $a > b$ and $u > v^\prime$;
+\item[(ii)] $b > a$ and $u^\prime > v$.
+\end {description}
+This is the ordering used for the |-rec| option. The |-rtrec| option is
+similar, but with $u=au^\prime$ and $v=bv^\prime$;
+occasionally one or the other runs
+significantly quicker, but usually they perform similarly.
+It can also be set as a field in the input file. The syntax for this is
+
+|ordering := "recursive"| \hspace{1cm} or  \hspace{1cm}
+|ordering := "rt_recursive"|
+
+\item[|-wtlex|]
+Use a weighted-lex ordering.
+Although this option does exist as a command-line option, it will usually
+be specified within the input file, because each generator needs to be
+assigned a weight, which should be a non-negative integer. The \'\'length\"
+of words in the generators is then computed by adding up the weights of the
+generators in the words. Otherwise, ordering is as for short-lex.
+An example of assignments within the the input file is:
+
+|ordering := "wtlex", weight := [2,1,6,3,0],|
+
+which assigns weights 2,1,6,3 and 0 to the generators. The length of the
+list of weights must be equal to the number of generators. The assignment
+of the 'weight' field must come after the 'generatorOrder' field.
+\item[|-wreath|]
+Use a wreath-product ordering.
+Although this option does exist as a command-line option, it will usually
+be specified within the input file, because each generator needs to be
+assigned a level, which should be a non-negative integer.
+In this ordering, two strings involving generators of the same level are
+ordered using short-lex, but all strings in generators of a higher level are
+larger than those involving generators of a lower level. That is not a
+complete definition; one can be found  on pages 46 -- 50 of \cite{Sims94}.
+Note that the recursive ordering is the special case in which the level
+of generator number $i$ is $i$.
+An example of assignments within the the input file is:
+
+|ordering := "wreathprod", level := [4,3,2,1],|
+
+which assigns levels 4,3,2 and 1 to the generators. The length of the
+list of levels must be equal to the number of generators. The assignment
+of the 'level' field must come after the 'generatorOrder' field.
+\item[|-cn| <confnum>] | |\newline
+If <confnum> overlaps are processed and no new equations are discovered, then
+the overlap searching process is interrupted, and a fast check for
+confluence performed on the existing set of equations.
+The default value is 500. Doing this too often wastes time, but doing it
+at the right moment can also save a lot of time. Sometimes a particular
+value works very well for a particular example, but it is difficult
+to predict this in advance! If <confnum> is set to 0, then the fast
+confluence check is performed only when the search for overlaps is
+complete.
+It can also be set as the field 'confnum' in the input file.
+\end{description}
+
+*Exit status*\\
+The exit staus is 0 if 'kbprog' completes with a confluent set of equations,
+2 if it halts and outputs a non-confluent set because some limit has
+been exceeded, or it has received an interrupt signal, and 1 if it exits
+without output, with an error message.
+
+\Section{wordreduce (Knuth--Bendix)}
+'wordreduce  [-kbprog/-diff1/-diff2/-diffc] [-mrl <maxreducelen>] monoidname' 
+
+This program can be used either on the output of 'kbprog' or on the output
+of the automata package. The '[-diff<x>]' options refer to the latter use,
+which is described in Section
+"wordreduce (automatic groups)".
+The former use is the default if
+the file <monoidname>'.kbprog' is present; to be certain, call the
+'-kbprog' flag explicitly.
+
+'wordreduce' reduces words using the output of a run of 'kbprog', which is
+read from the files <monoidname>'.kbprog' and <monoidname>'.reduce'.
+The reductions will always be
+correct in the sense that the output word will represent the same group
+element as the input word. If the system of equations in <monoidname>'.kbprog'
+is confluent, then the reduction will be to the minimal word that represents
+the group element under the ordering on strings of generators that was used
+by 'kbprog'. It can therefore be used to solve the word problem in the
+monoid. If the system is not confluent, then there will be some pairs of words 
+which are equal in the monoid, but which reduce to distinct words, and
+so this program cannot be used to solve the word problem.
+'wordreduce' prompts for the words to be input at the terminal.
+
+The option '-mrl\ <maxreducelen>' puts a maximum length on the words to
+be reduced. The default is 32767.
+
+\Section{fsacount (Knuth--Bendix)}
+
+'fsacount  [-ip d/s] [-silent] [-v] [<filename>]'
+
+This is one of the finite state automata functions. See Chapter 
+"Programs for Manipulating Finite State Automata" for the complete list.
+The size of the accepted language is counted, and the answer (which may
+of course be infinite) is output to 'stdout'. Input is from <filename> if
+the optional argument is present, and otherwise from 'stdin', and it
+should be a declaration of a finite state automaton record.
+If 'kbprog' outputs a confluent set of equations for the monoid in the file
+<monoidname>, then running 'fsacount <monoidname>.reduce'
+will calculate the size of the monoid.
+For description of options, see Section
+"Exit Status of Programs and Meanings of Some Options".
+
+\Section{fsaenumerate (Knuth--Bendix)}
+
+'fsaenumerate  [-ip d/s] [-bfs/-dfs] <min> <max> [<filename>]' 
+
+This is one of the finite state automata functions. See Chapter 
+"Programs for Manipulating Finite State Automata" for the complete list.
+Input is from <filename> if
+the optional argument is present, and otherwise from 'stdin', and it
+should be a declaration of a finite state automaton record.
+<min> and <max> should be non-negative integers with <min> $\le$ <max>.
+The words in the accepted language having lengths at least <min> and at
+most <max> are enumerated, and output as a list of words to
+'stdout' or to the file <filename>'.enumerate'.
+If 'kbprog' outputs a confluent set of equations for the monoid in the file
+<monoidname>, then running 'fsaenumerate <min> <max> <monoidname>.reduce'
+will produce a list of elements in the monoid of which the reduced 
+word representatives have lengths between <min> and <max>.
+If the option '-dfs' (depth-first search - the default) is called,
+then the words
+in the list will be in lexicographical order, whereas with '-bfs'
+(breadth-first-search), they will be in order of increasing length, and in
+lexicographical order for each individual length (i.e. in short-lex order).
+Depth-first-search is marginally quicker.
+For description of other options, see Section
+"Exit Status of Programs and Meanings of Some Options".
+\Section{Examples (Knuth--Bendix)}
+
+In this section, we mention some of the examples in the 'kb\_data' directory.
+These can usefully be used as test examples, and some of them have been
+included to demonstrate particular features.
+
+The 'degen' examples  are all of the trivial group. Note, in particular,
+'degen4a', 'degen4b' and 'degen4c'. These are the first three of an
+infinite sequences of increasingly complicated presentations of the
+trivial group, due to B.H. Neumann. 'kbprog' will run quite quickly on
+'degen4b' (although no current Todd-Coxeter program will complete on this
+presentation), but it does not appear to complete on 'degen4c'.
+
+The example 'ab2' is the free abelian group on two generators.
+It terminates with a confluent set for the given ordering of the
+generators, |[a,A,b,B]|, but does not terminate with the ordering |[a,b,A,B]|.
+
+Several of the examples are of finite groups. 
+Others are monoid presentations, where generators are not supplied with
+inverses. Try 'f25monoid', which is the presentation of the Fibonacci group
+$F(2,5)$, but as a monoid. In fact, the structure is almost identical to
+the group in this example. The group is cyclic of order 11.
+The monoid has order 12, the extra element being the empty word.
+The corresponding semigroup (without the empty word) is isomorphic to the
+group.
+
+In the examples 'nilp2', 'nonhopf', 'heinnilp' and 'verfiynilp', the
+'recursive' ordering is essential. The last two of these are examples of
+the use of Knuth--Bendix to prove that a presentation defines a nilpotent
+group (first proposed by Sims). In 'verifynilp', things are made much
+easier by using the 'maxstoredlen' parameter (or equivalently the '-mrl'
+option). (Appropriate settings are already in the input file.)
+
+The example 'f27monoid' is a monoid presentation
+corresponding to the Fibonacci group $F(2,7)$, which has order 29.  As is
+the case with $F(2,5)$, the monoid is the same structure with the empty
+word thrown in, but this example is rather more difficult for 'kbprog'.
+The best approach is to use a recursive ordering with a limit on the
+lengths of equations stored ('-mrl 15 15' works well for 'f27monoid').
+This will halt with the warning message that information may have been lost.
+The original equations should then be adjoined to the output equations,
+which is achieved by re-running 'kbprog' with the '-ro' option,
+(and no limits on lengths).
+It will then quickly complete with a confluent set. This is typical of a
+number of difficult examples, where good results can be obtained by running
+more than once.

@@ -1,0 +1,11 @@
+#Von Dyck (3,2,7) group - infinite hyperbolic - small tidyint works better
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  tidyint := 20,
+  generatorOrder := [a,A,b,B],
+  inverses := [A,a,B,b],
+  equations := [
+    [a*a,A], [b*b*b*b,B*B*B], [B*A,a*b]
+  ]
+);

@@ -1,0 +1,17 @@
+#Group PSL(2,Z[i]) - presentation as amalgam
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,d,D,e,E],
+  inverses := [a,b,D,d,E,e],
+  equations := [
+    [a*a,IdWord],
+    [b*b,IdWord],
+    [b*a,a*b],
+    [d*d,D],
+    [e*e,E],
+    [D*b,b*d],
+    [e*D,d*E],
+    [E*a,a*e]
+  ]
+);

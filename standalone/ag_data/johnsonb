@@ -1,0 +1,12 @@
+#Example produced by Dave Johnson - don't know what it is.
+#This one is difficult for autgp - use -l
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [x,y,z],
+  inverses := [x,y,z],
+  equations := [
+    [x*y*z*y*x*y*z*y*z*y*x*y*z*y*x*z,IdWord],
+    [z*y*z*x*z*x*y*z*y*x*z*x*z*y*z*x,IdWord]
+  ]
+);

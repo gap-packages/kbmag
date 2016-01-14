@@ -1,0 +1,32 @@
+S5 := rec(
+           isFSA := true,
+        alphabet := rec(
+                type := "product",
+                size := 8,
+               arity := 2,
+             padding := _,
+                base := rec(
+                    type := "identifiers",
+                    size := 2,
+                  format := "dense",
+                   names := [a,A]
+                   ) 
+               ),
+          states := rec(
+                type := "simple",
+                size := 5
+               ),
+           flags := ["DFA"],
+         initial := [1],
+       accepting := [3,4,5],
+           table := rec(
+              format := "sparse",
+      numTransitions := 20,
+         transitions := [[[1,1],[2,2],[3,4],[4,3],[5,1],[6,4]],
+                         [[1,2],[2,2],[3,4],[4,2],[5,2],[6,4]],
+                         [[1,3],[2,3],[3,4],[4,3],[5,3],[6,4]],
+                         [[3,5],[6,5]],
+                         []
+                        ]
+               )
+);

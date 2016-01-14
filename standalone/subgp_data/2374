@@ -1,0 +1,11 @@
+#(2,3,7;4) group
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  tidyint := 20,
+  generatorOrder := [a,b,B],
+  inverses := [a,B,b],
+  equations := [
+    [b*b,B], [B*a*B*a*B*a*B,a*b*a*b*a*b*a], [(a*b*a*B)^4,IdWord]
+  ]
+);

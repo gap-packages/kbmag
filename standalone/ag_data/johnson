@@ -1,0 +1,11 @@
+#Example produced by Dave Johnson - don't know what it is.
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [x,X,y,Y,z,Z],
+  inverses := [X,x,Y,y,Z,z],
+  equations := [
+    [y*x*Y*Z,IdWord],
+    [x*z*X*y*Z,IdWord]
+  ]
+);

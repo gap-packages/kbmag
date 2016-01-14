@@ -1,0 +1,8 @@
+#trefoil knot group
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [x,X,y,Y],
+  inverses := [X,x,Y,y],
+  equations := [[x^2,Y^3]]
+);

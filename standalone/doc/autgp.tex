@@ -1,0 +1,657 @@
+%%File autgp.tex
+\Chapter{The Automatic Groups Package}
+
+The main aim of this package is to calculate the finite state automata
+associated with a short-lex automatic group. At the end of a
+successful calculation, four automata will be stored. These are the first
+and second word-difference machines, the word-acceptor, and the multiplier.
+The descriptions in this  chapter of the manual will assume some familiarity
+with these objects on the part of the reader.
+See \cite{EHR91} or \cite{Holt94} for details. One difference in the
+current version from the existing {\Automata} package
+is that a single multiplier automaton is calculated,
+rather than a separate one for each generator.
+This single multiplier is known as the general multiplier. Some of its states
+are labeled by one of the group generators. These states are the accepting
+states for that generator. To obtain the individual multipliers in minimized
+form, run the program 'gpmult' (see Section "gpmult"). They are not normally
+significantly smaller than the general multiplier, and there is one of them
+for each generator, so usually the general multiplier provides a much more
+compact way of storing the same information than the individual multipliers.
+
+The resulting automata
+can be used for reducing words to their unique minimal representative in
+the group under the short-lex ordering (and thereby enabling the
+word-problem to be solved in the group), and also for counting and
+enumerating the accepted language.
+See Sections "wordreduce (automatic groups)", "fsacount (automatic groups)"
+and "fsaenumerate (automatic groups)" for details.
+(In fact the multiplier automaton is not needed for any of these processes,
+but it forms part of the automatic structure of the group from a
+theoretical viewpoint, so we regard it as part of the output of the
+calculation.)
+
+There is also a program 'gpgeowa' that attempts to construct the geodesic
+word acceptor of a word-hyperbolic group. In fact, by a result of
+Papasoglu (\cite{PAP}), when it succeeds, it verifies that the
+group is  word-hyperbolic. This program described in Section "gpgeowa".
+
+There are two possibilities for computing the automatic structure.
+The simplest is to use the program 'autgroup', which is in fact a
+Unix Bourne-shell script, which runs the three C-programs involved,
+and attempts to make a sensible choice of options.
+The other possibility is to run these three programs 'kbprog -wd',
+'gpmakefsa' and 'gpaxioms' individually, and to select the options oneself.
+'kbprog -wd' runs the Knuth--Bendix process on the defining relations of the
+group, and calculates the resulting word-differences arising from the
+equations generated. If the group is short-lex automatic, then the set
+of word-differences is finite, and so the calculated set will eventually
+be complete; however, 'kbprog -wd' itself will normally run forever, generating
+infinitely many equations, and so the difficulty is to devise sensible
+halting criteria. Clearly one wants to halt as soon as all of the
+word-differences have been found,if possible. Further details are given in
+Section "kbprog -wd". 'gpmakefsa' uses the word-difference output by
+'kbprog -wd' to compute the word-acceptor and multiplier automata.
+It performs some checks on these which can reveal if the set of
+word-differences used was not in fact complete, and find some of the
+missing ones. It can then try again with the extended sets of
+word-differences. Finally, the program 'gpaxioms' performs the
+axiom-checking process, which proves the correctness of the automata
+calculated. This process is expensive on resources in terms of both time
+and space. Interestingly enough, we have never known it to complete and
+return a negative answer; the reason for this is that the tests carried
+out in 'gpmakefsa' tend to detect any errors in the automata.
+So please inform me immediately if 'gpaxioms' ever reports that the
+the structure calculated by 'kbprog\ -wd' and 'gpmakefsa' is incorrect!
+
+For simple examples, these programs work quickly, and do not require
+much space. For more difficult examples, they are often capable of
+completing successfully, but they can sometimes be expensive in terms of
+time and space requirements. If you are running out of space on your computer,
+or it is starting to swap heavily, then there are some options available
+in some cases (such as '-ip s' and '-f' for 'gpmakefsa' and 'gpaxioms')
+which will cause things to use less space, but to take longer.
+Another point to be borne in mind is that they produce temporary disk
+files which the user does not normally see (because they are
+automatically removed after use), but can occasionally be very large.
+If you are in danger of exceeding your filestore allocation, or filling up
+your disk partition, then you might try running the programs in the '/tmp'
+directory. In any case, if a program halts unnaturally (perhaps because
+you interrupt it), then you must remove these temporary files yourself.
+If the file containing the original group presentation is  named
+<groupname>, then all files created by the programs will have names of
+form <groupname>'.'<suffix>.
+\Section{autgroup}
+
+'autgroup  [-l] [-v] [-silent] [-diff1] [-f] <groupname>'
+
+Compute the finite state automata that constitute the automatic structure
+of a short-lex automatic group. Input is taken from the file <groupname>,
+which should contain a declaration of a record defining a rewriting-system, in
+the format described in Chapter "Introduction". The rewriting-system must
+define a group, so all monoid generators must have inverses listed explicitly
+(there is no default convention for names of inverses). Output is to the
+four files <groupname>'.diff1', <groupname>'.diff2', <groupname>'.wa' and
+<groupname>'.gm', which contain, respectively, the first and second
+word-difference automata, the word acceptor and the general multiplier.
+
+*Options*\\
+For a general description of the options '[-l]', '[-v]' and '[-silent]',
+see Section
+"Exit Status of Programs and Meanings of Some Options".
+For greater flexibility in choice of options, run the programs 'kbprog\ -wd',
+'gpmakefsa' and 'gpaxioms' individually, rather than using 'autgroup'. 
+
+\begin{description}
+\item[|-l |]
+This causes 'gpmakefsa' and 'gpaxioms' to be run with the '-l' option, which
+means large hash-tables. However, '-l' also causes 'kbprog\ -wd' to be run
+with larger parameters, and you are advised to use it only after you
+have tried first without it, since it will cause easy examples to take
+much longer to run.
+\item[|-diff1|]
+This causes 'gpmakefsa' to be run with the '-diff1' option. See Section
+"gpmakefsa" for further details.
+\item[|-f |] This causes 'gpmakefsa' and 'gpaxioms' to be run with the
+'-f' and '-ip s' options. See Sections "gpmakefsa" and "gpaxioms" for
+further details. This is the option to choose if you need to save space,
+and don\'t mind waiting a bit longer.
+\end{description}
+\Section{kbprog -wd}
+'kbprog -wd [-t <tidyint>] [-me <maxeqns>] [-ms <maxstates>] \
+[-mwd <maxwdiffs>]'\\
+'| || || || || || || |[-hf <halting\_factor>] [-mt <min\_time>] \
+[-rk <minlen> <mineqns>]'\\
+'| || || || || || || |[-v] [-vwd] [-silent] [-cn <confnum>] <groupname>'
+
+Some of these options are of course the same as for when 'kbprog' is being
+used as a stand-alone Knuth--Bendix program -- see Section "kbprog".
+
+'kbprog\ -wd' takes its input from the file <groupname>, which should contain a
+declaration of a record defining a rewriting-system, in the format described
+in Chapter "Introduction". Only the default ordering |"shortlex"| may be used,
+since the other orderings make no sense in the automatic groups context.
+Remember that the list of generators must include the inverses of all
+generators.  Since the rewriting-system must define a group, rather than just
+a monoid, the list of inverses, as specified in the 'inverses' field, must be
+complete and involutory; i.e. all monoid generators must have inverses, and if
+the inverse of <g1> is <g2> then the inverse of <g2> must be <g1>.
+
+The Knuth--Bendix completion process is carried out on the group presentation.
+However, unlike in the standalone usage of 'kbprog', the extended set of
+equations and the reduction automaton are not output. Instead, the two
+word-difference automata arising from the equations are output when the program
+halts. These are printed to the two files <groupname>'.diff1' and
+<groupname>'.diff2'. The difference between them is that the first automaton
+contains only those word-differences and transitions that arise from the
+equations themselves. For the second automaton, the set of word-differences
+arising from the equations is closed under inversion, and all possible
+transitions are included. So the second automaton has both more states and
+generally more transitions per state than the first. For their uses, see
+Section "gpmakefsa" below.
+
+The main problem with this program is that, unless it completes with a
+confluent set of equations, which happens relatively rarely for infinite groups,
+the process will continue indefinitely, and so halting criteria have to be
+chosen. If the group really is short-lex automatic with this choice of
+ordered generating set, then the set of word-differences will be finite.
+The general idea is to wait until it appears to have become constant, and
+then stop.
+
+There are two ways to do this. The first is to run 'kbprog\ -wd'
+interactively with the '-v' option, when regular reports will be printed
+on the current number of word-differences. (The word-differences are
+calculated after each tidying operation on the equations; see the
+'-t <tidyint>' option below.) The program can be interrupted at any time by the
+user by sending it a single interrupt signal (which usually means typing
+Control-C).  If you do this, then it will halt and output the current 
+word-difference machines at the next convenient
+opportunity (and so you may have to wait a while). If you send two interrupt
+signals, then it will abort immediately without outputting.
+The second way (and the one used by the shell-script 'autgroup') is to call
+options which cause the program to halt automatically when the number of
+word-differences has not increased for some time. This method is described
+below under the option descriptions  '-hf <halting\_factor>' and
+'-mt <min\_time>'.
+
+This works well in simple examples, but there are various problems
+associated with the more difficult examples. Firstly, it can happen that
+most word-differences are found relatively quickly, but a few take much longer
+to appear, and so the program is halted too early (either interactively or
+automatically). This does not always matter, because the next program in
+the sequence 'gpmakefsa' has the potential for finding missing word-differences
+by performing checks on the automata that it calculates. However, this
+will inevitably make 'gpmakefsa' run slower and use more space, and if too
+many word-differences are missing, then it might not succeed at all. The thing
+to do then, is to give up, and try running 'kbprog\ -wd' for longer, with more
+stringent halting criteria (and possibly with a larger value of <tidyint>).
+Another problem (the opposite problem) is that in some examples spurious
+word-differences keep appearing and disappearing again, and so all required
+word-differences may have been found long ago, but the reported number is
+showing no sign of becoming constant. The only thing to do
+when the number of word-differences keeps increasing and later decreasing
+dramatically, is to try stopping it anyway (when the number is at
+a low point), and then run 'gpmakefsa'.
+
+Finally, if the number of word-differences is observed to increase quickly and
+steadily, and gets up to about 2000, then it is likely that the group is not
+short-lex automatic with this choice of ordered generators (and even if it is,
+the size of the automata involved is likely to be too large for the
+programs). Since short-lex automaticity is dependent on the choice of the
+ordered generating set in some examples, it is worth trying different
+choices of generators for the same group, and possibly different orderings
+of the generators.
+
+*Options*
+\begin{description}
+\item[|-t| <tidyint>] | |\newline
+After finding <tidyint> new reduction equations, the program interrupts
+the main process of looking for overlaps, to tidy up the existing set of
+equations. This means eliminating any redundant equations and performing
+some reductions on their left and right hand sides to make the set as
+compact as possible. (The point is that equations discovered later often
+make older equations redundant or too long.) The default value of
+<tidyint> is 100, and it can be altered with this option. Different values
+work better on different examples. This parameter can also be set by
+including a |tidyint| field in the input file.
+The word-differences arising from the equations are calculated
+after each such tidying and the number reported if the '-v' option is called.
+The best strategy in general is to try a small value of <tidyint> first and,
+if that is not successful, try increasing it. Large values such as 1000 work
+best in really difficult examples.
+\item[|-me| <maxeqns>] | |\newline
+This puts a limit on the number of reduction equations.
+The default is 32767.
+If exceeded, the program will stop and output the word-difference
+automata arising from the current equations.
+It can also be set as the field 'maxeqns' in the input file.
+\item[|-ms| <maxstates>] | |\newline
+This is less important, and not usually needed.
+It sets a limit on the number of states of the finite state automaton
+used for word reduction.
+If exceeded, the program will stop and output the 
+word-difference automata arising from current equations.
+By default, there is no limit, and the space allocated is increased
+dynamically as required. Occasionally, the space required can increase too fast
+for the program to cope; in this case, you can try setting a higher limit.
+It can also be set as the field 'maxstates' in the input file.
+\item[|-mwd| <maxworddiffs>] | |\newline
+Again this is not needed very often. It puts a bound on the number of
+word-differences allowed. Normally, it is increased dynamically as required,
+and so it does not need setting. Occasionally, it increases too fast for
+the program to cope, and then it has to abort without output. If this
+happens, try a larger setting.
+\item[|-hf| <halting\_factor>]
+\item[|-mt| <min\_time>]| |\newline
+These are the experimental halting-options. If '-hf' is called, then
+<halting\_factor> should be a positive integer, and represents a percentage.
+After each tidying, it is checked whether both the number of
+equations and the number of states have increased by more than
+<halting\_factor> percent since the number of word-differences was last
+less than what it is now.
+If so, then the program halts and outputs the
+word-difference automata arising from the current equations. A sensible value
+seems to be 100, but occasionally a larger value is necessary. If the
+'-mt' option is also called, then halting only occurs if at least <min\_time>
+seconds of cpu-time have elapsed altogether.
+This is sometimes necessary to prevent very early premature halting.
+It is not very satisfactory, because of course the cpu-time
+depends heavily on the particular computer being used, but no reasonable
+alternative has been found yet.
+There is no point in calling '-mt' without '-hf'.
+\item[|-rk| <minlen> <mineqns>] | |\newline
+Use the Rabin-Karp algorithm for word-reduction on words having length at least
+<minlen>, provided that there are at least <mineqns> equations.
+This uses less space than the default reduction automaton, but it is
+distinctly slower, so it should only be used when you are seriously short of
+memory.
+The best settings for <minlen> and <mineqns> vary from example to
+example - generally speaking, the smaller <minlen> is, the slower things
+will be, so set it as high as possible subject to not running out of memory.
+This option can also be set as a field in the input file.
+The syntax for this is
+
+'RabinKarp \:= [<minlen>,<mineqns>]'
+\item[|-v |]
+The verbose option. Regular reports on the current number of equations, etc. are
+output. This is to be recommended for interactive use.
+This parameter can also be set by including a |verbose| field in the input
+file, and setting it equal to 'true'.
+\item[|-vwd |]
+The verbose word-differences option. In addition to the output produced
+under |-v|, each new word-difference found is printed to 'stdout', together
+with the equation from which it was calculated.
+\item[|-silent|]
+There is no output at all to 'stdout'.
+This parameter can also be set by including a |silent| field in the input
+file, and setting it equal to 'true'.
+\item[|-cn| <confnum>] | |\newline
+If <confnum> overlaps are processed and no new equations are discovered, then
+the overlap searching process is interrupted, and a fast check for
+confluence performed on the existing set of equations.
+Setting <confnum> equal to 0 turns this feature off completely.
+If, as is often the case, you are quite certain that the process is not going
+to halt at all, then you should set <confnum> to 0, since the confluence
+tests will merely waste time. (In fact, this should arguably be the
+default setting for 'kbprog\ -wd'.)
+It can also be set as the field 'confnum' in the input file.
+\end{description}
+
+*Exit status*\\
+The exit staus is 0 if 'kbprog' completes with a confluent set of equations,
+or if it halts because the condition in the '-hf <halting\_factor>' option
+has been fulfilled,
+2 if it halts and outputs because some other limit has
+been exceeded, or it has received an interrupt signal, and 1 if it exits
+without output, with an error message.
+This information is used by the shell-script 'autgroup'.
+
+\Section{gpmakefsa}
+
+'gpmakefsa  [-diff1/-diff2] [-me <maxeqns>] [-mwd <maxwdiffs>] [-f] [-l]'\\
+'| || || || || || || || || || |[-ip d/s[dr]] [-opwa d/s] [-opgm d/s]\
+[-v] [-silent] <groupname>'
+
+Construct the word-acceptor and general multiplier finite state automata
+for the short-lex automatic group, of which the rewriting-system defining
+the group is in the file <groupname>.
+It assumes that 'kbprog\ -wd' has already been run on the group.
+Input is from <groupname>'.diff2' and, if
+the '-diff1' option is called, also from <groupname>'.diff1'. The
+word-acceptor is output to <groupname>'.wa' and the general multiplier to
+<groupname>'.gm'. Certain correctness tests are carried out on the
+constructed automata. If they fail, then new word-differences will be
+found and <groupname>'.diff2' (and possibly also <groupname>'.diff1')
+will be updated, and the multiplier (and possibly the word-acceptor)
+will then be re-calculated.
+
+There are programs available which construct the two automata individually,
+and also one which performs the correctness test, but it is unlikely that
+you will want to use them. They are mentioned briefly in
+Section "Other programs".
+
+The algorithm is slightly different according to whether or not
+<groupname>'.diff1' or <groupname>'.diff2' is used as input to construct
+the word-acceptor. This is controlled by the '-diff1' and '-diff2' options.
+The latter is the default; i.e. the default is to use <groupname>'.diff2'.
+Theoretically, <groupname>'.diff1' should work, and indeed it is more
+efficient when it does work, because the first word-difference automaton is
+always smaller than the second. However, in many examples it turns out that
+<groupname>'.diff1' as output by 'kbprog\ -wd' is incorrect. In this case, it
+is nearly always more efficient overall to use <groupname>'.diff2', which has
+a much higher chance of calculating the correct word-acceptor first time. We
+have therefore chosen to make this the default. There are one or two
+examples, however, in which the use of <groupname>'.diff2' causes severe
+space problems in constructing the word-acceptor, whereas <groupname>'.diff1'
+does not. If you observe this to be the case, then try again with the
+'-diff1' option set.
+
+In the default setting, the word-acceptor and general multiplier are both
+constructed using <groupname>'.diff2'. A check is then carried out on the
+mulitplier. In fact, it is checked that, for every word $u$ accepted by
+the word-acceptor, and every generator $a$, there exists a word $v$
+accepted by the word-acceptor such that $(u,v)$ is accepted by the multiplier,
+where $ua$ and $v$ are equal in the group.
+If this test fails, then the multiplier is incorrect, and a number of explicit
+words $u$ and generators $a$ are calculated for which the test fails.
+These give rise to equations $(u,v)$ (where $v$ is the word to which
+$ua$ reduces), which produce new word-differences, which are in turn used
+to re-calculate the second word-difference machine. The file
+<groupname>'.diff2' is then updated, and the multiplier recalculated. It
+may turn out in the course of this calculation that the word-acceptor also
+needs recalculating, which is done if necessary. This process continues
+until the multiplier passes the test.
+
+Under the '-diff1' option, the file <groupname>'.diff1' is used to construct
+the word-acceptor, but <groupname>'.diff2' is still used for the multiplier.
+It may happen, during construction of the multiplier, that some equations
+are found that should be accepted by the first word-difference machine, but
+are not. These are used to correct the first word-difference machine, and
+the file <groupname>'.diff1' is updated. Otherwise, things proceed as for the
+'-diff2' option.
+
+*Other options*
+\begin{description}
+\item[|-me| <maxeqns>] | |\newline
+This specifies an upper limit on the number of equations that are processed
+when correcting the first or second word-difference machines, as described
+above. The default is 512. If it is too small, then the main testing and
+correcting process on the multipliers may have to be repeated many more times
+than necessary, but if it is too big, then the process of updating the
+word-difference machines can be very slow.
+\item[|-mwd| <maxwdiffs>] | |\newline
+This puts an upper limit on the number of word-differences allowed after the
+correction. It is rarely necessary to call this. If it is necessary, then the
+program will halt with an informative error message.
+\item[|-f |]
+This is an option which saves space, at the expense of slightly increased
+cpu-time. The multiplier automaton as initially constructed can be very
+large. It is then minimized. Under this option, the unminimized multiplier
+is not read in all at once, but kept in a file, and read in line-by-line
+during minimization.
+\end{description}
+The remaining options are standard, and described in Section
+"Exit Status of Programs and Meanings of Some Options".
+Note, however, that the two '-op' options,
+'-opwa' and '-opgm', refer to the output format of the word-acceptor and
+general multiplier, resepctively. Since the former is one-variable and
+the latter two-variable, the default is dense for the former and sparse
+for the latter.
+\Section{gpaxioms}
+
+'gpaxioms [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l] [-f] [-n] <groupname>'
+
+This program performs the axiom-checking process on the word-acceptor and
+general multiplier of the short-lex automatic group,
+of which the rewriting-system defining the group is in the file <groupname>.
+It assumes that 'kbprog\ -wd' and 'gpmakefsa' has already been run on the
+group.
+It takes its input from <groupname> and <groupname>'.gm'. 
+There is no output to files (although plenty of intermediate files are
+created and later removed during the course of the calculation).
+
+If successful, there will be no output apart from routine reports, and the exit
+status will be 0. If unsuccessful, a message will be printed to 'stdout'
+reporting that a relation test failed for one of the group relations, and
+the exit status will be 2. I have never known this to happen, at least on
+the output of a successful run of 'gpmakefsa', so if it does, please inform
+me immediately!
+
+*Options*
+\begin{description}
+\item[|-f|]
+This is the same as in 'gpmakefsa'. That is, unminimized automata are not
+read into memory all at once during minimization.
+\item[|-n|]
+Normally, 'gpaxioms' works by first calculating a general multiplier for
+all words of length two in the group generators, and using these to
+build up the composite multipliers for longer words. This seems to be
+a good policy for nearly all examples, except possibly when there is
+a very large number of generators and relatively few relators.
+If the '-n' option is called, then this genral multiplier is not
+computed, and the composite multipliers are built up from the
+single basic multiplier automata alone.
+\end{description}
+
+The other options are standard, and described in Section 
+"Exit Status of Programs and Meanings of Some Options".
+\Section{gpmult}
+
+'gpmult [-ip d/s] [-op d/s] [-silent] [-v] [-l] <groupname>'
+
+This calculates the individual multiplier automata, for the monoid
+generators of the short-lex automatic group, of which the rewriting-system
+defining the group is in the file <groupname>.
+It assumes that 'autgroup' (or the three programs 'kbprog\ -wd', 'gpmakefsa'
+and 'gpaxioms') have already been run successfully on the group.
+Input is from <groupname>.'gm', and output is to <groupname>'.m'<n>
+(one file for each multiplier), for $n = 1, \ldots , ng+1$, where $ng$ is
+the number of monoid generators of the group. The final multiplier is
+the equality multiplier, which accepts $(u,v)$ if and only if $u = v$ and
+$u$ is accepted by the word-acceptor.
+All of the options are standard.
+\Section{gpminkb}
+
+'gpminkb [-op1 d/s] [-op2 d/s] [-silent] [-v] [-l] <groupname>'
+
+Suppose that the file <groupname> contains a rewriting-system
+defining a short-lex automatic group,
+and that 'autgroup' (or the three programs 'kbprog\ -wd', 'gpmakefsa'
+and 'gpaxioms') have already been run successfully on the group.
+This program calculates some associated automata, which can be
+interesting and useful. Input is from <groupname>'.wa' and from
+<groupname>'.diff2'.
+
+Firstly, a finite state automaton which accepts the
+minimal reducible words in the monoid generators (i.e. the set of
+left-hand-sides  of the (probably infinite) minimal confluent set of
+rewrite-rules) for the group is output to <groupname>'.minred'.
+Secondly, a two-variable finite state automaton accepting precisely
+this minimal confluent set of rewrite-rules
+for the group is output to <groupname>'.minkb'.
+Finally, the correct minimal first and second word-difference machines are
+computed and output to <groupname>'.diff1c' and <groupname>'.diff2c'.
+It may be interesting to compare these with <groupname>'.diff1' and
+<groupname>'.diff2', but remember that the states may be in a different
+order. (The states of a finite state automaton can be re-ordered into a
+standard order with the program 'fsabfs'. See Section "fsabfs".)
+The file <groupname>'.diff1c' can be used efficiently as input for
+'wordreduce'; see Section "wordreduce (automatic groups)" below.
+
+The options are all standard, but note that '-op1' refers to the format
+of the one-variable automaton in <groupname>'.minred' (and is dense by
+default), whereas '-op2' refers to the two-variable automata in
+<groupname>'.minkb', <groupname>'.diff1c' and <groupname>'.diff2c',
+and is sparse by default.
+
+\Section{wordreduce (automatic groups)}
+'wordreduce  [-kbprog/-diff1/-diff2/-diff1c] [-mrl <maxreducelen>] groupname'
+
+This program can be used either on the output of 'kbprog' or on the output
+of the automata package. The '-kbprog' option refers to the former use,
+which is described in Section "wordreduce (Knuth--Bendix)".
+The '-kbprog' usage is considerably quicker, but it is only guaranteed
+accurate when a finite confluent set of equations has been calculated. 
+The automatic groups programs are normally only used when such a set
+cannot be found, in which case the usage here is the only
+accurate one available.
+The '-kbprog' usage is the default if the file <groupname>'.kbprog' is present.
+To be certain of using the intended algorithm, call one of the flags
+'-diff1', '-diff2', '-diff1c' explicitly.
+If <groupname>'.kbprog' is not present, then input will be from
+<groupname>'.diff2' by default, and otherwise from <groupname>'.diff1'
+or <groupname>'.diff1c', according to which option is called.
+
+It is assumed that the file <groupname> contains a rewriting-system
+defining a short-lex automatic group,
+and that 'autgroup' (or the three programs 'kbprog\ -wd', 'gpmakefsa'
+and 'gpaxioms') have already been run successfully on the group.
+The '-diff1' option should only be used for input if  'autgroup' or
+'gpmakefsa' was run successfully with the '-diff1' option, in which
+case it will be the most efficient. (Otherwise you might get wrong answers.)
+The  '-diff1c' option can only be used if 'gpminkb' has already been run,
+but in that case it will be the most efficient.
+
+'wordreduce' reduces word in the group generators of the group to their
+minimal irreducible equivalent under the short-lex ordering.
+It can therefore be used to solve the word problem in the group.
+'wordreduce' prompts for the words to be input at the terminal.
+
+The option '-mrl\ <maxreducelen>' puts a maximum length on the words to
+be reduced. (In the situation here, they can never get longer during reduction.)
+The default is 32767.
+
+\Section{fsacount (automatic groups)}
+'fsacount  [-ip d/s] [-silent] [-v] [<filename>]'
+
+This is one of the finite state automata functions. See Chapter
+"Programs for Manipulating Finite State Automata" for the complete list.
+The size of the accepted language is counted, and the answer (which may
+of course be infinite) is output to 'stdout'. Input is from <filename> if
+the optional argument is present, and otherwise from 'stdin', and it
+should be a declaration of a finite state automaton record.
+
+If 'autgroup' (or the three programs 'kbprog\ -wd', 'gpmakefsa'
+and 'gpaxioms') have already been run successfully on the group defined
+in the file <groupname>, then running 'fsacount <groupname>.wa'
+will calculate the size of the group.
+For description of options, see Section
+"Exit Status of Programs and Meanings of Some Options".
+
+\Section{fsaenumerate (automatic groups)}
+
+'fsaenumerate  [-ip d/s] [-bfs/-dfs] <min> <max> [<filename>]'
+
+This is one of the finite state automata functions. See Chapter
+"Programs for Manipulating Finite State Automata" for the complete list.
+Input is from <filename> if
+the optional argument is present, and otherwise from 'stdin', and it
+should be a declaration of a finite state automaton record.
+<min> and <max> should be non-negative integers with <min> $\le$ <max>.
+The words in the accepted language having lengths at least <min> and at
+most <max> are enumerated, and output as a list of words to 'stdout'
+or to the file <filename>'.enumerate'.
+
+If 'autgroup' (or the three programs 'kbprog\ -wd', 'gpmakefsa'
+and 'gpaxioms') have already been run successfully on the group defined
+in the file <groupname>,
+then running 'fsaenumerate <min> <max> <groupname>.wa'
+will produce a list of elements in the group of which the reduced
+word representatives have lengths between <min> and <max>.
+If the option '-dfs' (depth-first search - the default) is called,
+then the words
+in the list will be in lexicographical order, whereas with '-bfs'
+(breadth-first-search), they will be in order of increasing length, and in
+lexicographical order for each individual length (i.e. in short-lex order).
+Depth-first-search is marginally quicker.
+For description of other options, see Section
+"Exit Status of Programs and Meanings of Some Options".
+
+\Section{gpgeowa}
+
+'gpgeowa [-op1 d/s] [-op2 d/s] [-silent] [-v] [-l/-h] [-f] [-diff1/-diff2]'\\
+'| || || || || || || | [-me <maxeqns>] [-mwd <maxwdiffs>] [-n] <groupname>'
+
+This program attempts to construct the geodesic word-acceptor of a
+word-hyperbolic group, after the automatic structure has been calculated.
+In theory, it works whenever the group is word-hyperbolic, so if it
+succeeds, then the group has been proved to have this property (due
+to a result proved by Panos Papasoglu in~\cite{PAP}),
+although it does not provide an estimate of the hyperbolic constant.
+If the group is not word-hyperbolic, then 'gpgeowa' will not terminate.
+
+It is assumed that the file <groupname> contains a rewriting-system
+defining a short-lex automatic group,
+and that 'autgroup' (or the three programs 'kbprog\ -wd', 'gpmakefsa'
+and 'gpaxioms') have already been run successfully on the group.
+The '-diff1' option should only be used for input if  'autgroup' or
+'gpmakefsa' was run successfully with the '-diff1' option, in which
+case it will be the most efficient. (Otherwise you might get wrong answers.)
+
+Input is from <groupname>'.wa' and  <groupname>'.diff2' (or <groupname>'.diff1'
+if the '-diff1' option is used). Output (when successful) is to the three
+files <groupname>'.geowa', which contains the geodesic word-acceptor,
+<groupname>'.geopairs', which contains a two-variable automaton whose
+language consists of all pairs of equal geodesic words in the group generators,
+and <groupname>.'geodiff', which contains a two-variable word-difference
+machine, consisting of the word-differences and transitions necessary for
+constructing <groupname>'.geopairs'.
+
+The '-me <maxeqns>', '-mwd <maxwdiffs>' and '-f' options are similar to those in
+'gpmakefsa' for example (see Section "gpmakefsa"). Other options are standard.
+
+If the '-n' option is called, then an additional 2-variable automaton
+is output to <groupname>'.near\_geopairs'.
+This automaton accepts all pairs of geodesic words $u$ and $v$ such
+such that $u^{-1}v$ has length at most one as a group element.
+
+\Section{Other programs}
+
+The other programs in the package will be simply listed here. For
+further details, look at their source files in the 'src' directory.
+If you are sure that you do not want them, and wish to save disk-space,
+you can safely delete their executables from the 'bin' directory.
+\begin{description}
+\item['gpwa'] Calculate word-acceptor.
+\item['gpgenmult'] Calculate general multiplier.
+\item['gpcheckmult'] Carry out the correctness test on the general multiplier.
+\item['gpgenmult2'] Calculate the general multiplier for words of length 2.
+\item['gpmult2'] Calculate a particular multiplier for a word of length 2.
+\item['gpcomp'] Calculate the composite of two multiplier automata.
+\end{description}
+
+\Section{Examples (automatic groups)}
+
+There is a collection of examples of short-lex automatic groups in the
+directory 'ag\_data' of widely varying difficulty. The automatic structure
+has been calculated and verified as correct in all cases, however.
+These can usefully be used as test examples for gaining experience in the
+use of the programs. We therefore give a brief summary below of how
+they behave.
+
+The 'autgroup' program will complete successfully in its default form on the
+following examples, in roughly increasing order of difficulty.
+The cpu-times quoted are on a SPARCstation 20.
+All 'degen<n>' examples, 'c2', 'ab1', 'f2', 'zw2', 'c5', 'ab2', '333',
+'334', 'trefoil', '235', 'gp55', '236', '238', '237', 'f2\_unusual',
+'shawcroft', 'torus', '237b' (up to this example, they took less than
+10 seconds cpu-time), 'listing', 'f26',
+'johnson', '777', 'gunn', 'hamish12', 'G1L1', 's9', 'cox535' (less than
+a minute up to this example), 'knot23', 'hamish13', 'hamish23',
+'orbifold', 'johnsonc', 'f28', the last taking just under 4 minutes. 
+Then, 'edjvet\_94\_1' takes about 18 minutes, 'picard' 35 minutes and 'andre'
+90 minutes.  Remember, that the '-f' option can be used for the larger
+examples if there are problems with memory or swapping, in which case
+the times will be a little longer; for example, 'edjvet\_94\_1' took just under
+20 minutes with '-f' on.
+
+For the examples, 'cox33334c' and 'cox5335', the '-diff1' option needs
+to be used. The former takes about 17 minutes and the latter 215 minutes.
+However, 'cox5335' works much better with the '-l' option on as well, when
+it only needs about 63 minutes. The examples 'surgery' and 'johnsonb'
+only complete with the '-l' option called, and take 65 and 150 minutes,
+respectively. 'f29' does not complete at all by just running 'autgroup -l',
+since the limit imposed on the maximum number of equations in 'kbprog' is
+still too small. This can be completed with a limit of about 500000 on
+the 'maxeqns' parameter, but it produces a temporary file of size about 140
+Megabytes during the course of the calculation.

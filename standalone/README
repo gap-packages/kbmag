@@ -1,0 +1,212 @@
+				KBMAG
+Version 2.4.3						11 March 1999.
+
+KBMAG stands for Knuth-Bendix on Monoids and Automatic Groups.
+The package has three principal applications:
+(i)  A standalone Knuth-Bendix program for finitely presented monoids;
+(ii) A package for calculating the automatic structure of a short-lex
+     automatic group, which supercedes the existing Warwick "Automata" package;
+(iii) A few programs for manipulating finite state automata.
+     (This now includes a program, written by Laurent Bartholdi, for
+      computing the growth function of a finite state automaton.)
+
+and the new features in Version 2.*,
+(iv) A version of the standalone Knuth-Bendix that is specially designed to
+     work with cosets of a subgroup of a group.
+(v) A package for calculating the automatic structure of an automatic coset
+    system (for the cosets of certain subgroups of short-lex automatic groups),
+    and to calculate a presentation of the subgroup.
+(vi) A program for calculating a finite state automaton that accepts a unique
+    word for each element of a suitable subgroup of a short-lex automatic group.
+
+All programs are in standard 'C', but there are three Bourne shell scripts
+(which are not completely essential for using the package).
+It is designed to run on any Unix sytem.
+ 
+NEW in Version 2.3: It is now possible to use kbmag with more than the
+previous default number of 127 generators. To use up to 65535 generators,
+before making the package, edit the file "defs.h" in the lib directory,
+and change the two lines:
+
+#define MAXGEN MAXCHAR /* maximum number of generators */
+typedef char gen; /* for generators of monoids and groups */
+
+to
+
+#define MAXGEN MAXUSHORT /* maximum number of generators */
+typedef unsigned short gen; /* for generators of monoids and groups */
+
+NEW in Version 2.4: There are one or two new programs, such as
+nfadeterminize, which determinizes a non-deterministic automaton,
+and fsareverse, which compute an fsa accepting the reversed language
+of a given fsa.
+
+There is a new file wordorder.g in the GAP directory written by Sarah Rees,
+which contains experimental GAP routines for computing automatic structures
+using orderings other than shortlex. These still have a few minor bugs,
+and potential users are advised to communicate by e-mail.
+
+Apart from that, the code has been substantially re-organized to
+reduce the number of external variables, so watch out for new bugs!
+
+CONTENTS
+--------
+
+This distribution contains a single directory, kbmag, which contains the
+following files:
+
+README 				(the file you are now reading)
+lib (directory)			.c files for library
+src (directory)			.c source files for executables
+bin (directory)			for executables - empty on distribution
+doc (directory)			documentation
+Makefile			general makefile to make all executables
+kb_data	(directory)		sample data files for Knuith-Bendix program
+ag_data	(directory)		sample data files for automatic groups program
+subgp_data (directory)		sample data files for subgroup & coset programs
+fsa_data (directory)		sample data files for general fsa programs
+gap				some GAP library files
+gapdoc				documentation for the GAP3 share package
+
+You will probably want to put the bin directory into your path.
+
+
+MAKING THE PACKAGE
+------------------
+
+By default, simply type "make" from within the kbmag directory
+
+If you are using bsd UNIX, rather than System V, you should however type
+"make SYSTEM=BSD" (this affects only timing information in the program kbprog).
+
+The default C-compiler is cc; to use gcc, type "make CC=gcc".
+
+The default compiler option is -O; to use -g, for example (if you wish to do
+your own debugging), then type "make COPTS=-g".
+
+To make things in two steps instead of one, first go into the lib directory
+and type "make" (+ any options) and then go into the src directory and type
+"make". (This is what the general "make" does anyway.)
+
+To recompile individual programs later, for example "kbprog", go into the src
+directory and type "make ../bin/kbprog".
+(To do this, the file "fsalib.a" must be present in the lib directory - this
+may have been removed, if you have done "make clean" in the meantime, in which
+case you will need to go back into lib and type "make" again.)
+
+If successful, you can remove .o and .a files by typing "make clean".
+
+You can remove everything created by make (and a few other things besides,
+such as .dvi files) by typing "make distclean".
+
+To do a very quick test, type "make test".
+You should get about 66 lines of output, with nothing which looks like
+an error message, ending with:
+#Subgroup word-acceptor is proved correct!
+If this succeeds, then things are probably working properly
+(although it is not a very thorough test).
+
+This package has not yet been compiled on a wide variety of machines, so
+you may encounter problems. If so, please let me know (and preferably sort the
+problem out yourself first).
+
+
+DOCUMENTATION
+-------------
+
+This is in the directory doc.
+The main documentation is in the latex file manual.tex.
+You need to run "latex manual" twice of course.
+The plain-text file fsa_format is a not completely precise and not completely
+up-to-date description of the file format for finite state automata that is
+used in the programs, and was agreed by the international GASP committee. You
+may be better off not bothering to read this, and just copying and editing the
+example files in the data directories.
+All of the files conform to GAP format, and so can be read from within the
+GAP system (Version 3). (See below.)
+
+
+SAMPLE DATA FILES
+-----------------
+
+These are in the directories kb_data, ag_data subgp_data and fsa_data. They
+correspond roughly to the three principal uses of KBMAG, as a standalone
+Knuth-Bendix program, an automatic groups package, corresponding calculations
+with subgroups and cosets, and a collection of programs for manipulating
+finite state automata. The files in fsa_data are simply the examples in the
+file doc/fsa_format.
+
+
+GAP FILES
+---------
+
+In the directory gap, there are some GAP library files, which contain
+functions that can be used to manipulate finite state automata and rewriting
+systems that are read into GAP from files produced by the programs in the
+package. See the manual for more information.
+
+
+Installing KBMAG as GAP share library package
+---------------------------------------------
+
+If you want to install KBMAG as a share library package for GAP V3, go
+into the directory where GAP resides on your system and from there
+into the directory pkg.  Unpack the tar file kbmag.tar in this
+directory:
+
+        tar xzf kbmag.tar.Z 
+
+After this has finished, perform the commands
+
+        cd kbmag
+        make -f Makefile.gap
+
+In order to update the GAP manual follow these instructions:
+
+        cp gapdoc/kbmag.tex ../../doc
+        cp gapdoc/kbmag.bib ../../doc
+        cd ../../doc
+
+Now edit the file manual.tex.  There is a list of lines of the form
+
+        \Include{...}
+
+towards the end of the file. Add the line 
+
+        \Include{kbmag}
+
+and, a couple of lines further down, add kbmag to the arguments of the
+command \bibliography:
+
+        \bibliography{manual,kbmag}
+
+All that is left to do now is to run  LaTeX and bibtex:
+
+        latex manual
+        bibtex manual
+        latex manual
+        latex manual
+
+
+When this is finished you should be able to use kbmag from within GAP
+via the GAP function RequirePackage():
+
+    gap> RequirePackage("kbmag");
+
+Typing 
+    
+    gap> ?KB
+
+gives you an introduction to the package.  Using `?>' one can step
+through the subsequent manual entries.
+
+Note that this way of installing KBMAG creates a subdirectory in the
+directory kbmag/bin with the name of the computer you are working on.
+In this way you can install KBMAG as a share library package on
+different computer architectures that share the same GAP directory.
+If you have several computers with the same architecture sharing the
+same GAP directory it is sufficient to install GAP on one of them and
+create symbolic links in the directory bin for each of the others.
+
+Please report all problems, bugs, etc. to me.
+(Derek Holt, dfh@maths.warwick.ac.uk)

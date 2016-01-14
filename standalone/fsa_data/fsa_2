@@ -1,0 +1,19 @@
+fsa_2 := rec (
+	isFSA := true,
+	alphabet := rec (type := "simple", size := 2),
+	states := rec (type := "simple", size := 2),
+	flags := [ "DFA", "minimized" ],
+	initial := [ 1 ],
+	accepting := [ 2 ],
+	table := rec(
+	  format :=  "dense deterministic",
+	  transitions := [
+	    [0, 2],
+	    [2, 2]
+	  ]
+	)
+);
+
+#Note that the language of fsa_1 is identical to the language of fsa_2
+#(i.e. all strings starting with the second symbol), and
+#fsa_2 is a minimized form of fsa_1.

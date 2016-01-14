@@ -1,0 +1,18 @@
+#A non-deterministic example
+fsa_3 := rec(
+	isFSA := true,
+	alphabet := rec (type := "simple", size := 2),
+	states := rec (type := "simple", size := 3),
+	flags := [ "NFA" ],
+	initial := [ 1, 3 ],
+	accepting := [ 2 ],
+	table := rec(
+	  format := "sparse",
+	  numTransitions := 8,
+	  transitions := [
+	    [ [1,2], [2,2] ],
+	    [ [1,2], [1,3], [2,1], [2,3] ],
+	    [ [0,1], [1,3] ]
+	  ]
+	)
+); 

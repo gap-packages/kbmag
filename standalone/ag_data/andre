@@ -1,0 +1,17 @@
+#Group produced by Andre Rocha
+#The fundamental group of the negatively curved Seifert-Weber manifold
+#Quite hard - use autgroup -l
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B,c,C,d,D,e,E,f,F],
+  inverses := [A,a,B,b,C,c,D,d,E,e,F,f],
+  equations := [
+    [B*c*e*F*a,IdWord],
+    [C*d*f*B*a,IdWord],
+    [D*e*b*C*a,IdWord],
+    [E*f*c*D*a,IdWord],
+    [F*b*d*E*a,IdWord],
+    [e*c*f*d*b,IdWord]
+  ]
+);

@@ -1,0 +1,19 @@
+#Coxeter group
+C4443 := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,c,d],
+  inverses := [a,b,c,d],
+  equations := [
+    [a*a,IdWord],
+    [b*b,IdWord],
+    [c*c,IdWord],
+    [d*d,IdWord],
+    [b*a*b*a,a*b*a*b],
+    [c*a*c,a*c*a],
+    [d*a,a*d],
+    [c*b*c*b,b*c*b*c],
+    [d*b*d*b,b*d*b*d],
+    [d*c*d*c,c*d*c*d]
+  ]
+);

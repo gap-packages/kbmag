@@ -1,0 +1,4 @@
+_RWS_Sub := rec(
+  subGenerators:=[a*b,c^2],
+  subGeneratorNames:=[x,y]
+);

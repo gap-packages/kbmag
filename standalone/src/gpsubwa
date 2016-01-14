@@ -1,0 +1,167 @@
+#! /bin/sh
+#File - gpsubwa
+#First set the path directory
+DIR=`echo $0 | sed -e 's/[^\/]*$//'`
+#echo $DIR
+if test -f ${DIR}gpmakesubwa
+    then
+                # found the necessary programs, so do nothing.
+                :
+        else
+                # Cant find the programs used in automata so give a warning.
+                echo Warning. Running ${DIR}automata
+                echo ${DIR}gpmakesubwa not found
+                echo Using versions in path.
+                DIR=
+fi
+GPMAKESUBWA=${DIR}gpmakesubwa
+GPCHECKSUBWA=${DIR}gpchecksubwa
+#Now find the options
+diff1=false
+diff1c=false
+diff1cos=false
+diff2cos=false
+large=false
+verbose=false
+veryverbose=false
+silent=false
+savespace=false
+groupname=
+subname=
+looping=false
+for i
+  do
+      case $i in
+  	-l|-large)		large=true;;
+  	-v|-verbose)		verbose=true;;
+  	-vv|-veryverbose)	veryverbose=true;;
+  	-s|-silent)		silent=true;;
+  	-d1|-diff1)		diff1=true;;
+  	-d1c|-diff1c)		diff1c=true;;
+  	-d1cos|-diff1cos)	diff1cos=true;;
+  	-d2cos|-diff2cos)	diff2cos=true;;
+  	-f|-savespace)		savespace=true;;
+  	-*)     echo Usage:
+             echo gpsubwa [-diff1/-diff1c] [-diff1cos/-diff2cos] [-large]
+    echo \ \ \ \ \ \ \ [-verbose] [-veryverbose] [-silent] [-savespace]
+    echo \ \ \ \ \ \ \ groupname [subname]
+                exit 1;;
+  	*) 	if test $subname
+  		then echo Usage:
+             echo gpsubwa [-diff1/-diff1c] [-diff1cos/-diff2cos] [-large]
+    echo \ \ \ \ \ \ \ [-verbose] [-veryverbose] [-silent] [-savespace]
+    echo \ \ \ \ \ \ \ groupname [subname]
+                exit 1
+  	 	elif test $groupname
+  		then subname=$i
+  		else groupname=$i
+  		fi;;
+      esac
+  done
+
+if test -z "$groupname"
+then  echo Usage:
+             echo gpsubwa [-diff1/-diff1c] [-diff1cos/-diff2cos] [-large]
+    echo \ \ \ \ \ \ \ \ [-verbose] [-veryverbose] [-silent] [-savespace]
+    echo \ \ \ \ \ \ \ \ groupname [subname]
+                exit 1;
+fi
+
+if test ! -r $groupname
+then	echo Error: cannot read file $groupname
+	exit 1
+fi
+
+if test -z "$subname"
+then	subname="sub"
+fi
+
+if test ! -r ${groupname}.${subname}
+then	echo Error: cannot read file ${groupname}.${subname}
+	exit 1
+fi
+
+while
+#This will loop until the correct subgroup word-acceptor has been found, and
+#then the script will encounter an "exit 0" statement
+  if test $diff1 = true
+  then gpmakesubwaflags=" -diff1 "
+  elif test $diff1c = true
+  then gpmakesubwaflags=" -diff1c "
+  else gpmakesubwaflags=""
+  fi
+  
+  if test $diff1cos = true
+  then gpmakesubwaflags=${gpmakesubwaflags}" -diff1cos "
+  elif test $diff2cos = true
+  then gpmakesubwaflags=${gpmakesubwaflags}" -diff2cos "
+  fi
+  
+  if test $large = true
+  then gpmakesubwaflags=${gpmakesubwaflags}" -l "
+  fi
+  if test $veryverbose = true
+  then gpmakesubwaflags=${gpmakesubwaflags}" -vv "
+  elif test $verbose = true
+  then gpmakesubwaflags=${gpmakesubwaflags}" -v "
+  elif test $silent = true
+  then gpmakesubwaflags=${gpmakesubwaflags}" -silent "
+  fi
+  if test $looping = true
+  then gpmakesubwaflags=${gpmakesubwaflags}" -w "
+  fi
+  if test $silent != true
+  then echo \#Running program to construct candidate subgroup word-acceptor 
+  echo "  "$GPMAKESUBWA $gpmakesubwaflags $groupname $subname
+  fi
+  $GPMAKESUBWA $gpmakesubwaflags $groupname $subname
+  if test  $? != 0
+  then
+  echo \#Program to construct candidate subgroup word-acceptor failed. \
+  Giving up.
+  exit 1
+  fi
+  if test $silent != true
+  then echo
+  fi
+  
+  if test $large = true
+  then gpchecksubwaflags=" -l "
+  else gpchecksubwaflags=""
+  fi
+  if test $veryverbose = true
+  then gpchecksubwaflags=${gpchecksubwaflags}" -vv "
+  elif test $verbose = true
+  then gpchecksubwaflags=${gpchecksubwaflags}" -v "
+  elif test $silent = true
+  then gpchecksubwaflags=${gpchecksubwaflags}" -silent "
+  fi
+  if test $savespace = true
+  then gpchecksubwaflags=${gpchecksubwaflags}" -ip s -f "
+  fi
+  if test $silent != true
+  then	echo \#Running program to check candidate subgroup word-acceptor
+  echo "  "$GPCHECKSUBWA $gpchecksubwaflags $groupname $subname
+  fi
+  $GPCHECKSUBWA $gpchecksubwaflags $groupname $subname
+  case $? in
+  	0) if test $silent != true
+  	   then echo \#Subgroup word-acceptor is proved correct!
+           fi
+    	   if test $looping = true
+  	      then rm -f ${groupname}.${subname}.words
+  	   fi
+  	   exit 0;;
+  	2) if test $silent != true
+  	   then echo \#Candidate subgroup word-acceptor is incorrect.
+     	   fi;
+  	   looping=true;;
+  	*)
+  echo \#Program to check candidate subgroup word-acceptor failed. \
+  Giving up.
+  exit 1;;
+  esac
+do
+  echo
+  echo \#Trying again using unaccepted words found.
+done

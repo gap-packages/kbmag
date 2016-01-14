@@ -1,0 +1,17 @@
+#Picard group
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,c,C,e],
+  inverses := [A,a,b,C,c,e],
+  equations := [
+    [b^2,IdWord],
+    [(a*b)^3,IdWord],
+    [A*C*a*c,IdWord],
+    [e^2,IdWord],
+    [(a*e)^2,IdWord],
+    [(c*e)^2,IdWord],
+    [(b*e)^2,IdWord],
+    [(c*b*e)^3,IdWord]
+]
+);

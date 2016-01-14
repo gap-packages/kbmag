@@ -1,0 +1,8 @@
+#Free group of rank 2.
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B],
+  inverses := [A,a,B,b],
+  equations := []
+);

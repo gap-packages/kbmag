@@ -1,0 +1,8 @@
+#Free abelian group of rank 2 - this ordering does not give finite confluent set
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,A,B],
+  inverses := [A,B,a,b],
+  equations := [ [b*a,a*b] ]
+);

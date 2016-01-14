@@ -1,0 +1,11 @@
+#A knot group
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [x,X,y,Y,t,T],
+  inverses := [X,x,Y,y,T,t],
+  equations := [
+    [t*x*T*X*Y*X,IdWord],
+    [t*y*T*Y*X,IdWord]
+  ]
+);

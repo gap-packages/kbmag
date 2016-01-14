@@ -1,0 +1,918 @@
+GASP Updated Standard Format Document (v1.1)
+
+by Scot Dyer (Lincoln, Nebraska), David Epstein (Warwick) and
+Derek Holt (Warwick), Paul Sanders (Warwick).
+
+Date: 11 August 1995.
+
+PHILOSOPHY
+
+We give the details of some file formats for finite state
+automata, for group presentations, for rewriting systems, and for some
+related objects. Why file formats?
+The main reason is that if one writes one's programs so that they
+always expect input and always give output in the agreed format, then
+the programs can cooperate with each other. Moreover, definite rules
+make it easy to write filters which convert one format into another.
+Software for which such rules are not fixed ahead of time is likely to
+be impossible to convert.
+
+We have decided to use the syntax of the GAP package. This is a widely
+used package for computational group theory developed at Aachen. Our hope
+is that programs developed using our file formats will thereby become
+part of GAP, an established system. This will make our programs
+accessible to people who have not yet heard of GASP. Using the GAP format
+make it easier to apply other parts of the GAP package before
+and/or after applying our programs. Another advantage is that details of
+design of language, including aspects such as flow of control, are left
+to others, and we are freed to concentrate on aspects which are more
+central to our interests.
+
+Fixing the format eases the use of Unix pipes, and information
+can also be exchanged using files.
+
+We have tried to design the formats so that they are easily readable
+by humans. In particular, our format is in readable ASCII characters.
+Human readability makes it much easier to check on correctness of
+input and output.
+I/O usually takes a very small proportion of the time 
+of a computational group theory package. If fast I/O is required for
+some purpose, this will presumably be in binary and subject to a very
+different set of criteria from the ones we have adopted in this
+document.
+
+
+INTRODUCTION
+
+This document is the development of some ideas which were discussed in the
+preliminary GASP (Groups, Automata and Semigroups Project)
+meeting in August 1994.
+This version was written at the WASGAS (Workshop on Algorithms and Software for
+Groups, Automata and Semigroups) meeting in August 1995, and contains a number
+of minor additions and amendments that have been introduced as a result of the
+experiences of programmers using the format during the past year.
+
+A formal description of the grammar has been written by Paul Sanders.
+
+For those completely unfamiliar with GAP, we have included a brief
+introduction to those parts of GAP syntax which are relevant to our
+file format in Appendix A, at the end of the document. Careful study
+of the examples below might also be sufficient. GAP is free and available
+from a number of sites via anonymous ftp. Further information is
+included in Appendix B.
+
+A small penalty we have to pay for using GAP rather than our very own
+format is that the GAP format may be a little more difficult for humans
+to read than our own format would be. However this is a small price
+to pay compared with the advantages. Some of us may develop our own
+formats which are easier for humans to read, and filters to and from GAP.
+However the main line will be the GAP format.
+
+Those who have already developed their own formats for finite state
+automata, are encouraged to write filters to and from GAP.
+
+It must be stressed that a file format is not the same thing as a data
+structure in a particular language. It is perfectly possible for a
+program to read in a "dense" file format and then decide to use a sparse
+data structure, or vice versa.
+
+This file format is intended to be extensible. If our file format
+is used by others, they are likely to be interested in different
+applications, and different fields will be necessary. Programmers
+using this file format should bear this possibility in mind,
+particularly when writing parsers. The program you wrote yesterday
+should not crash when the file format is extended tomorrow. Your
+program's response to an unknown field should be to issue a warning,
+and to continue to do its computation as well as it can.
+
+Future changes to the file format should take into account the need
+for compatibility. As far as possible, data files which run under one
+format should continue to run under future formats. We should not make
+changes lightly.
+
+Our philosophy is to keep our file format as simple as possible within
+these constraints. Our design is intended to deal with current
+applications and with applications we intend to develop in the near
+future. The value of an agreed file format is precisely that the number of
+possibilities is limited. Catering for all possible future extensions
+is counter-productive, in that time is wasted on ideas which will never
+be implemented; we also believe that looking forward too far will
+result in an unnecessarily complicated format. The shape of a file
+format needs to be guided by experience.
+
+We start with two important generalities.
+As in GAP, if the symbol '#' occurs, not within a quoted string, then that
+symbol and and all symbols up to and including the next newline should
+be ignored by input routines.
+(This is the method used for inserting comments within files.)
+
+If the backslash symbol '\' occurs followed immediately by a newline, then
+both are ignored.
+(This is the method used to break lines containing very long constructs.)
+
+FORMAT FOR A FINITE STATE AUTOMATON (FSA)
+
+Each of the following fields is required in each GAP record representing
+an FSA.  Each field name is followed by a type and a body of motivation and
+description of its function. Examples are given later in the document
+under the heading FSA EXAMPLES.
+The fields must occur in the order listed below, except that the
+'alphabet' and 'states' field can occur in either order, as can the
+'initial' and 'accepting' fields.
+To try and ensure that existing code doesn't break when the grammar is
+extended, we allow fields of the form
+         GAP identifier := GAP expression
+to occur anywhere in the record ( with a couple of exceptions ) provided
+that the result is still a legal GAP record and the identifier is not
+already used by us as a field identifier.
+Programs should be capable of reading over such fields and ignoring them,
+possibly printing a warning message.
+
+The naming convention used here is to use mixed case -- the first
+mnemonic component in the name of a field name is in lower case, and each
+of the subsequent mnemonic components begins with a capital letter.
+
+    isFSA : boolean
+
+        The isFSA slot is used merely to identify this record as a GAP/GASP FSA.
+        It must be set to true and must be the first field of the record.
+
+    alphabet: record
+    states: record
+
+        These fields are in the finite set record format, which describes a
+        fixed correspondence between a finite set (sometimes with additional
+        structure) and the set of natural numbers from 1 up to the cardinality
+        of that set. 
+        See:  FINITE SET RECORDS 
+
+        The alphabet field gives the labels of the transitions between states
+        and the state field gives the states of the automaton.
+
+    flags : list of strings
+
+        A particular flag is said to be set if it occurs in the list. If it
+        does not occur it is said to be unset. The following strings will be
+        supported in the current version of this format:
+        (Other flags which occur in files should probably be ignored by
+        programs, with the printing of a warning message.
+        This allows individual programmers to use their own local
+        flags without having to introduce them officially into the format.)
+
+        "DFA"
+            If set, the automaton is known to be deterministic.
+
+        "NFA"
+            If set, the automaton is known to be nondeterministic.
+
+        "MIDFA"
+            If set, the automaton is known to have a deterministic transition
+            table but (possibly) more than one initial state.
+
+        "minimized"
+            If set, the automaton is known to be minimized and
+            deterministic.
+
+        "accessible"
+            If set, the automaton is known to be have the property that
+            every state is reachable from an initial state.
+
+        "trim"
+            If set, the automaton is known to be have the property that
+            every state is reachable from an initial state, and furthermore
+            there is a path to a success state from every state.
+
+        "sparse"
+            If set, this flag indicates that it might be wise for the
+            programmer to use a data structure relevant to a sparse automaton
+            (few transitions from most states).
+
+        "dense"
+            If set, this flag indicates that it might be wise for the
+            programmer to use a data structure relevant to a dense automaton
+            (when the average number of transitions from a state exceeds
+            some ratio of the alphabet's size).
+                
+        "BFS"
+            If set, the automaton is known to be deterministic, and
+            the states occur in BFS (= breadth-first-search) order.
+            The alphabet is ordered as in the alphabet field. The initial state
+            is numbered 1, and other states are numbered consecutively, using a
+            breadth-first search controlled by the ordering of the alphabet.
+
+        In general, programs which read files in this format should not
+        be expected to check any of the properties of the automaton implied
+        by these flags, but will accept them as correct. So, if they were
+        incorrect, then programs would be liable to produce incorrect
+        results.
+                 
+    initial: list of positive integers
+    accepting: list of positive integers
+
+        These lists represent respectively the initial states of the
+        automaton and the accepting states of this automaton, encoded
+        according to the correspondences given by the states field
+        between actual states and natural numbers.
+        Note that the GAP expression [1..n], which is an abbreviation for
+        the list of integers  i satisfying 1 <= i <= n in their natural order,
+        may be used here.
+        
+	(Note that it is meaningless, though grammatically correct, for
+	the list of accept states to include an integer not
+	corresponding to any state.  Programs are entitled to assume
+	that their input is not only grammatical, but also meaningful.
+	Correspondingly greater care should be taken that output from
+	programs is always meaningful.  Programs which receive
+	meaningless input are entitled to give meaningless output---it
+	may take too long to check for meaningfulness. Programs
+	designed to accept human input should check for more than
+   	grammatical correctness.)
+
+    table: record
+
+        This field contains the transition table for the finite state
+        automaton.  It is a GAP record.  The table record must have a
+        'format' field, containing a string specifying the format of the
+        transition table itself.  The current possibilities for this string
+        are "sparse", "dense deterministic", and "dense nondeterministic".
+
+	The transitions themselves are specified in the field named
+        "transitions".
+        The 'format' field must be the first field of the table record - other
+        fields not in the list of required fields may occur anywhere else.
+        In the case of a sparse format, an optional field named 'defaultTarget'
+        may be specified ( provided that it occurs after the format field and
+        before the 'transitions' field ). This is explained below.
+        If present, it should be after the 'format' field and before the
+        'transitions' field.
+
+        Let n be the number of states and let m be the
+        size of the alphabet.  In all cases, the transition field is a list
+        with n entries, the i-th entry representing all transitions from
+        state with the number i.  However, the interpretation of the contents
+        of this i-th entry varies according to the format of the transition
+        table, and is given in the following.
+
+        "sparse"
+            the i-th entry is a list of entries of the form [x,j],
+            where x represents the label of a transition with source i, and j
+            represents the target of the transition. If x is a positive
+            integer, it should satisfy 1 <= x <= m, and it represents
+            the corresponding element of the alphabet which is the label
+            of the transition. If x is blank or 0 or the GAP string "epsilon"
+            then the transition is an epsilon transition in a
+            nondeterministic automaton.
+
+            Note that a "sparse" table may describe a DFA or an NFA,
+            depending on whether there is at most one transition
+            labeled by a given x, 1 <= x <= m. (In addition, to be
+            deterministic, there must be a unique initial state, and no
+            epsilon-transitions.)
+
+            If the optional 'defaultTarget' field is defined, then
+            its value should be an integer t satisfying 1 <= t <= n,
+            corresponding to some element of the state set.  The meaning
+            is that for any letter number x of the alphabet and any
+            state number i, if no transition is specified in the table with
+            source i and label x, then there is such an transition with
+            target  t.
+                
+        "dense deterministic"
+            The i-th entry is a list of  m entries.
+            The x-th entry j within the i-th entry represents a transition from
+            state i in which the label is the letter  with number x.
+            The entry j must either be blank, or an integer.
+            If j is a positive integer, then it must correspond to
+            the target state of this transition. If j is blank or a non-positive
+            integer, then there is no transition with source i and label x.
+
+        "dense nondeterministic"
+            The i-th entry is a list of at most m+1 entries.
+            The x-th entry j within the i-th entry represents the set of all
+            transitions from state i in which the label is the letter
+            with number x. The entry j must either be blank, or a list of
+            integers. If j is a list of integers, then j represents the set of
+            all targets with label number x and source i.
+            If j is blank, then there are no such transitions.
+            The (m+1)-th entry, if present, represents the targets of
+            all epsilon transitions from state i.
+
+        Some of these rules allow the same transition to be listed twice.
+        Programs are entitled to treat this as meaningless.
+
+FINITE SET RECORDS
+
+The purpose of a finite set record is to provide a one-to-one
+correspondence between an initial segment of the natural numbers and
+a finite set which will often have additional structure. All finite
+set records contain at least the following two fields, which must come in
+this order before other required fields.
+Other fields, not in the list of required fields may occur in any position
+after the 'type' field.
+Programs should be capable of reading over such fields and ignoring them,
+possibly printing a warning message.
+
+    type: GAP string
+    size: non-negative integer
+
+        The 'type' is a string saying what kind of algebraic structure
+        the set has.
+        The 'size' is the number of elements in the set.
+
+        The 'type' string should carry an implicit algorithm which has as
+        input a positive integer corresponding to an element of the set and
+        as output a humanly readable string corresponding to that element.
+        This algorithm should be recorded in the documentation for the
+        particular finite set record format and not in the record itself.
+
+Finite Set Record Format Types
+
+    "simple"
+        The "simple" type meets the minimal requirements of a finite
+        set record.  That is, it has only the fields named 'size' and
+        'type'. The algorithm used to convert to strings for humans to
+        read is to use the canonical translation from natural numbers
+        to strings over the decimal digits.
+
+    "identifiers"
+    "strings"
+        In these two cases, each element of the set has a name,
+        and no two elements have the same name. Two further fields 
+        besides 'size' and 'type' are required: 'format' and 'names'.
+        The former must precede the latter.
+        The 'names' field gives the list of names, in a format
+        defined  by the 'format' field (see below).
+
+        In the "identifiers" type, each name must be either a GAP
+        identifier (alphanumeric string starting with a letter or underscore),
+        or a GAP identifier followed by a '.' and a positive
+        integer  <n> (for example gp.3).
+        (In GAP syntax, the second form is actually a reference to a
+        field of a record, but it is used principally to denote the
+        n-th generator of the algebraic structure named by the
+        GAP identifier.)
+
+        In the "strings" type, each name must be a GAP string,
+        which is essentially any string of characters enclosed in
+        double-quotes.
+ 
+        Identifiers, words and strings all print as their GAP 
+        input representation.
+
+        The 'format' field must be set to one of the two strings "dense"
+        and "sparse".  In the dense format, the 'names' field is simply a list
+        of length equal to the size of the set, of which the x-th entry is the
+        name of the element of the set with the number  x.
+
+        In the sparse format, the 'names' field is a list of entries of the
+        form [x,z], meaning that the name of the element of the set with the
+        number  x is  z. (Since all elements of the set have a unique name,
+        this list will again have length equal to the size of the set.)
+
+	Note that in the previous two paragraphs, the words 'dense'
+	and 'sparse' do not convey the true intentions of designers of
+	this file format. The motivation for having these two
+	possibilities is that the first is more compact and easy to
+	understand for a small alphabet, whereas when the alphabet is
+	huge, the second will help the
+	human to get right the correspondence between the ordinal number x
+	of the letter in the alphabet and the name z. The motivation
+	for the choice of word 'dense' and 'sparse' is to make
+	the usage consistent with other parts of this document, and
+	therefore easier to remember.
+
+    "words"
+    "list of words"
+        In these two types, three further fields are required 'alphabet',
+        'format' and 'names', and must occur in that order.
+        The 'alphabet' field contains a list of GAP identifiers.
+        This specifies the identifiers that may appear in the words
+        that occur in the 'names' field.
+        The 'format' field has the same meaning as it does in the "identifier"
+        and "strings" types.
+
+        In the "words" type, each name must be a GAP word.
+        A GAP word is  either equal to 'IdWord' (representing the empty word)
+        or to an expression of the form <q_1>*<q_2>* ... <q_r> for some
+        r >= 1, where each <q_i> is either an identifier, or an expression of
+        the form <ident>^<integer>, where <ident> is a GAP identifier.
+        In the "list of words" type, each name is a GAP list of GAP words.
+        All identifiers used in the words must be in the 'alphabet' list.
+        Identifiers print as their GAP input representation.
+
+
+    "labeled" or "labelled" (user's choice)
+        Here we have a finite set labeled by another finite set.
+        This is the most flexible of the finite set record types, and
+        is included to provide for applications which we have not yet
+        foreseen.
+        Three fields beyond 'size' and 'type' are required: 'labels',
+        'format' and 'setToLabels'.
+        These fields must occur in that order.
+
+        The 'labels' field contains a finite set record representing
+        the set of labels.
+
+        The 'format' field contains a GAP string, either "dense" or
+        "sparse", and describes the format of the 'setToLabels' field.
+
+	The 'setToLabels' field describes the labeling in terms of a
+	(partial) function.  Let m be the cardinality of the finite set
+	itself (i.e. the value of its 'size' field), and p be the
+	cardinality of the 'labels' set in the following:
+
+	In the "dense" format, the 'setToLabels' field takes the form
+	of a (partial) list with m entries, each entry z satisfying
+        0 <= z <= p.  The i-th entry in the list specifies the number of
+	the label assigned to the i-th element of the finite set. It
+	may be blank or 0, indicating no label.
+
+        In the "sparse" format, the 'setToLabels' field takes the form of a
+        list of two-element lists [i,z], with 1 <= i <= m and 1 <= z <= p.
+        Each entry signifies that element number z of the 'labels' set labels
+        element number i of the finite set.  It is meaningless to label
+        the same element of the base alphabet two different ways.
+
+        Elements of a labeled set print as X-Y where X is the number
+        of the element of the set being printed, and Y is
+        the printed representation of the label, or the empty string
+        if that element of the set is unlabeled.
+
+        Example:
+            rec (type := "labeled", size := 4,
+               labels := rec (type := "words", size:=2, alphabet := [a,b],
+                              format := dense, names := [a*b, IdWord]),
+               format := "sparse",
+               setToLabels := [[1,1],[3,2]])
+
+        has 4 elements which print as:
+
+                1-a*b
+                2-
+                3-IdWord
+                4-
+
+    "product"
+        In this case, the set is in one-one correspondence with the
+        n-tuples of a base set together with a padding symbol.
+        (The point of the padding symbol is to allow  n  words of
+        possibly different lengths in the alphabet of the base set
+        to be put together to form a word in the alphabet of the product set.
+        The padding symbol is added to the end of some of these words until
+        they all have the same lengths.)
+
+        Three fields beyond 'size' and 'type' are required: 'arity',
+        'padding' and 'base'.
+        'arity' and 'padding' can occur in either order, but they must
+        precede 'base'.
+        
+        The positive integer n must be specified in the 'arity' field of the
+        record.
+
+        The padding symbol must be specified in the 'padding' field of
+        the record, and it should be an identifier or string - in the
+        case of identifier, a single underscore `_' is recommended.
+
+        The base set must be specified in the 'base' field of the record,
+        and it should itself be a finite set record. The base set
+	should not include the padding symbol. The base set has its
+	natural order, and the padding symbol is normally ordered after
+	the elements of the base set.
+
+        The algorithm to convert from the natural number representing the
+        state to its printing form is to number the n-tuples
+	lexicographically, and then use their list representations.
+
+        Example: 
+
+          rec(type:="product", size:=9, arity:=2, padding:=_,
+             base:=rec(type:="identifiers",size:=2,format:="dense",names:=[a,b])
+          )
+
+        has 9 elements which print as:
+
+           [a,a]
+           [a,b]
+           [a,_]
+           [b,a]
+            ... 
+           [_,_]
+
+
+FSA EXAMPLES:
+
+fsa_1 := rec (
+	isFSA := true,
+	alphabet := rec (type := "simple", size := 2),
+	states := rec (type := "simple", size := 3),
+	flags := [ "DFA" ],
+	initial := [ 1 ],
+	accepting := [ 2, 3 ],
+	table := rec(
+	  format := "sparse",
+	  transitions:=[
+	     [ [2, 2] ],
+	     [ [1, 2], [2, 3] ],
+	     [ [1, 2], [2, 3] ]
+	  ]
+	)
+);
+
+fsa_2 := rec (
+	isFSA := true,
+	alphabet := rec (type := "simple", size := 2),
+	states := rec (type := "simple", size := 2),
+	flags := [ "DFA", "minimized" ],
+	initial := [ 1 ],
+	accepting := [ 2 ],
+	table := rec(
+	  format :=  "dense deterministic",
+	  transitions := [
+	    [0, 2],
+	    [2, 2]
+	  ]
+	)
+);
+
+#Note that the language of fsa_1 is identical to the language of fsa_2
+#(i.e. all strings starting with the second symbol), and
+#fsa_2 is a minimized form of fsa_1.
+#The following two examples are nondeterministic automata accepting the
+#same language. They are identical, but different formats are used for
+#their transition tables.
+
+fsa_3 := rec(
+	isFSA := true,
+	alphabet := rec (type := "simple", size := 2),
+	states := rec (type := "simple", size := 3),
+	flags := [ "NFA" ],
+	initial := [ 1, 3 ],
+	accepting := [ 2 ],
+	table := rec(
+	  format := "sparse",
+	  transitions := [
+	    [ [1,2], [2,2] ],
+	    [ [1,2], [1,3], [2,1], [2,3] ],
+	    [ [0,1], [1,3] ]
+	  ]
+	)
+); 
+
+fsa_4 := rec(
+	isFSA := true,
+	alphabet := rec (type := "simple", size := 2),
+	states := rec (type := "simple", size := 3),
+	flags := [ "NFA" ],
+	initial := [ 1, 3 ],
+	accepting := [ 2 ],
+	table := rec(
+	  format := "dense nondeterministic",
+	  transitions := [
+	    [ [2], [2] ],
+	    [ [2,3], [1,3] ],
+	    [ [3], [], [1] ] # the LAST entry is the epsilon transition
+	  ]
+	)
+); 
+
+fsa_5 := rec (
+# This is the word-acceptor for the free group on two generators a,b
+# A and B are the inverses of a and b respectively.
+# The accepted language consists of all strings that do not have
+# aA, Aa, bB or Bb as a substring.
+           isFSA := true,
+        alphabet := rec (
+              type := "identifiers",
+              size := 4,
+            format := "dense",
+             names := [a,A,b,B]
+               ),
+          states := rec (
+	# This is a contrived example to illustrate the labeled type.
+              type := "labeled",
+              size := 5,
+	    labels := rec(type:="strings", size:=2, format:="dense",
+		          names:=["early state","late state"]
+                      ),
+            format := "dense",
+       setToLabels := [1,1,,2,2]
+               ),
+           flags := ["DFA","minimized","BFS"],
+         initial := [1],
+       accepting := [1..5],
+           table := rec(
+		format := "dense deterministic",
+	   transitions := [
+		      [2,3,4,5],
+                      [2,0,4,5],
+                      [0,3,4,5],
+                      [2,3,4,0],
+                      [2,3,0,5]
+                     ]
+	       )
+);
+
+fsa_6 := rec (
+# This is the word-difference machine arising in the automatic structure
+# of the free group on two generators.
+# It is included here to illustrate the product set record type.
+           isFSA := true,
+        alphabet := rec (
+              type := "product",
+              size := 24,
+             arity := 2,
+           padding := _,
+              base := rec (
+                type := "identifiers",
+                size := 4,
+              format := "dense",
+               names := [a,A,b,B]
+                 )
+               ),
+          states := rec (
+              type := "words",
+              size := 5,
+              alphabet := [a,A,b,B]
+	      format := "sparse",
+              names := [[ 1, IdWord],
+                       [ 2, a],
+                       [ 3, A],
+                       [ 4, b],
+                       [ 5, B]
+                      ]
+               ),
+           flags := ["DFA"],
+         initial := [1],
+       accepting := [1],
+           table := rec(
+		format := "sparse",
+	   transitions := [
+                    [[ 5, 3 ],[ 10, 2 ],[ 15, 5 ],[ 20, 4 ]],
+                    [[ 5, 1 ]],
+                    [[ 10, 1 ]],
+                    [[ 15, 1 ]],
+                    [[ 20, 1 ]]
+           ]
+	)
+);
+
+FORMAT FOR A REWRITING SYSTEM (RWS)
+
+Some or all of the following fields are required in each GAP record
+representing an RWS.  Each field name is followed by a type and a body of
+motivation and description of its function.
+Examples are given later in the document under the heading RWS EXAMPLES.
+The fields that are present must occur in the order listed below except that
+the ordering and generatorOrder fields can come in either order.
+Other fields not required by the format may occur in any position after the 
+"isRWS" field ( which must be the first field of the record ).
+Programs should be capable of reading over such fields and ignoring them,
+possibly printing a warning message.
+In particular, there are many possible fields that might be used to
+control the running of a Knuth-Bendix program, such as limits on the
+total number of rewriting rules, on the maximal lengths of stored rules,
+or on the maximal lengths of overlaps to be processed. We shall not
+attempt to list all such possibilities in detail.
+
+    isRWS : boolean (compulsory)
+ 
+         The isRWS slot is used merely to identify this record as a GAP/GASP
+         RWS. It must be set to true.
+ 
+    isConfluent: boolean (optional)
+         This can be used if the system of rewriting rules is known to be
+         confluent, or known not to be confluent.
+ 
+    ordering: string (compulsory)
+         This defines the ordering used on words in the generators, when
+         forming the rewriting rules. Some possibilities are
+         "shortlex", "wtshortlex", "recursive", "wreathprod".
+         Others may be added freely by programmers.
+ 
+    generatorOrder: list of identifiers (compulsory)
+         This is a list of GAP identifiers, which are the generators of
+         the underlying group or monoid of the rewriting system.
+         The field is called 'generatorOrder' to emphasise the fact that
+         the order in which they occur in this list is significant in
+         defining the ordering of words in the generators.
+ 
+         Some of the orderings may require a further field to complete
+         the definition of the orderings on strings, and this should
+         come here.
+         For example, the "wtshortlex" ordering requires a field 'weight',
+         which is a list of integers, specifying the weights of the
+         generators. The "wreathprod" ordering requires a 'level' field,
+         which specifies the levels of the generators.
+ 
+    inverses: list of identifiers (compulsory)
+         This should be a GAP list, of length at most that of
+         the list 'generatorOrder', specifying the two-sided inverses, if
+         any, of the generators. If a generator has no such inverse (or
+         is not known to), then that entry should be blank. The non-blank
+         entries must (currently) themselves be generators (although
+         words in the generators would also make sense mathematically),
+         and if the inverse of generator 'x' is 'y', then the inverse of
+         'y' must be specified as 'x'.
+         If it is required that a program reading the file should recognise
+         the monoid being defined to be a group, then all generators should
+         have inverses specified.
+         Currently, there is no facility for specifying right- or left-
+         inverses, although that might be introduced in the future.
+ 
+    equations: list of lists (compulsory)
+         This field contains the relations or equations which define the
+         group or monoid. Each entry in the list corresponds to one such
+         relation, and should itself be a list of length two, containing the
+         two GAP words  'w1' and 'w2' in the generators for which 'w1 = w2'
+         is the relation. Remember that 'IdWord' is the GAP name for the
+         empty word.
+         The relations in the group that are implicitly defined by the
+         'inverses' field do not need to be inserted here, although it
+         is not an error to do so.
+
+RWS EXAMPLES
+
+1. 
+#A knot group
+rws_1 := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [x,X,y,Y,t,T],
+  inverses := [X,x,Y,y,T,t],
+  equations := [
+    [t*x*T*X*Y*X,IdWord],
+    [t*y*T*Y*X,IdWord]
+  ]
+);
+ 
+2.
+#monoid presentation of F(2,7) - should produce a monoid of length 30
+#which is the same as the group, together with the empty word.
+rws_2 := rec(
+  isRWS := true,
+  ordering := "recursive",
+  maxstoredlen := [15,15], #a control parameter
+  generatorOrder := [a,b,c,d,e,f,g],
+  inverses := [], #no inverses
+  equations := [[a*b,c], [b*c,d], [c*d,e], [d*e,f], [e*f,g], [f*g,a], [g*a,b]
+               ]
+);
+ 
+
+3.
+# Note that the generator _H, which stand for a subgroup, has no inverse in
+# this example.
+rws_3 := rec(
+  isRWS := true,
+  ordering := "wreathprod",
+  tidyint := 10, # a control parameter not explicitly defined in the format
+  generatorOrder := [a,b,A,B,_H,x,X],
+  level := [2,2,2,2,1,1,1],
+  inverses := [A,B,a,b,,X,x],
+  equations := [
+    [_H*a*b,x*_H], [b*a,a*b]
+  ]
+);
+
+
+APPENDIX A
+
+AN INTRODUCTION TO GAP SYNTAX
+
+GAP syntax is highly regular, with only a few basic building blocks and
+ways of structuring data.
+
+GAP identifiers are one of the basic building blocks employed by our
+format.  Their definition is almost exactly that of identifiers in any
+other language - i.e. a string of alphanumeric symbols or underscores
+starting with a letter or underscore.
+
+Note that, in the format description above, we have used the concept
+"identifier" in a slightly wider sense, to include a GAP identifier
+having a suffix of a natural number preceded by a decimal point ('.')
+For example:  gp11_b.12 ). Such expressions are used in GAP to denote
+generators of algebraic objects (and actually represent field values of
+a record).
+
+An identifier may not be a reserved word (as usual).
+
+GAP has integer values, which are represented exactly the way you would
+expect.
+
+GAP has ASCII strings as a basic component, delimited by double-quotes.
+
+GAP allows one to write expressions in a group using identifiers to
+denote group elements and denoting the group's multiplication by '*'
+and powers by '^'.  The special identifier 'IdWord' stands for the
+identity element.  Inverses may be represented by raising an element to
+the -1 power.  Such group expressions are referred to as 'words' in
+this document.
+
+The most basic aggregate data type in GAP is the list.  Lists are
+delimited by square brackets ('[' and ']'), and within elements of
+the lists are comma separated.  GAP lists may be heterogeneous,
+containing any valid GAP values as elements.  GAP lists may be partial
+in the sense that they may omit values for some elements.
+
+Finally, GAP allows data to be aggregated with the individual pieces
+named by GAP identifiers rather than merely being distinguished
+positionally, as in a list.  The vehicle for this is the GAP record.
+Syntactically, this begins with the GAP reserved word 'rec' followed by
+a comma separated sequence of field assignments in round brackets ('('
+and ')').  Each field assignment takes the form of a GAP identifier,
+the special symbol ':=' and the GAP value to be associated to that
+name, which may be any legal GAP value, including another record.
+
+APPENDIX B
+
+(This is an extract from the GAP "README" document.)
+
+How to get GAP
+==============
+
+    GAP is distributed  *free of  charge*.  You can obtain it   via 'ftp' and
+    give it away to your colleagues.
+
+    If you get GAP, we would  appreciate it if  you could notify us, e.g., by
+    sending a  short e-mail  message to 'gap@math.rwth-aachen.de', containing
+    your full name and address, so that we have a rough idea of the number of
+    users.  We  also hope that  this number will  be large enough to convince
+    various agencies that GAP is a project worthy of (financial) support.  If
+    you publish some result  that  was partly obtained  using GAP,  we  would
+    appreciate it if you would cite GAP, just as you would cite another paper
+    that  you used.  Again we  would appreciate if  you could inform us about
+    such a paper.
+
+    We  distribute  the *full  source* for  everything,  the C  code  for the
+    kernel, the GAP code for the library, and the LaTeX  code for the manual,
+    which has at present about 1100 pages.  So it should be no problem to get
+    GAP, even if you have a rather uncommon system.   Of course, ports to non
+    UNIX systems may require  some  work.   We already have  ports for IBM PC
+    compatibles with an Intel 80386 or 80486  under MS-DOS, Windows, or OS/2,
+    for the Apple Macintosh under MPW  (we hope to provide  a standalone port
+    soon), for the Atari ST under  TOS, and for DEC VAX  and  AXP  under VMS.
+    Note that about 4 MByte of main memory and a harddisk are required to run
+    GAP.
+
+    GAP 3.4 (currently at patchlevel 1)  can be obtained by  anonymous  *ftp*
+    from the following servers.
+
+    'ftp.math.rwth-aachen.de':
+            Lehrstuhl D fur Mathematik, RWTH Aachen, Germany (137.226.152.6);
+            directory '/pub/gap/'.
+
+    'dimacs.rutgers.edu':
+            DIMACS, Rutgers, New Brunswick, New Jersey (128.6.75.16);
+            directory '/pub/gap/'.
+
+    'math.ucla.edu':
+            Math. Dept., Univ. of California at Los Angeles (128.97.4.254);
+            directory '/pub/gap/'.
+
+    'dehn.mth.pdx.edu':
+            PSU Mathematics Department, Portland State Univ (131.252.40.89);
+            directory '/mirror/gap/'.
+
+    'pell.anu.edu.au':
+            School of Mathematical Sciences, Australian National Univ.  
+	    (150.203.33.4); directory '/pub/gap/'.
+
+    'ftp' to the server  *closest* to  you, login as user 'ftp' and give your
+    full  e-mail  address  as password.  GAP  is in the  directory 'pub/gap'.
+    Remember when you transmit  the files  to set the  file  transfer type to
+    *binary image*, otherwise you will only receive unusable  garbage.  Those
+    servers will always have the latest version of GAP available.
+
+    The  'ftp' directory contains the  following files.  Please   check first
+    which files you need, to avoid transferring those that you don't need.
+
+    'README':               the file you are currently reading.
+
+    'gap3r4p0.zoo':         This  file contains the  *complete*  distribution
+                            of GAP version 3 release 4  current patchlevel 0.
+                            It is a 'zoo' archive approximately 8 MByte big.
+
+    'unzoo.c':              A simple 'zoo' archive extractor, which should be
+                            used  to  unpack  the  distribution.  The 'utils'
+                            subdirectory contains ready  compiled executables
+                            for common systems.
+
+    More files are in the following *subdirectories*:
+
+    'bin':                  This directory contains *executables* for systems
+                            that dont come with a C compiler or where another
+                            C compiler  produces  a  faster  executable.  The
+                            'KERNELS' file tells you  which  executables  are
+                            here.
+
+    'split':                This directory contains the complete distribution
+                            of GAP 3r4p0  in  several  'zoo'  archives.  This
+                            allows you to get only the  parts  that  you  are
+                            really interested in.  The 'SPLIT' file tells you
+                            which archive contains what.
+
+    'utils':                This directory contains  several  utilities  that
+                            you may need to get or upgrade GAP, e.g., 'unzoo'
+                            and  'patch'.  The  'UTILS'  file tells you which
+                            files are here.
+

@@ -1,0 +1,164 @@
+Dear Mark and David,
+
+I believe now that I can prove Mark's group automatic, by a combination
+of computer calculation and reasoning. If my proof is correct, then it
+quite an interesting example of such a combined approach.
+I hope that at least one of you will check the theoretical part of
+the argument for reasonableness!
+
+The given presentation of the group was:
+
+>xaxa=t
+>bxbx=t
+>bbtaa=t
+>Abr=rAb
+>yt=ty
+>btay=ybta
+
+I could not make much progress with it as it stood, but I found a few
+substitutions made things easier.
+
+Eliminating t, we get:
+
+xaxa=bxbx
+bbbxbxaa=bxbx
+Abr=rAb
+ybxbx=bxbxy
+bbxbxay=ybbxbxa
+
+Then putting u=xa and eliminating a (=Xu),
+and v=bx and eliminating x (=Bv), we get
+
+u^2 = v^2,
+b^2v^2VbuVbu = v^2  which simplifies (using u^2=v^2) to bvbu = BuBv,
+UBvbr = rUBvb,
+yu^2 = u^2y
+ybvbu = bvbuy.
+
+Call this group G. I still could not do much with the complete presentation,
+but leaving out the generator y and the last two relations, kbmag
+completes fairly easily on the resulting group 
+H = < u,b,v,r | u^2 = v^2, bvbu = BuBv, UBvbr = rUBvb>
+showing that this is shortlex automatic.
+(Word acceptor has 311 states and multipliers 1425 states.)
+
+Now G is an HNN extension of the group H, where the new generator  y
+centralises the subgroup  K = <u^2, bvbu> of H.
+Let T be a right transversal of K in H.
+Then by the theory of HNN extensions, each g in G has a unique expression
+
+k t_1 y^(n_1) t_2 y^(n_2) ... t_r y^(n_r)
+
+where k is in K, t_i in T and n_i are integers (with various nontriviality
+conditions like all t_i except possibly t_1 are nontrivial and
+all n_i except possibly n_r are nonzero).
+
+I want to show that this normal form essentially forms the language for
+an automatic structure for G.
+
+I can show using kbmag that H is coset automatic with respect to the
+subgroup K. This means that we can choose T (in fact we take the
+shortlex least representatives of the cosets of K in H as members of T)
+to be a regular langauge, such that the set of pairs (t_1,t_2) in T x T
+with the property that Kt_1x = Kt_2, for some (monoid) generator x of H
+is also a regular language.
+
+In fact, by inspecting the automata involved in these calculations, it
+can be seen that in all equations of the form
+t_i x = k t_j, for t_i in T, k in K, and x a generator of H, or one of the
+elements u^2,  bvbu, bvbU of K, the only elements  k  that arise are these
+same three elements u^2,  bvbu, bvbU and their inverses.
+(This property is specific to this particular example, but is essential
+for the proof of automaticity of  G.)
+
+A presentation of K can also be derived in a fairly easy way from this
+automatic coset structure, and it turns out (not surprisingly) that K is
+free on its two generators u^2 and bvbu. Thus, we can use the obvious
+normal form based on this for the initial element  k  in the normal form
+
+k t_1 y^(n_1) t_2 y^(n_2) ... t_r y^(n_r)
+
+for  G.
+
+Putting these facts together, it follows that in an equation of the form
+
+k t_1 y^(n_1) t_2 y^(n_2) ... t_r y^(n_r) x =
+l u_1 y^(m_1) u_2 y^(m_2) ... u_s y^(m_s)
+
+in G, with x a monoid generator of G, t_i, u_i in T, and  k,l in K, the two
+words 
+
+k t_1 y^(n_1) t_2 y^(n_2) ... t_r y^(n_r) and
+l u_1 y^(m_1) u_2 y^(m_2) ... u_s y^(m_s)
+
+will fellow travel. This is obvious if x = y or Y, and otherwise  x  is
+a generator of  H, and when we multiply the first word by  x, the 
+t_i change into u_i, and one of the elements u^2,  bvbu, bvbU or their
+inverses (which all commute with y) moves each time past the power of y 
+and into the next position to the left.
+
+Best wishes,
+Derek.
+From daemon Wed Jul 30 16:54:02 1997
+Received: from mail.bna.bellsouth.net by ribble.maths.warwick.ac.uk; Wed, 30 Jul 1997 16:53:56 +0100 (BST)
+Received: from dialin.inetnebr.com (host-32-96-72-76.bna.bellsouth.net [32.96.72.76])
+	by mail.bna.bellsouth.net (8.8.5/8.8.5) with SMTP id LAA22825;
+	Wed, 30 Jul 1997 11:53:48 -0400 (EDT)
+Message-ID: <33DF6397.4964@bellsouth.net>
+Date: Wed, 30 Jul 1997 10:53:59 -0500
+From: Mark Sapir <msapir@bellsouth.net>
+Reply-To: mvs@unlinfo.unl.edu
+Organization: Vanderbilt
+X-Mailer: Mozilla 3.01Gold (Win95; I)
+MIME-Version: 1.0
+To: Derek Holt <dfh@maths.warwick.ac.uk>
+Subject: Re: What is this group?
+References: <7799.199707291328@thames>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Status: RO
+Content-Length: 2141
+
+Dear Derek,
+
+Sorry for a long delay. I was moving to Nashville (TN): I am now a
+Professor at Vanderbilt. Now I am almost settled, only a few boxes are
+still to be unpacked.
+
+The group I sent to David was supposed to be a building block in the
+construction of groups with given Dehn functions. In order to construct
+such a group one needed to 
+take a Turing machine and then using iseas similar to those of Boone,
+Collins and others, interpret it in a group. The 
+goal was to get a group whose Dehn function is not much bigger than the
+time function of the original Turing machine. The problem with this idea
+is that Boone and others used relations like x^a=x^2 where x^a=a^-1xa
+(Baumslag-Solitar relations). These
+relations make the Dehn function exponential, so there is no hope we'll
+get a subexponential Dehn functions as a result. So at some point I
+thought that it would be possible to replace the Baumslag-Solitar
+relations by some other set of relations which would do the same trick
+as B-S relations but would not cause exponential blow up of the Dehn
+function. The main property (for my purpose) of the B-S-relation is that
+x^(a^n)=x^k for some k if and only if n is positive. I tried to get
+another set of relations with 
+similar property. This is how I came up with the set of relations that I
+sent to David. I thought that I proved that the property I needed is
+true and I wanted to make sure that the Dehn function of this group is
+polynomial. 
+But after I sent this group to David and received your confirmation that
+the group is automatic, I discovered that the group does not satisfy my
+property. Later I abandoned 
+my  attempts to replace B-S relations and found a completely new
+approach to the problem (the paper has been submitted to a journal, you
+can download it from 
+http://www.math.unl.edu/~msapir, it is big, about 100 pages). Thus this
+group turned out not to be very usefull. But the fact that you proved
+that it is automatic saved me some time: insteads of proving that the
+Dehn function of this group is polynomial, I could concentrate on "my
+property". This is the history of this group. 
+
+Best regards,
+
+Mark
+

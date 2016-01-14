@@ -1,0 +1,21 @@
+# Borromean rings group branched of order 4
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B,c,C,d,D,e,E,f,F],
+  inverses := [A,a,B,b,C,c,D,d,E,e,F,f],
+  equations := [
+    [a*a*a*a,IdWord],
+    [b*b*b*b,IdWord],
+    [c*c*c*c,IdWord],
+    [d*d*d*d,IdWord],
+    [e*e*e*e,IdWord],
+    [f*f*f*f,IdWord],
+    [a*b*A*e,IdWord],
+    [b*c*B*f,IdWord],
+    [c*d*C*a,IdWord],
+    [d*e*D*b,IdWord],
+    [e*f*E*c,IdWord],
+    [f*a*F*d,IdWord]
+  ]
+);

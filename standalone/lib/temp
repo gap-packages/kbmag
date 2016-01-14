@@ -1,0 +1,116 @@
+
+int
+wreath_compare(w1,w2,rwsptr)
+        gen *w1, *w2;
+  rewriting_system *rwsptr;
+/* Compare w1 and w2 to see which comes first in the wreath-product ordering
+ * (as defined in Sims' book), using the level function rwsptr->level.
+ * Note that the recursive ordering is the special case of this with
+ * levels 1,2,3,...
+ * Returns  0 if w1=w2, 1 if w1 is bigger than w2, otherwise 2.
+ */
+{
+  int   winning=0,
+       /* winning=1 means that w1 is currently larger and winning=2 means
+        * w2 is larger.
+        */
+    	waiting=0,
+    	winning_level=0,
+    	level1, level2;
+  gen   *p1,
+        *p2;
+  p1 = w1 + genstrlen(w1) - 1;
+  p2 = w2 + genstrlen(w2) - 1;
+  /* we read the two words from right to left */
+  while (1) {
+    if (p1 < w1){ /* reached beginning of word w1. */
+      if (p2 < w2)
+         return winning;
+      if (winning!=1 || rwsptr->level[*p2]>=winning_level)
+                          return 2;
+      p2--;
+      continue;
+    }
+    if (p2 < w2) {  /* reached beginning of w1 */
+      if (winning!=2 || rwsptr->level[*p1]>=winning_level)
+        return 1;
+      p1--;
+      continue;
+    }
+    level1 = rwsptr->level[*p1];
+    level2 = rwsptr->level[*p2];
+    if (waiting==1) {
+      if (level2>level1) {
+        waiting=2;
+        winning=1; winning_level=0;
+        p1--;
+      } else if (level2==level1) {
+        waiting=0;
+        if (*p1>*p2) {
+          winning=1; winning_level=level1;
+        }
+        else if (*p2>*p1) {
+          winning=2; winning_level=level1;
+        }
+        else if (level1>winning_level)
+          winning_level=0;
+        p1--; p2--;
+      }
+      else {
+        if (winning==1 && level2>=winning_level) {
+          winning=2; winning_level=0;
+        }
+        p2--;
+      }
+    }
+    else if (waiting==2) {
+      if (level1>level2) {
+        waiting=1;
+        winning=2; winning_level=0;
+        p2--;
+      } else if (level2==level1) {
+        waiting=0;
+        if (*p2>*p1) {
+          winning=2; winning_level=level2;
+        }
+        else if (*p1>*p2) {
+          winning=1; winning_level=level2;
+        }
+        else if (level2>winning_level)
+          winning_level=0;
+        p1--; p2--;
+      }
+      else {
+        if (winning==2 && level1>=winning_level) {
+          winning=1; winning_level=0;
+        }
+        p1--;
+      }
+    }
+    else if (level2>level1 && level2>=winning_level) {
+      waiting=2;
+      if (winning==0||(winning==2 && level1>=winning_level)) {
+        winning=1; winning_level=0;
+      }
+      p1--;
+    }
+    else if (level1>level2 && level1>=winning_level) {
+      waiting=1;
+      if (winning==0||(winning==1 && level2>=winning_level)) {
+        winning=2; winning_level=0;
+      }
+      p2--;
+    }
+    else {
+      if (*p1>*p2 && level1>=winning_level) {
+        winning=1; winning_level=level1;
+      }
+      else if (*p2>*p1 && level1>=winning_level) {
+        winning=2; winning_level=level1;
+      }
+      else if (*p1==*p2 && level1>winning_level)
+        winning_level=0;
+      p1--; p2--;
+    }
+  }
+}

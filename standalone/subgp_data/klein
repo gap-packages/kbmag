@@ -1,0 +1,9 @@
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  tidyint := 10,
+  generatorOrder := [w,W,u,U],
+  inverses := [W,w,U,u],
+  equations := [
+  ]
+);

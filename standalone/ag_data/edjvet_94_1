@@ -1,0 +1,14 @@
+#Example produced by Martin Edjvet - don't know what it is.
+#quite hard
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,d,D,t,T],
+  inverses := [A,a,D,d,T,t],
+  equations := [
+    [a^5,IdWord],
+    [d^3,IdWord],
+    [A*D*a*d,IdWord],
+    [a*t^2*D*T*d*T,IdWord]
+  ]
+);

@@ -1,0 +1,9 @@
+autgroup -vkb -l -diff1 cox5335
+3770.34u 15.71s 1:03:20.78 99.6%
+
+autgroup -vkb -l surgery
+3774.58u 18.57s 1:03:27.77 99.6%
+
+autgroup -vkb -l johnsonb
+#Axiom verification succeeded!!
+8770.73u 47.65s 2:27:26.98 99.6%

@@ -1,0 +1,20 @@
+#Picard group SL(2,Z[i]) - quite hard for autgroup
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,t,T,u,U,l,L,j],
+  inverses := [A,a,T,t,U,u,L,l,j],
+  equations := [
+    [a*a,j],
+    [l*l,j],
+    [A*t*a*t*a*t,IdWord],
+    [A*l*a*l,IdWord],
+    [t*L*t*l,IdWord],
+    [u*L*u*l,IdWord],
+    [u*A*l*u*a*l*u*a*l,IdWord],
+    [u*t,t*u],
+    [j^2,IdWord],
+    [t*j,j*t],
+    [u*j,j*u]
+  ]
+);

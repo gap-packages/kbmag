@@ -1,0 +1,270 @@
+%%File kbcos.tex
+\Chapter{The Knuth--Bendix Program for Cosets of Subgroups}
+\Section{kbprogcos}
+
+'kbprogcos  [-f] [-r] [-ro] [-t <tidyint>] [-me <maxeqns>] [-ms <maxstates>]'\\
+'| || || || || || || |[-mrl <maxreducelen>] [-mlr <maxlenleft> <maxlenright>]\
+[-mo <maxoverlaplen>]'\\
+'| || || || || || || |[-sort <maxoplen>] [-v] [-silent]\
+[-rk <minlen> <mineqns>]'\\
+'| || || || || || || |[-cn <confnum>] <groupname> [cosname]'
+
+'kbprogcos' is a version of 'kbprog' (see Section "kbprog") that is specially
+adapted for operating on coset rewriting systems, which were described in
+Section "makecosfile".  It can be used either as a standalone or
+(with the '-wd' option) as part of the automatic coset system
+program 'autcos'. Only its use as a standalone will be described in this
+chapter. The other usage will be dealt with in Chapter
+"The Automatic Coset System and Subgroup Presentation Package".
+All of the options except '-f' are the same as for 'kbprog', and will not
+be described here. The '-f' option is described at the end of the section.
+Since '``wreathprod\'\''  is the only allowable ordering for words, there are
+no ordering options.
+
+'kbprogcos' takes its input from the file <groupname>.<cosname>,
+where <cosname> defaults to 'cos'. This should contain a
+declaration of a record defining a coset rewriting-system, in the format
+described in Chapter "Subgroup and Coset Files".
+(Normally  the file <groupname>.<cosname> will have been created
+from a rewriting system for a group $G$ in the file <groupname>,
+and a subgroup $H$ of $G$, by a call of the program 'makecosfile'.)
+Output is to two files, <groupname>.<cosname>'.kbprog' and
+<groupname>.<cosname>'.reduce'. The first contains an updated declaration of
+the original coset rewriting-system, in which the |equations|\ field contains
+the list of all reduction equations found so far. If the process has completed,
+and the system is now confluent, then a new field |isConfluent| will
+have appeared, and will be set equal to 'true'. In the equations,
+the left hand side will always be greater than the right hand side in the
+ordering on strings that is being used.
+The second file contains a finite state automaton,
+which can be used, together with the contents of the first file,
+to reduce words and cosets in the group and subgroup generators. This is done
+using the program 'wordreduce' with the '-cos' option
+(see Section "wordreduce -cos (Knuth--Bendix)").
+
+There are three types of generators in a coset rewriting system,
+the $G$-generators, which are the generators of $G$ coming from the
+original rewriting system for $G$, the symbol '\_H', which represents the
+subgroup $H$ itself and, optionally, the $H$-generators, which should be
+distinct from the $G$-generators, and are independent names for
+the generators of the subgroup $H$.
+There are also three types of equations, those in the $G$-generators alone,
+those involving the generator '\_H', and those in the $H$-generators alone.
+(Of course, there will be none of the third type if $H$-generators are
+not present.) The left and right hand sides of the equations involving
+'\_H' should have the form <v>'\_H'<w>, where <v> is a (possibly empty)
+word in the $H$-generators, and <w> a (possibly empty) word in the
+$G$-generators. In fact, those in the input file should all have the
+form '[\_H'<w>,'\_H]', or '[\_H'<w>,<x>'\_H]' for some $H$-generator <x>,
+and they define the generators of $H$ as words <w> in the $G$-generators.
+The order of the equations in the input file is unimportant, but in the
+output file, the equations contaiaing '\_H' will come first, then the
+$G$-equations, and finally the $H$-equations (if any).
+The ordering of words in a coset rewriting system must be '``wreathprod\'\'',
+and '\_H' and the $H$-generators must all have a strictly smaller level than
+each of the $G$-generators. This is to ensure that words containing
+'\_H' get themselves reduced to the desired form <v>'\_H'<w> with the
+word <w> coming as early as possible in the ordering of the $G$-words.
+
+The previous paragraph can be taken as a definition of a coset rewriting
+system. Any input not conforming to these rules will either be rejected
+as invalid by 'kbprogcos', or will produce meaningless results.
+Of course, if the input is produced using 'makecosfile' as recommended,
+then it will be guaranteed to be valid.
+
+If the output system is confluent, then the sets of the three types of
+equations will be confluent individually in the following sense.
+The $G$-equations will form a confluent system for $G$, just as they
+would if 'kbprog' had been run on $G$. 
+The equations involving '\_H' together with the $G$-equations will
+be sufficient to reduce any coset '\_H'<w>, with <w> a word in the
+$G$-generators, to '\_H'$w^\prime$ (or <x>'\_H'$w^\prime$ if $H$-generators are
+present), where $w^\prime$ is the least word (under the ordering being used)
+in the $G$-generators that lies in the coset $Hw$. If $H$-generators are
+present, then the equality $w = xw^\prime$ will hold in $G$.
+The $H$-equations, if present, will form a confluent rewriting system for
+$H$ (and so we will, in particular, have computed a presentation for the
+subgroup $H$).
+
+Of course, for infinite groups, 'kbprogcos', like 'kbprog',
+will more often than not run forever by default.
+The halting conditions that can be imposed by the user, either by
+setting appropriate fields in the input file, or by using
+command-line options, are the same as for 'kbprog', so we will not
+repeat their description here.  As with 'kbprog',
+it is also possible to halt the program interactively at any stage, by
+sending it a single interrupt signal (which usually means typing Control-C).
+If you do this, then it will halt and output at the next convenient
+opportunity, and so you may have to wait a while. If you send two interrupt
+signals, then it will abort immediately without outputting.
+
+*The '-f' option*\\
+This option is only useful when the index of $H$ in $G$ is finite.
+The theory behind it is described in Section 3.10 of \cite{Sims94}.
+
+When '-f' is called, if 'kbprogcos' finds at some stage that there are only
+finitely many irreducible words of the form '\_H'<w> (which implies
+that $\|G\:H\|$ is finite), then it halts after making a limited number of
+further overlap tests, without the system necessarily being confluent.
+At this stage, it is guaranteed that all words of the form '\_H'<w>
+reduce under the system to '\_H'$w^\prime$ (or <x>'\_H'$w^\prime$), where
+$w^\prime$ is the correct minimal word that lies in in the coset '\_H'<w>.
+In other words, it reduces cosets of $H$ correctly, even though it may not
+reduce all $G$-words or $H$-words correctly. However, if $H$-generators are
+present, then it is also guaranteed that the $H$-equations will form a
+presentation of $H$ (although not necessarily a confluent one).
+The index of $H$ in $G$ will be equal to the number of irreducible words of
+form '\_H'<w>, and will be printed as a message by 'kbprogcos' before it
+halts.
+
+Conversely, if the index of $H$ in $G$ is finite, and the '-f' option is
+called, then it can be proved that the algorithm employed will eventually
+halt, although it may take a long time. So it can be used as an
+alternative to Todd-Coxeter coset enumeration for calculating $\|G\:H\|$, and
+to the modified Todd-Coxeter method of calculating subgroup presentations.
+However, it does appear that the Todd-Coxeter based methods are more
+efficient in most examples.
+
+*Exit status*\\
+The exit staus is 0 if either 'kbprogcos' completes with a confluent set of
+equations, or if the '-f' option is called and it halts with correct
+reduction of cosets. The exit status is
+2 if 'kbprogcos' halts and outputs a non-confluent set because some limit has
+been exceeded, or it has received an interrupt signal, and 1 if it exits
+without output, with an error message.
+
+\Section{wordreduce -cos (Knuth--Bendix)}
+'wordreduce -cos [-kbprog/-diff1/-diff2] [-mrl <maxreducelen>]'\\ 
+'| || || || || || || || || || || |<groupname> [<cosname>]'
+
+'wordreduce -cos' can be used either on the output of 'kbprogcos' or on the
+output of the automatic coset system package. The '[-diff<x>]' options refer to
+the latter use, which is described in Section
+"wordreduce -cos (automatic coset systems)".
+The former use is the default if the file <groupname>.<cosname>'.kbprog' is
+present; to be certain, call the '-kbprog' option explicitly.
+As with 'kbprogcos', <cosname> defaults to 'cos'.
+
+'wordreduce -cos' reduces words using the output of a run of 'kbprogcos',
+which is read from the files <groupname>.<cosname>'.kbprog' and
+<groupname>.<cosname>'.reduce'.  These words should either (in the notation of
+the preceding section) be in the $G$-generators alone, the $H$-generators
+alone, or of the form <v>'\_H'<w>, where <v> is a (possibly empty)
+word in the $H$-generators, and <w> a (possibly empty) word in the
+$G$-generators. If there are no $H$-generators, then the words '\_H'<w>
+represent cosets of $H$ in $G$. Otherwise they represent the element
+<vw> of $G$, and the symbol '\_H' is being used as a separator.
+
+The reductions will always be correct in the sense that the output word will
+represent the same group element or coset as the input word. If the system of
+equations in <groupname>.<cosname>'.kbprogcos'
+is confluent, then the reduction will be to the minimal word that represents
+the group element or coset under the ordering on strings of generators that
+was used by 'kbprogcos'. Note that the ordering used for coset rewriting
+systems ensures that in a mixed word of form <v>'\_H'<w>, the reduction
+will be to $v^\prime$'\_H'$w^\prime$ for smallest possible $w^\prime$, and
+so $w^\prime$ is the minimal coset representative of '\_H'<w>.
+It can therefore be used to solve the word problem in the group $G$ and
+the membership problem for the subgroup $H$.
+
+If the program halted normally on using the '-f' option of 'kbprogcos',
+then the the reduction will be correct on cosets of $H$, even though the
+system may not be confluent, and not all $G$-words (or $H$-words) will
+reduce correctly.
+
+The option '-mrl\ <maxreducelen>' is the same as in 'kbprogcos'.
+
+\Section{fsacount and fsaenumerate(Knuth--Bendix)}
+
+If these programs are run on the output automata in the file
+<groupname>.<cosname>'.reduce', then they will count or enumerate all
+accepted words of the automata, which include the $G$-words, the
+words '\_H'<w> (or <x>'\_H'<w>) and (if present) the $H$-words.
+So, if $H$ is a subgroup of order $l$ and index $m$ in a group
+of order $n$ then, if $H$-generators are not present, there will be
+$n+m$ accepted words (for the group elements and the cosets of $H$).
+If $H$-generators are present, then the number of accepted words will
+be $2n+l-1$, comprising $n$ $G$-words, $n$ mixed words of form <x>'\_H'<w>
+(one for each group element), and $l$ $H$-words. However, the empty word
+is both a $G$-word and an $H$-word, which accounts for the $-1$ in the
+expression. 
+
+It is possible to count or enumerate just the coset representatives
+$w$ occurring in the cosets '\_H'<w> or mixed words  <x>'\_H'<w>, by
+calling 'fsacount' or 'fsaenumerate' with the option '-is 2'.
+This re-defines the initial state of the automaton to be 2, which has
+the effect that the words counted or enumerated are those of the
+form '\_H'<w>, but with the '\_H' removed. If $H$ has finite index
+$m$ in $G$, then there will be exactly $m$ such words $w$.
+
+\Section{Examples of Knuth--Bendix on coset rewriting systems}
+
+The 'subgp\_data' directory contains a number of examples of rewriting
+systems for groups together with some defined subgroups. Some of these,
+including the Coxeter groups, 'gunn' and 'f28', are intended for use with
+the automatic coset structure programs described in Chapter
+"The Automatic Coset System and Subgroup Presentation Package",
+and 'kbprogcos' will not complete on them.
+
+The example 'ab2' is the free abelian group of rank 2, and the subgroup
+defined in 'ab2.sub' has index 6. First run
+
+|
+ >makecosfile ab2
+|
+
+to create a coset rewriting system for this subgroup (without $H$-generators)
+in the file 'ab2.cos'. If 'kbprogcos' is run with no options on this system,
+then it does not halt, but with the '-f' option we get\:
+
+|
+ >kbprogcos  -f ab2
+#Coset language has size 6. Setting maxoverlap length to 7.
+#System is not guaranteed confluent, since not all overlaps were processed.
+#Output\:\ 28 eqns; table has 24 states.
+#Halting with 28 equations.
+|
+
+and from the first line of the output we know that the index is 6.
+We can check this by using 'fsacount'. To count the cosets alone
+(omitting the $G$-words, which correspond to  elements of $G$), use
+the option '-is 2', as described above.
+
+|
+ >fsacount ab2.cos.reduce
+#The language accepted is infinite.
+ >fsacount -is 2 ab2.cos.reduce
+#The language accepted has size 6.
+ >
+|
+
+The example '8l32' is a finite group of order 1344, and '8l32.sub' is a
+normal subgroup of order 8 and index 168. (The quotient group is
+${\rm PSL}(3,2)$.) Below, we introduce $H$-generators, by using the '-sg'
+option with 'makecosfile'.
+
+|
+ >makecosfile -sg 8l32
+ >kbprogcos 8l32
+#System is confluent.
+#Output\:\ 828 eqns; table has 724 states.
+#Halting with 828 equations.
+ >fsacount 8l32.cos.reduce
+#The language accepted has size 2695.
+ >fsacount -is 2 8l32.cos.reduce
+#The language accepted has size 168.
+|
+
+The 2695 words accepted by the word-reduction automaton consist of 1344
+$G$-words, 1344 mixed words, and 8 $H$-words, where the empty word is both
+a $G$-word and an $H$-word. When the initial state is set to 2, we just get
+the coset representatives. They can be enumerated in length-increasing
+order by running
+
+|
+ >fsaenumerate -is 2 -bfs 0 200 8l32.cos.reduce
+|
+
+and the list of words is output to the file '8l32.cos.reduce.enumerate'.
+We used a large upper length limit (200) for the search to ensure that we got
+everything.

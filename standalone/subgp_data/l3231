@@ -1,0 +1,24 @@
+#Finite group of structure 2^3.L(3,2) (split extension).
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,b,B,u,v,w],
+  inverses := [a,B,b,u,v,w],
+  equations := [
+[a^2,IdWord],
+[b^3,IdWord],
+[(a*b)^7,IdWord],
+[(a*B*a*b)^4,IdWord],
+[u^2,IdWord],
+[v^2,IdWord],
+[w^2,IdWord],
+[(u*v)^2,IdWord],
+[(u*w)^2,IdWord],
+[(v*w)^2,IdWord],
+[a*u*a*w,IdWord],
+[a*v*a*u*v*w,IdWord],
+[B*u*b*v,IdWord],
+[B*v*b*u*v,IdWord],
+[B*w*b*w,IdWord]
+  ]
+);

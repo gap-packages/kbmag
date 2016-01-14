@@ -1,0 +1,15 @@
+#An orbifold group produced by Thurston
+_RWS := rec(
+  isRWS := true,
+  ordering := "shortlex",
+  generatorOrder := [a,A,b,B,c,C,d,D,e,E,f,F,g,G,h,H,i,I,j,J,k,K,l,L],
+  inverses := [A,a,B,b,C,c,D,d,E,e,F,f,G,g,H,h,I,i,J,j,K,k,L,l],
+  equations := [
+    [C*D*A*B*C*D,IdWord],
+    [a*h*I*E*a*h*I*E,IdWord],
+    [b*e*J*F*b*e*J*F,IdWord],
+    [c*f*K*G*c*f*K*G,IdWord],
+    [d*g*L*H*d*g*L*H,IdWord],
+    [i*l*K*J*i*l*K*J,IdWord]
+  ]
+);

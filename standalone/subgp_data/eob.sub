@@ -1,0 +1,11 @@
+#subgroup 11
+_RWS_Sub := rec(
+  subGenerators:=[
+a,
+b*a^2*c*b*a^2*C^2*b*A*c*b*A^2*c^2*b*A^2*C*b, 
+b*a*b*A^2*c*b*c*b*a^2*C*b*A*b,
+b*a^5*c^3*b,b*a^4*c*b*a*b*A^4*C*b,
+b*a^2*c*b*A*C*b*a*C*b*a*c*b*A^2*C*b],
+  subGeneratorNames:=[x,y,z,w,u,v]
+);
+
