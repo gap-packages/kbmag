@@ -840,7 +840,7 @@ repeat:
       retain = TRUE;
       if (reduce_word(testword2,&rs_rws) == -1){
         rwsptr->exit_status=1;
-        return;
+        return -1;
       }
       if (genstrlen(testword2)>rwsptr->maxreducelen/2)
         iv = -1;
@@ -853,11 +853,11 @@ repeat:
     /* LHS can be reduced using other equations */
       if (reduce_word(testword1,&rs_rws) == -1){
         rwsptr->exit_status=1;
-        return;
+        return -1;
       }
       if (reduce_word(testword2,&rs_rws) == -1){
         rwsptr->exit_status=1;
-        return;
+        return -1;
       }
       if (genstrlen(testword1)>rwsptr->maxreducelen/2 ||
           genstrlen(testword2)>rwsptr->maxreducelen/2)
@@ -949,7 +949,7 @@ repeat:
         rwsptr->confnum = 0;
         if (rk_init(rwsptr)== -1) {
           rwsptr->exit_status=1;
-          return;
+          return -1;
         }
       }
       else if (rwsptr->rk_on && (rwsptr->num_eqns<rwsptr->rkmineqns ||
@@ -1576,11 +1576,11 @@ rewriting_system *rwsptr;
         genstrcpy(wx,rwsptr->eqns[-betar].rhs);
         if (reduce_word(testword1,&rs_rws)== -1) {
           rwsptr->exit_status=1;
-          return;
+          return -1;
         }
         if (reduce_word(testword2,&rs_rws)== -1) {
           rwsptr->exit_status=1;
-          return;
+          return -1;
         }
         if (genstrlen(testword1)>rwsptr->maxreducelen/2 ||
                   genstrlen(testword2)>rwsptr->maxreducelen/2)

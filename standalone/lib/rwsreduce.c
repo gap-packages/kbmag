@@ -197,7 +197,7 @@ restart:
 				}
 				ptr1 += longer;
 				if (genstrlen(w) > rwsptr->maxreducelen/2)
-					return;
+					return -1;
 			/* To save time when length is getting out of control */
 			}
 			len -= genstrlen(eqn->lhs);
