@@ -104,7 +104,7 @@ set_defaults(rwsptr, cosets)
                 rwsptr->maxeqns = MAXEQNS;
                 rwsptr->maxstates = 0;
 		rwsptr->init_fsaspace = INIT_FSASPACE;
-		rwsptr->current_maxstates;
+		//rwsptr->current_maxstates;    // FIXME: should this be initialized???
 		rwsptr->confluent = FALSE;
 		rwsptr->confnum = CONFNUM;
 		rwsptr->oldconfnum = 0;
