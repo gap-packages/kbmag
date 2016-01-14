@@ -3,3 +3,6 @@
 /standalone/lib/*.o
 /standalone/lib/*.a
 /standalone/src/*.o
+
+/gh-pages/
+/tmp/
