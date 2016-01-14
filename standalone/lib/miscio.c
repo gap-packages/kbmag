@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "defs.h"
 #include "fsa.h"
 #include "rws.h"
@@ -44,7 +45,6 @@ void printbuffer();
 void add_to_buffer();
 int add_word_to_buffer();
 int add_expanded_word_to_buffer();
-int add_iword_to_buffer();
 int int_len();
 boolean is_int();
 int stringlen();
@@ -179,7 +179,7 @@ skip_gap_expression(rfile,delim)
            br_ct--;
         else{
           fprintf(stderr,
-            "#Input error: \"end\" without \"function\".\n",n);
+            "#Input error: \"end\" without \"function\".\n");
           exit(1);
         }
      }
@@ -189,7 +189,7 @@ skip_gap_expression(rfile,delim)
         n=getc(rfile);
         if (n!='\'') {
           fprintf(stderr,
-            "#Input error: ' expected.\n",n);
+            "#Input error: ' expected.\n");
           exit(1);
         }
      }
@@ -200,7 +200,7 @@ skip_gap_expression(rfile,delim)
               n=getc(rfile); n=getc(rfile);
            }
            if (n=='\n' || n==EOF) {
-              fprintf(stderr, "#Input error: newline or EOF in string.\n",n);
+              fprintf(stderr, "#Input error: newline or EOF in string.\n");
               exit(1);
             }
          } while (n!='\"');
@@ -212,7 +212,7 @@ skip_gap_expression(rfile,delim)
            br_ct--;
         else{
           fprintf(stderr,
-            "#Input error: ')' without '('.\n",n);
+            "#Input error: ')' without '('.\n");
           exit(1);
         }
      }
@@ -221,7 +221,7 @@ skip_gap_expression(rfile,delim)
            br_ct--;
         else{
           fprintf(stderr,
-            "#Input error: ']' without '['.\n",n);
+            "#Input error: ']' without '['.\n");
           exit(1);
         }
      }
@@ -231,7 +231,7 @@ skip_gap_expression(rfile,delim)
            br_ct--;
         else{
           fprintf(stderr,
-            /*{*/  "#Input error: '}' without '{'.\n",n);  /*}*/
+            /*{*/  "#Input error: '}' without '{'.\n");  /*}*/
           exit(1);
         }
      }
@@ -239,7 +239,7 @@ skip_gap_expression(rfile,delim)
         break;
      if (br_ct>=1024) {
          fprintf(stderr,
-           "#Input error: Bracket level too deep.\n",n);
+           "#Input error: Bracket level too deep.\n");
          exit(1);
      }
   }
@@ -347,7 +347,7 @@ read_string(rfile,string,delim)
          n=getc(rfile); *(ptr++)=n; n=getc(rfile);
       }
       if (n=='\n' || n==EOF) {
-         fprintf(stderr, "#Input error: newline or EOF in string.\n",n);
+         fprintf(stderr, "#Input error: newline or EOF in string.\n");
          exit(1);
        }
       if (n!='\"')
@@ -612,7 +612,7 @@ read_word(rfile,gen_word,end_word,delim,name,num_names,check)
         }
         if (n<=0){
             fprintf(stderr,
-               "#Error: Non-positive powers not allowed in monoid words.\n",g);
+               "#Error: Non-positive powers not allowed in monoid words.\n");
             exit(1);
         }
         ptre = ptr-1;
@@ -798,10 +798,7 @@ add_expanded_word_to_buffer(wfile,word,symbols)
   return nln;
 }
 
-add_iword_to_buffer(wfile,word,symbols)
-	FILE *wfile;
-	int *word;
-	char **symbols;
+int add_iword_to_buffer(FILE *wfile,int *word,char **symbols)
 /* This is the same as add_word_to_buffer, except that "word" is a string of
  * integers instead of gens.
  */

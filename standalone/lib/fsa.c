@@ -658,7 +658,7 @@ fsa_delete_state(fsaptr,stateno)
         if (*(ptr2+1) != stateno) {
           *(ptr++) = *(ptr2++);
           *(ptr++) = *ptr2>stateno ? *ptr2-1 : *ptr2;
-          *ptr2++;
+          ptr2++;
         }
         else
           ptr2+=2;
@@ -672,7 +672,7 @@ fsa_delete_state(fsaptr,stateno)
         if (*(ptr2+1) != stateno) {
           *(ptr++) = *(ptr2++);
           *(ptr++) = *ptr2>stateno ? *ptr2-1 : *ptr2;
-          *ptr2++;
+          ptr2++;
         }
         else
           ptr2+=2;

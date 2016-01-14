@@ -361,7 +361,7 @@ make_full_wd_fsa_cos(wd_fsaptr,inv,start_no,rs)
         }
         if ((*reduce_word)(testword,rs)==-1)
           return -1;
-        if (n=diff_no(wd_fsaptr,testword))
+        if ((n=diff_no(wd_fsaptr,testword)))
           set_dense_dtarget(wd_table,g1,g2,i,n);
         if (n>0 && n<start_no)
           set_dense_dtarget(wd_table,inv[g1],inv[g2],n,i);
