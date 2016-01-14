@@ -6,3 +6,20 @@
 
 /gh-pages/
 /tmp/
+
+/doc/manual.aux
+/doc/manual.bbl
+/doc/manual.bib
+/doc/manual.blg
+/doc/manual.dvi
+/doc/manual.idx
+/doc/manual.ilg
+/doc/manual.ind
+/doc/manual.lab
+/doc/manual.log
+/doc/manual.mst
+/doc/manual.pdf
+/doc/manual.ps
+/doc/manual.six
+/doc/manual.toc
+/doc/manual.example-1.tst
