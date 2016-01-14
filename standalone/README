@@ -76,9 +76,6 @@ MAKING THE PACKAGE
 
 By default, simply type "make" from within the kbmag directory
 
-If you are using bsd UNIX, rather than System V, you should however type
-"make SYSTEM=BSD" (this affects only timing information in the program kbprog).
-
 The default C-compiler is cc; to use gcc, type "make CC=gcc".
 
 The default compiler option is -O; to use -g, for example (if you wish to do

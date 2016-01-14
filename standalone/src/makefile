@@ -1,6 +1,5 @@
 # src makefile
 SHELL   = /bin/sh
-SYSTEM = SYSTEMV
 CC      = cc
 RM = /bin/rm
 LIBPATH = ../lib
@@ -35,13 +34,13 @@ ${BIN}/kbprog: kbprog.o $(FSALIB)
 	$(CC) $(CFLAGS) -o ${BIN}/kbprog kbprog.o $(FSALIB)
 
 kbprog.o: kbprog.c
-	$(CC) -c $(CFLAGS) -D$(SYSTEM) kbprog.c
+	$(CC) -c $(CFLAGS) kbprog.c
 
 ${BIN}/kbprogcos: kbprogcos.o $(FSALIB)
 	$(CC) $(CFLAGS) -o ${BIN}/kbprogcos kbprogcos.o $(FSALIB)
 
 kbprogcos.o: kbprogcos.c
-	$(CC) -c $(CFLAGS) -D$(SYSTEM) kbprogcos.c
+	$(CC) -c $(CFLAGS) kbprogcos.c
 
 ${BIN}/fsamin: fsamin.o $(FSALIB)
 	$(CC) $(CFLAGS) -o ${BIN}/fsamin  fsamin.o $(FSALIB)

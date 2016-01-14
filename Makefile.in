@@ -1,7 +1,5 @@
 # General makefile for GAP4 KBMAG share package -
 # all executables are put into the bin directory.
-SHELL = /bin/sh
-SYSTEM = SYSTEMV
 RM = /bin/rm
 BIN = bin/@GAPARCH@
 
@@ -12,7 +10,7 @@ all:
 	mkdir -p bin/@GAPARCH@;
 	cd standalone/lib; $(MAKE) CC="$(CC)" COPTS="$(COPTS)"
 	cd standalone/src;\
-	$(MAKE) CC="$(CC)" BIN="../../$(BIN)" SYSTEM="$(SYSTEM)" COPTS="$(COPTS)"
+	$(MAKE) CC="$(CC)" BIN="../../$(BIN)" COPTS="$(COPTS)"
 
 clean:
 	cd standalone/lib; $(MAKE) clean

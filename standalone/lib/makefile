@@ -1,6 +1,5 @@
 # lib makefile
 SHELL=/bin/sh
-SYSTEM=SYSTEMV
 RANLIB = ranlib
 RM = /bin/rm
 CC= cc
@@ -19,6 +18,6 @@ clean:
 	$(RM) -f $(LIBOBJ) $(LIB)
 	$(RM) -f *\~ core a.out
 kbfns.o: kbfns.c
-	$(CC) -c $(COPTS) -D$(SYSTEM) kbfns.c
+	$(CC) -c $(COPTS) kbfns.c
 .c.o:
 	${CC} -c $(COPTS) $*.c 
