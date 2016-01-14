@@ -40,7 +40,9 @@ test:
 		../../$(BIN)/autgroup -silent ab2; ../../$(BIN)/gpsubwa ab2;\
 		rm ab2.[dgw]* ab2.sub.* ab2.suc* ab2.cos*
 
-texdoc: 
+doc:
 	cd doc;\
         tex manual;bibtex manual;\
 	../../../doc/manualindex manual;tex manual;tex manual;
+
+.PHONY: targets bindir all clean distclean test doc
