@@ -56,9 +56,8 @@ int genstrlen();
 void genstrcpy();
 void genstrcat();
 
-int
-mimult_minimize(fsaptr)
-	fsa	*fsaptr;
+int 
+mimult_minimize (fsa *fsaptr)
 /* This is the minimization function for composite multipliers
  * for coset automatic groups.
  * These are multiple initial state machines, and the states should be
@@ -916,11 +915,8 @@ fsa_migm2_int(migmptr,op_table_type,destroy,migm2filename,readback,prefix)
   return 0;
 }
 
-int
-fsa_mimakemult(migmptr,g,prefix)
-        fsa *migmptr;
-        int g;
-	char *prefix;
+int 
+fsa_mimakemult (fsa *migmptr, int g, char *prefix)
 /* This procedure takes the fsa *migmptr produced by fsa_mitriples, 
  * and builds a particular multiple-initial state multiplier Mult_gi.
  * This merely involves setting the accept states of *genmimultptr
@@ -1025,11 +1021,8 @@ fsa_mimakemult(migmptr,g,prefix)
   return 0;
 }
 
-int
-fsa_mimakemult2(migm2ptr,g1,g2,prefix)
-        fsa *migm2ptr;
-        int g1, g2;
-        char *prefix;
+int 
+fsa_mimakemult2 (fsa *migm2ptr, int g1, int g2, char *prefix)
 /* This procedure takes the fsa *migm2ptr produced by fsa_migenmult2,
  * and builds a particular length-2 multiplier Mult_g1g2.
  * This merely involves locating the accept states.

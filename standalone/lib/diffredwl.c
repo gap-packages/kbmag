@@ -19,10 +19,8 @@ int make_substitution();
 /* functions defined in other files used in this file */
 int genstrlen();
 
-int
-diff_reduce_wl(w,rs_wd)
-	gen *w;
-	reduction_struct *rs_wd;
+int 
+diff_reduce_wl (gen *w, reduction_struct *rs_wd)
 /* w is the word to be reduced using the word-difference machine  *wd_fsa.
  * We first use the word-acceptor to locate reducible strings, and then use
  * the function make_substituion to make the actual substitution.
@@ -65,8 +63,8 @@ diff_reduce_wl(w,rs_wd)
   return 0;
 }
 
-int
-make_substitution(w,start,end,rs_wd)
+int 
+make_substitution (
 /* Find and make a substitution in the word w, using *wd_fsa, beginning at
  * position 'start' and ending at position 'end'.
  * This may make the word shorter or longer.
@@ -74,9 +72,11 @@ make_substitution(w,start,end,rs_wd)
  * This function allocates its own space.
  * NOTE: No checks on the validity of the word are carried out.
  */
- gen *w;
- int start, end;
- reduction_struct *rs_wd;
+    gen *w,
+    int start,
+    int end,
+    reduction_struct *rs_wd
+)
 { int ndiff, ngens, identity, padsymbol, wordlen, ***difftab,
       gct, *gpref, level, gen1, gen2, diff, diffct, newdiff,
       shift, cwordwt, csubwt, i, j;

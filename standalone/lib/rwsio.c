@@ -69,9 +69,8 @@ void fsa_print();
 int genstrlen();
 int stringlen();
 
-void
-initialise_reduction_fsa(rwsptr)
-rewriting_system *rwsptr;
+void 
+initialise_reduction_fsa (rewriting_system *rwsptr)
 /* We initialise the reduction automaton as an fsa type.
  * Some of its components like fsa.states->size are stored elsewhere
  * (as rws.num_states) and will only be updated at the end, before printing.
@@ -112,9 +111,8 @@ rewriting_system *rwsptr;
   build_quicktable(rwsptr);
 }
 
-void
-initialise_eqns(rwsptr)
-	rewriting_system *rwsptr;
+void 
+initialise_eqns (rewriting_system *rwsptr)
 /* This function is called after the generators and inverses have been read
  * in. We initialise the list of equations by making one equation
  * with lhs a*inv(a) and rhs identity for each generator a.
@@ -215,10 +213,8 @@ read_eqns(rfile,check,rwsptr)
   }
 }
 
-void
-read_done(rfile,rwsptr)
-	FILE *rfile;
-	rewriting_system *rwsptr;
+void 
+read_done (FILE *rfile, rewriting_system *rwsptr)
 /* Read the list of equation numbers that have already been processed. */
 { int delim, i, j, n;
   check_next_char(rfile,'[');
@@ -622,10 +618,8 @@ read_extra_kbinput(rfile,check,rwsptr)
 }
 
 
-void
-print_kboutput(wfile,rwsptr)
-	FILE *wfile;
-	rewriting_system *rwsptr;
+void 
+print_kboutput (FILE *wfile, rewriting_system *rwsptr)
 /* This function prints the output from the KB program to the file named
  * wfile, which should already be open for writing.
  * Note that the rewriting system rws and its reduction-fsa are
@@ -792,11 +786,8 @@ print_kboutput(wfile,rwsptr)
 
 }
 
-void
-print_wdoutput(wfile,suffix,rwsptr)
-	FILE *wfile;
-	char *suffix;
-	rewriting_system *rwsptr;
+void 
+print_wdoutput (FILE *wfile, char *suffix, rewriting_system *rwsptr)
 /* This function prints the word-difference from the KB program to the file
  * named wfile, which should already be open for writing.
  * The fsa function fsa_print is used to print this.

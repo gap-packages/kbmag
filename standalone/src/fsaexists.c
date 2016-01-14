@@ -34,9 +34,8 @@ void  fsa_clear();
 int   stringlen();
 int   fsa_minimize();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa fsain, *fsaexists;
   char inf[100], outf[100], fsaname[100], tempfilename[100];
@@ -137,8 +136,8 @@ main(argc, argv)
   tfree(fsaexists);
   exit(0);
 }
-void
-badusage_fsaexists()
+void 
+badusage_fsaexists (void)
 {
     fprintf(stderr,
  "Usage: fsaexists [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h] filename\n");

@@ -464,9 +464,8 @@ midfa_determinize_int(fsaptr,op_table_type,destroy,tempfilename)
   return det;
 }
 
-int
-midfa_minimize(fsaptr)
-	fsa	*fsaptr;
+int 
+midfa_minimize (fsa *fsaptr)
 /* This is the function for midfa's which might have more than
  * two categories of states. 
  */
@@ -750,9 +749,8 @@ midfa_minimize(fsaptr)
   return 0;
 }
 
-int
-midfa_labeled_minimize(fsaptr)
-	fsa	*fsaptr;
+int 
+midfa_labeled_minimize (fsa *fsaptr)
 /* This is the minimization function for midfa's which might have more than
  * two categories of states. 
  * We use the labeled set-record type to identify the categories, so *fsaptr

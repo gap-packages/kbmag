@@ -33,9 +33,8 @@ void  fsa_clear();
 int   stringlen();
 int   fsa_minimize();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa fsa1, fsa2, *fsaconcatnd, *fsaconcat;
   char inf1[100], inf2[100], outf[100], fsaname1[100], fsaname2[100],
@@ -158,8 +157,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_fsaconcat()
+void 
+badusage_fsaconcat (void)
 {
     fprintf(stderr,
       "Usage: fsaconcat [-ip d/s[dr]] [-op d/s] [-silent] [-v]\n");

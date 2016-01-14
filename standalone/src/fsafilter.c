@@ -38,9 +38,8 @@ void  fsa_print();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa testfsa;
   char inf[100],outf[100],fsaname[100];
@@ -139,8 +138,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_fsafilter()
+void 
+badusage_fsafilter (void)
 {
     fprintf(stderr,
  "Usage: fsafilter [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-csn] [filename]\n");

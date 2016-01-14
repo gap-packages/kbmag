@@ -467,8 +467,8 @@ read_kbprog_command(argc,argv,rwsptr)
     badusage_kbprog();
 }
 
-void
-interrupt_kbprog()
+void 
+interrupt_kbprog (void)
 /* When the program receives an interrupt  signal, it continues until the
  * next tidying, and then stops and outputs.
  */
@@ -479,9 +479,8 @@ interrupt_kbprog()
   signal(SIGQUIT, SIG_DFL);
 }
 
-main(argc, argv)
-  int             argc;
-  char           *argv[];
+int 
+main (int argc, char *argv[])
 {
   rewriting_system rws;
   rewriting_system *rwsptr;
@@ -675,8 +674,8 @@ output_and_exit_kbprog(rwsptr)
   exit(rwsptr->exit_status);
 }
 
-void
-badusage_kbprog()
+void 
+badusage_kbprog (void)
 {
   fprintf(stderr, USAGE);
   exit(1);

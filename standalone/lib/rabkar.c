@@ -45,9 +45,8 @@ boolean slow_check_rws_reduce_rk();
 int genstrlen();
 int stringlen();
 
-int
-rk_init(rwsptr)
-  rewriting_system *rwsptr;
+int 
+rk_init (rewriting_system *rwsptr)
 /* Initialize hash-table and lookup tables for this value of maxeqns */
 { int ng, i, j, tp, maxeqns;
   /* First select a suitable prime */
@@ -91,18 +90,16 @@ rk_init(rwsptr)
   tmalloc(rk_bighashvaleqn,unsigned,maxeqns+1);
 }
 
-void
-rk_reset(maxeqns)
-  int maxeqns;
+void 
+rk_reset (int maxeqns)
 { int i;
   for (i=0;i<rk_hashmod;i++)
     rk_first_tail[i] = 0;
 }
 
 
-void
-rk_clear(rwsptr)
-  rewriting_system *rwsptr;
+void 
+rk_clear (rewriting_system *rwsptr)
 { int i;
   if (kbm_print_level>=3)
     printf("    #Calling rk_clear.\n");
@@ -115,10 +112,8 @@ rk_clear(rwsptr)
   tfree(rk_bighashvaleqn);
 }
     
-void
-rk_add_lhs(n,rwsptr)
-  int n;
-  rewriting_system *rwsptr;
+void 
+rk_add_lhs (int n, rewriting_system *rwsptr)
 /* Calculate the hash-value of the tail of the lhs of equation number n
  * (it is assumed that the length of this lhs is at least rws.rkminlen),
  * and adjoin it to the hash-table.
@@ -144,10 +139,8 @@ rk_add_lhs(n,rwsptr)
   rk_next_tail[n]=0;
 }
 
-int
-slow_rws_reduce_rk(w,rs_rws)
-  gen               *w;
-  reduction_struct *rs_rws;
+int 
+slow_rws_reduce_rk (gen *w, reduction_struct *rs_rws)
 /* This is the routine slow_rws_reduce (from rwsreduce.c) adapted to deal
  * in addition with reductions arising from the Rabin-Karp table.
  */

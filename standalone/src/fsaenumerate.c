@@ -53,9 +53,8 @@ void  fsa_clear();
 boolean is_int();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, min, max, i, n, rv;
   fsa testfsa;
   char inf[100], outf[100], fsaname[100];
@@ -178,8 +177,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_fsaenumerate()
+void 
+badusage_fsaenumerate (void)
 {
     fprintf(stderr,
 "Usage: fsaenumerate [-is n] [-ip d/s] [-bfs/-dfs] min max [-l/-s] [filename]\n"

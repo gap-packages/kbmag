@@ -74,9 +74,8 @@ isvalid(c)
 { return isalpha(c) || isdigit(c) || c=='_' || c=='.';
 }
 
-int
-read_char(rfile)
-        FILE * rfile;
+int 
+read_char (FILE *rfile)
 /* This is the basic character-reading function, which all other routines
  * call.
  * It skips over a backslash '\' followed by a newline '\n'.
@@ -107,10 +106,8 @@ read_char(rfile)
   return(n);
 }
 
-void
-check_next_char(rfile, c)
-        FILE * rfile;
-        int c;
+void 
+check_next_char (FILE *rfile, int c)
 /* The next non-white character is expected to be 'c'.
    If not exit with error message.
 */
@@ -124,10 +121,8 @@ check_next_char(rfile, c)
   }
 }
 
-void
-read_delim(rfile,delim)
-        FILE * rfile;
-        int * delim;
+void 
+read_delim (FILE *rfile, int *delim)
 /* Read next delimiter. */
 { int n;
   while ((n=read_char(rfile))==' ');
@@ -140,11 +135,8 @@ read_delim(rfile,delim)
   if (*delim=='}') *delim = ']';
 }
 
-void
-read_token(rfile,token,delim)
-        FILE * rfile;
-	char * token;
-        int * delim;
+void 
+read_token (FILE *rfile, char *token, int *delim)
 /* Read stuff into token up to next delimiter or space  -
  * leading spaces are removed from stuff.
  */
@@ -160,10 +152,8 @@ read_token(rfile,token,delim)
   if (*delim=='}') *delim = ']';
 }
 
-void
-skip_gap_expression(rfile,delim)
-        FILE * rfile;
-        int * delim;
+void 
+skip_gap_expression (FILE *rfile, int *delim)
 /* Skip the next GAP expression -
  * probably not perfect, but should be adequate for the use intended.
  */
@@ -371,10 +361,8 @@ read_string(rfile,string,delim)
   return ans;
 }
 
-void
-process_names(name,num_names)
-	char **name;
-	int num_names;
+void 
+process_names (char **name, int num_names)
 /* name is a list of num_names names (probably names of monoid generators).
  * First they are checked for validity - they must start with a letter or
  * underscore, and all characters must be alphanumeric '_' or '.'.
@@ -647,14 +635,8 @@ read_word(rfile,gen_word,end_word,delim,name,num_names,check)
   return (ptr!=gen_word  || strcmp(kbm_buffer,"IdWord")==0);
 }
 
-int
-read_word_list(rfile,wordlist,space,delim,name,num_names,check)
-        FILE * rfile;
-        gen * wordlist;
-        int space;
-        int * delim;
-	char **name;
-	int num_names;
+int 
+read_word_list (FILE *rfile, gen *wordlist, int space, int *delim, char **name, int num_names, int check)
 /* Read a list of words separated by commas into wordlist, and return the
  * number read. space is the total space available - the program aborts
  * if this is exceeded.
@@ -676,9 +658,8 @@ read_word_list(rfile,wordlist,space,delim,name,num_names,check)
   return ct;
 }
 
-void
-printbuffer(wfile)
-	FILE *wfile;
+void 
+printbuffer (FILE *wfile)
 /* prints contents of buffer, followed by new-line to wfile
  * and then clears buffer.
  */
@@ -686,10 +667,8 @@ printbuffer(wfile)
   *kbm_buffer = '\0';
 }
 
-void
-add_to_buffer(n,w)
-	int n;
-	char *w;
+void 
+add_to_buffer (int n, char *w)
 /* w should be a string.
  * Add at least n characters to the end of the string buffer, with w at the end,
  * padding with spaces at beginning
@@ -701,11 +680,8 @@ add_to_buffer(n,w)
   strcat(kbm_buffer,w);
 }
 
-int
-add_word_to_buffer(wfile,word,symbols)
-	FILE *wfile;
-	gen *word;
-	char **symbols;
+int 
+add_word_to_buffer (FILE *wfile, gen *word, char **symbols)
 /* word is a string of `gen's. to be printed as a word in GAP syntax.
  * If gen number i appears in the string, then
  * the gen is to be printed as the string symbols[i].
@@ -759,11 +735,8 @@ add_word_to_buffer(wfile,word,symbols)
   return nln;
 }
 
-int
-add_expanded_word_to_buffer(wfile,word,symbols)
-	FILE *wfile;
-	gen *word;
-	char **symbols;
+int 
+add_expanded_word_to_buffer (FILE *wfile, gen *word, char **symbols)
 /* The same as add_word_to_buffer, but powers of generators are
  * printed out in full rather than as powers.
  */
@@ -844,9 +817,8 @@ int add_iword_to_buffer(FILE *wfile,int *word,char **symbols)
   return nln;
 }
 
-int
-int_len(n)
-	int n;
+int 
+int_len (int n)
 /* The length of the  integer  n */
 { int l=0;
   if (n < 0){
@@ -872,28 +844,27 @@ is_int(x)
       return FALSE;
   return TRUE;
 }
-int
-stringlen(c)
+int 
+stringlen (
 /* We recode this standard function, since the solaris version returns a type
  * other than int, which causes irritating warning messages! 
  */
-        char *c;
+    char *c
+)
 { int l=0;
   while (*(c++)) l++;
   return l;
 }
 
-int
-genstrlen(c)
-	gen *c;
+int 
+genstrlen (gen *c)
 { int l=0;
   while (*(c++)) l++;
   return l;
 }
 
-int
-genstrcmp(c,d)
-	gen *c, *d;
+int 
+genstrcmp (gen *c, gen *d)
 { while (*c){
     if (*(c++) != *(d++))
       return 1;
@@ -903,9 +874,8 @@ genstrcmp(c,d)
   return 0;
 }
 
-void
-genstrcat(c,d)
-	gen *c, *d;
+void 
+genstrcat (gen *c, gen *d)
 { while (*c)
     c++;
   while (*d)
@@ -913,16 +883,14 @@ genstrcat(c,d)
   *c=0;
 }
 
-void
-genstrcpy(c,d)
-	gen *c, *d;
+void 
+genstrcpy (gen *c, gen *d)
 { while (*d)
     *(c++)= *(d++);
   *c=0;
 }
-void
-set_separator(rwsptr)
-        rewriting_system *rwsptr;
+void 
+set_separator (rewriting_system *rwsptr)
 /* Locates separator, and checks the level conditions on G-generators and
  * H-generators.
  */

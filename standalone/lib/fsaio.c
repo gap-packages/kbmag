@@ -58,17 +58,18 @@ void genstrcpy();
 int stringlen();
 void skip_gap_expression();
 
-void
-srec_print(wfile,srptr,name,offset,endstring)
+void 
+srec_print (
 /* Print the set record *srptr. Follows corresponding GAP routine.
  * Currently, rather arbitrarily, identifiers and strings names are
  * printed in dense format, and words and lists of words in sparse format.
  */
-	FILE *wfile;
-	srec *srptr;
-	char *name;
-	int  offset;
-	char *endstring;
+    FILE *wfile,
+    srec *srptr,
+    char *name,
+    int offset,
+    char *endstring
+)
 	
 { int ct, j, l;
   srec sr;
@@ -299,15 +300,17 @@ srec_print(wfile,srptr,name,offset,endstring)
   printbuffer(wfile);
 }
 
-void
-table_print(wfile,tableptr,name,offset,endstring,ns,ne)
+void 
+table_print (
 /* Print the table record *tableptr. */
-	FILE *wfile;
-	table_struc  *tableptr;
-	char *name;
-	int  offset;
-	char *endstring;
-	int ns, ne;
+    FILE *wfile,
+    table_struc *tableptr,
+    char *name,
+    int offset,
+    char *endstring,
+    int ns,
+    int ne
+)
 	
 { int **table, ct, g, i, k, nl, dr, *ptr, *ptre;
   boolean dense, densepf, first, firstg;
@@ -450,11 +453,8 @@ table_print(wfile,tableptr,name,offset,endstring,ns,ne)
   printbuffer(wfile);
 }
 
-void
-fsa_print(wfile,fsaptr,name)
-	FILE *wfile;
-	fsa *fsaptr;
-	char *name;
+void 
+fsa_print (FILE *wfile, fsa *fsaptr, char *name)
 { int i, ns, ne;
   boolean first;
   
@@ -538,16 +538,17 @@ fsa_print(wfile,fsaptr,name)
   printbuffer(wfile);
 }
 
-void
-srec_read(rfile,srptr,maxsize)
+void 
+srec_read (
 /* Read the set record *srptr from rfile, assigning space as required.
  * If maxsize is larger than srptr->size, and space is allocated for
  * names or labels, then space is allocated for maxsize of these.
  * This allows for possible later expansion.
  */
-	FILE *rfile;
-	srec *srptr;
-	int maxsize;
+    FILE *rfile,
+    srec *srptr,
+    int maxsize
+)
 	
 { int delim, i, j, k, l, ct, n;
   boolean typeset, sizeset, baseset, arityset, paddingset, namesset, formatset,
@@ -1440,10 +1441,8 @@ fsa_read(rfile,fsaptr,table_storage_type,dr,maxstates,assignment,name)
     read_delim(rfile,&delim);
 }
 
-void
-compressed_transitions_read(fsaptr,rfile)
-	fsa *fsaptr;
-        FILE *rfile;
+void 
+compressed_transitions_read (fsa *fsaptr, FILE *rfile)
 /* Read the transition-table of the fsa *fsaptr which is stored in the
  * file with *file in unformatted form.
  * *file should be opened and closed externally to the function.
@@ -1478,9 +1477,7 @@ compressed_transitions_read(fsaptr,rfile)
   }
 }
 
-void
-compressed_ctransitions_read(fsaptr,rfile)
-        fsa *fsaptr;
-        FILE *rfile;
+void 
+compressed_ctransitions_read (fsa *fsaptr, FILE *rfile)
 {
 }

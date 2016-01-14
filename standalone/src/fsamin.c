@@ -37,9 +37,8 @@ void  fsa_print();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa testfsa;
   char inf[100],outf[100],fsaname[100];
@@ -143,8 +142,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_fsamin()
+void 
+badusage_fsamin (void)
 {
     fprintf(stderr,
  "Usage: fsamin [-ip d/s] [-op d/s] [-silent] [-v] [-l/-h] [-s] [filename]\n");

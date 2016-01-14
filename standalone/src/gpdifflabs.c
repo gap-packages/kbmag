@@ -46,9 +46,8 @@ int   diff_reduce();
 int fsa_table_dptr_init();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i;
   fsa  fsaip,  *difflabsptr;
   char inf1[100], inf2[100], outf[100], fsaname[100], tempfilename[100];
@@ -172,8 +171,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpdifflabs()
+void 
+badusage_gpdifflabs (void)
 {
     fprintf(stderr,
    "Usage: gpdifflabs [-diff1] [-op d/s] [-silent] [-v] [-l/-h]\n");

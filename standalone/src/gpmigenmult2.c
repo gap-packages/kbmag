@@ -44,9 +44,8 @@ void  fsa_print();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, g1, g2;
   fsa migenmult, *migm2ptr;
   char gpname[100], inf[100], outf[100], fsaname[100], tablefilename[100],
@@ -172,8 +171,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpmigenmult2()
+void 
+badusage_gpmigenmult2 (void)
 {
     fprintf(stderr,"Usage: \n");
     fprintf(stderr,

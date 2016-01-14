@@ -25,9 +25,8 @@ int hash_locate();
 void srec_clear();
 void fsa_table_init();
 
-int
-fsa_ip_minimize(fsaptr)
-	fsa	*fsaptr;
+int 
+fsa_ip_minimize (fsa *fsaptr)
 /* Minimize the fsa *fsaptr, of which transitions are stored externally */
 { int *block_numa, *block_numb, *block_swap, i, j, k, l, len,
        *ptr, *ptr2, *ptr2e, *ht_ptr,
@@ -226,9 +225,8 @@ fsa_ip_minimize(fsaptr)
   return 0;
 }
 
-int
-fsa_ip_labeled_minimize(fsaptr)
-	fsa	*fsaptr;
+int 
+fsa_ip_labeled_minimize (fsa *fsaptr)
 /* This is the minimization function for fsa's which misght have more than
  * two categories of states. 
  * We use the labeled set-record type to identify the categories, so *fsaptr

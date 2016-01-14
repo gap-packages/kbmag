@@ -289,16 +289,17 @@ fsa_submult(subwaptr,multptr,op_table_type,destroy,tempfilename,readback)
   return submultptr;
 }
 
-int
-words_and_not(fsaptr1,fsaptr2,words,maxwords)
+int 
+words_and_not (
 /* Generate at most maxwords words accepted by *fsaptr1 but not by *fsaptr2.
  * Store them in words[0], words[1],..
  * fsa's may have at most 65536 states.
  */
-  fsa * fsaptr1;
-  fsa * fsaptr2;
-  gen **words;
-  int maxwords;
+    fsa *fsaptr1,
+    fsa *fsaptr2,
+    gen **words,
+    int maxwords
+)
 {
   int **table1, **table2, ne, ns, dr1, dr2, bstate, bg, numwords,
       cstate, csa, csb, im, i, g, len;

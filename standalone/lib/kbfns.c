@@ -161,9 +161,8 @@ set_defaults(rwsptr, cosets)
                 rwsptr->subwordsG=0;
 }
 
-int
-kbprog(rwsptr)
-  rewriting_system *rwsptr;
+int 
+kbprog (rewriting_system *rwsptr)
 { int i, j, k, l, cct, onum_eqns, onum_eqnsi;
   reduction_struct rs_rws;
   rs_rws.rws=rwsptr;
@@ -449,10 +448,8 @@ restart:
   return 0;
 }
 
-int
-insert(lhs,rhs,rwsptr)
-	gen **lhs, **rhs;
-	rewriting_system *rwsptr;
+int 
+insert (gen **lhs, gen **rhs, rewriting_system *rwsptr)
 
 /* Look at the words in rwsptr->testword1 and rwsptr->testword2, and remove any
  * common prefixes and suffixes of generators with inverses.
@@ -614,11 +611,8 @@ insert(lhs,rhs,rwsptr)
 }
 
 
-void
-consider(k, l, rwsptr)
-  int             k,
-                  l;
-  rewriting_system *rwsptr;
+void 
+consider (int k, int l, rewriting_system *rwsptr)
 
 /* The left hand sides of the relations k and l are considered for common
  * parts, according to the Knuth-Bendix procedure, and any new relations
@@ -783,10 +777,8 @@ consider(k, l, rwsptr)
   }
 }
 
-int
-tidyup(crelno,rwsptr)
-  int             crelno;
-  rewriting_system *rwsptr;
+int 
+tidyup (int crelno, rewriting_system *rwsptr)
 
 /* Remove redundant relations. "crelno" is the current relation being
  * processed.
@@ -982,9 +974,8 @@ repeat:
   return ret;
 }
 
-void
-build_quicktable(rwsptr)
-rewriting_system *rwsptr;
+void 
+build_quicktable (rewriting_system *rwsptr)
 {
   int  i;
   int **table;
@@ -1017,10 +1008,8 @@ rewriting_system *rwsptr;
   }
 }
 
-int
-modify_table(relno,rwsptr)
-  int             relno;
-  rewriting_system *rwsptr;
+int 
+modify_table (int relno, rewriting_system *rwsptr)
 
 /* This version returns a table which only rejects the left hand sides
  * of the rwsptr->eqns themselves.
@@ -1094,9 +1083,8 @@ modify_table(relno,rwsptr)
   return  1;
 }
 
-void
-build_fulltable(rwsptr)
-rewriting_system *rwsptr;
+void 
+build_fulltable (rewriting_system *rwsptr)
 /* Extends the table to one rejecting all strings containing a lhs,
  * builds edges in E_2 - E_3 as in Sims' book, p. 118-9.
 */
@@ -1130,10 +1118,8 @@ rewriting_system *rwsptr;
   }
 }
 
-int
-lex_compare(w1,w2)
-  gen *w1,
-      *w2;
+int 
+lex_compare (gen *w1, gen *w2)
 
 /* Compare words w1 and w2 to see which is bigger according to the ordering.
  * The ordering used here is longer words are bigger, and amongst equal
@@ -1168,11 +1154,8 @@ lex_compare(w1,w2)
   return bigger;
 } 
 
-int
-wtlex_compare(w1,w2,rwsptr)
-  gen    *w1,
-      *w2;
-  rewriting_system *rwsptr;
+int 
+wtlex_compare (gen *w1, gen *w2, rewriting_system *rwsptr)
 
 /* Compare words w1 and w2 to see which is bigger according to the ordering.
  * The ordering used here is longer words are bigger, where length is computed
@@ -1211,10 +1194,8 @@ wtlex_compare(w1,w2,rwsptr)
   return bigger;
 } 
 
-int
-rec_compare(w1, w2)
-  gen           *w1,
-                 *w2;
+int 
+rec_compare (gen *w1, gen *w2)
 
 /* Compare words w1 and w2 to see which is 'bigger' according to the
    ordering. The ordering used here is recursive path ordering (based on
@@ -1269,10 +1250,8 @@ rec_compare(w1, w2)
         }
 }
 
-int
-rt_rec_compare(w1, w2)
-  gen           *w1,
-                 *w2;
+int 
+rt_rec_compare (gen *w1, gen *w2)
 
 /* Compare words w1 and w2 to see which is 'bigger' according to the
    ordering. The ordering used here is recursive path ordering (based on
@@ -1325,10 +1304,8 @@ rt_rec_compare(w1, w2)
         }
 }
 
-int
-wreath_compare(w1,w2,rwsptr)
-        gen *w1, *w2;
-  rewriting_system *rwsptr;
+int 
+wreath_compare (gen *w1, gen *w2, rewriting_system *rwsptr)
 /* Compare w1 and w2 to see which comes first in the wreath-product ordering
  * (as defined in Sims' book), using the level function rwsptr->level.
  * Note that the recursive ordering is the special case of this with
@@ -1437,8 +1414,8 @@ wreath_compare(w1,w2,rwsptr)
   }
 }
 
-int
-compare(w1,w2,rwsptr)
+int 
+compare (
 /* COMPARE: Compares two words 'w1' and 'w2' to see which is 'bigger'
  * according to the ordering to be used.
  * If more ordering options are to be provided, the new function should
@@ -1446,8 +1423,10 @@ compare(w1,w2,rwsptr)
  * function.
  * Returns  0 if w1=w2, 1 if w1 is bigger than w2, otherwise 2.
  */
-  gen *w1, *w2;
-  rewriting_system *rwsptr;
+    gen *w1,
+    gen *w2,
+    rewriting_system *rwsptr
+)
 {
   switch (rwsptr->ordering) {
 
@@ -1468,9 +1447,8 @@ compare(w1,w2,rwsptr)
   }
 }
 
-int
-conf_check(rwsptr)
-rewriting_system *rwsptr;
+int 
+conf_check (rewriting_system *rwsptr)
 /* Performs fast check for confluence.
  * Return value is 1 if confluent, 0 if not confluent and new equations added,
  * and -1 of not confluent but no new equations added because they are longer
@@ -1676,10 +1654,8 @@ rewriting_system *rwsptr;
   return 1;
 }
 
-void
-sort_eqns(n,rwsptr)
-  int n;
-  rewriting_system *rwsptr;
+void 
+sort_eqns (int n, rewriting_system *rwsptr)
 /* The equations are re-ordered into order of increasing LHS.
  * Only equations up to length n are output.
  */
@@ -1735,10 +1711,8 @@ sort_eqns(n,rwsptr)
      rwsptr->num_eqns, rwsptr->num_states);
 }
 
-int
-type_sort_eqns(x,rwsptr)
-  int x;
-  rewriting_system *rwsptr;
+int 
+type_sort_eqns (int x, rewriting_system *rwsptr)
 /* Used only in cosets case.
  * The equations not already done are re-ordered so that coset eqns come
  * first, then those involving only G generators, and finally those involving
@@ -1808,9 +1782,8 @@ type_sort_eqns(x,rwsptr)
   return ret;
 }
 
-void
-type_sort_eqns_final(rwsptr)
-rewriting_system *rwsptr;
+void 
+type_sort_eqns_final (rewriting_system *rwsptr)
 /* Used only in cosets case.
  * As for type_sort_eqns, but done at the end, so we do not worry about
  * what is already done.
@@ -1876,10 +1849,8 @@ rewriting_system *rwsptr;
              rwsptr->num_eqns, rwsptr->num_states);
 }
 
-void
-typelength_sort_eqns(n,rwsptr)
-        int n;
-        rewriting_system *rwsptr;
+void 
+typelength_sort_eqns (int n, rewriting_system *rwsptr)
 /* Used only in cosets case.
  * This is called in place of type_sort_eqns_final, when we wish to output
  * in order of increasing length. We still output in the order of the
@@ -1979,10 +1950,8 @@ typelength_sort_eqns(n,rwsptr)
               rwsptr->num_eqns, rwsptr->num_states);
 }
 
-int
-wd_sort_eqns(x,rwsptr)
-  int x;
-  rewriting_system *rwsptr;
+int 
+wd_sort_eqns (int x, rewriting_system *rwsptr)
 /* The equations are re-ordered so that those that resulted in new entries
  * in the word-difference table come first.
  * Those are recorded in the boolean array new_wd.
@@ -2097,9 +2066,8 @@ wd_sort_eqns(x,rwsptr)
   return ret;
 }
 
-void
-should_we_halt(rwsptr)
-rewriting_system *rwsptr;
+void 
+should_we_halt (rewriting_system *rwsptr)
 /* Try to decide whether we should halt, using number of word-differences. */
 { int  i, ndiff, t;
   struct rusage tmp;
@@ -2136,14 +2104,15 @@ rewriting_system *rwsptr;
   }
 }
 
-void
-make_fsa_nice(rwsptr)
+void 
+make_fsa_nice (
 /* Used only in cosets case.
  * We finish by adjusting the reduction fsa to ensure that it only accepts
  * words in G-Generators alone, words in H-generators alone, or words of
  * form H-word*separator*G-word.
  */
-rewriting_system *rwsptr;
+    rewriting_system *rwsptr
+)
 { int first_Hstate, i, j, ng, im;
   int **table = rwsptr->reduction_fsa->table->table_data_ptr;
 
@@ -2167,10 +2136,8 @@ rewriting_system *rwsptr;
         set_dense_target(table,i,j,0);
 }
 
-int
-check_finite(rwsptr,max)
-  rewriting_system *rwsptr;
-  int max;
+int 
+check_finite (rewriting_system *rwsptr, int max)
 /* This is based on fsa_enumerate. It checks whether
  * the coset language accepted might be finite - by enumerating it up
  * to length max. If the enumeration completes and no word has length equal to

@@ -44,9 +44,8 @@ void  fsa_print();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, g, ngens;
   fsa genmult, *mimult;
   char gpname[100], cosgpname[100], inf[100], outf[100], fsaname[100],
@@ -161,8 +160,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpmimult()
+void 
+badusage_gpmimult (void)
 {
     fprintf(stderr,
       "Usage: gpmimult [-ip d/s] [-op d/s] [-silent] [-v] [-l/-h]\n");

@@ -109,9 +109,8 @@ int genstrcmp();
 void genstrcpy();
 
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, j, l, ct, clr;
   boolean seengpname, seencosname, cosets;
 
@@ -356,8 +355,8 @@ main(argc, argv)
   exit(0);
 }
 
-void
-balance_equations()
+void 
+balance_equations (void)
 { int i, j, l1, l2;
   gen *lhs, *rhs, *ptr1, *ptr2;
   if (kbm_print_level > 1)
@@ -385,8 +384,8 @@ balance_equations()
   }
 }
 
-int
-check_short_relation()
+int 
+check_short_relation (void)
 /* Check that the general multiplier automaton *genmult2ptr for words of
  * length two satisfies the short-equation lhs = rhs.
  * This is done merely by looking at the state-labels of *genmult2ptr.
@@ -441,8 +440,8 @@ check_short_relation()
   return 0;
 }
 
-int
-check_long_relation()
+int 
+check_long_relation (void)
 /* Check that the multipliers satisfy the long relation of which the
  * left and right hand sides are store din lhs and rhs, by forming
  * the necessary composites.
@@ -725,8 +724,8 @@ long_word_multiplier(w,s)
   return 0;
 }
 
-void
-badusage_gpaxioms()
+void 
+badusage_gpaxioms (void)
 {
    fprintf(stderr,
 "Usage: gpaxioms [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l] [-f] [-n]\n");

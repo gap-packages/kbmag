@@ -43,9 +43,8 @@ void  fsa_clear();
 void  fsa_print();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, ct, ne, ns, **table, e, s, t;
   fsa testfsa, copyfsa;
   char inf[100],outf[100],fsaname[100];
@@ -232,8 +231,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage()
+void 
+badusage (void)
 {
     fprintf(stderr,
   "Usage: fsaprune [-ip d/s] [-op d/s] [-silent] [-v] [-a] [-i] [filename]\n");

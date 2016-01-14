@@ -21,10 +21,8 @@ int diff_reduce_cos();
 int genstrlen();
 void genstrcat();
 
-int
-diff_reduce_cos(w,rs_wd)
-	gen *w;
-	reduction_struct *rs_wd;
+int 
+diff_reduce_cos (gen *w, reduction_struct *rs_wd)
 /* w is the word to be reduced using the word-difference machine  *wd_fsa.
  * It is assumed that wd_fsa->table->table_data_dptr is set up.
  * This function allocates its own space.

@@ -45,9 +45,8 @@ void  fsa_print();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa *fsawd, *gpwa;
   char gpname[100], cosgpname[100], inf[100], outf[100],
@@ -160,8 +159,8 @@ main(argc, argv)
   exit(0);
 }
 
-void
-badusage_gpwa()
+void 
+badusage_gpwa (void)
 {
     fprintf(stderr,
     "Usage: gpwa [-op d/s] [-silent] [-v] [-l/-h] [-diff1/-diff2]\n");

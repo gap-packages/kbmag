@@ -37,9 +37,8 @@ void  fsa_print();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, g1, g2;
   fsa mult1, mult2, *compmult;
   char inf1[100], inf2[100], outf[100], fsaname[100],
@@ -166,8 +165,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpcomp()
+void 
+badusage_gpcomp (void)
 {
     fprintf(stderr,
 "Usage: \n");

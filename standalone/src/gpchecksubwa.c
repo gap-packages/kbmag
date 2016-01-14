@@ -95,9 +95,8 @@ int  genstrlen();
 int  genstrcmp();
 void genstrcpy();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, j, l, ct;
   char *suff;
   boolean gotsuff;
@@ -561,8 +560,8 @@ subgen_multiplier(w,s)
   return 0;
 }
 
-void
-read_subgpgens()
+void 
+read_subgpgens (void)
 /* Read subgroup generators from rfile (assumed to be already open) */
 { 
   nsubgens=0;
@@ -612,8 +611,8 @@ read_subgpgens()
   } while (delim!=']');
 }
 
-int
-output_bad_words()
+int 
+output_bad_words (void)
 /* *existsptr and subwa are unequal. We nedd to find some words accepted
  * by subwa but not by *existsptr.
  * The function words_and_not will do this.
@@ -676,8 +675,8 @@ output_bad_words()
 }
 
 
-void
-badusage_gpchecksubwa()
+void 
+badusage_gpchecksubwa (void)
 {
    fprintf(stderr,
 "Usage: gpchecksubwa [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l] [-f]\n");

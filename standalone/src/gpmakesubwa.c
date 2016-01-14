@@ -117,9 +117,8 @@ void  genstrcpy();
 void  genstrcat();
    
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int  arg, delim, numsubgens, numsubelts, nochangect, eltct, genct, aw;
   char gpname[100], inf_wa[100], inf_gred[100], inf_cosred[100], suffix[100],
        inf_sub[100], fsaname[100], outf[100], tempfilename[100];
@@ -694,8 +693,8 @@ add_word_fsa(
   return changed;
 }
 
-void
-badusage_gpmakesubwa()
+void 
+badusage_gpmakesubwa (void)
 {
     fprintf(stderr,
    "Usage: gpmakesubwa [-w] [-kbprogcos/-diff1cos/-diff2cos]\n");

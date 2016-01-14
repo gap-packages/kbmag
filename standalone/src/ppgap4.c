@@ -32,9 +32,8 @@ void add_to_buffer();
 void rws_clear();
 int  stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int  i, l, ct;
   boolean first, isgroup;
   rewriting_system  rws, *rwsptr;
@@ -114,8 +113,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_ppgap4()
+void 
+badusage_ppgap4 (void)
 { fprintf(stderr, "Usage: ppgap4 groupname.\n");
 	exit(1);
 }

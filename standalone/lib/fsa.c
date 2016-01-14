@@ -81,10 +81,8 @@ void genstrcpy();
 int genstrlen();
 int stringlen();
 
-int
-sparse_target(g,p1,p2)
-	int g;
-	int *p1, *p2;
+int 
+sparse_target (int g, int *p1, int *p2)
 /* p1 points to the beginning of the row of targets from the required state
  * in a sparsely stored fsa, and p2 to the location beyond the end.
  * g is the generator number for which we seek the target.
@@ -99,9 +97,8 @@ sparse_target(g,p1,p2)
   return 0;
 }
 
-void
-fsa_init(fsaptr)
-	fsa *fsaptr;
+void 
+fsa_init (fsa *fsaptr)
 /* Allocate space for the sub-structures of fsaptr, and zero all pointers. */
 { int i;
   fsaptr->initial = 0;
@@ -142,11 +139,8 @@ fsa_init(fsaptr)
   fsaptr->table->comment_state_numbers=FALSE;
 }
 
-void
-fsa_table_init(tableptr,maxstates,ne)
-	table_struc *tableptr;
-	int maxstates;
-	int ne;
+void 
+fsa_table_init (table_struc *tableptr, int maxstates, int ne)
 /* Intialize the table_data_ptr field of fsaptr->table,
  * for maxstates states, with table-type dense.
  * ne is the size of the alphabet.
@@ -161,10 +155,11 @@ fsa_table_init(tableptr,maxstates,ne)
           tableptr->table_data_ptr[0] + (i-1)*maxstates - 1;
 }
 
-void
-fsa_set_is_initial(fsaptr)
+void 
+fsa_set_is_initial (
 /* Set the is_initial field in fsa *fsaptr - should be freed after use  */
-	fsa *fsaptr;
+    fsa *fsaptr
+)
 { int ns, i;
   ns = fsaptr->states->size;
   tmalloc(fsaptr->is_initial,boolean,ns+1);
@@ -181,10 +176,11 @@ fsa_set_is_initial(fsaptr)
   }
 }
  
-void
-fsa_set_is_accepting(fsaptr)
+void 
+fsa_set_is_accepting (
 /* Set the is_accepting field in fsa *fsaptr - should be freed after use */
-	fsa *fsaptr;
+    fsa *fsaptr
+)
 { int ns, i;
   ns = fsaptr->states->size;
   tmalloc(fsaptr->is_accepting,boolean,ns+1);
@@ -201,10 +197,11 @@ fsa_set_is_accepting(fsaptr)
   }
 }
  
-void
-fsa_set_is_accessible(fsaptr)
+void 
+fsa_set_is_accessible (
 /* Set the is_accessible field in fsa *fsaptr - should be freed after use */
-	fsa *fsaptr;
+    fsa *fsaptr
+)
 { int ns, ne, ct, i, *gotlist, **table,  j, k, l, *ptr, *ptre; ;
 
   ns = fsaptr->states->size;
@@ -248,12 +245,13 @@ fsa_set_is_accessible(fsaptr)
   tfree(gotlist);
 }
 
-int
-fsa_table_dptr_init(fsaptr)
+int 
+fsa_table_dptr_init (
 /* Set the field fsaptr->table->table_data_dptr.
  * This is used for fast access to table entries in 2-variable machines.
  */
-	fsa *fsaptr;
+    fsa *fsaptr
+)
 { int i, ngens;
   if (fsaptr->alphabet->type!=PRODUCT || fsaptr->alphabet->arity!=2) {
     fprintf(stderr,"Error in fsa_table_dptr_init: fsa must be 2-variable.\n");
@@ -274,10 +272,11 @@ fsa_table_dptr_init(fsaptr)
   return 0;
 }
 
-void
-srec_clear(srptr)
+void 
+srec_clear (
 /* Deallocate all space used by the set-record fsaptr */
-	srec *srptr;
+    srec *srptr
+)
 { int i, j;
   if (srptr==0)
     return;
@@ -320,9 +319,8 @@ srec_clear(srptr)
   }
 }
 
-void
-srec_copy(srptr1,srptr2)
-	srec *srptr1, *srptr2;
+void 
+srec_copy (srec *srptr1, srec *srptr2)
 /* Copy the information in *srptr2 to *srptr1 (same way round as strcpy!)
  * It is assumed that srptr1 points to a zeroed set-record.
  */
@@ -392,10 +390,8 @@ srec_copy(srptr1,srptr2)
 }
 
 
-void
-table_copy(tableptr1,tableptr2,ne,ns)
-	table_struc *tableptr1, *tableptr2;
-	int ne, ns;
+void 
+table_copy (table_struc *tableptr1, table_struc *tableptr2, int ne, int ns)
 /* Copy the information in *tableptr2 to *tableptr1 (same way round as strcpy!)
  * It is assumed that tableptr1 points to a zeroed table_struc.
  * ne and ns are the sizes of the alphabet and state-set.
@@ -462,9 +458,8 @@ table_copy(tableptr1,tableptr2,ne,ns)
 }
 
 
-void
-fsa_copy(fsaptr1,fsaptr2)
-	fsa *fsaptr1, *fsaptr2;
+void 
+fsa_copy (fsa *fsaptr1, fsa *fsaptr2)
 /* Copy the information in *fsaptr2 to *fsaptr1 (same way round as strcpy!)
  * It is assumed that fsaptr1 points to a zeroed fsa.
  */
@@ -493,11 +488,12 @@ fsa_copy(fsaptr1,fsaptr2)
   table_copy(fsaptr1->table,fsaptr2->table,ne,ns);
 }
 
-void
-table_clear(tableptr,ns)
+void 
+table_clear (
 /* Deallocate all space used by the table-struc fsaptr */
-	table_struc *tableptr;
-	int ns;
+    table_struc *tableptr,
+    int ns
+)
 {
   if (tableptr==0)
     return;
@@ -513,10 +509,11 @@ table_clear(tableptr,ns)
   }
 }
 
-void
-fsa_clear(fsaptr)
+void 
+fsa_clear (
 /* Deallocate all space used by the fsa *fsaptr */
-	fsa	*fsaptr;
+    fsa *fsaptr
+)
 { int ns;
   if (fsaptr==0)
     return;
@@ -534,14 +531,15 @@ fsa_clear(fsaptr)
   tfree(fsaptr->table);
 }
 
-int
-fsa_delete_state(fsaptr,stateno)
+int 
+fsa_delete_state (
 /* Delete state number stateno from the fsa *fsaptr - works for all fsa's.
  * Warning - the arrays fsaptr->is_initial, is_accepting and is_accessible
  * are not updated!
  */
-	fsa     *fsaptr;
-	int	stateno;
+    fsa *fsaptr,
+    int stateno
+)
 { int ns, ne, **table, *ptr, *ptr2, *ptr2e, i, j, k, l;
   srec *srptr;
 
@@ -684,16 +682,17 @@ fsa_delete_state(fsaptr,stateno)
   return 0;
 }
 
-int
-fsa_permute_states(fsaptr,perm)
+int 
+fsa_permute_states (
 /* permute the states of fsa *fsaptr, using perm - works for all fsa's
  * perm should be a permutation of the integers 1 to ns - this is not checked
  * Warning - the arrays fsaptr->is_initial, is_accepting and is_accessible
  * are not updated.
  * ALSO - perm[0] should be 0 !!
  */
-	fsa     *fsaptr;
-	int	*perm;
+    fsa *fsaptr,
+    int *perm
+)
 { int ns, ne, *newtable, **newtableptr, **table, *perminv,
       *ptr, *ptr2, *ptr2e, i, j;
   srec *srptr;
@@ -816,14 +815,15 @@ fsa_permute_states(fsaptr,perm)
   return 0;
 }
 
-int
-fsa_clear_rws(fsaptr)
+int 
+fsa_clear_rws (
 /* If *fsaptr is an rws (rewriting-system) automaton, then it may have
  * negative targets, which point to reduction equations.
  * This function simply replaces all of these targets by 0, to make it
  * into a conventional fsa.
  */
-	fsa *fsaptr;
+    fsa *fsaptr
+)
 { int ns, ne, **table, *ptr, *ptr2, *ptr2e, i, j;
 
   if (fsaptr->table->table_type==SPARSE && fsaptr->table->denserows>0) {
@@ -863,11 +863,12 @@ fsa_clear_rws(fsaptr)
   return 0;
 }
 
-int
-fsa_make_accessible(fsaptr)
+int 
+fsa_make_accessible (
 /* Make the fsa *fsaptr accessible - i.e. all states reachable from start-state
  */
-        fsa     *fsaptr;
+    fsa *fsaptr
+)
 { int ns, i;
   storage_type st = fsaptr->table->table_type;
   fsa *temp;
@@ -916,9 +917,8 @@ fsa_make_accessible(fsaptr)
   return 0;
 }
 
-int
-fsa_minimize(fsaptr)
-	fsa	*fsaptr;
+int 
+fsa_minimize (fsa *fsaptr)
 /* Minimize the fsa *fsaptr. */
 { int *block_numa, *block_numb, *block_swap, i, j, k, l, len,
        *ptr, *ptr2, *ptr2e, *ht_ptr,
@@ -1122,9 +1122,8 @@ fsa_minimize(fsaptr)
   return 0;
 }
 
-int
-fsa_labeled_minimize(fsaptr)
-	fsa	*fsaptr;
+int 
+fsa_labeled_minimize (fsa *fsaptr)
 /* This is the minimization function for fsa's which might have more than
  * two categories of states. 
  * We use the labeled set-record type to identify the categories, so *fsaptr
@@ -1335,9 +1334,8 @@ fsa_labeled_minimize(fsaptr)
 }
 
 
-int
-fsa_bfs(fsaptr)
-	fsa	*fsaptr;
+int 
+fsa_bfs (fsa *fsaptr)
 /* Put the fsa *fsapt into bfs form. */
 {  int ns, ne, *perm, *perminv, **table, ct, i, j, s, t;
    boolean *got, dense;
@@ -1402,9 +1400,8 @@ fsa_bfs(fsaptr)
   return 0;
 }
 
-int
-fsa_count(fsaptr)
-	fsa *fsaptr;
+int 
+fsa_count (fsa *fsaptr)
 /* Count the size of the accepted language of the fsa *fsaptr.
  * Return this size, or -2 if infinite.
  */
@@ -1672,9 +1669,8 @@ fsa_enumerate(wfile,fsaptr,min,max,putcomma,stateno)
   return (int)foundword;
 }
 
-int
-fsa_swap_coords(fsaptr)
-        fsa *fsaptr;
+int 
+fsa_swap_coords (fsa *fsaptr)
 /* *fsaptr must be a two-variable fsa, in dense format. This routine
  * alters *fsaptr by swapping the variable. That is it replaces transitions
  * s - (a,b) -> t  by  s - (b,a) -> t, for a,b in the base-alphabet.
@@ -1720,11 +1716,8 @@ fsa_swap_coords(fsaptr)
  * NEW FSA STUFF - by  Laurent Bartholdi
  ****************************************************************/
 
-unsigned
-*fsa_mod_count(fsaptr,p,num)
-  fsa *fsaptr;
-  unsigned p;
-  unsigned num;
+unsigned *
+fsa_mod_count (fsa *fsaptr, unsigned p, unsigned num)
 /* fsa_mod_count() computes the number of elements of length i in the
    accepted language, for all 0 <= i <= n where n=#of states in fsa.
    All computations are mod. p
@@ -1776,10 +1769,8 @@ unsigned
   return count;
 }
 
-unsigned
-mod_inverse(i,p)
-  unsigned i;
-  unsigned p;
+unsigned 
+mod_inverse (unsigned i, unsigned p)
 {
   unsigned m = i, n = p; int a = 1, b = 0, c = 0, d = 1;
   	/* we have a*i+b*p = m, c*i+d*p = n at all times;
@@ -1793,12 +1784,8 @@ mod_inverse(i,p)
   return (c+p) % p;
 }
 
-int
-mod_solve(A,B,p,n)
-  int **A;
-  int *B;
-  unsigned p;
-  unsigned n;
+int 
+mod_solve (int **A, int *B, unsigned p, unsigned n)
 /* solve A*B=A[n] in n-dimensional matrices and vectors, mod. p.
    the return value is the smallest possible size of B,
    or -1 if the computation could not be performed. */
@@ -1835,11 +1822,8 @@ mod_solve(A,B,p,n)
   return degree;
 }
 
-int
-fsa_mod_growth(fsaptr,f,p)
-  fsa *fsaptr;
-  fraction *f;
-  unsigned p;
+int 
+fsa_mod_growth (fsa *fsaptr, fraction *f, unsigned p)
 {
   unsigned *count, n, i, j; int **A;
   
@@ -1873,11 +1857,8 @@ fsa_mod_growth(fsaptr,f,p)
   return 0;
 }
 
-void
-mod_normal (poly,d,p)
-  int *poly;
-  unsigned d;
-  unsigned p;
+void 
+mod_normal (int *poly, unsigned d, unsigned p)
 {
   int i;
   for (i = 0; i <= d; i++) {
@@ -1965,12 +1946,8 @@ print_poly(FILE *f, int *poly, unsigned d, char *var)
 }
 */
 
-int
-fsa_growth(wfile,fsaptr,primes,var)
-  FILE *wfile;
-  fsa *fsaptr;
-  unsigned *primes;
-  char *var;
+int 
+fsa_growth (FILE *wfile, fsa *fsaptr, unsigned *primes, char *var)
 {
   boolean cr;
   fraction f, newf;

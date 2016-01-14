@@ -68,9 +68,8 @@ int   add_wd_fsa_cos();
 int   calculate_inverses();
 int   fsa_table_dptr_init();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, ct, *inv, ngens, maxwdiffs, maxeqns;
   fsa wa, diff1, diff2, *migenmultptr;
   char gpname[100], inf1[100], inf2[100], inf3[100], outf[100], fsaname[100],
@@ -283,8 +282,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpmigenmult()
+void 
+badusage_gpmigenmult (void)
 {
     fprintf(stderr,
  "Usage: gpmigenmult [-op d/s] [-silent] [-v] [-l/-h] [-c] [-mwd maxwdiffs]\n");

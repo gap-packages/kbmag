@@ -486,11 +486,8 @@ fsa_geopairs_int(waptr,diffptr,op_table_type,destroy,tempfilename,readback)
   return geopairsptr;
 }
 
-int
-fsa_checkgeowa(geowaptr,diffptr,eqnptr,maxeqns)
-	fsa *geowaptr, *diffptr;
-	reduction_equation *eqnptr;
-	int maxeqns;
+int 
+fsa_checkgeowa (fsa *geowaptr, fsa *diffptr, reduction_equation *eqnptr, int maxeqns)
 /* *geowaptr is a candidate for the geodesic word-acceptor of a word-
  * hyperbolic group, and diffptr a word-difference machine for reducing
  * geodesic words to their shortlex normal form.
@@ -526,11 +523,8 @@ fsa_checkgeowa(geowaptr,diffptr,eqnptr,maxeqns)
     return fsa_checkgeowa_int(geowaptr,diffptr,eqnptr,maxeqns);
 }
 
-int
-fsa_checkgeowa_short(geowaptr,diffptr,eqnptr,maxeqns)
-	fsa *geowaptr, *diffptr;
-	reduction_equation *eqnptr;
-	int maxeqns;
+int 
+fsa_checkgeowa_short (fsa *geowaptr, fsa *diffptr, reduction_equation *eqnptr, int maxeqns)
 {
   int **watable, ***difftable, identity, ngens, ngens1, ne, ns, len, im,
       cstate, cswa1, cswa2, csdiff, i, bstate, numeqns;
@@ -702,11 +696,8 @@ fsa_checkgeowa_short(geowaptr,diffptr,eqnptr,maxeqns)
   return numeqns;
 }
 
-int
-fsa_checkgeowa_int(geowaptr,diffptr,eqnptr,maxeqns)
-	fsa *geowaptr, *diffptr;
-	reduction_equation *eqnptr;
-	int maxeqns;
+int 
+fsa_checkgeowa_int (fsa *geowaptr, fsa *diffptr, reduction_equation *eqnptr, int maxeqns)
 {
   int **watable, ***difftable, identity, ngens, ngens1, ne, ns, len, im,
       cstate, cswa1, cswa2, csdiff, i, bstate, numeqns;

@@ -272,10 +272,8 @@ read_kbinput_simple(rfile,check,rwsptr)
   }
 }
 
-void
-read_gens(rfile,rwsptr)
-        FILE * rfile;
-	rewriting_system *rwsptr;
+void 
+read_gens (FILE *rfile, rewriting_system *rwsptr)
 /* Read the list of generator names into the array rws.gen_name, and
  * set rws.num_gens equal to the number of generators.
  */
@@ -308,10 +306,8 @@ read_gens(rfile,rwsptr)
   strcpy(rwsptr->gen_name[rwsptr->num_gens+1],"_");
 }
 
-void
-read_inverses(rfile,rwsptr)
-        FILE * rfile;
-	rewriting_system *rwsptr;
+void 
+read_inverses (FILE *rfile, rewriting_system *rwsptr)
 /* The list of inverses is read.
  * An inverse inv(g) of a generator g satisfies g.inv(g) = inv(g).g = 1 -
  * i.e. this lists only 2-sided inverses
@@ -437,9 +433,8 @@ read_eqns_simple(rfile,check,rwsptr)
   rwsptr->num_eqns += ct;
 }
 
-void
-rws_clear(rwsptr)
-        rewriting_system *rwsptr;
+void 
+rws_clear (rewriting_system *rwsptr)
 /* Free the assigned space associated with a rewriting-system,
  * excluding its reduction_automaton, which should be freed separately
  * with fsa_clear, if it is present.
@@ -669,10 +664,8 @@ read_subgens(rfile,words,names,inverses,rwsptr)
   }
 }
 
-void
-print_rws_simple(wfile,rwsptr)
-	FILE *wfile;
-	rewriting_system *rwsptr;
+void 
+print_rws_simple (FILE *wfile, rewriting_system *rwsptr)
 /* A simplified version of print_kboutput() when we have merely
  * edited the file.
  */

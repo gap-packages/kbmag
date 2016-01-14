@@ -36,11 +36,8 @@ void genstrcpy();
 int genstrlen();
 int stringlen();
 
-int
-initialise_wd_fsa(wd_fsaptr,alphptr,maxwdiffs)
-	fsa  *wd_fsaptr;
-	srec *alphptr;
-	int maxwdiffs;
+int 
+initialise_wd_fsa (fsa *wd_fsaptr, srec *alphptr, int maxwdiffs)
 /* Initialise a word-difference automaton, using  *alphptr as base-alphabet.
  * First state is empty word, which is initial and only accepting state.
  */
@@ -205,12 +202,8 @@ add_wd_fsa(wd_fsaptr,eqn,inv,reverse,rsptr)
   return ans;
 }
 
-int
-make_full_wd_fsa(wd_fsaptr,inv,start_no,rsptr)
-	fsa *wd_fsaptr;
-	int *inv;
-        int start_no;
-        reduction_struct *rsptr;
+int 
+make_full_wd_fsa (fsa *wd_fsaptr, int *inv, int start_no, reduction_struct *rsptr)
 /* Close the set of word-differences under inversion, and add all possible
  * transitions, starting at state number start_no.
  */
@@ -296,9 +289,8 @@ make_full_wd_fsa(wd_fsaptr,inv,start_no,rsptr)
 }
 
 
-void
-clear_wd_fsa(wd_fsaptr)
-	fsa *wd_fsaptr;
+void 
+clear_wd_fsa (fsa *wd_fsaptr)
 /* Clear the state-names for all states except the first. */
 { int i, ns;
   gen **wdn;
@@ -310,10 +302,8 @@ clear_wd_fsa(wd_fsaptr)
 }
 
 
-int
-diff_no(wd_fsaptr,w)
-	fsa *wd_fsaptr;
-	gen *w;
+int 
+diff_no (fsa *wd_fsaptr, gen *w)
 /* See if w is in the list of word-differences (state-names of wd_diff).
  * If so, return the number of the state.
  * If not, return 0.
@@ -331,11 +321,8 @@ diff_no(wd_fsaptr,w)
   return 0;
 }
 
-int
-calculate_inverses(invptr,ngens,rsptr)
-	int **invptr;
-	int ngens;
-        reduction_struct *rsptr;
+int 
+calculate_inverses (int **invptr, int ngens, reduction_struct *rsptr)
 /* Use reduction in the word-difference machine to calculate
  * inverses of ngens.
  */

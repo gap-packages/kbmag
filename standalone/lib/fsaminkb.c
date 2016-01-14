@@ -451,10 +451,7 @@ fsa_minkb(minredptr,waptr,diffptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_diff(fsaptr,rs_wd,op_table_type)
-	fsa  *fsaptr;
-	reduction_struct *rs_wd;
-        storage_type op_table_type;
+fsa_diff (fsa *fsaptr, reduction_struct *rs_wd, storage_type op_table_type)
 /* *fsaptr should be a two-variable automaton that accepts pairs of equations
  * It must be stored in dense format.
  * The corresponding word-difference machine is computed and returned.

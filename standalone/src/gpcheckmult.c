@@ -118,9 +118,8 @@ int	genstrlen();
 void genstrcpy();
 void genstrcat();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, ct, *inv, old_ndiff, maxneweqns, numeqns, ngens, maxwdiffs;
   fsa  diff2, genmult;
   char gpname[100], cosgpname[100], inf1[100], inf2[100], inf3[100],
@@ -405,8 +404,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpcheckmult()
+void 
+badusage_gpcheckmult (void)
 {
     fprintf(stderr,
      "Usage: gpcheckmult [-ip d/s[dr]] [-silent] [-v] [-l/-h] [-m maxeqns]\n");

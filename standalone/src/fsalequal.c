@@ -33,9 +33,8 @@ boolean fsa_equal();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, ct, n;
   fsa fsa1, fsa2;
   char inf1[100], inf2[100], fsaname[100];
@@ -114,8 +113,8 @@ main(argc, argv)
 }
 
  
-void
-badusage_fsalequal()
+void 
+badusage_fsalequal (void)
 {
     fprintf(stderr,
   "Usage: fsalequal [-ip d/s] [-silent] [-v] filename1 filename2\n");

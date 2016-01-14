@@ -41,11 +41,8 @@ void genstrcpy();
 int genstrlen();
 int stringlen();
 
-int
-initialise_wd_fsa_cos(wd_fsaptr,alphptr,maxwdiffs)
-	fsa  *wd_fsaptr;
-	srec *alphptr;
-	int maxwdiffs;
+int 
+initialise_wd_fsa_cos (fsa *wd_fsaptr, srec *alphptr, int maxwdiffs)
 /* Initialise a word-difference automaton, using  *alphptr as base-alphabet.
  * First state is empty word, which is initial and only accepting state.
  * In the cosets situation, there can be more than one initial state.
@@ -271,12 +268,8 @@ add_wd_fsa_cos(wd_fsaptr,eqn,inv,reverse,rs)
   return ans;
 }
 
-int
-make_full_wd_fsa_cos(wd_fsaptr,inv,start_no,rs)
-	fsa *wd_fsaptr;
-	int *inv;
-        int start_no;
-        reduction_struct *rs;
+int 
+make_full_wd_fsa_cos (fsa *wd_fsaptr, int *inv, int start_no, reduction_struct *rs)
 /* Close the set of word-differences under inversion, and add all possible
  * transitions, starting at state number start_no.
  */
@@ -376,9 +369,8 @@ make_full_wd_fsa_cos(wd_fsaptr,inv,start_no,rs)
   return 0;
 }
 
-void
-clear_wd_fsa_cos(wd_fsaptr)
-	fsa *wd_fsaptr;
+void 
+clear_wd_fsa_cos (fsa *wd_fsaptr)
 /* Clear the state-names for all states except the first. */
 { int i, ns;
   gen **wdn;

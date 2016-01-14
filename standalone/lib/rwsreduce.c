@@ -23,10 +23,8 @@ boolean slow_check_rws_reduce();
 /* functions defined in other files and used in this file */
 int genstrlen();
 
-int
-rws_reduce(w,rs_rws)
-	gen     	 *w;
-        reduction_struct *rs_rws;
+int 
+rws_reduce (gen *w, reduction_struct *rs_rws)
 
 /* Reduce "w", by replacing any occurrences of the LHS of the current
  * equations in the rewriting system by their RHS.
@@ -107,10 +105,8 @@ rws_reduce(w,rs_rws)
 }
 
 
-int
-slow_rws_reduce(w,rs_rws)
-	gen    	      	 *w;
-	reduction_struct *rs_rws;
+int 
+slow_rws_reduce (gen *w, reduction_struct *rs_rws)
 /* The version of reduce for the reduction automaton that recognises
  * left hand sides of relations only.
  * This is both slower, and needs more space, since the history has to

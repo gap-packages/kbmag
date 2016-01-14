@@ -941,10 +941,8 @@ fsa_genmult2_int(genmultptr,op_table_type,destroy,genmult2filename,readback)
   return genmult2ptr;
 }
 
-int
-fsa_makemult(genmultptr,g)
-        fsa *genmultptr;
-        int g;
+int 
+fsa_makemult (fsa *genmultptr, int g)
 /* This procedure takes the fsa *genmultptr produced by fsa_triples, 
  * and builds a particular  multiplier Mult_g1.
  * This merely involves setting the accept states of *genmultptr
@@ -1018,10 +1016,8 @@ fsa_makemult(genmultptr,g)
   return 0;
 }
 
-int
-fsa_makemult2(genmult2ptr,g1,g2)
-        fsa *genmult2ptr;
-        int g1, g2;
+int 
+fsa_makemult2 (fsa *genmult2ptr, int g1, int g2)
 /* This procedure takes the fsa *genmult2ptr produced by fsa_genmult2, 
  * and builds a particular length-2 multiplier Mult_g1g2.
  * This merely involves locating the accept states.

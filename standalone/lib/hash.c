@@ -316,9 +316,8 @@ gen_hash_init(htptr,fixed,len,num_recs_inc,space_inc)
   htptr->next_rec[0] = -1;
 }
 
-void
-hash_clear(htptr)
-	hash_table *htptr;
+void 
+hash_clear (hash_table *htptr)
 { int i;
   for (i=0;i<htptr->num_blocks;i++)
     tfree(htptr->table_block[i]);
@@ -332,9 +331,8 @@ hash_clear(htptr)
   tfree(htptr->next_rec);
 }
 
-void
-short_hash_clear(htptr)
-	short_hash_table *htptr;
+void 
+short_hash_clear (short_hash_table *htptr)
 { int i;
   for (i=0;i<htptr->num_blocks;i++)
     tfree(htptr->table_block[i]);
@@ -348,9 +346,8 @@ short_hash_clear(htptr)
   tfree(htptr->next_rec);
 }
 
-void
-char_hash_clear(htptr)
-	char_hash_table *htptr;
+void 
+char_hash_clear (char_hash_table *htptr)
 { int i;
   for (i=0;i<htptr->num_blocks;i++)
     tfree(htptr->table_block[i]);
@@ -364,9 +361,8 @@ char_hash_clear(htptr)
   tfree(htptr->next_rec);
 }
 
-void
-gen_hash_clear(htptr)
-	gen_hash_table *htptr;
+void 
+gen_hash_clear (gen_hash_table *htptr)
 { int i;
   for (i=0;i<htptr->num_blocks;i++)
     tfree(htptr->table_block[i]);
@@ -380,10 +376,8 @@ gen_hash_clear(htptr)
   tfree(htptr->next_rec);
 }
 
-int
-hash_rec_len(htptr,n)
-	hash_table  *htptr;
-	int n;
+int 
+hash_rec_len (hash_table *htptr, int n)
 /* The length of hash-record number n. Only useful for variable-length tables */
 { int *ptr, *ptre, *bn, ct;
   if (htptr->fixed_len)
@@ -412,10 +406,8 @@ hash_rec_len(htptr,n)
   }
 }
 
-int
-short_hash_rec_len(htptr,n)
-	short_hash_table  *htptr;
-	int n;
+int 
+short_hash_rec_len (short_hash_table *htptr, int n)
 /* The length of hash-record number n. Only useful for variable-length tables */
 { unsigned short *ptr, *ptre;
   int  *bn, ct;
@@ -445,10 +437,8 @@ short_hash_rec_len(htptr,n)
   }
 }
 
-int
-char_hash_rec_len(htptr,n)
-	char_hash_table  *htptr;
-	int n;
+int 
+char_hash_rec_len (char_hash_table *htptr, int n)
 /* The length of hash-record number n. Only useful for variable-length tables */
 { char *ptr, *ptre;
   int  *bn, ct;
@@ -478,10 +468,8 @@ char_hash_rec_len(htptr,n)
   }
 }
 
-int
-gen_hash_rec_len(htptr,n)
-	gen_hash_table  *htptr;
-	int n;
+int 
+gen_hash_rec_len (gen_hash_table *htptr, int n)
 /* The length of hash-record number n. Only useful for variable-length tables */
 { gen *ptr, *ptre;
   int  *bn, ct;
@@ -512,9 +500,7 @@ gen_hash_rec_len(htptr,n)
 }
 
 int *
-hash_rec(htptr,n)
-	hash_table  *htptr;
-        int n;
+hash_rec (hash_table *htptr, int n)
 /* Pointer to record number n */
 { int *ptr, *bn, ct;
   if (htptr->fixed_len)
@@ -535,9 +521,7 @@ hash_rec(htptr,n)
 }
 
 unsigned short *
-short_hash_rec(htptr,n)
-	short_hash_table  *htptr;
-        int n;
+short_hash_rec (short_hash_table *htptr, int n)
 /* Pointer to record number n */
 { unsigned short *ptr;
   int *bn, ct;
@@ -559,9 +543,7 @@ short_hash_rec(htptr,n)
 }
 
 char *
-char_hash_rec(htptr,n)
-	char_hash_table  *htptr;
-        int n;
+char_hash_rec (char_hash_table *htptr, int n)
 /* Pointer to record number n */
 { char *ptr;
   int *bn, ct;
@@ -583,9 +565,7 @@ char_hash_rec(htptr,n)
 }
 
 gen *
-gen_hash_rec(htptr,n)
-	gen_hash_table  *htptr;
-        int n;
+gen_hash_rec (gen_hash_table *htptr, int n)
 /* Pointer to record number n */
 { gen *ptr;
   int *bn, ct;
@@ -606,10 +586,8 @@ gen_hash_rec(htptr,n)
   }
 }
 
-int
-hash_locate(htptr,reclen)
-	hash_table *htptr;
-	int reclen;
+int 
+hash_locate (hash_table *htptr, int reclen)
 /* This is the basic search function, using the hash-table.
  * It is assumed that the entry for which we are searching is already
  * in the table, and pointed at by htptr->current_ptr
@@ -674,10 +652,8 @@ hash_locate(htptr,reclen)
   return(nr);
 }
 
-int
-short_hash_locate(htptr,reclen)
-	short_hash_table *htptr;
-	int reclen;
+int 
+short_hash_locate (short_hash_table *htptr, int reclen)
 /* This is the basic search function, using the short_hash-table.
  * It is assumed that the entry for which we are searching is already
  * in the table, and pointed at by htptr->table_data[htptr->num_recs+1]
@@ -743,10 +719,8 @@ short_hash_locate(htptr,reclen)
   return(nr);
 }
 
-int
-char_hash_locate(htptr,reclen)
-	char_hash_table *htptr;
-	int reclen;
+int 
+char_hash_locate (char_hash_table *htptr, int reclen)
 /* This is the basic search function, using the char_hash_table.
  * It is assumed that the entry for which we are searching is already
  * in the table, and pointed at by htptr->table_data[htptr->num_recs+1]
@@ -812,10 +786,8 @@ char_hash_locate(htptr,reclen)
   return(nr);
 }
 
-int
-gen_hash_locate(htptr,reclen)
-	gen_hash_table *htptr;
-	int reclen;
+int 
+gen_hash_locate (gen_hash_table *htptr, int reclen)
 /* This is the basic search function, using the gen_hash_table.
  * It is assumed that the entry for which we are searching is already
  * in the table, and pointed at by htptr->table_data[htptr->num_recs+1]
@@ -881,10 +853,8 @@ gen_hash_locate(htptr,reclen)
   return(nr);
 }
 
-int
-char_hash_recno(htptr,reclen)
-	char_hash_table *htptr;
-	int reclen;
+int 
+char_hash_recno (char_hash_table *htptr, int reclen)
 /* This is similar to char_hash_locate, but if it does not find the
  * record, then it does not insert it into the table, but returns -1.
  */
@@ -925,10 +895,8 @@ char_hash_recno(htptr,reclen)
   return(-1);
 }
 
-int
-gen_hash_recno(htptr,reclen)
-	gen_hash_table *htptr;
-	int reclen;
+int 
+gen_hash_recno (gen_hash_table *htptr, int reclen)
 /* This is similar to gen_hash_locate, but if it does not find the
  * record, then it does not insert it into the table, but returns -1.
  */
@@ -969,9 +937,8 @@ gen_hash_recno(htptr,reclen)
   return(-1);
 }
 
-void
-hash_morerecs(htptr)
-	hash_table  *htptr;
+void 
+hash_morerecs (hash_table *htptr)
 /* Allocate space for more records. */
 { int *new, **newp, *ptr, *ptre, *ptrc, **dptr, **dptre, **dptrc;
 
@@ -1001,9 +968,8 @@ hash_morerecs(htptr)
   htptr->next_rec = new;
 }
 
-void
-short_hash_morerecs(htptr)
-	short_hash_table  *htptr;
+void 
+short_hash_morerecs (short_hash_table *htptr)
 /* Allocate space for more records. */
 { int *new, *ptr, *ptre, *ptrc;
   unsigned short **newp, **dptr, **dptre, **dptrc;
@@ -1035,9 +1001,8 @@ short_hash_morerecs(htptr)
   htptr->next_rec = new;
 }
 
-void
-char_hash_morerecs(htptr)
-	char_hash_table  *htptr;
+void 
+char_hash_morerecs (char_hash_table *htptr)
 /* Allocate space for more records. */
 { int *new, *ptr, *ptre, *ptrc;
   char **newp, **dptr, **dptre, **dptrc;
@@ -1069,9 +1034,8 @@ char_hash_morerecs(htptr)
   htptr->next_rec = new;
 }
 
-void
-gen_hash_morerecs(htptr)
-	gen_hash_table  *htptr;
+void 
+gen_hash_morerecs (gen_hash_table *htptr)
 /* Allocate space for more records. */
 { int *new, *ptr, *ptre, *ptrc;
   gen **newp, **dptr, **dptre, **dptrc;
@@ -1103,9 +1067,8 @@ gen_hash_morerecs(htptr)
   htptr->next_rec = new;
 }
 
-int
-hash_morespace(htptr)
-	hash_table *htptr;
+int 
+hash_morespace (hash_table *htptr)
 /* Allocate more table space */
 { int nb, nr;
 
@@ -1132,9 +1095,8 @@ hash_morespace(htptr)
   return 0;
 }
 
-int
-short_hash_morespace(htptr)
-	short_hash_table *htptr;
+int 
+short_hash_morespace (short_hash_table *htptr)
 /* Allocate more table space */
 { int  nb, nr;
   htptr->num_blocks++;
@@ -1161,9 +1123,8 @@ short_hash_morespace(htptr)
   return 0;
 }
 
-int
-char_hash_morespace(htptr)
-	char_hash_table *htptr;
+int 
+char_hash_morespace (char_hash_table *htptr)
 /* Allocate more table space */
 { int  nb, nr;
   htptr->num_blocks++;
@@ -1190,9 +1151,8 @@ char_hash_morespace(htptr)
   return 0;
 }
 
-int
-gen_hash_morespace(htptr)
-	gen_hash_table *htptr;
+int 
+gen_hash_morespace (gen_hash_table *htptr)
 /* Allocate more table space */
 { int  nb, nr;
   htptr->num_blocks++;

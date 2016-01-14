@@ -68,9 +68,8 @@ int   add_wd_fsa();
 int   calculate_inverses();
 int  fsa_table_dptr_init();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, ct, *inv, ngens, maxwdiffs, maxeqns;
   fsa wa, diff1, diff2, *genmultptr;
   char inf1[100], inf2[100], inf2mi[100],
@@ -257,8 +256,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpgenmult()
+void 
+badusage_gpgenmult (void)
 {
     fprintf(stderr,
    "Usage: gpgenmult [-op d/s] [-silent] [-v] [-l/-h] [-c] [-mwd maxwdiffs]\n");

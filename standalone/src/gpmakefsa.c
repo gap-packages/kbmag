@@ -114,9 +114,8 @@ int   genstrlen();
 void  genstrcpy();
 void  genstrcat();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, ct, *inv, ngens, maxwdiffs, numeqns, old_ndiff;
   fsa *wa, diff1, diff2, *genmultptr, migenmult;
   char gpname[100], cosgpname[100], inf1[100], inf2[100], outf1[100],
@@ -633,8 +632,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpmakefsa()
+void 
+badusage_gpmakefsa (void)
 {
     fprintf(stderr,
      "Usage: gpmakefsa [-opwa d/s] [-opgm d/s] [-ip d/s[dr]]\n");

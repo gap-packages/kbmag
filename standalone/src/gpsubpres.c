@@ -87,9 +87,8 @@ int genstrlen();
 int genstrcmp();
 void genstrcpy();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, j, l, ct;
   char *suffl, *suffr;
   gen *relator, *ptr, *ptr2;
@@ -603,8 +602,8 @@ long_word_multiplier(w,s)
   return 0;
 }
 
-void
-badusage_gpsubpres()
+void 
+badusage_gpsubpres (void)
 {
    fprintf(stderr,
 "Usage: gpsubpres [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l] [-f]\n");

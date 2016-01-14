@@ -74,9 +74,8 @@ int stringlen();
 int genstrlen();
 void genstrcpy();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, ct, ngens;
   char inf1[100], inf2[100], inf3[100],
        outf1[100], outf2[100], outf3[100], outf4[100], outf5[100], outf6[100],
@@ -530,8 +529,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpgeowa()
+void 
+badusage_gpgeowa (void)
 {
     fprintf(stderr,
      "Usage: gpgeowa [-op1 d/s] [-op2 d/s] [-silent] [-v] [-l/-h] [-f]\n");

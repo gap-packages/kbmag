@@ -68,9 +68,8 @@ int stringlen();
 int genstrlen();
 void genstrcpy();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, ngens, neqns, i, *templevel;
   gen **words;
   boolean subgens=FALSE, invsubgens=TRUE;
@@ -226,8 +225,8 @@ main(argc, argv)
   exit(0);
 }
 
-void
-badusage_makecosfile()
+void 
+badusage_makecosfile (void)
 {
    fprintf(stderr,"Usage:  makecosfile [-sg] [-ni] groupname [subname] \n");
 	exit(1);

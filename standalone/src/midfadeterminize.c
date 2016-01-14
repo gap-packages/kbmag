@@ -34,9 +34,8 @@ void  fsa_clear();
 int   fsa_minimize();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa fsain, *midfadeterminize;
   char inf[100], outf[100], fsaname[100], tempfilename[100];
@@ -144,8 +143,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_midfadeterminize()
+void 
+badusage_midfadeterminize (void)
 {
     fprintf(stderr,
     "Usage: midfadeterminize [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]\n\

@@ -46,9 +46,8 @@ void  fsa_print();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, i, g1, g2;
   fsa migm2;
   char gpname[100], inf[100], outf[100], fsaname[100], prefix[16];
@@ -160,8 +159,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_gpmimult2()
+void 
+badusage_gpmimult2 (void)
 {
     fprintf(stderr,
       "Usage: gpmimult2 [-ip d/s] [-op d/s] [-silent] [-v] [-l/-h]\n");

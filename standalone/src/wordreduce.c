@@ -89,9 +89,8 @@ void  fsa_clear();
 int   stringlen();
 int   genstrlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int delim, arg, num_gens, i;
   char gpname[100], cosgpname[100], inf1[100], fsaname[100],
        inf2[100], outf[100];
@@ -328,8 +327,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_wordreduce()
+void 
+badusage_wordreduce (void)
 {
     fprintf(stderr,
  "Usage: wordreduce [-kbprog/-diff1/-diff2/-diff1c] [-mrl maxreducelen] [-e]\n"

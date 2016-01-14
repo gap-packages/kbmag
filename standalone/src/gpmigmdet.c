@@ -36,9 +36,8 @@ void  fsa_clear();
 int   fsa_labeled_minimize();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa fsain, *gpmigmdet;
   char gpname[100], inf[100], outf[100], fsaname[100],
@@ -132,8 +131,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage()
+void 
+badusage (void)
 {
     fprintf(stderr,
     "Usage: gpmigmdet [-diff1/-diff2/-diff1c] [-op d/s]\n");

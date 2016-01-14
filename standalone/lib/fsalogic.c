@@ -499,9 +499,7 @@ fsa_binop(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename,op,labels)
 }
 
 fsa *
-fsa_not(fsaptr,op_table_type)
-	fsa *fsaptr;
-	storage_type op_table_type;
+fsa_not (fsa *fsaptr, storage_type op_table_type)
 /* This function ought to be easy - just interchange accept and non-accept
  * states. In fact it is complicated slightly by the fact that we are
  * working with partial fsa's, so the 0 state has to become a new state,
@@ -1383,8 +1381,7 @@ fsa_exists_int(fsaptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_greater_than(alphptr)
-	srec *alphptr;
+fsa_greater_than (srec *alphptr)
 /* This constructs the two-variable fsa with base-alphabet *alphptr
  * that accepts (w_1,w_2) iff w_1 > w_2 in the shortlex ordering.
  * The shorter of the two words (if any) is padded with the padding-symbol.

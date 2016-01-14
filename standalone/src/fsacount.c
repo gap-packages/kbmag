@@ -31,9 +31,8 @@ int   fsa_count();
 void  fsa_clear();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, ct, n;
   fsa testfsa;
   char inf[100],fsaname[100];
@@ -112,8 +111,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_fsacount()
+void 
+badusage_fsacount (void)
 {
     fprintf(stderr,
       "Usage: fsacount [-is n] [-ip d/s] [-silent] [-v] [filename]\n");

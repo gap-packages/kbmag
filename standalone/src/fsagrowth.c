@@ -45,9 +45,8 @@ int  fsa_growth();
 void  fsa_clear();
 boolean is_int();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg, min, max, i, rv;
   fsa testfsa;
   char inf[100], outf[100], fsaname[100], primestr[100], var[100] = "X";
@@ -141,8 +140,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_fsagrowth()
+void 
+badusage_fsagrowth (void)
 {
     fprintf(stderr,
       "Usage: fsagrowth [-ip d/s] [-v] [-primes x,y...] [filename]\n");

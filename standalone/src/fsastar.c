@@ -33,9 +33,8 @@ void  fsa_clear();
 int   stringlen();
 int   fsa_minimize();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa fsain, *fsastarnd, *fsastar;
   char inf[100], outf[100], fsaname[100], tempfilename[100];
@@ -144,8 +143,8 @@ main(argc, argv)
   exit(0);
 }
  
-void
-badusage_fsastar()
+void 
+badusage_fsastar (void)
 {
     fprintf(stderr,
       "Usage: fsastar [-ip d/s[dr]] [-op d/s] [-silent] [-v] filename\n");

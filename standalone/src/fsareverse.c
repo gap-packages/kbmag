@@ -44,9 +44,8 @@ void  fsa_clear();
 int   fsa_minimize();
 int   stringlen();
 
-main(argc, argv)
-        int             argc;
-        char           *argv[];
+int 
+main (int argc, char *argv[])
 { int arg;
   fsa fsain, *fsareverse;
   char inf[100], outf[100], fsaname[100], tempfilename[100];
@@ -178,8 +177,8 @@ main(argc, argv)
   tfree(fsareverse);
   exit(0);
 }
-void
-badusage_fsareverse()
+void 
+badusage_fsareverse (void)
 {
     fprintf(stderr,
  "Usage: fsareverse [-s] [-midfa] [-ip d/s[dr]] [-op d/s]\n");
