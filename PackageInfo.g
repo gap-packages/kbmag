@@ -48,8 +48,8 @@ AbstractHTML :=
 
 PackageDoc := rec(
   BookName  := "kbmag",
-  ArchiveURLSubset := ["doc"],
-  #HTMLStart := "",
+  ArchiveURLSubset := ["doc", "htm"],
+  HTMLStart := "htm/chapters.htm",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Knuth-Bendix on Monoids and Automatic Groups",
