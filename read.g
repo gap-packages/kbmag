@@ -1,19 +1,12 @@
-##
-## Print Banner
-##
+ReadPackage("kbmag", "gap/correspondence.g");
+ReadPackage("kbmag", "gap/kbsmg.gd");
 
-## Print("#I -- The KBMAG share package -- \n"); 
-## Print("#I -- Derek Holt -- \n"); 
+ReadPackage("kbmag", "gap/fpgtorws4.g");
+ReadPackage("kbmag", "gap/kbsmg.gi");
 
-ReadPkg("kbmag","/gap/correspondence.g");
-ReadPkg("kbmag","/gap/kbsmg.gd");
+ReadPackage("kbmag", "gap/fsa4.g");
+ReadPackage("kbmag", "gap/rws4.g");
+ReadPackage("kbmag", "gap/rwssub4.g");
+ReadPackage("kbmag", "gap/wordorder4.g");
 
-ReadPkg("kbmag","/gap/fpgtorws4.g");
-ReadPkg("kbmag","/gap/kbsmg.gi");
-
-ReadPkg("kbmag","/gap/fsa4.g");
-ReadPkg("kbmag","/gap/rws4.g");
-ReadPkg("kbmag","/gap/rwssub4.g");
-ReadPkg("kbmag","/gap/wordorder4.g");
-
-ReadPkg("kbmag","/gap/kbsmg2.gi");
+ReadPackage("kbmag", "gap/kbsmg2.gi");
