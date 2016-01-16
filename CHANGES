@@ -1,5 +1,9 @@
 This file describes changes in the kbmag package.
 
+1.5.3 (2016-01-16)
+  - Update README
+  - Clarify that the package is licensed under the GPL v2 or later
+
 1.5.2 (2016-01-15)
   - Add Markus Pfeiffer and Max Horn as maintainers
   - Convert C functions from K&R to ANSI C
