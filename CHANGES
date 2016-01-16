@@ -1,0 +1,12 @@
+This file describes changes in the kbmag package.
+
+1.5.2 (2016-01-15)
+  - Add Markus Pfeiffer and Max Horn as maintainers
+  - Convert C functions from K&R to ANSI C
+
+1.5.1 (2016-01-14)
+  - Moved package homepage to http://gap-packages.github.io/kbmag/
+  - Added GPL v2 license
+  - Improve build system
+  - Fix many warnings in the C code
+  - Add HTML version of the manual
