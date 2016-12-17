@@ -67,7 +67,7 @@ README_URL      := Concatenation( ~.PackageWWWHome, "/README" ),
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "/PackageInfo.g" ),
 ArchiveURL      := Concatenation( ~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
-                                 "/", ~.PackageName ,"-", ~.Version ),
+                                 "/", ~.PackageName, "-", ~.Version ),
 ArchiveFormats := ".tar.gz",
 
 AbstractHTML :=
