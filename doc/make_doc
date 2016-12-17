@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/sh -e
 
 echo "TeXing documentation"
 # TeX the manual
 tex manual
 # ... and build its bibliography (uncomment if there is a `manual.bib')
-bibtex manual
+bibtex manual || :
 # TeX the manual again to incorporate the ToC ... and build the index
 tex manual
 tex manual
