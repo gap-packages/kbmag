@@ -1,16 +1,12 @@
 #############################################################################
-## #W  kbsmg.gi           GAP library                        Derek Holt
-## #H  @(#)$Id: kbsmg.gi,v 1.5 2001/02/20 23:02:25 gap Exp $
+##
+#W  kbsmg.gi           GAP library                        Derek Holt
 ##
 #Y  Copyright (C)  1997,  Lehrstuhl D fuer Mathematik,  RWTH Aachen,  Germany
 #Y  (C) 1998 School Math and Comp. Sci., University of St.  Andrews, Scotland
 ##
 ##  This file contains code for the Knuth-Bendix rewriting system for semigroups
 ##
-
-Revision.kbsmg_gi :=
-    "@(#)$Id: kbsmg.gi,v 1.5 2001/02/20 23:02:25 gap Exp $";
-
 
 ############################################################################
 ##

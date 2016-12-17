@@ -2,8 +2,6 @@
 ##
 #W  kbsmg2.gi           GAP library                                 Derek Holt
 ##
-#H  @(#)$Id: kbsmg2.gi,v 1.2 2001/01/10 01:00:43 gap Exp $
-##
 #Y  Copyright (C)  1997,  Lehrstuhl D fuer Mathematik,  RWTH Aachen,  Germany
 #Y  (C) 1998 School Math and Comp. Sci., University of St.  Andrews, Scotland
 ##

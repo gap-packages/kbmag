@@ -2,16 +2,11 @@
 ##
 #W  kbsmg.gd           GAP library                                 Derek Holt
 ##
-#H  @(#)$Id: kbsmg.gd,v 1.4 2001/01/10 21:23:04 gap Exp $
-##
 #Y  Copyright (C)  1997,  Lehrstuhl D fuer Mathematik,  RWTH Aachen,  Germany
 #Y  (C) 1998 School Math and Comp. Sci., University of St.  Andrews, Scotland
 ##
 ##  This file contains the declarations for Knuth Bendix Rewriting Systems
 ##
-
-Revision.kbsmg_gd :=
-    "@(#)$Id: kbsmg.gd,v 1.4 2001/01/10 21:23:04 gap Exp $";
 
 
 ############################################################################
