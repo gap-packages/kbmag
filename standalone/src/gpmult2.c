@@ -22,6 +22,7 @@
  */
 
 #include <stdio.h>
+#include <ctype.h>
 #include "defs.h"
 #include "fsa.h"
 #include "rws.h"

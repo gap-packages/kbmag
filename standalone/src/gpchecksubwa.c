@@ -610,7 +610,8 @@ output_bad_words (void)
 /* We first see if there is already a list of words in the output file.
  * If so, then we want to include them as well in the new output.
  */
-  if (rfile=fopen(outf,"r")){
+  rfile=fopen(outf,"r");
+  if (rfile){
   /* We replace out existing list of subgroup generators with the one in this
    * file
    */

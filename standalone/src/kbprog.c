@@ -259,7 +259,7 @@ static  FILE  *rfile, *wfile;
 
 /* Functions defined in this file: */
 void read_kbprog_command();
-void interrupt_kbprog();
+void interrupt_kbprog(int);
 void output_and_exit_kbprog();
 void badusage_kbprog();
 
@@ -452,7 +452,7 @@ read_kbprog_command(argc,argv,rwsptr)
 }
 
 void 
-interrupt_kbprog (void)
+interrupt_kbprog (int sig)
 /* When the program receives an interrupt  signal, it continues until the
  * next tidying, and then stops and outputs.
  */

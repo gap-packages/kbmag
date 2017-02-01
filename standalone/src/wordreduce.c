@@ -170,7 +170,8 @@ main (int argc, char *argv[])
   }
   else {
     strcat(inf1,".kbprog");
-    if (rfile = fopen(inf1,"r")) {
+    rfile = fopen(inf1,"r");
+    if (rfile) {
       rws_ip = TRUE;
       open = TRUE;
     }

@@ -84,6 +84,7 @@ rk_init (rewriting_system *rwsptr)
   tmalloc(rk_first_tail,int,rk_hashmod);
   tmalloc(rk_next_tail,int,maxeqns+1);
   tmalloc(rk_bighashvaleqn,unsigned,maxeqns+1);
+  return 0;
 }
 
 void 
@@ -128,7 +129,7 @@ rk_add_lhs (int n, rewriting_system *rwsptr)
   if ((eqno=rk_first_tail[hashval]) == 0)
     rk_first_tail[hashval]=n;
   else {
-    while (neweqno=rk_next_tail[eqno]) 
+    while ((neweqno=rk_next_tail[eqno]))
       eqno=neweqno;
     rk_next_tail[eqno] = n;
   }

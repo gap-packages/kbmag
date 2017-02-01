@@ -213,8 +213,9 @@ diff_reduce_cos (gen *w, reduction_struct *rs_wd)
 /* Now we loop over the generator that is a candidate for substitution
    at this point.
 */
-      for (gen2=1;gen2<=ngens;gen2++)
-       if (newdiff = dense_dtarget(difftab,gen1,gen2,diff)) {
+      for (gen2=1;gen2<=ngens;gen2++) {
+       newdiff = dense_dtarget(difftab,gen1,gen2,diff);
+       if (newdiff) {
         if (newdiff==identity) {
           if (deqi || level==1) {
             if (gen2<gen1) {
@@ -323,6 +324,7 @@ diff_reduce_cos (gen *w, reduction_struct *rs_wd)
             cf[newdiff] = TRUE;
           }
         }
+      }
       } /*End of loop over gen2 */
 
       if (donesub)

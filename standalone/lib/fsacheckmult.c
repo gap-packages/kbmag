@@ -133,10 +133,10 @@ fsa_checkmult_short(multptr,eqnptr,maxeqns,cosets,separator)
   tmalloc(occurs,boolean,ngens+1);
   for (i=0;i<=ngens;i++)
     occurs[i] = FALSE;
-  for (i=1;i<=ns;i++) if (j=state_label[i]) {
+  for (i=1;i<=ns;i++) if ((j=state_label[i])) {
     genlist = multptr->states->labels->wordslist[j];
     /* the list of words that is the label for state number *ptr */
-    while (genptr = *(genlist++))
+    while ((genptr = *(genlist++)))
       occurs[genptr[0]]=TRUE;
   }
 
@@ -253,10 +253,10 @@ fsa_checkmult_short(multptr,eqnptr,maxeqns,cosets,separator)
         for (i=0;i<=ngens;i++)
           includes[i] = FALSE;
         ptr = ht_ptrb-1;
-        while (++ptr <= ht_ptre)  if (j=state_label[*ptr]){
+        while (++ptr <= ht_ptre)  if ((j=state_label[*ptr])) {
           genlist = multptr->states->labels->wordslist[j];
            /* the list of words that is the label for state number *ptr */
-          while (genptr = *(genlist++))
+          while ((genptr = *(genlist++)))
             includes[genptr[0]]=TRUE;
         }
 
@@ -413,10 +413,10 @@ fsa_checkmult_int(multptr,eqnptr,maxeqns,cosets,separator)
   tmalloc(occurs,boolean,ngens+1);
   for (i=0;i<=ngens;i++)
     occurs[i] = FALSE;
-  for (i=1;i<=ns;i++) if (j=state_label[i]) {
+  for (i=1;i<=ns;i++) if ((j=state_label[i])) {
     genlist = multptr->states->labels->wordslist[j];
     /* the list of words that is the label for state number *ptr */
-    while (genptr = *(genlist++))
+    while ((genptr = *(genlist++)))
       occurs[genptr[0]]=TRUE;
   }
 
@@ -533,10 +533,10 @@ fsa_checkmult_int(multptr,eqnptr,maxeqns,cosets,separator)
         for (i=0;i<=ngens;i++)
           includes[i] = FALSE;
         ptr = ht_ptrb-1;
-        while (++ptr <= ht_ptre)  if (j=state_label[*ptr]){
+        while (++ptr <= ht_ptre)  if ((j=state_label[*ptr])) {
           genlist = multptr->states->labels->wordslist[j];
            /* the list of words that is the label for state number *ptr */
-          while (genptr = *(genlist++))
+          while ((genptr = *(genlist++)))
             includes[genptr[0]]=TRUE;
         }
 

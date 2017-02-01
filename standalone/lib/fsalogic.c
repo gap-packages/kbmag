@@ -679,10 +679,12 @@ fsa_star(fsaptr,destroy)
     if (fsaptr->is_accepting[i]) {
       *(sparseptr++)=0; *(sparseptr++)=iin;
     }
-    for (g=1;g<=ne;g++) 
-      if (im=target(dense_ip,itable,g,i,dr)) {
+    for (g=1;g<=ne;g++) {
+      im=target(dense_ip,itable,g,i,dr);
+      if (im) {
         *(sparseptr++)=g; *(sparseptr++)=im;
       }
+    }
   }
   table[ns+1] = sparseptr; /* to show end of data */
 
@@ -798,17 +800,21 @@ fsa_concat(fsaptr1,fsaptr2,destroy)
     if (fsaptr1->is_accepting[i]) {
       *(sparseptr++)=0; *(sparseptr++)=in2;
     }
-    for (g=1;g<=ne;g++) 
-      if (im=target(dense_ip1,table1,g,i,dr1)) {
+    for (g=1;g<=ne;g++) {
+      im=target(dense_ip1,table1,g,i,dr1);
+      if (im) {
         *(sparseptr++)=g; *(sparseptr++)=im;
       }
+    }
   }
   for (i=1;i<=ns2;i++) {
     table[i+ns1]=sparseptr;
-    for (g=1;g<=ne;g++) 
-      if (im=target(dense_ip2,table2,g,i,dr2)) {
+    for (g=1;g<=ne;g++) {
+      im=target(dense_ip2,table2,g,i,dr2);
+      if (im) {
         *(sparseptr++)=g; *(sparseptr++)=im+ns1;
       }
+    }
   }
   table[ns1+ns2+1] = sparseptr; /* to show end of data */
 

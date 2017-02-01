@@ -231,7 +231,7 @@ static  FILE  *rfile, *wfile;
 
 /* Functions defined in this file: */
 void read_kbprogcos_command();
-void interrupt_kbprogcos();
+void interrupt_kbprogcos(int);
 void output_and_exit_kbprogcos();
 void badusage_kbprogcos();
 
@@ -413,7 +413,7 @@ read_kbprogcos_command(argc,argv,rwsptr)
 }
 
 void 
-interrupt_kbprogcos (void)
+interrupt_kbprogcos (int sig)
 /* When the program receives an interrupt  signal, it continues until the
  * next tidying, and then stops and outputs.
  */

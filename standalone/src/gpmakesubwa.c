@@ -247,7 +247,8 @@ main (int argc, char *argv[])
     strcat(inf_cosred,".midiff2");
   else {
     strcat(inf_cosred,".kbprog");
-    if (rfile = fopen(inf_cosred,"r")) {
+    rfile = fopen(inf_cosred,"r");
+    if (rfile) {
       rws_ipcos = TRUE;
       open = TRUE;
     }

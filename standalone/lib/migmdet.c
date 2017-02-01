@@ -223,7 +223,8 @@ migm_determinize_short(migmptr,op_table_type,destroy,tempfilename)
       geninlab[i]=FALSE; /* geninlab records which generators occur in label*/
     ptr = cs_ptr-1;
     while (++ptr <= cs_ptre) {
-      if (j=migmptr->states->setToLabels[*ptr]) {
+      j=migmptr->states->setToLabels[*ptr];
+      if (j) {
         w = migmptr->states->labels->wordslist[j];
         i=0;
         while (w[i]!=0) {

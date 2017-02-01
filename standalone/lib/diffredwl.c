@@ -171,7 +171,8 @@ make_substitution (
         */
        if (level>=end && (csubwt>cwordwt || (csubwt==cwordwt && !clexprec)))
          continue;
-       if (newdiff = dense_dtarget(difftab,gen1,gen2,diff)) {
+       newdiff = dense_dtarget(difftab,gen1,gen2,diff);
+       if (newdiff) {
         if (newdiff==identity) {
           if (csubwt<cwordwt || (csubwt==cwordwt && clexprec)) {
             /* We have found a  substitution */
