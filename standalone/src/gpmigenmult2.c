@@ -38,7 +38,7 @@ void  badusage_gpmigenmult2();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, g1, g2;
+{ int arg;
   fsa migenmult, *migm2ptr;
   char gpname[100], inf[100], outf[100], fsaname[100], tablefilename[100],
        prefix[16];

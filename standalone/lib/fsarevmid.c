@@ -65,7 +65,7 @@ fsa_reverse_short(fsaptr,op_table_type,destroy,subsets,tempfilename)
 	boolean subsets;
 	char *tempfilename;
 {
-  int **table, ne, nsi, ns, is, dr, *fsarow, e,
+  int **table, ne, nsi, ns, is, dr, *fsarow,
       nt, cstate, cs, csi, im, i, g, n, len, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
@@ -304,8 +304,8 @@ fsa_mireverse_short(fsaptr,op_table_type,destroy,tempfilename)
 	boolean destroy;
 	char *tempfilename;
 {
-  int **table, ne, nsi, ns, nai, is, dr, *fsarow, e,
-      nt, cstate, cs, csi, im, i, g, n, len, ct;
+  int **table, ne, nsi, ns, nai, is, dr, *fsarow,
+      nt, cstate, cs, csi, im, i, g, len, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
   boolean dense_ip, dense_op;
@@ -379,7 +379,6 @@ fsa_mireverse_short(fsaptr,op_table_type,destroy,tempfilename)
  * The initial states consists of all singleton accept states of *fsaptr.
  */
   short_hash_init(&ht,FALSE,0,0,0);
-  ht_ptre = ht_ptrb-1;
   for (i=1;i<=nai;i++) {
     ht_ptrb = ht.current_ptr;
     *ht_ptrb= nsi==nai ? i : fsaptr->accepting[i];
@@ -564,7 +563,7 @@ fsa_miexists1_short(fsaptr,op_table_type,destroy,tempfilename)
       nt, cstate, cs, csi, im, i, g1, len, ct, ni;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
-  boolean dense_ip, dense_op, got;
+  boolean dense_ip, dense_op;
   short_hash_table ht;
   fsa *miexists1;
   FILE *tempfile, *fopen();
@@ -836,7 +835,7 @@ fsa_miexists2_short(fsaptr,op_table_type,destroy,tempfilename)
       nt, cstate, cs, csi, im, i, g2, len, ct, ni;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
-  boolean dense_ip, dense_op, got;
+  boolean dense_ip, dense_op;
   short_hash_table ht;
   fsa *miexists2;
   FILE *tempfile, *fopen();

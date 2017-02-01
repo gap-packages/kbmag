@@ -75,7 +75,7 @@ void badusage_gpchecksubwa();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, j, l, ct;
+{ int arg, i, j, ct;
   char *suff;
   boolean gotsuff;
 

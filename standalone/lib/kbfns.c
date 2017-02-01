@@ -1443,7 +1443,6 @@ conf_check (rewriting_system *rwsptr)
     lb,
     r,
     iv,
-    rv,
     beta[MAXREDUCELEN],
     betar,
     y[MAXREDUCELEN],
@@ -1461,8 +1460,7 @@ conf_check (rewriting_system *rwsptr)
   int  **table = rwsptr->reduction_fsa->table->table_data_ptr;
   boolean discarded=FALSE,
     bt;
-  int *preflen = rwsptr->preflen,
-      *prefno = rwsptr->prefno;
+  int *preflen = rwsptr->preflen;
       reduction_struct rs_rws;
 
   rs_rws.rws= rwsptr;
@@ -1698,7 +1696,7 @@ type_sort_eqns (int x, rewriting_system *rwsptr)
  * first, then those involving only G generators, and finally those involving
  * only H generators.
  */
-{ int i, l, ct, ret;
+{ int i, ct, ret;
   gen **newlhs,
       **newrhs;
   boolean   *newdone;
@@ -1770,7 +1768,7 @@ type_sort_eqns_final (rewriting_system *rwsptr)
  * This is to sort out the different categories of equations for
  * the cosets enumeration.
  */
-{ int i, l, ct;
+{ int i, ct;
 
   gen **newlhs,
       **newrhs;

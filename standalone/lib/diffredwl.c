@@ -24,9 +24,7 @@ diff_reduce_wl (gen *w, reduction_struct *rs_wd)
  * the function make_substituion to make the actual substitution.
  */
 { int wordlen,  **watable,start,end,i,j,initstate, state;
-  fsa *wd_fsa = rs_wd->wd_fsa;
   fsa *wa = rs_wd->wa;
-  int *weight = rs_wd->weight;
   boolean reducible;
   w = w-1; /* since code below assumes word is from w[1] .. w[wordlen]. */
   watable = wa->table->table_data_ptr;
@@ -79,7 +77,6 @@ make_substitution (
       gct, *gpref, level, gen1, gen2, diff, diffct, newdiff,
       shift, cwordwt, csubwt, i, j;
   fsa *wd_fsa = rs_wd->wd_fsa;
-  fsa *wa = rs_wd->wa;
   int *weight = rs_wd->weight;
   int maxreducelen = rs_wd->maxreducelen;
   int maxv=MAXV;

@@ -41,7 +41,7 @@ void  badusage_fsagrowth();
 
 int 
 main (int argc, char *argv[])
-{ int arg, min, max, i, rv;
+{ int arg, rv;
   fsa testfsa;
   char inf[100], outf[100], fsaname[100], primestr[100], var[100] = "X";
   unsigned primes[100] = { 32749, 32719, 32717, 0}, nprimes = 3;

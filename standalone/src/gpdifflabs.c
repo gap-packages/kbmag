@@ -37,7 +37,7 @@ int   (*reduce_word)();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i;
+{ int arg;
   fsa  fsaip,  *difflabsptr;
   char inf1[100], inf2[100], outf[100], fsaname[100], tempfilename[100];
   reduction_struct rs_wd;

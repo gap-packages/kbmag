@@ -29,7 +29,7 @@ void  badusage_gpmicomp();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, g1, g2;
+{ int arg;
   fsa mult1, mult2, *micompmult;
   char inf1[100], inf2[100], outf[100], fsaname[100],
        tempfilename[100], *inf2ptr;

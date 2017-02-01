@@ -307,7 +307,6 @@ slow_check_rws_reduce_rk(w,i,rwsptr)
       *histptr,
       *histptre,
       *nextptr,
-      longer,
       *slowhistorysp = rwsptr->slowhistorysp,
       **slowhistory = rwsptr->slowhistory;
   unsigned  bighashval,

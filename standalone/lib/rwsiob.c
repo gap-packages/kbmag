@@ -363,7 +363,7 @@ read_eqns_simple(rfile,check,rwsptr)
  * simplified version of "read_eqns" in rwsio.c
  * Here we simply read them in and store them without any processing.
  */
-{ int delim, i, ct, l1, l2, max;
+{ int delim, ct, l1, l2, max;
   gen *test1 = rwsptr->testword1, *test2 = rwsptr->testword2;
   check_next_char(rfile,'[');
   read_delim(rfile,&delim);

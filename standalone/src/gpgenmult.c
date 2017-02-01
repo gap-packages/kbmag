@@ -58,9 +58,9 @@ int   (*reduce_word)();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, ct, *inv, ngens, maxwdiffs, maxeqns;
+{ int arg, i, *inv, ngens, maxwdiffs, maxeqns;
   fsa wa, diff1, diff2, *genmultptr;
-  char inf1[100], inf2[100], inf2mi[100],
+  char inf1[100], inf2[100],
        inf3[100], outf[100], fsaname[100], tempfilename[100];
   reduction_equation *eqnptr;
   reduction_struct rs_wd;

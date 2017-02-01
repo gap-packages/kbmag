@@ -88,7 +88,7 @@ void badusage_gpaxioms();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, j, l, ct, clr;
+{ int arg, i, ct, clr;
   boolean seengpname, seencosname, cosets;
 
   setbuf(stdout,(char*)0);
@@ -334,8 +334,8 @@ main (int argc, char *argv[])
 
 void 
 balance_equations (void)
-{ int i, j, l1, l2;
-  gen *lhs, *rhs, *ptr1, *ptr2;
+{ int i, l1, l2;
+  gen *lhs, *rhs;
   if (kbm_print_level > 1)
     printf("  #Simplifying and balancing inverse-list and relations.\n");
 
@@ -368,7 +368,7 @@ check_short_relation (void)
  * This is done merely by looking at the state-labels of *genmult2ptr.
  * The transitions are not needed.
  */
-{ int i, j, l;
+{ int i, j;
   gen **lab;
   boolean foundlhs, foundrhs; 
   if (kbm_print_level > 1) {

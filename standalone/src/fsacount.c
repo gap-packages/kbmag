@@ -21,7 +21,7 @@
 #include "fsa.h"
 #include "definitions.h"
 
-static FILE *rfile, *wfile;
+static FILE *rfile;
 
 void  badusage_fsacount();
 

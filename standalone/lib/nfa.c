@@ -1073,8 +1073,8 @@ nfa_exists_short(fsaptr,op_table_type,destroy,tempfilename)
 	boolean destroy;
 	char *tempfilename;
 {
-  int **table, ne, *tableptr, *tableptre, ngens, nsi, ns, dr, *fsarow, e,
-      es, ef, nt, cstate, cs, csi, im, i, k, g1, len, ct;
+  int **table, ne, *tableptr, *tableptre, ngens, nsi, ns, dr, *fsarow,
+      es, ef, nt, cstate, csi, im, i, k, g1, len, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
   boolean dense_ip, dense_op, got;
@@ -1334,8 +1334,8 @@ nfa_exists_int(fsaptr,op_table_type,destroy,tempfilename)
 	boolean destroy;
 	char *tempfilename;
 {
-  int **table, ne, *tableptr, *tableptre, ngens, nsi, ns, dr, *fsarow, e,
-      es, ef, nt, cstate, cs, csi, im, i, k, g1, len, ct;
+  int **table, ne, *tableptr, *tableptre, ngens, nsi, ns, dr, *fsarow,
+      es, ef, nt, cstate, csi, im, i, k, g1, len, ct;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
   boolean dense_ip, dense_op, got;

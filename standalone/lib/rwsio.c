@@ -601,7 +601,7 @@ print_kboutput (FILE *wfile, rewriting_system *rwsptr)
  * input, and is followed by a new field, the reduction automaton.
  * The fsa function fsa_print is used to print this.
  */
-{ int i, j, i1, l, n;
+{ int i, i1, n;
   boolean in,first;
 
   sprintf(kbm_buffer,"%s := rec(",rwsptr->name);

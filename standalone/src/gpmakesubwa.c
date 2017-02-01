@@ -94,8 +94,8 @@ main (int argc, char *argv[])
 { int  arg, delim, numsubgens, numsubelts, nochangect, eltct, genct, aw;
   char gpname[100], inf_wa[100], inf_gred[100], inf_cosred[100], suffix[100],
        inf_sub[100], fsaname[100], outf[100], tempfilename[100];
-  boolean  wordfile, diff1_ip, diff2_ip, diff1c_ip, open, first,
-  	   rws_ipcos, diff1_ipcos, diff2_ipcos, diff1c_ipcos;
+  boolean  wordfile, diff1_ip, diff2_ip, diff1c_ip, open,
+  	   rws_ipcos, diff1_ipcos, diff2_ipcos;
   gen_hash_table cosht;
   gen * cosht_ptr;
   gen  gtestword[MAXREDUCELEN+1], costestword[MAXREDUCELEN+1];

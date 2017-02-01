@@ -34,7 +34,7 @@ void  badusage_gpmult2();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, g1, g2;
+{ int arg, g1, g2;
   fsa genmult2;
   char inf[100], outf[100], fsaname[100];
   storage_type ip_store = SPARSE;

@@ -41,7 +41,7 @@ void  badusage_gpmimult2();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, g1, g2;
+{ int arg, g1, g2;
   fsa migm2;
   char gpname[100], inf[100], outf[100], fsaname[100], prefix[16];
   storage_type ip_store = SPARSE;

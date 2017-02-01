@@ -27,7 +27,7 @@ void  badusage_fsalequal();
 
 int 
 main (int argc, char *argv[])
-{ int arg, ct, n;
+{ int arg;
   fsa fsa1, fsa2;
   char inf1[100], inf2[100], fsaname[100];
   storage_type ip_store = DENSE;

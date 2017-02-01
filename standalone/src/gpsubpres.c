@@ -69,10 +69,8 @@ void badusage_gpsubpres();
 
 int 
 main (int argc, char *argv[])
-{ int arg, i, j, l, ct;
-  char *suffl, *suffr;
+{ int arg, i, j, ct;
   gen *relator, *ptr, *ptr2;
-  boolean gotl, gotr;
   boolean seengpname, seensubname;
 
   setbuf(stdout,(char*)0);

@@ -640,7 +640,7 @@ main (int argc, char *argv[])
 void
 output_and_exit_kbprogcos(rwsptr)
   rewriting_system *rwsptr;
-{ int i, j, l, g;
+{ int i, j, l;
   gen **pref, *w;
   int ndiff1, ndiff2;
   reduction_struct rs_rws;

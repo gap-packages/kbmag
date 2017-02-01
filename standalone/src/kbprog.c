@@ -468,7 +468,7 @@ main (int argc, char *argv[])
 {
   rewriting_system rws;
   rewriting_system *rwsptr;
-  int             i, j, k, l;
+  int             i, k;
 
   setbuf(stdout, (char *) 0);
   setbuf(stderr, (char *) 0);
@@ -554,7 +554,7 @@ main (int argc, char *argv[])
 void
 output_and_exit_kbprog(rwsptr)
   rewriting_system *rwsptr;
-{  int i, j, l, g;
+{  int i, j, l;
   gen **pref, *w;
   int ndiff1, ndiff2;
   reduction_struct rs_rws;
