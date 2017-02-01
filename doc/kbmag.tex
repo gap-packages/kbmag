@@ -650,10 +650,10 @@ We start with a easy example - the alternating group $A_4$.
 
 `Example 2'
 
-    The Fibonacci group $F(2,5)$ defined by a semigroup rather than a group
-    presentation. Interestingly this defines the same structure (although
-    ir would not do so for $F(2,r)$ with $r$ even).
-    \beginexample
+The Fibonacci group $F(2,5)$ defined by a semigroup rather than a group
+presentation. Interestingly this defines the same structure (although
+ir would not do so for $F(2,r)$ with $r$ even).
+\beginexample
     gap> S:=FreeSemigroup(5);; a:=S.1;; b:=S.2;; c:=S.3;; d:=S.4;; e:=S.5;;
     gap> Q := S/[ [a*b,c], [b*c,d], [c*d,e], [d*e,a], [e*a,b] ];
     <fp semigroup on the generators [ s1, s2, s3, s4, s5 ]>
