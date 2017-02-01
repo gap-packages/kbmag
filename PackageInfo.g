@@ -2,8 +2,8 @@ SetPackageInfo( rec(
 
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
-Version := "1.5.3",
-Date := "16/01/2016",
+Version := "1.5.4",
+Date := "01/02/2017",
 
 Persons := [
   rec(
@@ -67,7 +67,7 @@ README_URL      := Concatenation( ~.PackageWWWHome, "/README" ),
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "/PackageInfo.g" ),
 ArchiveURL      := Concatenation( ~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
-                                 "/", ~.PackageName ,"-", ~.Version ),
+                                 "/", ~.PackageName, "-", ~.Version ),
 ArchiveFormats := ".tar.gz",
 
 AbstractHTML :=

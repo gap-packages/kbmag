@@ -61,21 +61,21 @@ determine the order  of <var>G</var>, by counting  the number of words in
 normal  form. In most  serious  applications,  this will be  infinite,
 since (for example) finite groups are (with some  exceptions) usually
 handled better by Todd-Coxeter related methods.
-In fact a  finite state automaton <var>W</var>
+In fact a  finite state automaton <i>W</i>
 is  calculated  that accepts precisely the   language of words  in the
-monoid  generators of <var>F</var> that are   in normal form,  and <var>W</var>  is used for the
+monoid  generators of <i>F</i> that are   in normal form,  and <i>W</i>  is used for the
 enumeration  and counting  functions.
 <p>
-The  normal form of an element  <var>g inG</var> is defined  to be the least
-word in the generators of <var>F</var> (and their inverses) that represents <var>g</var>,
+The  normal form of an element  <i>g</i>  <font face="symbol">Î</font> <i>G</i> is defined  to be the least
+word in the generators of <var>F</var> (and their inverses) that represents <i>g</i>,
 with respect to  a specified ordering on the  set of all  words in the
-generators of <var>F</var>.  The available  orderings are described  in <a href="CHAP001.htm#SECT003">Setting the ordering</a> below.
+generators of <i>F</i>.  The available  orderings are described  in <a href="CHAP001.htm#SECT003">Setting the ordering</a> below.
 <p>
 KBMAG offers two possible means of achieving these objectives.  The
 first   is   to apply   the   Knuth-Bendix   algorithm  to  the
 presentation, with one of the  available orderings on words, and  hope
 that the algorithm will complete with a finite confluent presentation.
-(If <var>G</var> is finite, then it is  guaranteed to complete eventually
+(If <i>G</i> is finite, then it is  guaranteed to complete eventually
 but,  like the  Todd-Coxeter procedure, it  may  take a long  time, or
 require more space  than  is  available.)  The second  is  to  use the
 automatic group program, which is only applicable to groups (not to
@@ -94,13 +94,13 @@ in the package written by Sarah Rees that enable it be used also for the
 details of these orderings.
 <p>
 For both of the above procedures, the first step is to create a <font face="Gill Sans,Helvetica,Arial">GAP</font>
-object   known as  a  <em>Knuth-Bendix rewriting  system</em><var>R</var> from the
+object   known as  a  <em>Knuth-Bendix rewriting  system</em><i>R</i> from the
 finitely
 presented structure <var>G</var>.  There are functions available that can be used to
 specify  the input parameters  for the external  programs, such as the
 ordering on words to be used by the Knuth-Bendix procedure. One of the
-two  external programs is then run  on  <var>R</var>. If successful, it updates
-<var>R</var>, which  can then be  used to reduce words in
+two  external programs is then run  on  <i>R</i>. If successful, it updates
+<i>R</i>, which  can then be  used to reduce words in
 the generators of <var>F</var> to normal form, and  to count and  enumerate the
 words in normal form.
 <p>
@@ -292,7 +292,7 @@ special   case of ``wtlex" in which   all  generators have the same
 nonzero weight.
 <p>
 The ``recursive" ordering is  the special case  of ``wreathprod"
-in which the levels of the <var>ng</var> generators are <var>1,  2, ..., ng</var>, in
+in which the levels of the <var>ng</var> generators are 1, 2, <font face="symbol">¼</font>, <i>ng</i>, in
 the order of the alphabet.  We shall not attempt
 to give  a complete definition of  these orderings here, but refer the
 reader instead to pages  46--50 of <a href="biblio.htm#Sims94"><cite>Sims94</cite></a>.  The ``recursive"
@@ -300,10 +300,9 @@ ordering is the one appropriate  for a power-conjugate presentation of
 a  polycyclic  group, but  where   the generators are  ordered  in the
 reverse  order from the usual  convention  for polycyclic groups.  The
 confluent  presentation will then  be the  same as the power-conjugate
-presentation.  For example,  for the  Heisenberg  group <var>langlex,y,z
-, | ,  [x,z]=[y,z]=1,  [y,x]=z rangle</var>,   a
+presentation.  For example,  for the  Heisenberg  group <font face="symbol">á</font><i>x</i>,<i>y</i>,<i>z</i> &nbsp;<font face="symbol">||</font> &nbsp;[<i>x</i>,<i>z</i>]=[<i>y</i>,<i>z</i>]=1, [<i>y</i>,<i>x</i>]=<i>z</i> <font face="symbol">ñ</font>,   a
 good   ordering  is ``recursive"  with    the  order of  generators
-<var>[z<sup>-1</sup>,z,y<sup>-1</sup>,y,x<sup>-1</sup>,x]</var>.   This    example is     included   in
+[<i>z</i><sup><font face="symbol">-</font>1</sup>,<i>z</i>,<i>y</i><sup><font face="symbol">-</font>1</sup>,<i>y</i>,<i>x</i><sup><font face="symbol">-</font>1</sup>,<i>x</i>].   This    example is     included   in
 <a href="CHAP001.htm#SECT009">Rewriting System Examples</a> below.
 <p>
 Finally, <code>OrderingOfRewritingSystem</code> returns the appropriate  <font face="Gill Sans,Helvetica,Arial">GAP</font> ordering
@@ -576,10 +575,10 @@ Returns the number of irreducible words in the rewriting system <var>rws</var>.
 successfully  on <var>rws</var>. In  the former case, if  <code>KnuthBendix</code> halted without a
 confluent  set of rules, then the  number of  irreducible words may be
 greater than the number of words in normal form (which is equal to the
-order  of the underlying group, monoid or semigroup <var>G</var>  of  <var>rws</var>).  If
+order  of the underlying group, monoid or semigroup <i>G</i>  of  <var>rws</var>).  If
 <code>KnuthBendix</code>  completes with a confluent rewriting system  or
 <code>AutomaticStructure</code> completes successfully, then it is  guaranteed that
-<code>Size</code> will  return the correct order of <var>G</var>.
+<code>Size</code> will  return the correct order of <i>G</i>.
 <p>
 <p>
 <a name = "SSEC008.2"></a>
@@ -618,8 +617,8 @@ it is guaranteed that all words in the list will be in normal form.
 <p>
 Returns the growth function of the set of irreducible words in the
 rewriting system <var>rws</var>. This is a rational function, of which
-the coefficient of <var>x<sup>n</sup></var> in its Taylor expansion is equal to the number of
-irreducible words of length <var>n</var>.
+the coefficient of <i>x</i><sup><i>n</i></sup> in its Taylor expansion is equal to the number of
+irreducible words of length <i>n</i>.
 <p>
 If the coefficients in this rational function are larger than about 16000
 then strange error messages will appear and fail will be returned.
@@ -639,7 +638,7 @@ then it is guaranteed that all words in the list will be in normal form.
 
 <code>Example 1</code>
 <p>
-We start with a easy example - the alternating group <var>A<sub>4</sub></var>.
+We start with a easy example - the alternating group <i>A</i><sub>4</sub>.
 <pre>
     gap&gt; F:=FreeGroup("a","b");;
     gap&gt; a:=F.1;; b:=F.2;;
@@ -692,9 +691,9 @@ We start with a easy example - the alternating group <var>A<sub>4</sub></var>.
 <p>
 <code>Example 2</code>
 <p>
-    The Fibonacci group <var>F(2,5)</var> defined by a semigroup rather than a group
+    The Fibonacci group <i>F</i>(2,5) defined by a semigroup rather than a group
     presentation. Interestingly this defines the same structure (although
-    ir would not do so for <var>F(2,r)</var> with <var>r</var> even).
+    ir would not do so for <i>F</i>(2,<i>r</i>) with <i>r</i> even).
     beginexample
     gap&gt; S:=FreeSemigroup(5);; a:=S.1;; b:=S.2;; c:=S.3;; d:=S.4;; e:=S.5;;
     gap&gt; Q := S/[ [a<strong>b,c], [b</strong>c,d], [c<strong>d,e], [d</strong>e,a], [e<strong>a,b] ];
@@ -821,8 +820,7 @@ Sims, and is described in Chapter 11.8 of <a href="biblio.htm#Sims94"><cite>Sims
 is of intermediate difficulty, and demonstrates the necessity of using
 the <code>maxstoredlen</code> control parameter.
 <p>
-The group  is   <p><var>  langlea,b   ,|  ,[b,a,b],
-[b,a,a,a,a],  [b,a,a,a,b,a,a] rangle<p></var> with left-normed commutators.
+The group  is   <br clear="all" /><table border="0" width="100%"><tr><td><table align="center" cellspacing="0"  cellpadding="2"><tr><td nowrap="nowrap" align="center"> <font face="symbol">á</font><i>a</i>,<i>b</i> &nbsp;<font face="symbol">||</font> &nbsp;[<i>b</i>,<i>a</i>,<i>b</i>], [<i>b</i>,<i>a</i>,<i>a</i>,<i>a</i>,<i>a</i>], [<i>b</i>,<i>a</i>,<i>a</i>,<i>a</i>,<i>b</i>,<i>a</i>,<i>a</i>] <font face="symbol">ñ</font></td></tr></table></td></tr></table> with left-normed commutators.
 The first step  in the  method is to   check that there is  a  maximal
 nilpotent quotient of the group, for which we  could use, for example,
 the <font face="Gill Sans,Helvetica,Arial">GAP</font>   <code>NilpotentQuotient</code>   command, from   the  package
@@ -1217,8 +1215,8 @@ Returns the growth function of the set of irreducible words
 for coset representatives of <var>H</var> in <var>G</var>, where <var>subrws</var> and <var>rws</var> are
 the rewriting systems for <var>H</var> and <var>G</var>.
 This is a rational function, of which
-the coefficient of <var>x<sup>n</sup></var> in its Taylor expansion is equal to the number of
-coset representatives words of length <var>n</var>.
+the coefficient of <i>x</i><sup><i>n</i></sup> in its Taylor expansion is equal to the number of
+coset representatives words of length <i>n</i>.
 <p>
 If the coefficients in this rational function are larger than about 16000
 then strange error messages will appear and fail will be returned.
@@ -1288,7 +1286,7 @@ gap&gt; Size(SS);
 <p>
 <code>Example 2</code>
 <p>
-We find a free subgroup of the Fibonacci group <var>F(2,8)</var>. This example may
+We find a free subgroup of the Fibonacci group <i>F</i>(2,8). This example may
 take about 20 minutes to run on a typical WorkStation.
 <pre>
 gap&gt; F:=FreeGroup(8);;
@@ -1433,7 +1431,7 @@ where each entry in the <var>s</var>-th inner list is
 is a two-element list <code>[</code><var>e</var><code>,</code><var>t</var><code>]</code> of integers that represents a transition
 from state number <var>s</var> to state number <var>t</var> under letter number <var>e</var>.
 We can also have <var>e</var>=0, representing transitions with no label
-(<var>epsilon</var> transitions).
+(<font face="symbol">e</font> transitions).
 <p>
 <a name = "SSEC016.15"></a>
 <li><code>TargetDFA( </code><var>fsa</var><code>, </code><var>e</var><code>, </code><var>s</var><code> ) F</code>
@@ -1486,7 +1484,7 @@ it from <var>fsa</var>. Use <code>PermuteStatesFSA</code> first to delete a diff
 <p>
 <var>p</var> should be a permutation of <code>[1..ns]</code>, where <var>fsa</var> has <var>ns</var> states.
 The states are permuted, where the original state number <var>n</var> becomes
-the new state number <var>n<sup>p</sup></var>.
+the new state number <i>n</i><sup><i>p</i></sup>.
 <p>
 <a name = "SSEC016.23"></a>
 <li><code>AddLetterFSA( </code><var>fsa</var><code> [,</code><var>name</var><code>] ) F</code>
@@ -1509,7 +1507,7 @@ different letter.
 <var>p</var> should be a permutation of <code>[1..na]</code>, where the alphabet of
 <var>fsa</var> has <var>na</var> letters.
 The letters are permuted, where the original letter number <var>n</var> becomes
-the new letter number <var>n<sup>p</sup></var>.
+the new letter number <i>n</i><sup><i>p</i></sup>.
 <p>
 <a name = "SSEC016.26"></a>
 <li><code>AddEdgeFSA( </code><var>fsa</var><code>, </code><var>e</var><code>, </code><var>s</var><code>, </code><var>t</var><code>  ) F</code>
@@ -1591,7 +1589,7 @@ first.
 <li><code>LEnumerateDFA( </code><var>fsa</var><code>, </code><var>min</var><code>, </code><var>max</var><code> ) F</code>
 <p>
 The words in the language of <var>fsa</var> of length <var>l</var> satisfying
-<var>min lel lemax</var> are returned in a list. The words will either
+<i>min</i>  <font face="symbol">£</font> <i>l</i>  <font face="symbol">£</font> <i>max</i> are returned in a list. The words will either
 be lists of integers, for ``simple" type alphabets, of lists of
 words in the underlying free group or monoid for alphabets of type
 ``identifiers".
@@ -1621,7 +1619,7 @@ complement of that of <var>fsa</var>.
 <a name = "SSEC016.41"></a>
 <li><code>StarFSA( </code><var>fsa</var><code> ) F</code>
 <p>
-Returns a fsa whose language is <var>L<sup>*</sup></var>, where <var>L</var> is the langauge of <var>fsa</var>.
+Returns a fsa whose language is <i>L</i><sup>*</sup>, where <i>L</i> is the langauge of <var>fsa</var>.
 <p>
 <a name = "SSEC016.42"></a>
 <li><code>ReverseFSA( </code><var>fsa</var><code> ) F</code>
@@ -1633,15 +1631,15 @@ of <var>fsa</var>.
 <li><code>ExistsFSA( </code><var>fsa</var><code> ) F</code>
 <p>
 <var>fsa</var> should be two-variable fsa on an alphabet <var>A</var>. An fsa is
-returned that accepts a word <var>w<sub>1</sub> inA<sup>*</sup></var> if and only if there exists a
-words <var>w<sub>2</sub> inA<sup>*</sup></var> with <var>(w<sub>1</sub>,w<sub>2</sub>)</var> in the language of <var>fsa</var>.
+returned that accepts a word <i>w</i><sub>1</sub>  <font face="symbol">Î</font> <i>A</i><sup>*</sup> if and only if there exists a
+words <i>w</i><sub>2</sub>  <font face="symbol">Î</font> <i>A</i><sup>*</sup> with (<i>w</i><sub>1</sub>,<i>w</i><sub>2</sub>) in the language of <var>fsa</var>.
 <p>
 <a name = "SSEC016.44"></a>
 <li><code>SwapCoordsFSA( </code><var>fsa</var><code> ) F</code>
 <p>
 <var>fsa</var> should be two-variable fsa on an alphabet <var>A</var>. A
-two-variable fsa on <var>A</var> is returned that accepts <var>(w<sub>1</sub>,w<sub>2</sub>)</var> if and
-only if <var>(w<sub>2</sub>,w<sub>1</sub>)</var> is accepted by <var>fsa</var>.
+two-variable fsa on <var>A</var> is returned that accepts (<i>w</i><sub>1</sub>,<i>w</i><sub>2</sub>) if and
+only if (<i>w</i><sub>2</sub>,<i>w</i><sub>1</sub>) is accepted by <var>fsa</var>.
 <p>
 <a name = "SSEC016.45"></a>
 <li><code>AndFSA( </code><var>fsa1</var><code>, </code><var>fsa2</var><code> ) F</code>
@@ -1659,7 +1657,7 @@ language equal to the union of those of <var>fsa1</var> and <var>fsa2</var>.
 <li><code>ConcatFSA( </code><var>fsa1</var><code>, </code><var>fsa2</var><code> ) F</code>
 <p>
 <var>fsa1</var> and <var>fsa2</var> must have the same alphabet. The returned fsa accepts
-words of the form <var>w<sub>1</sub>w<sub>2</sub></var>, where <var>w<sub>1</sub></var> and <var>w<sub>2</sub></var> are in the languages of
+words of the form <i>w</i><sub>1</sub><i>w</i><sub>2</sub>, where <i>w</i><sub>1</sub> and <i>w</i><sub>2</sub> are in the languages of
 <var>fsa1</var> and <var>fsa2</var>, respectively.
 <p>
 <a name = "SSEC016.48"></a>
@@ -1673,13 +1671,13 @@ returns True or false.
 <li><code>GrowthFSA( </code><var>fsa</var><code> ) F</code>
 <p>
 Returns the growth function of <var>fsa</var>. This is a rational function, of which
-the the coefficient of <var>x<sup>n</sup></var> in its Taylor expansion is equal to the number
-of words of length <var>n</var> in the accepted language of <var>fsa</var>.
+the the coefficient of <i>x</i><sup><i>n</i></sup> in its Taylor expansion is equal to the number
+of words of length <i>n</i> in the accepted language of <var>fsa</var>.
 <p>
 If the coefficients in this rational function are larger than about 16000
 then strange error messages will appear and fail will be returned.
 <p>
 [<a href = "chapters.htm">Up</a>] [<a href = "theindex.htm">Index</a>]
 <P>
-<address>kbmag manual<br>January 2016
+<address>kbmag manual<br>February 2017
 </address></body></html>
