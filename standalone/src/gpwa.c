@@ -36,15 +36,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_gpwa();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_wa();
-fsa  *fsa_wa_cos();
-void  fsa_minimize();
-void  fsa_print();
-void  fsa_clear();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg;

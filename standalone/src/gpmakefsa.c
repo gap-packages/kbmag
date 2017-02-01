@@ -84,36 +84,6 @@ static FILE *rfile, *wfile;
 void  badusage_gpmakefsa();
 int   (*reduce_word)();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_wa();
-fsa  *fsa_wa_cos();
-fsa  *fsa_triples();
-fsa  *fsa_mitriples();
-int   fsa_checkmult();
-void  fsa_print();
-int   fsa_minimize();
-int   fsa_ip_minimize();
-int   fsa_labeled_minimize();
-int   fsa_ip_labeled_minimize();
-int   midfa_labeled_minimize();
-void  fsa_clear();
-void  fsa_copy();
-int   diff_reduce();
-int   diff_reduce_cos();
-void  make_full_wd_fsa();
-void  make_full_wd_fsa_cos();
-int   add_wd_fsa();
-int   add_wd_fsa_cos();
-int   calculate_inverses();
-int   fsa_table_dptr_init();
-fsa   *migm_determinize();
-int   stringlen();
-int   stringlen();
-int   genstrlen();
-void  genstrcpy();
-void  genstrcat();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, ct, *inv, ngens, maxwdiffs, numeqns, old_ndiff;

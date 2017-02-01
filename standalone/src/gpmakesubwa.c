@@ -89,34 +89,6 @@ void invert_word();
 int  add_word_fsa();
 void badusage_gpmakesubwa();
 
-/* Functions defined in other files used in this file */
-void  read_kbinput_simple();
-void  fsa_read();
-int   fsa_table_dptr_init();
-boolean  read_word();
-int   diff_reduce();
-int   diff_reduce_cos();
-int   rws_reduce();
-int   add_word_to_buffer();
-void  printbuffer();
-void  process_names();
-void  fsa_init();
-fsa  *fsa_laband();
-int   fsa_labeled_minimize();
-void  fsa_print();
-void  srec_copy();
-void  fsa_clear();
-void  gen_hash_init();
-void  gen_hash_clear();
-int   gen_hash_rec_len();
-gen  *gen_hash_rec();
-int   gen_hash_locate();
-int   stringlen();
-int   genstrlen();
-void  genstrcpy();
-void  genstrcat();
-   
-
 int 
 main (int argc, char *argv[])
 { int  arg, delim, numsubgens, numsubelts, nochangect, eltct, genct, aw;

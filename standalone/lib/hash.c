@@ -54,14 +54,14 @@ int	char_hash_recno();
 int	gen_hash_recno();
 
 /* The following functions should be used only within this file */
-void  hash_morerecs();
-void  short_hash_morerecs();
-void  char_hash_morerecs();
-void  gen_hash_morerecs();
-int hash_morespace();
-int short_hash_morespace();
-int char_hash_morespace();
-int gen_hash_morespace();
+static void  hash_morerecs();
+static void  short_hash_morerecs();
+static void  char_hash_morerecs();
+static void  gen_hash_morerecs();
+static int hash_morespace();
+static int short_hash_morespace();
+static int char_hash_morespace();
+static int gen_hash_morespace();
 
 void
 hash_init(htptr,fixed,len,num_recs_inc,space_inc)

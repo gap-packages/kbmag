@@ -21,28 +21,6 @@ fsa *migm_determinize();
 fsa *migm_determinize_short();
 fsa *migm_determinize_int();
 
-/* Functions used in this file and defined elsewhere */
-int sparse_target();
-void fsa_init();
-void fsa_table_init();
-void fsa_set_is_initial();
-void srec_copy();
-void fsa_copy();
-void fsa_clear();
-void compressed_transitions_read();
-void hash_init();
-void short_hash_init();
-int  hash_locate();
-int  short_hash_locate();
-void hash_clear();
-void short_hash_clear();
-int* hash_rec();
-unsigned short* short_hash_rec();
-int hash_rec_len();
-int short_hash_rec_len();
-int genstrlen();
-int stringlen();
-
 fsa *
 migm_determinize(migmptr,op_table_type,destroy,tempfilename)
 	fsa *migmptr;

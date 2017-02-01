@@ -7,6 +7,9 @@
  * 24/10/94.
  */
 
+#ifndef KBMAG_HASH_H
+#define KBMAG_HASH_H
+
 typedef struct {
   boolean fixed_len; /* true if the records have fixed length */
   int rec_len;       /* the length of the records - used when fixed_len true */
@@ -255,3 +258,24 @@ typedef struct {
  * For variable length records, this will have length 0.
  */
 } gen_hash_table;
+
+
+extern void hash_init();
+extern void hash_clear();
+extern int hash_locate();
+extern int hash_rec_len();
+extern int * hash_rec();
+
+extern void short_hash_init();
+extern void short_hash_clear();
+extern int short_hash_locate();
+extern int short_hash_rec_len();
+extern unsigned short * short_hash_rec();
+
+extern void gen_hash_init();
+extern void gen_hash_clear();
+extern int gen_hash_locate();
+extern int gen_hash_rec_len (gen_hash_table *htptr, int n);
+extern gen * gen_hash_rec();
+
+#endif

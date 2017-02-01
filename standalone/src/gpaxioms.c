@@ -86,29 +86,6 @@ char *file_suffix();
 int  long_word_multiplier();
 void badusage_gpaxioms();
 
-/* Functions used in this file defined in other files: */
-void read_kbinput_simple();
-void printbuffer();
-void add_to_buffer();
-int add_word_to_buffer();
-int int_len();
-fsa  *fsa_genmult2();
-int   fsa_makemult();
-int   fsa_makemult2();
-fsa  *fsa_composite();
-int   fsa_minimize();
-int   fsa_labeled_minimize();
-int   fsa_ip_labeled_minimize();
-boolean fsa_equal();
-void fsa_read();
-void fsa_clear();
-void rws_clear();
-int  stringlen();
-int genstrlen();
-int genstrcmp();
-void genstrcpy();
-
-
 int 
 main (int argc, char *argv[])
 { int arg, i, j, l, ct, clr;

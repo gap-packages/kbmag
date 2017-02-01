@@ -25,12 +25,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_fsacount();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-int   fsa_count();
-void  fsa_clear();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg, ct, n;

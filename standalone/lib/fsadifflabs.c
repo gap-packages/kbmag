@@ -21,33 +21,6 @@ fsa * fsa_difflabs();
 fsa * fsa_difflabs_short();
 fsa * fsa_difflabs_int();
 
-/* Functions used in this file and defined elsewhere */
-boolean srec_equal();
-int sparse_target();
-void fsa_init();
-int  fsa_table_dptr_init();
-void fsa_set_is_accepting();
-void srec_copy();
-void fsa_clear();
-void compressed_transitions_read();
-void short_hash_init();
-int short_hash_locate();
-void short_hash_clear();
-unsigned short* short_hash_rec();
-void gen_hash_init();
-int gen_hash_locate();
-void gen_hash_clear();
-gen* gen_hash_rec();
-int  gen_hash_len();
-void hash_init();
-int hash_locate();
-void hash_clear();
-int* hash_rec();
-int  diff_reduce();
-int stringlen();
-int genstrlen();
-void genstrcpy();
-
 fsa *
 fsa_difflabs(fsaptr,rs_wdptr,op_table_type,destroy,tempfilename,readback)
 	fsa *fsaptr;

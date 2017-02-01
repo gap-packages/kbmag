@@ -29,33 +29,6 @@ fsa  *fsa_micomposite();
 fsa  *fsa_micomposite_short();
 fsa  *fsa_micomposite_int();
 
-/* Functions used in this file and defined elsewhere */
-void fsa_table_init();
-void fsa_set_is_initial();
-void fsa_set_is_accepting();
-void fsa_set_is_accessible();
-void fsa_init();
-void fsa_clear();
-void srec_clear();
-boolean srec_equal();
-void compressed_transitions_read();
-void srec_copy();
-int sparse_target();
-void hash_init();
-void short_hash_init();
-int  hash_locate();
-int  short_hash_locate();
-int* hash_rec();
-unsigned short* short_hash_rec();
-void hash_clear();
-void short_hash_clear();
-int hash_rec_len();
-int int_len();
-int stringlen();
-int genstrlen();
-void genstrcpy();
-void genstrcat();
-
 int 
 mimult_minimize (fsa *fsaptr)
 /* This is the minimization function for composite multipliers

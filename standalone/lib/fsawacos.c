@@ -51,18 +51,6 @@ fsa * fsa_wa_cos();
 fsa * fsa_wa_cos_short();
 fsa * fsa_wa_cos_int();
 
-/* Functions used in this file and defined elsewhere */
-void fsa_init();
-int  fsa_table_dptr_init();
-void srec_copy();
-void fsa_clear();
-void compressed_transitions_read();
-void short_hash_init();
-int short_hash_locate();
-void short_hash_clear();
-unsigned short* short_hash_rec();
-int short_hash_rec_len();
-
 fsa *
 fsa_wa_cos(fsaptr,op_table_type,destroy,tempfilename)
 	fsa *fsaptr;

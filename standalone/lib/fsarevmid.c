@@ -34,20 +34,6 @@ fsa *fsa_miexists2();
 fsa *fsa_miexists2_short();
 fsa *fsa_miexists2_int();
 
-/* Functions used in this file and defined elsewhere */
-int sparse_target();
-void fsa_init();
-void fsa_table_init();
-void fsa_set_is_accepting();
-void srec_copy();
-void fsa_clear();
-void compressed_transitions_read();
-void short_hash_init();
-int  short_hash_locate();
-void short_hash_clear();
-unsigned short* short_hash_rec();
-int short_hash_rec_len();
-
 fsa *
 fsa_reverse(fsaptr,op_table_type,destroy,subsets,tempfilename)
 	fsa *fsaptr;

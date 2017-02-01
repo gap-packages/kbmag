@@ -16,15 +16,6 @@
 int fsa_ip_minimize();
 int fsa_ip_labeled_minimize();
 
-/* Functions used in this file and defined elsewhere */
-void hash_init();
-void hash_clear();
-int *hash_rec();
-int hash_rec_len();
-int hash_locate();
-void srec_clear();
-void fsa_table_init();
-
 int 
 fsa_ip_minimize (fsa *fsaptr)
 /* Minimize the fsa *fsaptr, of which transitions are stored externally */

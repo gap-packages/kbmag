@@ -39,12 +39,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_fsagrowth();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-int  fsa_growth();
-void  fsa_clear();
-boolean is_int();
-
 int 
 main (int argc, char *argv[])
 { int arg, min, max, i, rv;

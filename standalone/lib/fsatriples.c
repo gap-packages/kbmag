@@ -25,28 +25,6 @@ fsa * fsa_triples();
 fsa * fsa_triples_short();
 fsa * fsa_triples_int();
 
-
-/* Functions used in this file and defined elsewhere */
-boolean srec_equal();
-int sparse_target();
-void fsa_init();
-int  fsa_table_dptr_init();
-void fsa_set_is_accepting();
-void srec_copy();
-void fsa_clear();
-void compressed_transitions_read();
-void short_hash_init();
-int short_hash_locate();
-void short_hash_clear();
-unsigned short* short_hash_rec();
-void hash_init();
-int hash_locate();
-void hash_clear();
-int* hash_rec();
-int  diff_reduce();
-int stringlen();
-int genstrlen();
-
 fsa *
 fsa_triples(waptr,diffptr,op_table_type,destroy,tempfilename,eqnptr,maxeqns,
 					     eqnstop,foundeqns,readback)

@@ -57,17 +57,6 @@ static FILE *rfile, *wfile;
 void  badusage_gpmigenmult();
 int   (*reduce_word)();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_mitriples();
-void  fsa_print();
-int   midfa_labeled_minimize();
-void  fsa_clear();
-int   diff_reduce_cos();
-int   add_wd_fsa_cos();
-int   calculate_inverses();
-int   fsa_table_dptr_init();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, ct, *inv, ngens, maxwdiffs, maxeqns;

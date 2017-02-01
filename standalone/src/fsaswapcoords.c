@@ -25,13 +25,6 @@ static FILE *rfile, *wfile;
 
 void  badusage();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-int   fsa_swap_coords();
-void  fsa_print();
-void  fsa_clear();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg;

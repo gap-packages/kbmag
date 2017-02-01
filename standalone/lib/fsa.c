@@ -65,22 +65,6 @@ typedef struct {
   int nd, *num, dd, *den;
 } fraction;
 
-/* Functions used in this file and defined elsewhere */
-void printbuffer();
-void hash_init();
-void hash_clear();
-int *hash_rec();
-int hash_rec_len();
-int hash_locate();
-void add_to_buffer();
-int  add_word_to_buffer();
-void add_iword_to_buffer();
-int int_len();
-fsa * fsa_and();
-void genstrcpy();
-int genstrlen();
-int stringlen();
-
 int 
 sparse_target (int g, int *p1, int *p2)
 /* p1 points to the beginning of the row of targets from the required state

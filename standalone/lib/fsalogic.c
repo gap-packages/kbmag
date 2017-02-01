@@ -61,31 +61,6 @@ fsa *fsa_exists_short();
 fsa *fsa_exists_int();
 fsa *fsa_greater_than();
 
-/* Functions used in this file and defined elsewhere */
-int sparse_target();
-void fsa_init();
-void fsa_table_init();
-int  fsa_table_dptr_init();
-void fsa_set_is_initial();
-void fsa_set_is_accepting();
-void srec_copy();
-void fsa_copy();
-void fsa_clear();
-void srec_clear();
-void hash_init();
-void short_hash_init();
-int  hash_locate();
-int  short_hash_locate();
-void hash_clear();
-void short_hash_clear();
-void fsa_clear_rws();
-int* hash_rec();
-unsigned short* short_hash_rec();
-void compressed_transitions_read();
-int hash_rec_len();
-int short_hash_rec_len();
-int genstrcmp();
-
 boolean
 srec_equal(srptr1,srptr2)
 	srec *srptr1, *srptr2;

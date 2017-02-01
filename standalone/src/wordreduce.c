@@ -70,25 +70,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_wordreduce();
 
-/* Functions defined in other files used in this file */
-void  read_kbinput_simple();
-void  fsa_read();
-int   fsa_table_dptr_init();
-boolean  read_word();
-int   diff_reduce();
-int   diff_reduce_cos();
-int   rws_reduce();
-int   add_word_to_buffer();
-int   add_expanded_word_to_buffer();
-void  read_ident();
-void  read_delim();
-void  check_next_char();
-void  printbuffer();
-void  process_names();
-void  fsa_clear();
-int   stringlen();
-int   genstrlen();
-
 int 
 main (int argc, char *argv[])
 { int delim, arg, num_gens, i;

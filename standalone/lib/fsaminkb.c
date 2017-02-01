@@ -37,30 +37,6 @@ fsa *fsa_diff();
 extern int  (*reduce_word)();
 static gen     testword[4096]; /* Used for reducing words */
 
-/* Functions used in this file and defined elsewhere */
-int sparse_target();
-void fsa_init();
-int  fsa_table_dptr_init();
-void fsa_set_is_accepting();
-void srec_copy();
-boolean  srec_equal();
-void fsa_clear();
-void compressed_transitions_read();
-void hash_init();
-void short_hash_init();
-int  hash_locate();
-int  short_hash_locate();
-void hash_clear();
-void short_hash_clear();
-int* hash_rec();
-unsigned short* short_hash_rec();
-int  diff_reduce();
-int  calculate_inverses();
-int diff_no();
-int stringlen();
-int genstrlen();
-void genstrcpy();
-
 fsa *
 fsa_minred(waptr,op_table_type,destroy,tempfilename)
 	fsa *waptr;

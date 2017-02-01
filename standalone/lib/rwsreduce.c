@@ -20,9 +20,6 @@ int rws_reduce();
 int slow_rws_reduce();
 boolean slow_check_rws_reduce();
 
-/* functions defined in other files and used in this file */
-int genstrlen();
-
 int 
 rws_reduce (gen *w, reduction_struct *rs_rws)
 

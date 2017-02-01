@@ -29,27 +29,6 @@ fsa  *fsa_composite();
 fsa  *fsa_composite_short();
 fsa  *fsa_composite_int();
 
-/* Functions used in this file and defined elsewhere */
-void compressed_transitions_read();
-boolean fsa_equal();
-int sparse_target();
-void fsa_init();
-void fsa_set_is_accepting();
-void srec_copy();
-void srec_clear();
-void fsa_clear();
-void hash_init();
-void short_hash_init();
-int  hash_locate();
-int  short_hash_locate();
-void hash_clear();
-void short_hash_clear();
-int* hash_rec();
-unsigned short* short_hash_rec();
-int hash_rec_len();
-int short_hash_rec_len();
-int stringlen();
-
 fsa *
 fsa_genmult2(genmultptr,op_table_type,destroy,genmult2filename,readback)
 	fsa *genmultptr;

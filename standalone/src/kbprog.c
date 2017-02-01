@@ -263,22 +263,6 @@ void interrupt_kbprog();
 void output_and_exit_kbprog();
 void badusage_kbprog();
 
-/* Functions used in this file defined in other files: */
-void set_defaults();
-int  kbprog();
-void sort_eqns();
-void should_we_halt();
-void read_kbinput();
-void read_extra_kbinput();
-void print_kboutput();
-void print_wdoutput();
-int initialise_wd_fsa();
-void build_wd_fsa();
-int  make_full_wd_fsa();
-void rws_clear();
-void fsa_clear();
-void rk_clear();
-
 void
 read_kbprog_command(argc,argv,rwsptr)
   int             argc;

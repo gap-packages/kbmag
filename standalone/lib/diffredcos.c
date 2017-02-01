@@ -17,10 +17,6 @@
 /* Functions defined in this file: */
 int diff_reduce_cos();
 
-/* functions defined in other files used in this file */
-int genstrlen();
-void genstrcat();
-
 int 
 diff_reduce_cos (gen *w, reduction_struct *rs_wd)
 /* w is the word to be reduced using the word-difference machine  *wd_fsa.

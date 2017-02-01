@@ -46,19 +46,6 @@ int  fsa_checkmult();
 int  fsa_checkmult_short();
 int  fsa_checkmult_int();
 
-/* Functions used in this file and defined elsewhere */
-int sparse_target();
-void short_hash_init();
-int  short_hash_locate();
-void short_hash_clear();
-unsigned short* short_hash_rec();
-int short_hash_rec_len();
-void hash_init();
-int  hash_locate();
-void hash_clear();
-int* hash_rec();
-int hash_rec_len();
-
 int
 fsa_checkmult(multptr,eqnptr,maxeqns,cosets,separator)
 	fsa *multptr;

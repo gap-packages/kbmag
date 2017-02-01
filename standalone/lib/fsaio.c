@@ -37,27 +37,6 @@ void compressed_transitions_read();
 void compressed_ctransitions_read();
 
 
-/* Functions used in this file defined outside this file: */
-void check_next_char();
-void process_names();
-void printbuffer();
-void add_to_buffer();
-int add_word_to_buffer();
-void read_ident();
-boolean read_string();
-boolean read_int();
-boolean read_word();
-void read_delim();
-int sparse_target();
-void fsa_table_init();
-int int_len();
-void fsa_init();
-int genstrlen();
-int genstrcmp();
-void genstrcpy();
-int stringlen();
-void skip_gap_expression();
-
 void 
 srec_print (
 /* Print the set record *srptr. Follows corresponding GAP routine.

@@ -42,33 +42,6 @@ void read_extra_kbinput();
 void print_kboutput();
 void print_wdoutput();
 
-/* Functions defined in other files called from this file: */
-void check_next_char();
-boolean isdelim();
-boolean isvalid();
-void read_delim();
-void skip_gap_expression();
-void read_ident();
-boolean read_int();
-boolean read_string();
-boolean read_word();
-void read_gens();
-void read_inverses();
-void process_names();
-void set_separator();
-void build_quicktable();
-int modify_table();
-int insert();
-void printbuffer();
-void add_to_buffer();
-int add_word_to_buffer();
-void fsa_init();
-void fsa_table_init();
-void srec_copy();
-void fsa_print();
-int genstrlen();
-int stringlen();
-
 void 
 initialise_reduction_fsa (rewriting_system *rwsptr)
 /* We initialise the reduction automaton as an fsa type.

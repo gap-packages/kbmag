@@ -24,24 +24,6 @@ void rws_clear();
 void read_subgens();
 void print_rws_simple();
 
-/* Functions used in this file defined in other files: */
-void printbuffer();
-void add_to_buffer();
-int add_word_to_buffer();
-void check_next_char();
-void read_ident();
-void read_delim();
-void skip_gap_expression();
-boolean read_int();
-boolean read_string();
-void process_names();
-boolean read_word();
-void set_separator();
-void genstrcpy();
-int genstrcmp();
-int genstrlen();
-int stringlen();
-
 void
 read_kbinput_simple(rfile,check,rwsptr)
         FILE *rfile;

@@ -29,15 +29,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_nfadet();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *nfa_determinize();
-void  fsa_copy();
-void  fsa_print();
-void  fsa_clear();
-void fsa_minimize();
-int	stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg;

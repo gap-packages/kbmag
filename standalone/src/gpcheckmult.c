@@ -96,28 +96,6 @@ static FILE *rfile, *wfile;
 void  badusage_gpcheckmult();
 int  (*reduce_word)();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-int   fsa_checkmult();
-void  fsa_clear();
-void  fsa_copy();
-int   diff_reduce();
-int   diff_reduce_cos();
-int   diff_reduce_wl();
-int   add_wd_fsa();
-int   add_wd_fsa_cos();
-void  make_full_wd_fsa();
-void  make_full_wd_fsa_cos();
-int   calculate_inverses();
-int  fsa_table_dptr_init();
-int  add_word_to_buffer();
-void read_kbinput_simple();
-void rws_clear();
-int	stringlen();
-int	genstrlen();
-void genstrcpy();
-void genstrcat();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, ct, *inv, old_ndiff, maxneweqns, numeqns, ngens, maxwdiffs;

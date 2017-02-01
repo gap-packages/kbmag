@@ -15,9 +15,6 @@
 /* functions defined in this file */
 int diff_reduce();
 
-/* functions defined in other files used in this file */
-int genstrlen();
-
 int 
 diff_reduce (gen *w, reduction_struct *rs_wd)
 /* w is the word to be reduced using the word-difference machine  *wd_fsa.

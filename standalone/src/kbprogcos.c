@@ -235,28 +235,6 @@ void interrupt_kbprogcos();
 void output_and_exit_kbprogcos();
 void badusage_kbprogcos();
 
-/* Functions used in this file defined in other files: */
-void set_defaults();
-int  kbprog();
-void type_sort_eqns_final();
-void typelength_sort_eqns();
-void should_we_halt();
-void output_and_exit_kbprogcos();
-void make_fsa_nice();
-void read_kbinput();
-void read_extra_kbinput();
-void print_kboutput();
-void print_wdoutput();
-int  initialise_wd_fsa_cos();
-void build_wd_fsa_cos();
-int make_full_wd_fsa_cos();
-void rws_clear();
-void fsa_clear();
-void rk_clear();
-void srec_clear();
-int  genstrlen();
-void genstrcpy();
-
 
 void
 read_kbprogcos_command(argc,argv,rwsptr)

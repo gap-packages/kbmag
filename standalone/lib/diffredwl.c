@@ -16,8 +16,6 @@
 /* Functions defined in this file */
 int diff_reduce_wl();
 int make_substitution();
-/* functions defined in other files used in this file */
-int genstrlen();
 
 int 
 diff_reduce_wl (gen *w, reduction_struct *rs_wd)

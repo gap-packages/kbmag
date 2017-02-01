@@ -61,27 +61,6 @@ void should_we_halt();
 void make_fsa_nice();
 int check_finite();
 
-/* Functions used in this file defined in other files: */
-int rws_reduce();
-int slow_rws_reduce();
-boolean slow_check_rws_reduce();
-int build_wd_fsa();
-void fsa_table_init();
-int  fsa_table_dptr_init();
-void clear_wd_fsa();
-void rws_clear();
-void fsa_clear();
-int rk_init();
-void rk_reset();
-void rk_clear();
-void rk_add_lhs();
-int slow_rws_reduce_rk();
-boolean slow_check_rws_reduce_rk();
-int	stringlen();
-int	genstrlen();
-int	genstrcmp();
-void	genstrcpy();
-
 void
 set_defaults(rwsptr, cosets)
   rewriting_system *rwsptr;
@@ -285,7 +264,8 @@ restart:
         return 0;
       if (rwsptr->cosets && rwsptr->finitestop) {
           build_fulltable(rwsptr);
-          if (k = check_finite(rwsptr,128)) {
+          k = check_finite(rwsptr,128);
+          if (k) {
             printf("#Coset language has size %d.",k);
             rwsptr->maxoverlaplen =
               rwsptr->maxcosetlen+rwsptr->maxlhsrellen > rwsptr->maxsubgenlen ?

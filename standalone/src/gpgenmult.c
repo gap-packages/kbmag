@@ -56,18 +56,6 @@ static FILE *rfile, *wfile;
 void  badusage_gpgenmult();
 int   (*reduce_word)();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_triples();
-void  fsa_print();
-int   fsa_labeled_minimize();
-int   fsa_ip_labeled_minimize();
-void  fsa_clear();
-int   diff_reduce();
-int   add_wd_fsa();
-int   calculate_inverses();
-int  fsa_table_dptr_init();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, ct, *inv, ngens, maxwdiffs, maxeqns;

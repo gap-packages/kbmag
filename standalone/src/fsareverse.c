@@ -35,15 +35,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_fsareverse();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_reverse();
-fsa  *fsa_mireverse();
-void  fsa_print();
-void  fsa_clear();
-int   fsa_minimize();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg;

@@ -28,19 +28,6 @@ int	add_wd_fsa_cos();
 int 	make_full_wd_fsa_cos();
 void 	clear_wd_fsa_cos();
 
-/* Functions used in this file defined in other files: */
-int add_word_to_buffer();
-void srec_copy();
-int diff_no();
-void fsa_init();
-void fsa_table_init();
-int  fsa_table_dptr_init();
-void genstrcat();
-int genstrcmp();
-void genstrcpy();
-int genstrlen();
-int stringlen();
-
 int 
 initialise_wd_fsa_cos (fsa *wd_fsaptr, srec *alphptr, int maxwdiffs)
 /* Initialise a word-difference automaton, using  *alphptr as base-alphabet.
@@ -87,10 +74,7 @@ initialise_wd_fsa_cos (fsa *wd_fsaptr, srec *alphptr, int maxwdiffs)
 }
 
 int
-build_wd_fsa_cos(wd_fsaptr,new_wd,rs)
-	fsa *wd_fsaptr;
-	boolean *new_wd;
-	reduction_struct *rs;
+build_wd_fsa_cos(fsa *wd_fsaptr,boolean *new_wd,reduction_struct *rs)
 /* Make the word-difference machine from the rewriting system rws */
 { int i, ct, **table;
   boolean new;

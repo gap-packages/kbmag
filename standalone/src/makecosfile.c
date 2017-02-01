@@ -59,15 +59,6 @@ static FILE *rfile, *wfile;
 /* Functions defined in this file */
 void badusage_makecosfile();
 
-/* Functions used in this file defined in other files: */
-void read_kbinput_simple();
-void read_subgens();
-void print_rws_simple();
-void rws_clear();
-int stringlen();
-int genstrlen();
-void genstrcpy();
-
 int 
 main (int argc, char *argv[])
 { int arg, ngens, neqns, i, *templevel;

@@ -35,17 +35,6 @@ static FILE *rfile, *wfile;
 void  badusage_gpdifflabs();
 int   (*reduce_word)();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_difflabs();
-void  fsa_print();
-int   fsa_labeled_minimize();
-int   fsa_ip_labeled_minimize();
-void  fsa_clear();
-int   diff_reduce();
-int fsa_table_dptr_init();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg, i;

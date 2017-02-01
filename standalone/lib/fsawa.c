@@ -48,23 +48,6 @@ fsa * fsa_wa();
 fsa * fsa_wa_short();
 fsa * fsa_wa_int();
 
-/* Functions used in this file and defined elsewhere */
-void fsa_init();
-int  fsa_table_dptr_init();
-void srec_copy();
-void fsa_clear();
-void compressed_transitions_read();
-void short_hash_init();
-int short_hash_locate();
-void short_hash_clear();
-unsigned short* short_hash_rec();
-int short_hash_rec_len();
-void hash_init();
-int hash_locate();
-void hash_clear();
-int* hash_rec();
-int hash_rec_len();
-
 fsa *
 fsa_wa(fsaptr,op_table_type,destroy,tempfilename)
 	fsa *fsaptr;

@@ -41,10 +41,6 @@ void rk_add_lhs();
 int slow_rws_reduce_rk();
 boolean slow_check_rws_reduce_rk();
 
-/* functions defined in other files and used in this file */
-int genstrlen();
-int stringlen();
-
 int 
 rk_init (rewriting_system *rwsptr)
 /* Initialize hash-table and lookup tables for this value of maxeqns */

@@ -73,28 +73,6 @@ void read_subgpgens();
 int output_bad_words();
 void badusage_gpchecksubwa();
 
-/* Functions used in this file defined in other files: */
-void process_names();
-void printbuffer();
-void add_to_buffer();
-int  add_word_to_buffer();
-int int_len();
-int  fsa_makemult();
-fsa  *fsa_composite();
-fsa  *fsa_submult();
-fsa  *fsa_exists();
-int  fsa_swap_coords();
-int  fsa_minimize();
-int  fsa_ip_minimize();
-int words_and_not();
-boolean fsa_equal();
-void fsa_read();
-void fsa_clear();
-int  stringlen();
-int  genstrlen();
-int  genstrcmp();
-void genstrcpy();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, j, l, ct;

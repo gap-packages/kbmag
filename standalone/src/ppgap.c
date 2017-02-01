@@ -23,13 +23,6 @@ static FILE *rfile, *wfile;
 /* Functions defined in this file */
 void badusage_ppgap();
 
-/* Functions used in this file defined in other files: */
-void read_kbinput_simple();
-void printbuffer();
-void add_to_buffer();
-void rws_clear();
-int  stringlen();
-
 int 
 main (int argc, char *argv[])
 { int  i, l, ct;

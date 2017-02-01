@@ -26,14 +26,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_midfadeterminize();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa   *midfa_determinize();
-void  fsa_print();
-void  fsa_clear();
-int   fsa_minimize();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg;

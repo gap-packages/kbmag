@@ -33,16 +33,6 @@ static FILE *rfile, *wfile;
 
 void  badusage();
 
-/* Functions defined in other files used in this file */
-int sparse_target();
-void  fsa_read();
-int   fsa_count();
-void  fsa_delete_state();
-void  fsa_copy();
-void  fsa_clear();
-void  fsa_print();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg, ct, ne, ns, **table, e, s, t;

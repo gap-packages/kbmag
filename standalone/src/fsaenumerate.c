@@ -46,13 +46,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_fsaenumerate();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-int   fsa_enumerate();
-void  fsa_clear();
-boolean is_int();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg, min, max, i, n, rv;

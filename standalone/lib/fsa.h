@@ -23,6 +23,9 @@
  * 17.11.94. - implemented labeled format
  */
 
+#ifndef KBMAG_FSA_H
+#define KBMAG_FSA_H
+
 typedef enum {SIMPLE, IDENTIFIERS, WORDS, LISTOFWORDS, LISTOFINTS, STRINGS,
 	      LABELED, PRODUCT}
         srec_type;
@@ -203,3 +206,67 @@ typedef struct {
  */
 #define dense_dtarget(dtable,g1,g2,s) (dtable[g1][g2][s])
 #define set_dense_dtarget(dtable,g1,g2,s,t) (dtable[g1][g2][s] = t)
+
+
+/* function prototypes */
+extern fsa * fsa_and_not();
+extern fsa * fsa_and();
+extern fsa * fsa_composite();
+extern fsa * fsa_concat();
+extern fsa * fsa_diff();
+extern fsa * fsa_difflabs();
+extern fsa * fsa_exists();
+extern fsa * fsa_genmult2();
+extern fsa * fsa_geopairs();
+extern fsa * fsa_laband();
+extern fsa * fsa_micomposite();
+extern fsa * fsa_migm2();
+extern fsa * fsa_minkb();
+extern fsa * fsa_minred();
+extern fsa * fsa_mireverse();
+extern fsa * fsa_mitriples();
+extern fsa * fsa_not();
+extern fsa * fsa_or();
+extern fsa * fsa_reverse();
+extern fsa * fsa_star();
+extern fsa * fsa_submult();
+extern fsa * fsa_triples();
+extern fsa * fsa_wa_cos();
+extern fsa * fsa_wa();
+extern fsa * midfa_determinize();
+extern fsa * migm_determinize();
+extern fsa * nfa_determinize();
+
+extern boolean fsa_equal();
+
+extern int fsa_bfs();
+extern int fsa_checkgeowa();
+extern int fsa_checkmult();
+extern int fsa_clear_rws();
+extern int fsa_count();
+extern int fsa_delete_state();
+extern int fsa_enumerate();
+extern int fsa_growth();
+extern int fsa_ip_labeled_minimize();
+extern int fsa_ip_minimize();
+extern int fsa_labeled_minimize();
+extern int fsa_makemult();
+extern int fsa_makemult2();
+extern int fsa_mimakemult();
+extern int fsa_mimakemult2();
+extern int fsa_min();
+extern int fsa_minimize();
+extern int fsa_swap_coords();
+extern int fsa_table_dptr_init();
+
+extern void fsa_clear();
+extern void fsa_copy();
+extern void fsa_init();
+extern void fsa_print();
+extern void fsa_read();
+extern void fsa_set_is_accepting();
+extern void fsa_set_is_accessible();
+extern void fsa_set_is_initial();
+extern void fsa_table_init();
+
+#endif

@@ -51,29 +51,6 @@ static FILE *rfile, *wfile;
 void  badusage_gpgeowa();
 int  (*reduce_word)();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_geopairs();
-int  fsa_checkgeowa();
-fsa  *fsa_composite();
-fsa  *fsa_exists();
-fsa  *fsa_diff();
-boolean fsa_equal();
-void  fsa_copy();
-void  fsa_print();
-int  fsa_minimize();
-int  fsa_ip_minimize();
-int  fsa_swap_coords();
-void  fsa_clear();
-int  diff_reduce();
-int  make_full_wd_fsa();
-int add_wd_fsa();
-int   calculate_inverses();
-int fsa_table_dptr_init();
-int stringlen();
-int genstrlen();
-void genstrcpy();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, ct, ngens;

@@ -23,24 +23,6 @@ int  fsa_checkgeowa();
 int  fsa_checkgeowa_short();
 int  fsa_checkgeowa_int();
 
-/* Functions used in this file and defined elsewhere */
-boolean srec_equal();
-void fsa_init();
-int  fsa_table_dptr_init();
-void fsa_set_is_accepting();
-void compressed_transitions_read();
-void srec_copy();
-void fsa_clear();
-void short_hash_init();
-int short_hash_locate();
-void short_hash_clear();
-unsigned short* short_hash_rec();
-void hash_init();
-int hash_locate();
-void hash_clear();
-int * hash_rec();
-int stringlen();
-
 fsa *
 fsa_geopairs(waptr,diffptr,op_table_type,destroy,tempfilename,readback)
 	fsa *waptr, *diffptr;

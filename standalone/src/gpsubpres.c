@@ -67,26 +67,6 @@ int  find_subrels();
 int  long_word_multiplier();
 void badusage_gpsubpres();
 
-/* Functions used in this file defined in other files: */
-void read_kbinput_simple();
-void printbuffer();
-void add_to_buffer();
-int add_word_to_buffer();
-int int_len();
-void fsa_table_dptr_init();
-fsa  *fsa_migm2();
-int   fsa_mimakemult();
-int   fsa_mimakemult2();
-fsa  *fsa_micomposite();
-int  midfa_labeled_minimize();
-int  mimult_minimize();
-void fsa_clear();
-void rws_clear();
-int stringlen();
-int genstrlen();
-int genstrcmp();
-void genstrcpy();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, j, l, ct;

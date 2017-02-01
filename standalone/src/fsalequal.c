@@ -25,14 +25,6 @@ static FILE *rfile;
 
 void  badusage_fsalequal();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-int   fsa_bfs();
-int   fsa_min();
-boolean fsa_equal();
-void  fsa_clear();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg, ct, n;

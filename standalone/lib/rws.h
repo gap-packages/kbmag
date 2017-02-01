@@ -5,6 +5,9 @@
  * 6/10/94.
  */
 
+#ifndef KBMAG_RWS_H
+#define KBMAG_RWS_H
+
 #include <sys/times.h>
 
 typedef enum {SHORTLEX, RECURSIVE, RT_RECURSIVE, WTLEX, WREATHPROD, NONE}
@@ -161,3 +164,6 @@ typedef struct {
   int *weight;
   int maxreducelen;
 } reduction_struct;
+
+
+#endif

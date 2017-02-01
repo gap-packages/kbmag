@@ -27,14 +27,6 @@ static FILE *rfile, *wfile;
 
 void  badusage_gpmicomp();
 
-/* Functions defined in other files used in this file */
-void  fsa_read();
-fsa  *fsa_micomposite();
-int   mimult_minimize();
-void  fsa_print();
-void  fsa_clear();
-int   stringlen();
-
 int 
 main (int argc, char *argv[])
 { int arg, i, g1, g2;

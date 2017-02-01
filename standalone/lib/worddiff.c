@@ -25,17 +25,6 @@ void 	clear_wd_fsa();
 int	diff_no();
 int     calculate_inverses();
 
-/* Functions used in this file defined in other files: */
-int add_word_to_buffer();
-void srec_copy();
-void	fsa_init();
-void	fsa_table_init();
-int 	fsa_table_dptr_init();
-int genstrcmp();
-void genstrcpy();
-int genstrlen();
-int stringlen();
-
 int 
 initialise_wd_fsa (fsa *wd_fsaptr, srec *alphptr, int maxwdiffs)
 /* Initialise a word-difference automaton, using  *alphptr as base-alphabet.
