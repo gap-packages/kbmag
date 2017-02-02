@@ -26,41 +26,16 @@
 #include "hash.h"
 #include "externals.h"
 
-/* Functions defined in this file: */
-int sparse_target();
-void fsa_init();
-void fsa_table_init();
-void fsa_set_is_initial();
-void fsa_set_is_accepting();
-void fsa_set_is_accessible();
-int fsa_table_dptr_init();
-void srec_copy();
-void table_copy();
-void fsa_copy();
-void srec_clear();
-void table_clear();
-void fsa_clear();
-int fsa_delete_state();
-int fsa_permute_states();
-int fsa_clear_rws();
-int fsa_make_accessible();
-int fsa_minimize();
-int fsa_labeled_minimize();
-int fsa_bfs();
-int fsa_count();
-int fsa_enumerate();
-int fsa_swap_coords();
-
 /* New functions written by Laurent Bartholdi for calculation of
  * growth rate of an fsa
  */
-unsigned *fsa_mod_count();	/* count # of accepted words mod. a prime */
-unsigned mod_inverse();
-int mod_solve();
-int fsa_mod_growth();		/* compute growth series mod. a prime */
-void mod_normal();
-boolean print_poly();
-int fsa_growth();
+// unsigned *fsa_mod_count();	/* count # of accepted words mod. a prime */
+// unsigned mod_inverse();
+// int mod_solve();
+// int fsa_mod_growth();		/* compute growth series mod. a prime */
+// void mod_normal();
+// boolean print_poly();
+// int fsa_growth();
 typedef struct {
   int nd, *num, dd, *den;
 } fraction;
@@ -992,7 +967,7 @@ fsa_minimize (fsa *fsaptr)
       if (fixed) {
         for (j=1;j<len;j++)
           ptr[j] = block_numa[table[j][i]];
-          l = len;
+        l = len;
       }
       else {
         l = 0;
@@ -1476,12 +1451,7 @@ fsa_count (fsa *fsaptr)
 }
 
 int
-fsa_enumerate(wfile,fsaptr,min,max,putcomma,stateno)
-	FILE *wfile;
-	fsa *fsaptr;
-	int min, max;
-	boolean putcomma;
-	int stateno;
+fsa_enumerate(FILE *wfile, fsa *fsaptr, int min, int max, boolean putcomma, int stateno)
 /* Enumerate the subset of the language of the finite state automaton *fsaptr,
  * consisting of those words having length l satisfying min <= l <= max.
  * Since there is no point in storing these words currently, they are

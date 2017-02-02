@@ -267,7 +267,7 @@ main (int argc, char *argv[])
       kbm_buffer[0] = '\0';
       add_to_buffer(0,"#Processing relator:  ");
       add_word_to_buffer(stdout,relator,rws.gen_name);
-      printbuffer(stdout,kbm_buffer);
+      printbuffer(stdout);
     }
     if (find_subrels(relator)==-1) exit(1);
   }
@@ -290,7 +290,7 @@ main (int argc, char *argv[])
       kbm_buffer[0] = '\0';
       add_to_buffer(0,"#Processing relator:  ");
       add_word_to_buffer(stdout,relator,rws.gen_name);
-      printbuffer(stdout,kbm_buffer);
+      printbuffer(stdout);
     }
     if (find_subrels(relator)==-1) exit(1);
   }
@@ -437,7 +437,7 @@ long_word_multiplier(w,s)
     kbm_buffer[0] = '\0';
     add_to_buffer(0,"  #Calculating multiplier for word:  ");
     add_word_to_buffer(stdout,w,rws.gen_name);
-    printbuffer(stdout,kbm_buffer);
+    printbuffer(stdout);
   }
   l = genstrlen(w);
 

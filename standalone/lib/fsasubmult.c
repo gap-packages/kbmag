@@ -17,17 +17,9 @@
 #include "rws.h"
 #include "externals.h"
 
-/* Functions defined in this file: */
-fsa * fsa_submult();
-int words_and_not();
-
 fsa *
-fsa_submult(subwaptr,multptr,op_table_type,destroy,tempfilename,readback)
-	fsa *subwaptr, *multptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	boolean readback;
+fsa_submult(fsa *subwaptr, fsa *multptr, storage_type op_table_type,
+            boolean destroy, char *tempfilename, boolean readback)
 /* *subwaptr is intended to be a candidate subgroup word-acceptor of an
  * automatic group (but could be any single-variable dfa).
  * *multptr is assumed to be a multiplier of the same automatic

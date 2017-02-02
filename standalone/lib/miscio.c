@@ -27,35 +27,8 @@
 #include "rws.h"
 #include "externals.h"
 
-/* Functions defined in this file: */
-boolean isdelim();
-boolean isvalid();
-int read_char();
-void check_next_char();
-void read_delim();
-void read_token();
-void skip_gap_expression();
-void read_ident();
-boolean read_int();
-boolean read_string();
-void process_names();
-boolean read_word();
-int read_word_list();
-void printbuffer();
-void add_to_buffer();
-int add_word_to_buffer();
-int add_expanded_word_to_buffer();
-int int_len();
-boolean is_int();
-int stringlen();
-int genstrlen();
-int genstrcmp();
-void genstrcat();
-void set_separator();
-
 boolean
-isdelim(c)
-        int c;
+isdelim(int c)
 /* Note: '.' is not included in list of delimiters, since identifiers may
  * contain dots.
  * Integers are exceptional, however, in that they may be terminated by a
@@ -68,13 +41,12 @@ isdelim(c)
 }
 
 boolean
-isvalid(c)
-        int c;
+isvalid(int c)
 /* Checks if symbol is valid in an identifier */
 { return isalpha(c) || isdigit(c) || c=='_' || c=='.';
 }
 
-int 
+static int 
 read_char (FILE *rfile)
 /* This is the basic character-reading function, which all other routines
  * call.
@@ -135,7 +107,7 @@ read_delim (FILE *rfile, int *delim)
   if (*delim=='}') *delim = ']';
 }
 
-void 
+static void 
 read_token (FILE *rfile, char *token, int *delim)
 /* Read stuff into token up to next delimiter or space  -
  * leading spaces are removed from stuff.
@@ -237,11 +209,7 @@ skip_gap_expression (FILE *rfile, int *delim)
 }
 
 void
-read_ident(rfile,ident,delim,inv)
-        FILE * rfile;
-        char * ident;
-        int * delim;
-	boolean inv;
+read_ident(FILE *rfile, char *ident, int *delim, boolean inv)
 /* Read next identifier, field name, etc.
  * if inv is true, it is allowed to end ^-1.
  */
@@ -273,10 +241,7 @@ read_ident(rfile,ident,delim,inv)
 }
 
 boolean
-read_int(rfile,integ,delim)
-        FILE * rfile;
-        int * integ;
-        int * delim;
+read_int(FILE *rfile, int *integ, int *delim)
 /* Read next integer - may be empty, when 0 is returned as *integ.
  * NOTE integer can be terminated by a '.' as well as a delimiter
  * FALSE returned if no int read, otherwise TRUE.
@@ -317,10 +282,7 @@ read_int(rfile,integ,delim)
 
 
 boolean
-read_string(rfile,string,delim)
-        FILE * rfile;
-        char * string;
-        int * delim;
+read_string(FILE *rfile, char *string, int *delim)
 /* Read next string (enclosed in quotes) - if delim comes first, return
  * empty string as string.
  * FALSE returned if no string read, otherwise TRUE.
@@ -740,7 +702,7 @@ add_expanded_word_to_buffer (FILE *wfile, gen *word, char **symbols)
 /* The same as add_word_to_buffer, but powers of generators are
  * printed out in full rather than as powers.
  */
-{ int offset, g, len, lg, nln=0;
+{ int offset, g, len, nln=0;
   gen *w;
   char sg[256];
     /* 256 here is the maximum length of a generator name in `symbols'. */
@@ -764,7 +726,6 @@ add_expanded_word_to_buffer (FILE *wfile, gen *word, char **symbols)
     }
     if (!first)
       add_to_buffer(0,"*");
-    lg = stringlen(sg);
     add_to_buffer(0,sg);
     first = FALSE;
   }
@@ -832,8 +793,7 @@ int_len (int n)
 }
 
 boolean
-is_int(x)
-        char *x;
+is_int(char *x)
 /* returns true if the string x is an integer */
 { int i, l;
   l = stringlen(x);

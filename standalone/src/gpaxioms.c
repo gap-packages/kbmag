@@ -377,7 +377,7 @@ check_short_relation (void)
     add_word_to_buffer(stdout,lhs,rws.gen_name);
     add_to_buffer(0," = ");
     add_word_to_buffer(stdout,rhs,rws.gen_name);
-    printbuffer(stdout,kbm_buffer);
+    printbuffer(stdout);
   }
 /* pad rhs to length 2 if necessary */
   if (genstrlen(rhs)==0){
@@ -407,7 +407,7 @@ check_short_relation (void)
       add_word_to_buffer(stdout,lhs,rws.gen_name);
       add_to_buffer(0," = ");
       add_word_to_buffer(stdout,rhs,rws.gen_name);
-      printbuffer(stdout,kbm_buffer);
+      printbuffer(stdout);
       wfile=fopen(outfec,"w");
       fprintf(wfile,"_ExitCode := 2;\n");
       fclose(wfile);
@@ -432,11 +432,11 @@ check_long_relation (void)
     add_word_to_buffer(stdout,lhs,rws.gen_name);
     add_to_buffer(0," = ");
     if ((l=stringlen(kbm_buffer))>44) {
-       printbuffer(stdout,kbm_buffer);
+       printbuffer(stdout);
        add_to_buffer(21,"");
     }
     add_word_to_buffer(stdout,rhs,rws.gen_name);
-    printbuffer(stdout,kbm_buffer);
+    printbuffer(stdout);
   }
   suffl = file_suffix(lhs); suffr = file_suffix(rhs);
   gotl = gotr = FALSE;
@@ -477,7 +477,7 @@ check_long_relation (void)
     add_word_to_buffer(stdout,lhs,rws.gen_name);
     add_to_buffer(0," = ");
     add_word_to_buffer(stdout,rhs,rws.gen_name);
-    printbuffer(stdout,kbm_buffer);
+    printbuffer(stdout);
     wfile=fopen(outfec,"w");
     fprintf(wfile,"_ExitCode := 2;\n");
     fclose(wfile);
@@ -550,7 +550,7 @@ long_word_multiplier(w,s)
     kbm_buffer[0] = '\0';
     add_to_buffer(0,"  #Calculating multiplier for word:  ");
     add_word_to_buffer(stdout,w,rws.gen_name);
-    printbuffer(stdout,kbm_buffer);
+    printbuffer(stdout);
   }
   l = genstrlen(w);
 

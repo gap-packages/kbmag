@@ -25,24 +25,26 @@
 #define MASKL (unsigned) 0xff000000
 
 /* Functions defined in this file: */
-fsa *nfa_determinize();
-fsa *nfa_determinize_short();
-fsa *nfa_determinize_int();
-fsa *nfa_cdeterminize();
-fsa *nfa_cdeterminize_short();
-fsa *nfa_cdeterminize_int();
-fsa *nfa_exists();
-fsa *nfa_exists_short();
-fsa *nfa_exists_int();
+static fsa *
+nfa_determinize_short(fsa *fsaptr, storage_type op_table_type, boolean eps_trans,
+                boolean destroy, boolean subsets, char *tempfilename);
+static fsa *
+nfa_determinize_int(fsa *fsaptr, storage_type op_table_type, boolean eps_trans,
+                boolean destroy, boolean subsets, char *tempfilename);
+static fsa *
+nfa_cdeterminize_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+nfa_cdeterminize_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+nfa_exists_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+nfa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+
+
 
 fsa *
-nfa_determinize(fsaptr,op_table_type,eps_trans,destroy,subsets,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean eps_trans;
-	boolean destroy;
-        boolean subsets;
-	char *tempfilename;
+nfa_determinize(fsa *fsaptr, storage_type op_table_type, boolean eps_trans,
+                boolean destroy, boolean subsets, char *tempfilename)
 /* The fsa *fsaptr must be an fsa with sparse table.
  * The returned fsa accepts the same language but is deterministic.
  * If eps_trans is false, it is assumed that *fsaptr has no epsilon
@@ -62,17 +64,11 @@ nfa_determinize(fsaptr,op_table_type,eps_trans,destroy,subsets,tempfilename)
                fsaptr,op_table_type,eps_trans,destroy,subsets,tempfilename);
 }
 
-fsa *
-nfa_determinize_short(fsaptr,op_table_type,eps_trans,destroy,subsets,
-			tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean eps_trans;
-	boolean destroy;
-        boolean subsets;
-	char *tempfilename;
+static fsa *
+nfa_determinize_short(fsa *fsaptr, storage_type op_table_type, boolean eps_trans,
+                boolean destroy, boolean subsets, char *tempfilename)
 {
-  int **table, *tableptr, *tableptre, ngens, nssi, nsi, ns, *fsarow,
+  int **table, *tableptr, *tableptre, ngens, nssi, ns, *fsarow,
       nt, cstate, csi, im, i, g1, len, ct, n;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
@@ -106,7 +102,6 @@ nfa_determinize_short(fsaptr,op_table_type,eps_trans,destroy,subsets,
     return det;
   }
   ngens = det->alphabet->size;
-  nsi = fsaptr->states->size;
 
   fsa_set_is_accepting(fsaptr);
 
@@ -346,17 +341,11 @@ nfa_determinize_short(fsaptr,op_table_type,eps_trans,destroy,subsets,
   return det;
 }
 
-fsa *
-nfa_determinize_int(fsaptr,op_table_type,eps_trans,destroy,subsets,
-			tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean eps_trans;
-	boolean destroy;
-        boolean subsets;
-	char *tempfilename;
+static fsa *
+nfa_determinize_int(fsa *fsaptr, storage_type op_table_type, boolean eps_trans,
+                boolean destroy, boolean subsets, char *tempfilename)
 {
-  int **table, *tableptr, *tableptre, ngens, nssi, nsi, ns, *fsarow,
+  int **table, *tableptr, *tableptre, ngens, nssi, ns, *fsarow,
       nt, cstate, csi, im, i, g1, len, ct, n;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
@@ -390,7 +379,6 @@ nfa_determinize_int(fsaptr,op_table_type,eps_trans,destroy,subsets,
     return det;
   }
   ngens = det->alphabet->size;
-  nsi = fsaptr->states->size;
 
   fsa_set_is_accepting(fsaptr);
 
@@ -631,11 +619,7 @@ nfa_determinize_int(fsaptr,op_table_type,eps_trans,destroy,subsets,
 }
 
 fsa *
-nfa_cdeterminize(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+nfa_cdeterminize(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 /* Version of nfa_determinize for transtition tables stored compactly.
  * FOR THE MOMENT WE ASSUME NO EPSILON TRANSITIONS
  * The fsa *fsaptr must be an fsa with compact table.
@@ -652,14 +636,10 @@ nfa_cdeterminize(fsaptr,op_table_type,destroy,tempfilename)
                       fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-nfa_cdeterminize_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+nfa_cdeterminize_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
-  int ngens, nssi, nsi, ns, *fsarow,
+  int ngens, nssi, ns, *fsarow,
       nt, cstate, csi, im, i, g1, len, ct;
   unsigned int **table, *tableptr, *tableptre, g1shift;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
@@ -694,7 +674,6 @@ nfa_cdeterminize_short(fsaptr,op_table_type,destroy,tempfilename)
     return det;
   }
   ngens = det->alphabet->size;
-  nsi = fsaptr->states->size;
 
   fsa_set_is_accepting(fsaptr);
 
@@ -848,14 +827,10 @@ nfa_cdeterminize_short(fsaptr,op_table_type,destroy,tempfilename)
   return det;
 }
 
-fsa *
-nfa_cdeterminize_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+nfa_cdeterminize_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
-  int ngens, nssi, nsi, ns, *fsarow,
+  int ngens, nssi, ns, *fsarow,
       nt, cstate, csi, im, i, g1, len, ct;
   unsigned int **table, *tableptr, *tableptre, g1shift;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
@@ -890,7 +865,6 @@ nfa_cdeterminize_int(fsaptr,op_table_type,destroy,tempfilename)
     return det;
   }
   ngens = det->alphabet->size;
-  nsi = fsaptr->states->size;
 
   fsa_set_is_accepting(fsaptr);
 
@@ -1045,11 +1019,7 @@ nfa_cdeterminize_int(fsaptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-nfa_exists(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+nfa_exists(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 /* *fsaptr must be a 2-variable (non-deterministic) fsa.
  * For the moment we assume it has no epsilon transitions.
  * The returned fsa is deterministic and accepts a word w_1 iff (w_1,w_2) is
@@ -1067,17 +1037,13 @@ nfa_exists(fsaptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-nfa_exists_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+nfa_exists_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
-  int **table, ne, *tableptr, *tableptre, ngens, nsi, ns, dr, *fsarow,
+  int **table, ne, *tableptr, *tableptre, ngens, ns, *fsarow,
       es, ef, nt, cstate, csi, im, i, k, g1, len, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
-  boolean dense_ip, dense_op, got;
+  boolean dense_op, got;
   short_hash_table ht;
   fsa *exists;
   FILE *tempfile, *fopen();
@@ -1113,7 +1079,6 @@ nfa_exists_short(fsaptr,op_table_type,destroy,tempfilename)
   }
   ne = fsaptr->alphabet->size;
   ngens = exists->alphabet->size;
-  nsi = fsaptr->states->size;
 
   if (ne != (ngens+1)*(ngens+1)-1) {
    fprintf(stderr,
@@ -1123,8 +1088,6 @@ nfa_exists_short(fsaptr,op_table_type,destroy,tempfilename)
 
   fsa_set_is_accepting(fsaptr);
 
-  dense_ip = fsaptr->table->table_type==DENSE;
-  dr = fsaptr->table->denserows;
   dense_op = op_table_type==DENSE;
   table = fsaptr->table->table_data_ptr;
 
@@ -1328,17 +1291,13 @@ nfa_exists_short(fsaptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-nfa_exists_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+nfa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
-  int **table, ne, *tableptr, *tableptre, ngens, nsi, ns, dr, *fsarow,
+  int **table, ne, *tableptr, *tableptre, ngens, ns, *fsarow,
       es, ef, nt, cstate, csi, im, i, k, g1, len, ct;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre,
                  *cs_ptr, *cs_ptre, *ptr;
-  boolean dense_ip, dense_op, got;
+  boolean dense_op, got;
   hash_table ht;
   fsa *exists;
   FILE *tempfile, *fopen();
@@ -1374,7 +1333,6 @@ nfa_exists_int(fsaptr,op_table_type,destroy,tempfilename)
   }
   ne = fsaptr->alphabet->size;
   ngens = exists->alphabet->size;
-  nsi = fsaptr->states->size;
 
   if (ne != (ngens+1)*(ngens+1)-1) {
    fprintf(stderr,
@@ -1384,8 +1342,6 @@ nfa_exists_int(fsaptr,op_table_type,destroy,tempfilename)
 
   fsa_set_is_accepting(fsaptr);
 
-  dense_ip = fsaptr->table->table_type==DENSE;
-  dr = fsaptr->table->denserows;
   dense_op = op_table_type==DENSE;
   table = fsaptr->table->table_data_ptr;
 

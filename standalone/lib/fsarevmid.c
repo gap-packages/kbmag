@@ -21,26 +21,26 @@
 
 
 /* Functions defined in this file: */
-fsa *fsa_reverse();
-fsa *fsa_reverse_short();
-fsa *fsa_reverse_int();
-fsa *fsa_mireverse();
-fsa *fsa_mireverse_short();
-fsa *fsa_mireverse_int();
-fsa *fsa_miexists1();
-fsa *fsa_miexists1_short();
-fsa *fsa_miexists1_int();
-fsa *fsa_miexists2();
-fsa *fsa_miexists2_short();
-fsa *fsa_miexists2_int();
+static fsa *
+fsa_reverse_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, boolean subsets, char *tempfilename);
+static fsa *
+fsa_reverse_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, boolean subsets, char *tempfilename);
+static fsa *
+fsa_mireverse_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+fsa_mireverse_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+fsa_miexists1_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+fsa_miexists1_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+fsa_miexists2_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+fsa_miexists2_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+
 
 fsa *
-fsa_reverse(fsaptr,op_table_type,destroy,subsets,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	boolean subsets;
-	char *tempfilename;
+fsa_reverse(fsa *fsaptr, storage_type op_table_type, boolean destroy, boolean subsets, char *tempfilename)
 /* *fsaptr must be a deterministic fsa.
  * The returned *fsa accepts words accepted by *fsaptr but read
  * backwards.
@@ -57,13 +57,8 @@ fsa_reverse(fsaptr,op_table_type,destroy,subsets,tempfilename)
     return fsa_reverse_int(fsaptr,op_table_type,destroy,subsets,tempfilename);
 }
 
-fsa *
-fsa_reverse_short(fsaptr,op_table_type,destroy,subsets,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	boolean subsets;
-	char *tempfilename;
+static fsa *
+fsa_reverse_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, boolean subsets, char *tempfilename)
 {
   int **table, ne, nsi, ns, is, dr, *fsarow,
       nt, cstate, cs, csi, im, i, g, n, len, ct;
@@ -263,12 +258,7 @@ fsa_reverse_short(fsaptr,op_table_type,destroy,subsets,tempfilename)
 }
 
 fsa *
-fsa_reverse_int(fsaptr,op_table_type,destroy,subsets,tempfilename)
-	fsa *fsaptr;
-	table_struc op_table_type;
-	boolean destroy;
-	boolean subsets;
-	char *tempfilename;
+fsa_reverse_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, boolean subsets, char *tempfilename)
 {
   fprintf(stderr,"Sorry - fsa_reverse is not yet implemented for machines.\n");
   fprintf(stderr,"with more than 65536 states.\n");
@@ -276,11 +266,7 @@ fsa_reverse_int(fsaptr,op_table_type,destroy,subsets,tempfilename)
 }
 
 fsa *
-fsa_mireverse(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_mireverse(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 /* *fsaptr must be a deterministic fsa.
  * The returned *fsa accepts words accepted by *fsaptr read backwards,
  * and is a labeled MIDFA, with initial states the singleton accept states of
@@ -297,12 +283,8 @@ fsa_mireverse(fsaptr,op_table_type,destroy,tempfilename)
         (fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-fsa_mireverse_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_mireverse_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **table, ne, nsi, ns, nai, is, dr, *fsarow,
       nt, cstate, cs, csi, im, i, g, len, ct;
@@ -517,12 +499,8 @@ fsa_mireverse_short(fsaptr,op_table_type,destroy,tempfilename)
   return reverse;
 }
 
-fsa *
-fsa_mireverse_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	table_struc op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_mireverse_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   fprintf(stderr,
         "Sorry - fsa_mireverse is not yet implemented for machines.\n");
@@ -531,11 +509,7 @@ fsa_mireverse_int(fsaptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_miexists1(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_miexists1(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 /* *fsaptr must be a 2-variable MIDFA fsa.
  * The returned midfa accepts a word w_1 iff (w_1,w_2) is accepted by *fsaptr,
  * for some word w_2 - but here the padding symbol is part of the
@@ -552,12 +526,8 @@ fsa_miexists1(fsaptr,op_table_type,destroy,tempfilename)
     return fsa_miexists1_int(fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-fsa_miexists1_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_miexists1_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, ns, nsi, dr, *fsarow, e, es, ef,
       nt, cstate, cs, csi, im, i, g1, len, ct, ni;
@@ -790,12 +760,8 @@ fsa_miexists1_short(fsaptr,op_table_type,destroy,tempfilename)
   return miexists1;
 }
 
-fsa *
-fsa_miexists1_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	table_struc op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_miexists1_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   fprintf(stderr,"Sorry - fsa_miexists1 is not yet implemented for machines.\n");
   fprintf(stderr,"with more than 65536 states.\n");
@@ -803,11 +769,7 @@ fsa_miexists1_int(fsaptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_miexists2(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_miexists2(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 /* *fsaptr must be a 2-variable MIDFA fsa.
  * The returned midfa accepts a word w_1 iff (w_1,w_2) is accepted by *fsaptr,
  * for some word w_2 - but here the padding symbol is part of the
@@ -824,12 +786,8 @@ fsa_miexists2(fsaptr,op_table_type,destroy,tempfilename)
     return fsa_miexists2_int(fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-fsa_miexists2_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_miexists2_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, ngens1, ns, nsi, dr, *fsarow, e, es, ef,
       nt, cstate, cs, csi, im, i, g2, len, ct, ni;
@@ -1063,12 +1021,8 @@ fsa_miexists2_short(fsaptr,op_table_type,destroy,tempfilename)
   return miexists2;
 }
 
-fsa *
-fsa_miexists2_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	table_struc op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_miexists2_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   fprintf(stderr,"Sorry - fsa_miexists2 is not yet implemented for machines.\n");
   fprintf(stderr,"with more than 65536 states.\n");

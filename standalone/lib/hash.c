@@ -29,30 +29,6 @@
 #define HTMARGIN	4096
 /* if less space than this in hash-table, re-allocate */
 
-/* The following functions are defined in this file and visible externally */
-void 	hash_init();
-void	short_hash_init();
-void	char_hash_init();
-void	gen_hash_init();
-void	hash_clear();
-void	short_hash_clear();
-void	char_hash_clear();
-void	gen_hash_clear();
-int	hash_rec_len();
-int	short_hash_rec_len();
-int	char_hash_rec_len();
-int	gen_hash_rec_len();
-int	*hash_rec();
-unsigned short	*short_hash_rec();
-char	*char_hash_rec();
-gen	*gen_hash_rec();
-int	hash_locate();
-int	short_hash_locate();
-int	char_hash_locate();
-int	gen_hash_locate();
-int	char_hash_recno();
-int	gen_hash_recno();
-
 /* The following functions should be used only within this file */
 static void  hash_morerecs();
 static void  short_hash_morerecs();
@@ -64,11 +40,7 @@ static int char_hash_morespace();
 static int gen_hash_morespace();
 
 void
-hash_init(htptr,fixed,len,num_recs_inc,space_inc)
-	hash_table *htptr;
-	boolean fixed;
-	int len;
-	int num_recs_inc, space_inc;
+hash_init(hash_table *htptr, boolean fixed, int len, int num_recs_inc, int space_inc)
 /* Note: len = record-length is ignored if fixed is FALSE
  * If num_recs_inc and/or space_inc is zero, they are given default values,
  * depending on whether kbm_large or kbm_huge is true.
@@ -127,11 +99,7 @@ hash_init(htptr,fixed,len,num_recs_inc,space_inc)
 }
 
 void
-short_hash_init(htptr,fixed,len,num_recs_inc,space_inc)
-	short_hash_table *htptr;
-	boolean fixed;
-	int len;
-	int num_recs_inc, space_inc;
+short_hash_init(short_hash_table *htptr, boolean fixed, int len, int num_recs_inc, int space_inc)
 /* Note: len = record-length is ignored if fixed is FALSE
  * If num_recs_inc and/or space_inc is zero, they are given default values,
  * depending on whether kbm_large or kbm_huge is true.
@@ -190,11 +158,7 @@ short_hash_init(htptr,fixed,len,num_recs_inc,space_inc)
 }
 
 void
-char_hash_init(htptr,fixed,len,num_recs_inc,space_inc)
-	char_hash_table *htptr;
-	boolean fixed;
-	int len;
-	int num_recs_inc, space_inc;
+char_hash_init(char_hash_table *htptr, boolean fixed, int len, int num_recs_inc, int space_inc)
 /* Note: len = record-length is ignored if fixed is FALSE
  * If num_recs_inc and/or space_inc is zero, they are given default values,
  * depending on whether kbm_large or kbm_huge is true.
@@ -254,11 +218,7 @@ char_hash_init(htptr,fixed,len,num_recs_inc,space_inc)
 }
 
 void
-gen_hash_init(htptr,fixed,len,num_recs_inc,space_inc)
-	gen_hash_table *htptr;
-	boolean fixed;
-	int len;
-	int num_recs_inc, space_inc;
+gen_hash_init(gen_hash_table *htptr, boolean fixed, int len, int num_recs_inc, int space_inc)
 /* Note: len = record-length is ignored if fixed is FALSE
  * If num_recs_inc and/or space_inc is zero, they are given default values,
  * depending on whether kbm_large or kbm_huge is true.

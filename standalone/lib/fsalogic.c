@@ -44,26 +44,19 @@
 
 typedef enum {AND, OR, AND_NOT} kbm_binop;
 
-/* Functions defined in this file: */
-boolean srec_equal();
-boolean table_equal();
-boolean fsa_equal();
-fsa *fsa_and();
-fsa *fsa_laband();
-fsa *fsa_or();
-fsa *fsa_and_not();
-fsa *fsa_binop();
-fsa *fsa_not();
-fsa *fsa_star();
-fsa *fsa_concat();
-fsa *fsa_exists();
-fsa *fsa_exists_short();
-fsa *fsa_exists_int();
-fsa *fsa_greater_than();
+static fsa *
+fsa_binop(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy,
+          char *tempfilename, kbm_binop op, boolean labels);
+
+static fsa *
+fsa_exists_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+
+static fsa *
+fsa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+
 
 boolean
-srec_equal(srptr1,srptr2)
-	srec *srptr1, *srptr2;
+srec_equal(srec *srptr1, srec *srptr2)
 /* Test equality of set records *srptr1 and *srptr2 */
 { int i, j, l, *il1, *il2;
   if (srptr1->type != srptr2->type)
@@ -145,8 +138,7 @@ table_equal(tableptr1,tableptr2,ne,ns)
 }
 
 boolean
-fsa_equal(fsaptr1,fsaptr2)
-	fsa *fsaptr1, *fsaptr2;
+fsa_equal(fsa *fsaptr1, fsa *fsaptr2)
 /* Test equality of the fsa's fsaptr1 and fsaptr2 */
 { int ns, ne, ni, na, i;
 
@@ -200,11 +192,7 @@ fsa_equal(fsaptr1,fsaptr2)
  */
 
 fsa *
-fsa_and(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
-	fsa *fsaptr1, *fsaptr2;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_and(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   if (kbm_print_level>=3)
     printf("    #Calling fsa_and.\n");
@@ -213,11 +201,7 @@ fsa_and(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_laband(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
-	fsa *fsaptr1, *fsaptr2;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_laband(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   if (kbm_print_level>=3)
     printf("    #Calling fsa_laband.\n");
@@ -226,11 +210,7 @@ fsa_laband(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_or(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
-	fsa *fsaptr1, *fsaptr2;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_or(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   if (kbm_print_level>=3)
     printf("    #Calling fsa_or.\n");
@@ -239,11 +219,7 @@ fsa_or(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_and_not(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
-	fsa *fsaptr1, *fsaptr2;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_and_not(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   if (kbm_print_level>=3)
     printf("    #Calling fsa_and_not.\n");
@@ -251,14 +227,8 @@ fsa_and_not(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename)
     fsa_binop(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename,AND_NOT,FALSE);
 }
 
-fsa *
-fsa_binop(fsaptr1,fsaptr2,op_table_type,destroy,tempfilename,op,labels)
-	fsa *fsaptr1, *fsaptr2;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	kbm_binop op;
-	boolean labels;
+static fsa *
+fsa_binop(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename, kbm_binop op, boolean labels)
 {
   int **table1, **table2, ne, ns, dr1, dr2, *fsarow,
       nt, cstate, csa, csb, im, i, g, len, ct, *ht_ptr;
@@ -596,9 +566,7 @@ fsa_not (fsa *fsaptr, storage_type op_table_type)
 }
 
 fsa *
-fsa_star(fsaptr,destroy)
-	fsa *fsaptr;
-	boolean destroy;
+fsa_star(fsa *fsaptr, boolean destroy)
 /* *fsaptr should be a deterministic fsa.
  * A (usually) non-deterministic fsa accepting the star L* of
  * the language L of *fsaptr is returned.
@@ -695,9 +663,7 @@ fsa_star(fsaptr,destroy)
 }
 
 fsa *
-fsa_concat(fsaptr1,fsaptr2,destroy)
-	fsa *fsaptr1, *fsaptr2;
-	boolean destroy;
+fsa_concat(fsa *fsaptr1, fsa *fsaptr2, boolean destroy)
 /* *fsaptr1 and *fsaptr2 should be two deterministic fsa's.
  * A (usually) non-deterministic fsa accepting the concatenation of
  * the languages of *fsaptr1 and *fsaptr2 is returned.
@@ -826,11 +792,7 @@ fsa_concat(fsaptr1,fsaptr2,destroy)
 }
 
 fsa *
-fsa_exists(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_exists(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 /* *fsaptr must be a 2-variable fsa.
  * The returned fsa accepts a word w_1 iff (w_1,w_2) is accepted by *fsaptr,
  * for some word w_2 (with the usual padding conventions).
@@ -846,12 +808,8 @@ fsa_exists(fsaptr,op_table_type,destroy,tempfilename)
     return fsa_exists_int(fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-fsa_exists_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_exists_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, ns, dr, *fsarow, e, es, ef,
       nt, cstate, cs, csi, im, i, g1, len, ct;
@@ -1105,11 +1063,7 @@ fsa_exists_short(fsaptr,op_table_type,destroy,tempfilename)
 }
 
 fsa *
-fsa_exists_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, ns, dr, *fsarow, e, es, ef,
       nt, cstate, cs, csi, im, i, g1, len, ct;

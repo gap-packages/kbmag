@@ -1109,12 +1109,11 @@ lex_compare (gen *w1, gen *w2)
  */
 {
   int len1,len2,bigger=0;
-  gen *we1,*we2;
+  gen *we1;
 
   len1=genstrlen(w1);
   len2=genstrlen(w2);
   we1=w1+len1;
-  we2=w2+len2;
   if (len1>len2)
     bigger=1;
   else if (len2>len1)

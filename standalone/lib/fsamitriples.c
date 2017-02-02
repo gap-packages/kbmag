@@ -16,22 +16,20 @@
 #include "externals.h"
 
 /* Functions defined in this file: */
-fsa * fsa_mitriples();
-fsa * fsa_mitriples_short();
-fsa * fsa_mitriples_int();
+static fsa *
+fsa_mitriples_short(fsa *waptr, fsa *diffptr, storage_type op_table_type, boolean destroy,
+            char *tempfilename, reduction_equation *eqnptr, int maxeqns,
+            boolean eqnstop, boolean *foundeqns, boolean readback);
+static fsa *
+fsa_mitriples_int(fsa *waptr, fsa *diffptr, storage_type op_table_type, boolean destroy,
+            char *tempfilename, reduction_equation *eqnptr, int maxeqns,
+            boolean eqnstop, boolean *foundeqns, boolean readback);
 
 fsa *
-fsa_mitriples(waptr,diffptr,op_table_type,destroy,tempfilename,eqnptr,maxeqns,
-			     			eqnstop,foundeqns,readback)
-	fsa *waptr, *diffptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	reduction_equation *eqnptr;
-	int maxeqns;
-        boolean eqnstop;
-        boolean *foundeqns;
-	boolean readback; /* must be true for the time being */
+fsa_mitriples(fsa *waptr, fsa *diffptr, storage_type op_table_type, boolean destroy,
+            char *tempfilename, reduction_equation *eqnptr, int maxeqns,
+            boolean eqnstop, boolean *foundeqns, boolean readback)
+	/* readback must be true for the time being */
 /* *waptr is assumed to be the word-acceptor of a coset automatic group.
  * (In particular, all states should be accepting.)
  * *diffptr is assumed to be a word-difference machine of the same automatic
@@ -77,18 +75,11 @@ fsa_mitriples(waptr,diffptr,op_table_type,destroy,tempfilename,eqnptr,maxeqns,
                      tempfilename,eqnptr,maxeqns,eqnstop,foundeqns,readback);
 }
 
-fsa *
-fsa_mitriples_short(waptr,diffptr,op_table_type,destroy,tempfilename,eqnptr,
-					maxeqns,eqnstop,foundeqns,readback)
-	fsa *waptr, *diffptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	reduction_equation *eqnptr;
-	int maxeqns;
-        boolean eqnstop;
-        boolean *foundeqns;
-	boolean readback; /* must be true for the time being */
+static fsa *
+fsa_mitriples_short(fsa *waptr, fsa *diffptr, storage_type op_table_type, boolean destroy,
+            char *tempfilename, reduction_equation *eqnptr, int maxeqns,
+            boolean eqnstop, boolean *foundeqns, boolean readback)
+	/* readback must be true for the time being */
 {
   int **watable, ***difftable, identity, ngens, ngens1, nswa1, ne, ns, *fsarow,
       nt, cstate, cswa1, cswa2, csdiff, im, i, j, k, e, len, rlen, ct,
@@ -514,18 +505,11 @@ fsa_mitriples_short(waptr,diffptr,op_table_type,destroy,tempfilename,eqnptr,
   return mitriples;
 }
 
-fsa *
-fsa_mitriples_int(waptr,diffptr,op_table_type,destroy,tempfilename,eqnptr,
-					maxeqns,eqnstop,foundeqns,readback)
-	fsa *waptr, *diffptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	reduction_equation *eqnptr;
-	int maxeqns;
-        boolean eqnstop;
-        boolean *foundeqns;
-	boolean readback; /* must be true for the time being */
+static fsa *
+fsa_mitriples_int(fsa *waptr, fsa *diffptr, storage_type op_table_type, boolean destroy,
+            char *tempfilename, reduction_equation *eqnptr, int maxeqns,
+            boolean eqnstop, boolean *foundeqns, boolean readback)
+	/* readback must be true for the time being */
 {
   int **watable, ***difftable, identity, ngens, ngens1, nswa1, ne, ns, *fsarow,
       nt, cstate, cswa1, cswa2, csdiff, im, i, j, k, e, len, rlen, ct,

@@ -16,17 +16,13 @@
 #include "hash.h"
 #include "externals.h"
 
-/* Functions defined in this file: */
-fsa *migm_determinize();
-fsa *migm_determinize_short();
-fsa *migm_determinize_int();
+static fsa *
+migm_determinize_short(fsa *migmptr, storage_type op_table_type, boolean destroy,char *tempfilename);
+static fsa *
+migm_determinize_int(fsa *migmptr, storage_type op_table_type, boolean destroy,char *tempfilename);
 
 fsa *
-migm_determinize(migmptr,op_table_type,destroy,tempfilename)
-	fsa *migmptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+migm_determinize(fsa *migmptr, storage_type op_table_type, boolean destroy,char *tempfilename)
 /* The fsa *migmptr must be a migm.
  * The returned fsa accepts a accepts the same language but is deterministic.
  */
@@ -39,12 +35,8 @@ migm_determinize(migmptr,op_table_type,destroy,tempfilename)
     return migm_determinize_int(migmptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-migm_determinize_short(migmptr,op_table_type,destroy,tempfilename)
-	fsa *migmptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+migm_determinize_short(fsa *migmptr, storage_type op_table_type, boolean destroy,char *tempfilename)
 {
   int **table, ne, ngens, nssi, ns, dr, *fsarow,
       nt, cstate, csi, im, i, j, k, g1, len, nlab, ct;
@@ -294,12 +286,8 @@ migm_determinize_short(migmptr,op_table_type,destroy,tempfilename)
   return det;
 }
 
-fsa *
-migm_determinize_int(migmptr,op_table_type,destroy,tempfilename)
-	fsa *migmptr;
-	table_struc op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+migm_determinize_int(fsa *migmptr, storage_type op_table_type, boolean destroy,char *tempfilename)
 {
   fprintf(stderr,
 	"Sorry - migm_determinize is not yet implemented for machines.\n");

@@ -10,6 +10,8 @@
 
 #include <sys/times.h>
 
+#include "fsa.h"
+
 typedef enum {SHORTLEX, RECURSIVE, RT_RECURSIVE, WTLEX, WREATHPROD, NONE}
 	kbm_orderings;
 /* Default ordering is SHORTLEX, the other is RECURSIVE path ordering.
@@ -165,5 +167,19 @@ typedef struct {
   int maxreducelen;
 } reduction_struct;
 
+extern void set_separator(rewriting_system *rwsptr);
+
+extern fsa * fsa_triples(fsa *waptr, fsa *diffptr, storage_type op_table_type, boolean destroy,
+            char *tempfilename, reduction_equation *eqnptr, int maxeqns,
+            boolean eqnstop, boolean *foundeqns, boolean readback);
+
+extern fsa * fsa_mitriples(fsa *waptr, fsa *diffptr, storage_type op_table_type, boolean destroy,
+            char *tempfilename, reduction_equation *eqnptr, int maxeqns,
+            boolean eqnstop, boolean *foundeqns, boolean readback);
+
+extern int fsa_checkmult(fsa *multptr, reduction_equation *eqnptr, int maxeqns, boolean cosets, int separator);
+extern fsa * fsa_diff(fsa *fsaptr, reduction_struct *rs_wd, storage_type op_table_type);
+extern fsa * fsa_difflabs(fsa *fsaptr, reduction_struct *rs_wdptr, storage_type op_table_type,
+             boolean destroy, char *tempfilename, boolean readback);
 
 #endif

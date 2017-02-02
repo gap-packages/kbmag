@@ -260,22 +260,22 @@ typedef struct {
 } gen_hash_table;
 
 
-extern void hash_init();
-extern void hash_clear();
-extern int hash_locate();
-extern int hash_rec_len();
-extern int * hash_rec();
+extern void hash_init(hash_table *htptr, boolean fixed, int len, int num_recs_inc, int space_inc);
+extern void hash_clear(hash_table *htptr);
+extern int hash_locate(hash_table *htptr, int reclen);
+extern int hash_rec_len(hash_table *htptr, int n);
+extern int * hash_rec(hash_table *htptr, int n);
 
-extern void short_hash_init();
-extern void short_hash_clear();
-extern int short_hash_locate();
-extern int short_hash_rec_len();
-extern unsigned short * short_hash_rec();
+extern void short_hash_init(short_hash_table *htptr, boolean fixed, int len, int num_recs_inc, int space_inc);
+extern void short_hash_clear(short_hash_table *htptr);
+extern int short_hash_locate(short_hash_table *htptr, int reclen);
+extern int short_hash_rec_len(short_hash_table *htptr, int n);
+extern unsigned short * short_hash_rec(short_hash_table *htptr, int n);
 
-extern void gen_hash_init();
-extern void gen_hash_clear();
-extern int gen_hash_locate();
+extern void gen_hash_init(gen_hash_table *htptr, boolean fixed, int len, int num_recs_inc, int space_inc);
+extern void gen_hash_clear(gen_hash_table *htptr);
+extern int gen_hash_locate(gen_hash_table *htptr, int reclen);
 extern int gen_hash_rec_len (gen_hash_table *htptr, int n);
-extern gen * gen_hash_rec();
+extern gen * gen_hash_rec(gen_hash_table *htptr, int n);
 
 #endif

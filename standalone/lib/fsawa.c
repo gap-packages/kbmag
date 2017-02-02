@@ -44,16 +44,13 @@
 #include "externals.h"
 
 /* Functions defined in this file: */
-fsa * fsa_wa();
-fsa * fsa_wa_short();
-fsa * fsa_wa_int();
+static fsa *
+fsa_wa_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+fsa_wa_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
 
 fsa *
-fsa_wa(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_wa(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   if (kbm_print_level>=3)
     printf("    #Calling fsa_wa.\n");
@@ -63,12 +60,8 @@ fsa_wa(fsaptr,op_table_type,destroy,tempfilename)
     return fsa_wa_int(fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-fsa_wa_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_wa_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 { int  ***dtable, ne, ngens, ndiff, ns, *fsarow, nt, cstate, cs, csdiff, csi,
        im, i, k, g1, g2, len, identity;
   unsigned short *ht_ptr, *ht_ptrb, *ht_ptre,
@@ -326,12 +319,8 @@ fsa_wa_short(fsaptr,op_table_type,destroy,tempfilename)
   return wa;
 }
 
-fsa *
-fsa_wa_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_wa_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 { int  ***dtable, ne, ngens, ndiff, ns, *fsarow, nt, cstate, cs, csdiff, csi,
        im, i, k, g1, g2, len, identity;
   int *ht_ptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;

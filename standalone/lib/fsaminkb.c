@@ -89,7 +89,7 @@ fsa_minred(waptr,op_table_type,destroy,tempfilename)
   ht_ptr[1] = waptr->initial[1];
   im = hash_locate(&ht,2);
   if (im!=1) {
-    fprintf(stderr,"Hash-initialisation problem in fsa_binop.\n");
+    fprintf(stderr,"Hash-initialisation problem in fsa_minred.\n");
     return 0;
   }
   if ((tempfile=fopen(tempfilename,"w"))==0){

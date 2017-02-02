@@ -209,64 +209,66 @@ typedef struct {
 
 
 /* function prototypes */
-extern fsa * fsa_and_not();
-extern fsa * fsa_and();
+extern fsa * fsa_and_not(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * fsa_and(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * fsa_concat(fsa *fsaptr1, fsa *fsaptr2, boolean destroy);
+extern fsa * fsa_exists(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * fsa_laband(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * fsa_not(fsa *fsaptr, storage_type op_table_type);
+extern fsa * fsa_or(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * fsa_star(fsa *fsaptr, boolean destroy);
+
+
 extern fsa * fsa_composite();
-extern fsa * fsa_concat();
-extern fsa * fsa_diff();
-extern fsa * fsa_difflabs();
-extern fsa * fsa_exists();
 extern fsa * fsa_genmult2();
 extern fsa * fsa_geopairs();
-extern fsa * fsa_laband();
 extern fsa * fsa_micomposite();
 extern fsa * fsa_migm2();
 extern fsa * fsa_minkb();
 extern fsa * fsa_minred();
-extern fsa * fsa_mireverse();
-extern fsa * fsa_mitriples();
-extern fsa * fsa_not();
-extern fsa * fsa_or();
-extern fsa * fsa_reverse();
-extern fsa * fsa_star();
-extern fsa * fsa_submult();
-extern fsa * fsa_triples();
-extern fsa * fsa_wa_cos();
-extern fsa * fsa_wa();
-extern fsa * midfa_determinize();
-extern fsa * migm_determinize();
-extern fsa * nfa_determinize();
+extern fsa * fsa_mireverse(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * fsa_reverse(fsa *fsaptr, storage_type op_table_type, boolean destroy, boolean subsets, char *tempfilename);
+extern fsa * fsa_submult(fsa *subwaptr, fsa *multptr, storage_type op_table_type,
+            boolean destroy, char *tempfilename, boolean readback);
+extern fsa * fsa_wa_cos(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * fsa_wa(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * midfa_determinize(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+extern fsa * migm_determinize(fsa *migmptr, storage_type op_table_type, boolean destroy,char *tempfilename);
+extern fsa * nfa_determinize(fsa *fsaptr, storage_type op_table_type, boolean eps_trans,
+                boolean destroy, boolean subsets, char *tempfilename);
 
-extern boolean fsa_equal();
+extern boolean fsa_equal(fsa *fsaptr1, fsa *fsaptr2);
 
-extern int fsa_bfs();
+extern int fsa_bfs(fsa *fsaptr);
 extern int fsa_checkgeowa();
-extern int fsa_checkmult();
-extern int fsa_clear_rws();
-extern int fsa_count();
-extern int fsa_delete_state();
-extern int fsa_enumerate();
-extern int fsa_growth();
-extern int fsa_ip_labeled_minimize();
-extern int fsa_ip_minimize();
-extern int fsa_labeled_minimize();
+extern int fsa_clear_rws(fsa *fsaptr);
+extern int fsa_count(fsa *fsaptr);
+extern int fsa_delete_state(fsa *fsaptr, int stateno);
+extern int fsa_enumerate(FILE *wfile, fsa *fsaptr, int min, int max, boolean putcomma, int stateno);
+extern int fsa_growth(FILE *wfile, fsa *fsaptr, unsigned *primes, char *var);
+extern int fsa_ip_labeled_minimize(fsa *fsaptr);
+extern int fsa_ip_minimize(fsa *fsaptr);
+extern int fsa_labeled_minimize(fsa *fsaptr);
 extern int fsa_makemult();
 extern int fsa_makemult2();
 extern int fsa_mimakemult();
 extern int fsa_mimakemult2();
 extern int fsa_min();
-extern int fsa_minimize();
-extern int fsa_swap_coords();
-extern int fsa_table_dptr_init();
+extern int fsa_minimize(fsa *fsaptr);
+extern int fsa_swap_coords(fsa *fsaptr);
+extern int fsa_table_dptr_init(fsa *fsaptr);
 
-extern void fsa_clear();
-extern void fsa_copy();
-extern void fsa_init();
-extern void fsa_print();
-extern void fsa_read();
-extern void fsa_set_is_accepting();
-extern void fsa_set_is_accessible();
-extern void fsa_set_is_initial();
-extern void fsa_table_init();
+extern void fsa_clear(fsa *fsaptr);
+extern void fsa_copy(fsa *fsaptr1, fsa *fsaptr2);
+extern void fsa_init(fsa *fsaptr);
+extern void fsa_print(FILE *wfile, fsa *fsaptr, char *name);
+extern void fsa_read(FILE *rfile, fsa *fsaptr, storage_type table_storage_type, int dr,
+         int maxstates, boolean assignment, char *name);
+extern void fsa_set_is_accepting(fsa *fsaptr);
+extern void fsa_set_is_accessible(fsa *fsaptr);
+extern void fsa_set_is_initial(fsa *fsaptr);
+extern void fsa_table_init(table_struc *tableptr, int maxstates, int ne);
+
+extern int words_and_not(fsa *fsaptr1, fsa *fsaptr2, gen **words, int maxwords);
 
 #endif

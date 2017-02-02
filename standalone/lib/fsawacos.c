@@ -47,16 +47,13 @@
    /* if less space than this in hash-table, re-allocate */
 
 /* Functions defined in this file: */
-fsa * fsa_wa_cos();
-fsa * fsa_wa_cos_short();
-fsa * fsa_wa_cos_int();
+static fsa *
+fsa_wa_cos_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+fsa_wa_cos_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
 
 fsa *
-fsa_wa_cos(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+fsa_wa_cos(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   if (kbm_print_level>=3)
     printf("    #Calling fsa_wa.\n");
@@ -66,12 +63,8 @@ fsa_wa_cos(fsaptr,op_table_type,destroy,tempfilename)
     return fsa_wa_cos_int(fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-fsa_wa_cos_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_wa_cos_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int  ***dtable, ne, ngens, ndiff, ns, *fsarow, nt, cstate, cs, csdiff, csi,
        im, i, k, g1, g2, len, identity;
@@ -338,12 +331,8 @@ fsa_wa_cos_short(fsaptr,op_table_type,destroy,tempfilename)
   return wa;
 }
 
-fsa *
-fsa_wa_cos_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	table_struc op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+fsa_wa_cos_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   fprintf(stderr,"Sorry - fsa_wa is not yet implemented.\n");
   fprintf(stderr,"for machines with more than 65536 states.\n");

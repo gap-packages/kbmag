@@ -32,7 +32,6 @@ void table_print();
 void fsa_print();
 void srec_read();
 void table_read();
-void fsa_read();
 void compressed_transitions_read();
 void compressed_ctransitions_read();
 
@@ -1189,7 +1188,8 @@ table_read(rfile,tableptr,table_storage_type,dr,ns,maxstates,ne,nondet)
 }
 
 void
-fsa_read(rfile,fsaptr,table_storage_type,dr,maxstates,assignment,name)
+fsa_read(FILE *rfile, fsa *fsaptr, storage_type table_storage_type, int dr,
+         int maxstates, boolean assignment, char *name)
 /* Read the fsa *fsaptr from rfile, assigning space as required.
  * If maxstates is greater than the actual number of states, then
  * space will be assigned for maxstates states, to allow more states
@@ -1197,14 +1197,6 @@ fsa_read(rfile,fsaptr,table_storage_type,dr,maxstates,assignment,name)
  * If assignment is true, an assignment to an fsa is read.
  * The name is returned in *name, which is assumed to have enough space.
  */
-	FILE *rfile;
-	fsa *fsaptr;
-	storage_type table_storage_type;
-	int dr;
-	int maxstates;
-	boolean assignment;
-	char *name;
-	
 { int delim, i, j, k, ct, ns, ne, *ia, *buf1, *buf2, *swapbuf, bufsize;
   boolean isFSAset, statesset, alphabetset, initialset, acceptingset,
           flagsset, tableset, in, compressed;

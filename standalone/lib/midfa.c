@@ -15,19 +15,14 @@
 #include "hash.h"
 #include "externals.h"
 
-/* Functions defined in this file: */
-fsa *midfa_determinize();
-fsa *midfa_determinize_short();
-fsa *midfa_determinize_int();
-int  midfa_minimize();
-int  midfa_labeled_minimize();
+static fsa *
+midfa_determinize_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+static fsa *
+midfa_determinize_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename);
+
 
 fsa *
-midfa_determinize(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+midfa_determinize(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 /* The fsa *fsaptr must be a midfa.
  * The returned fsa accepts the same language but is deterministic.
  */
@@ -40,12 +35,8 @@ midfa_determinize(fsaptr,op_table_type,destroy,tempfilename)
     return midfa_determinize_int(fsaptr,op_table_type,destroy,tempfilename);
 }
 
-fsa *
-midfa_determinize_short(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+midfa_determinize_short(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **table, ngens, nssi,  ns, dr, *fsarow,
       nt, cstate, csi, im, i, g1, len, ct;
@@ -241,12 +232,8 @@ midfa_determinize_short(fsaptr,op_table_type,destroy,tempfilename)
   return det;
 }
 
-fsa *
-midfa_determinize_int(fsaptr,op_table_type,destroy,tempfilename)
-	fsa *fsaptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
+static fsa *
+midfa_determinize_int(fsa *fsaptr, storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **table, ngens, nssi, ns, dr, *fsarow,
       nt, cstate, csi, im, i, g1, len, ct;

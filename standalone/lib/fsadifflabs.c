@@ -17,18 +17,16 @@
 extern int  (*reduce_word)();
 
 /* Functions defined in this file: */
-fsa * fsa_difflabs();
-fsa * fsa_difflabs_short();
-fsa * fsa_difflabs_int();
+static fsa *
+fsa_difflabs_short(fsa *fsaptr, reduction_struct *rs_wdptr, storage_type op_table_type,
+             boolean destroy, char *tempfilename, boolean readback);
+static fsa *
+fsa_difflabs_int(fsa *fsaptr, reduction_struct *rs_wdptr, storage_type op_table_type,
+             boolean destroy, char *tempfilename, boolean readback);
 
 fsa *
-fsa_difflabs(fsaptr,rs_wdptr,op_table_type,destroy,tempfilename,readback)
-	fsa *fsaptr;
-        reduction_struct *rs_wdptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	boolean readback;
+fsa_difflabs(fsa *fsaptr, reduction_struct *rs_wdptr, storage_type op_table_type,
+             boolean destroy, char *tempfilename, boolean readback)
 /* *fsaptr is assumed to be a two-variable fsa that reads pairs of
  * words, stored in dense format.
  * This routine constructs the fsa of which the states are difflabs (s,d),
@@ -63,14 +61,9 @@ fsa_difflabs(fsaptr,rs_wdptr,op_table_type,destroy,tempfilename,readback)
                      tempfilename,readback);
 }
 
-fsa *
-fsa_difflabs_short(fsaptr,rs_wdptr,op_table_type,destroy,tempfilename,readback)
-	fsa *fsaptr;
-        reduction_struct *rs_wdptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	boolean readback;
+static fsa *
+fsa_difflabs_short(fsa *fsaptr, reduction_struct *rs_wdptr, storage_type op_table_type,
+             boolean destroy, char *tempfilename, boolean readback)
 {
   int  ***fsatable, ngens, ngens1,  ne, ns, *fsarow,
       nt, ndiffs, cstate, cswa, csdiff, im, i, l, e, len, ct, *inv;
@@ -301,14 +294,9 @@ fsa_difflabs_short(fsaptr,rs_wdptr,op_table_type,destroy,tempfilename,readback)
   return difflabs;
 }
 
-fsa *
-fsa_difflabs_int(fsaptr,rs_wdptr,op_table_type,destroy,tempfilename,readback)
-	fsa *fsaptr;
-        reduction_struct *rs_wdptr;
-	storage_type op_table_type;
-	boolean destroy;
-	char *tempfilename;
-	boolean readback;
+static fsa *
+fsa_difflabs_int(fsa *fsaptr, reduction_struct *rs_wdptr, storage_type op_table_type,
+             boolean destroy, char *tempfilename, boolean readback)
 {
  exit(2);
 }

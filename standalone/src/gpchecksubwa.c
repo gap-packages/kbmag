@@ -204,7 +204,7 @@ main (int argc, char *argv[])
       kbm_buffer[0] = '\0';
       add_to_buffer(0,"#Processing subgroup generator:  ");
       add_word_to_buffer(stdout,subgen[i],names);
-      printbuffer(stdout,kbm_buffer);
+      printbuffer(stdout);
     }
     suff = file_suffix(subgen[i]);
     gotsuff = FALSE;
@@ -282,7 +282,7 @@ main (int argc, char *argv[])
       kbm_buffer[0] = '\0';
       add_to_buffer(0,"#Subgroup automaton check (on left) fails for generator:  ");
       add_word_to_buffer(stdout,subgen[i],names);
-      printbuffer(stdout,kbm_buffer);
+      printbuffer(stdout);
       tfree(submultptr);
       unlink(outf);
       if (output_bad_words()==-1)
@@ -311,7 +311,7 @@ main (int argc, char *argv[])
       kbm_buffer[0] = '\0';
       add_to_buffer(0,"#Subgroup automaton check (on right) fails for generator:  ");
       add_word_to_buffer(stdout,subgen[i],names);
-      printbuffer(stdout,kbm_buffer);
+      printbuffer(stdout);
       tfree(submultptr);
       unlink(outf);
       if (output_bad_words()==-1)
@@ -397,7 +397,7 @@ subgen_multiplier(w,s)
     kbm_buffer[0] = '\0';
     add_to_buffer(0,"  #Calculating multiplier for word:  ");
     add_word_to_buffer(stdout,w,names);
-    printbuffer(stdout,kbm_buffer);
+    printbuffer(stdout);
   }
   l = genstrlen(w);
 
@@ -631,7 +631,7 @@ output_bad_words (void)
     add_to_buffer(4,"");
     add_word_to_buffer(wfile,subgen[i],names);
     add_to_buffer(0,",");
-    printbuffer(wfile,kbm_buffer);
+    printbuffer(wfile);
     tfree(subgen[i]);
   }
   /* And now the offending words */
@@ -641,7 +641,7 @@ output_bad_words (void)
     add_word_to_buffer(wfile,badwords[i],names);
     if (i!=numwords-1)
       add_to_buffer(0,",");
-    printbuffer(wfile,kbm_buffer);
+    printbuffer(wfile);
     tfree(badwords[i]);
   }
   fprintf(wfile,"  ];\n);\n");

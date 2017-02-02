@@ -42,17 +42,13 @@
 #include "hash.h"
 #include "externals.h"
 
-int  fsa_checkmult();
-int  fsa_checkmult_short();
-int  fsa_checkmult_int();
+static int
+fsa_checkmult_short(fsa *multptr, reduction_equation *eqnptr, int maxeqns, boolean cosets, int separator);
+static int
+fsa_checkmult_int(fsa *multptr, reduction_equation *eqnptr, int maxeqns, boolean cosets, int separator);
 
 int
-fsa_checkmult(multptr,eqnptr,maxeqns,cosets,separator)
-	fsa *multptr;
-        reduction_equation *eqnptr;
-	int maxeqns;
-	boolean cosets;
-	int separator;
+fsa_checkmult(fsa *multptr, reduction_equation *eqnptr, int maxeqns, boolean cosets, int separator)
 /* If the checking fails, the failing words will be returned in the lhs of
  * eqnptr[i], and the associated generator in the rhs, for i=0,1,...
  * If more than maxeqns such words are found, we abort.
@@ -67,13 +63,8 @@ fsa_checkmult(multptr,eqnptr,maxeqns,cosets,separator)
     return fsa_checkmult_int(multptr,eqnptr,maxeqns,cosets,separator);
 }
 
-int
-fsa_checkmult_short(multptr,eqnptr,maxeqns,cosets,separator)
-	fsa *multptr;
-        reduction_equation *eqnptr;
-	int maxeqns;
-	boolean cosets;
-	int separator;
+static int
+fsa_checkmult_short(fsa *multptr, reduction_equation *eqnptr, int maxeqns, boolean cosets, int separator)
 /* If the checking fails, the failing word will be returned in the lhs of
  * *eqnptr, and the associated generator in the rhs.
  */
@@ -348,13 +339,8 @@ fsa_checkmult_short(multptr,eqnptr,maxeqns,cosets,separator)
   return numeqns;
 }
 
-int
-fsa_checkmult_int(multptr,eqnptr,maxeqns,cosets,separator)
-	fsa *multptr;
-        reduction_equation *eqnptr;
-	int maxeqns;
-	boolean cosets;
-	int separator;
+static int
+fsa_checkmult_int(fsa *multptr, reduction_equation *eqnptr, int maxeqns, boolean cosets, int separator)
 /* If the checking fails, the failing word will be returned in the lhs of
  * *eqnptr, and the associated generator in the rhs.
  */
