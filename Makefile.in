@@ -3,7 +3,8 @@
 BIN = bin/@GAPARCH@
 
 CC = gcc
-COPTS = -O
+COPTS = -O2 -g -Wall -Wno-char-subscripts
+#COPTS= -O2 -g -Wall -Wno-char-subscripts -Wno-maybe-uninitialized -Wstrict-prototypes -Wextra -Werror
 
 all:
 	mkdir -p bin/@GAPARCH@;
