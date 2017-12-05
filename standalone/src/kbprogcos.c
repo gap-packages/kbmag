@@ -318,10 +318,10 @@ read_kbprogcos_command(argc,argv,rwsptr)
       if (arg >= argc)
         badusage_kbprogcos();
       rwsptr->confnum = atoi(argv[arg]);
-                }
+    }
     else if (strcmp(argv[arg], "-op") == 0) {
       rwsptr->outputprefixes = TRUE;
-                }
+    }
     else if (strcmp(argv[arg], "-rk") == 0) {
       arg++;
       if (arg >= argc)
@@ -348,7 +348,7 @@ read_kbprogcos_command(argc,argv,rwsptr)
       if (arg >= argc)
         badusage_kbprogcos();
       rwsptr->maxwdiffs = atoi(argv[arg]);
-                }
+    }
     else if (strcmp(argv[arg], "-silent") == 0) {
       rwsptr->silentset = TRUE;
       kbm_print_level = 0;
@@ -366,13 +366,13 @@ read_kbprogcos_command(argc,argv,rwsptr)
       if (arg >= argc)
         badusage_kbprogcos();
       rwsptr->min_time = atoi(argv[arg]);
-                }
+    }
     else if (strcmp(argv[arg], "-hf") == 0) {
       arg++;
       if (arg >= argc)
         badusage_kbprogcos();
       rwsptr->halting_factor = atoi(argv[arg]);
-                }
+    }
     else  if (argv[arg][0] == '-')
         badusage_kbprogcos();
     else if (!seengroupname) {
@@ -383,8 +383,8 @@ read_kbprogcos_command(argc,argv,rwsptr)
       seencosname = TRUE;
       sprintf(inf,"%s.%s",gpname,argv[arg]);
     }
-    else
-      badusage_kbprogcos();{
+    else {
+      badusage_kbprogcos();
     }
     arg++;
   }
@@ -601,7 +601,7 @@ main (int argc, char *argv[])
           tmalloc(rws.subwordsG[i],gen,l+1);
           for (k=0;k<l;k++)
             rws.subwordsG[i][k] = rws.inv_of[w[l-1-k]];
-            rws.subwordsG[i][l] = '\0';
+          rws.subwordsG[i][l] = '\0';
         } else {
         fprintf(stderr,
    "Error: Subgroup generator number %d has no definition.\n",i);  

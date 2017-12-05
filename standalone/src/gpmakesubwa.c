@@ -99,7 +99,7 @@ main (int argc, char *argv[])
   gen_hash_table cosht;
   gen * cosht_ptr;
   gen  gtestword[MAXREDUCELEN+1], costestword[MAXREDUCELEN+1];
-  int ngens, *inv, **subwa_table;
+  int ngens, *inv;
   int i, l, ns;
   fsa   gwa, subwa, *subgwa;
   char **names;
@@ -306,7 +306,6 @@ main (int argc, char *argv[])
 
 /* Now we initialise the subgroup word-acceptor that we shall be building */
   fsa_init_subwa(&subwa,&gwa,&cosht,ngens,maxstates);
-  subwa_table = subwa.table->table_data_ptr; /* for fast access to table */
 /* Calculate inverses of G-generators */
   tmalloc(inv,int,ngens+1);
   if (calc_inv(gtestword,ngens,inv,&grs)==-1)
