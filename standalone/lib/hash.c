@@ -604,7 +604,7 @@ hash_locate (hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     hash_morerecs(htptr);
-  ms=-1;
+  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
      (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
     ms=hash_morespace(htptr); 
@@ -672,7 +672,7 @@ short_hash_locate (short_hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     short_hash_morerecs(htptr);
-  ms=-1;
+  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
      (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
     ms=short_hash_morespace(htptr); 
@@ -740,7 +740,7 @@ char_hash_locate (char_hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     char_hash_morerecs(htptr);
-  ms=-1;
+  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
      (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
     ms=char_hash_morespace(htptr); 
@@ -808,7 +808,7 @@ gen_hash_locate (gen_hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     gen_hash_morerecs(htptr);
-  ms=-1;
+  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
      (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
     ms=gen_hash_morespace(htptr); 

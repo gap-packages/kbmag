@@ -71,6 +71,7 @@
  */
 
 #include <stdio.h>
+#include <assert.h>
 #include "defs.h"
 #include "fsa.h"
 #include "rws.h"
@@ -256,7 +257,8 @@ main (int argc, char *argv[])
     wa = cosets ?
       fsa_wa_cos(&diff2,op_store_wa,TRUE,tempfilename) :
       fsa_wa(&diff2,op_store_wa,TRUE,tempfilename);
-  
+    assert(wa);
+
     if (kbm_print_level>1)
       printf("  #Number of states of word-acceptor before minimisation = %d.\n",
           wa->states->size);
