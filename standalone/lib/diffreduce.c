@@ -22,7 +22,7 @@
 int diff_reduce(gen *w, reduction_struct *rs_wd)
 {
   int ndiff, ngens, identity, padsymbol, wordlen, ***difftab, gct, *gpref,
-      level, gen1, gen2, diff, diffct, newdiff, olen, nlen, i, j;
+      level, gen1, gen2, diff, diffct = 0, newdiff, olen, nlen, i, j;
   boolean deqi, donesub, *cf;
   fsa *wd_fsa = rs_wd->wd_fsa;
   int maxv = MAXV;

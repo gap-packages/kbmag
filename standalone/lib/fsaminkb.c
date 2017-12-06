@@ -38,7 +38,7 @@ fsa *fsa_minred(fsa *waptr, storage_type op_table_type, boolean destroy,
                 char *tempfilename)
 {
   int **table, ne, nsi, nsi1, ns, dr, *fsarow, nt, cstate, csa, csb, im, i, g,
-      len, ct, *ht_ptr;
+      len = 0, ct, *ht_ptr;
   boolean dense_ip, dense_op;
   fsa *minred;
   hash_table ht;
@@ -218,7 +218,7 @@ fsa *fsa_minkb(fsa *minredptr, fsa *waptr, fsa *diffptr,
                storage_type op_table_type, boolean destroy, char *tempfilename)
 {
   int **minredtable, **watable, ***difftable, identity, ngens, ngens1, nswa1,
-      ne, ns, *fsarow, nt, cstate, cswa1, cswa2, csdiff, im, i, e, len, ct;
+      ne, ns, *fsarow, nt, cstate, cswa1, cswa2, csdiff, im, i, e, len = 0, ct;
   unsigned short *ht_ptr;
   boolean dense_op;
   fsa *minkbptr;

@@ -66,7 +66,7 @@ static fsa *fsa_geopairs_short(fsa *waptr, fsa *diffptr,
                                char *tempfilename, boolean readback)
 {
   int **watable, ***difftable, identity, ngens, ngens1, ne, ns, *fsarow, nt,
-      cstate, cswa, csdiff, im, i, e, len, ct;
+      cstate, cswa, csdiff, im, i, e, len = 0, ct;
   unsigned short *ht_ptr;
   boolean dense_op;
   fsa *geopairsptr;
@@ -272,7 +272,7 @@ static fsa *fsa_geopairs_int(fsa *waptr, fsa *diffptr,
                              char *tempfilename, boolean readback)
 {
   int **watable, ***difftable, identity, ngens, ngens1, ne, ns, *fsarow, nt,
-      cstate, cswa, csdiff, im, i, e, len, ct;
+      cstate, cswa, csdiff, im, i, e, len = 0, ct;
   int *ht_ptr;
   boolean dense_op;
   fsa *geopairsptr;
@@ -513,7 +513,7 @@ int fsa_checkgeowa(fsa *geowaptr, fsa *diffptr, reduction_equation *eqnptr,
 static int fsa_checkgeowa_short(fsa *geowaptr, fsa *diffptr,
                                 reduction_equation *eqnptr, int maxeqns)
 {
-  int **watable, ***difftable, identity, ngens, ngens1, ne, ns, len, im, cstate,
+  int **watable, ***difftable, identity, ngens, ngens1, ne, ns, len = 0, im, cstate,
       cswa1, cswa2, csdiff, i, bstate, numeqns;
   unsigned short *ht_ptr;
   short_hash_table ht;
@@ -696,7 +696,7 @@ static int fsa_checkgeowa_short(fsa *geowaptr, fsa *diffptr,
 static int fsa_checkgeowa_int(fsa *geowaptr, fsa *diffptr,
                               reduction_equation *eqnptr, int maxeqns)
 {
-  int **watable, ***difftable, identity, ngens, ngens1, ne, ns, len, im, cstate,
+  int **watable, ***difftable, identity, ngens, ngens1, ne, ns, len = 0, im, cstate,
       cswa1, cswa2, csdiff, i, bstate, numeqns;
   int *ht_ptr;
   hash_table ht;

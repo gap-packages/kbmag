@@ -67,7 +67,7 @@ static fsa *nfa_determinize_short(fsa *fsaptr, storage_type op_table_type,
                                   boolean subsets, char *tempfilename)
 {
   int **table, *tableptr, *tableptre, ngens, nssi, ns, *fsarow, nt, cstate, csi,
-      im, i, g1, len, ct, n;
+      im, i, g1, len = 0, ct, n;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_op;
@@ -356,7 +356,7 @@ static fsa *nfa_determinize_int(fsa *fsaptr, storage_type op_table_type,
                                 boolean subsets, char *tempfilename)
 {
   int **table, *tableptr, *tableptre, ngens, nssi, ns, *fsarow, nt, cstate, csi,
-      im, i, g1, len, ct, n;
+      im, i, g1, len = 0, ct, n;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_op;
   hash_table ht;
@@ -658,7 +658,7 @@ fsa *nfa_cdeterminize(fsa *fsaptr, storage_type op_table_type, boolean destroy,
 static fsa *nfa_cdeterminize_short(fsa *fsaptr, storage_type op_table_type,
                                    boolean destroy, char *tempfilename)
 {
-  int ngens, nssi, ns, *fsarow, nt, cstate, csi, im, i, g1, len, ct;
+  int ngens, nssi, ns, *fsarow, nt, cstate, csi, im, i, g1, len = 0, ct;
   unsigned int **table, *tableptr, *tableptre, g1shift;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
@@ -854,7 +854,7 @@ static fsa *nfa_cdeterminize_short(fsa *fsaptr, storage_type op_table_type,
 static fsa *nfa_cdeterminize_int(fsa *fsaptr, storage_type op_table_type,
                                  boolean destroy, char *tempfilename)
 {
-  int ngens, nssi, ns, *fsarow, nt, cstate, csi, im, i, g1, len, ct;
+  int ngens, nssi, ns, *fsarow, nt, cstate, csi, im, i, g1, len = 0, ct;
   unsigned int **table, *tableptr, *tableptre, g1shift;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_op;
@@ -1068,7 +1068,7 @@ fsa *nfa_exists_short(fsa *fsaptr, storage_type op_table_type, boolean destroy,
                       char *tempfilename)
 {
   int **table, ne, *tableptr, *tableptre, ngens, ns, *fsarow, es, ef, nt,
-      cstate, csi, im, i, k, g1, len, ct;
+      cstate, csi, im, i, k, g1, len = 0, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_op, got;
@@ -1329,7 +1329,7 @@ fsa *nfa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy,
                     char *tempfilename)
 {
   int **table, ne, *tableptr, *tableptre, ngens, ns, *fsarow, es, ef, nt,
-      cstate, csi, im, i, k, g1, len, ct;
+      cstate, csi, im, i, k, g1, len = 0, ct;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_op, got;
   hash_table ht;

@@ -66,7 +66,7 @@ static fsa *fsa_difflabs_short(fsa *fsaptr, reduction_struct *rs_wdptr,
                                char *tempfilename, boolean readback)
 {
   int ***fsatable, ngens, ngens1, ne, ns, *fsarow, nt, ndiffs, cstate, cswa,
-      csdiff, im, i, l, e, len, ct, *inv;
+      csdiff, im, i, l, e, len = 0, ct, *inv;
   unsigned short *ht_ptr;
   gen *ght_ptr, *wdiff;
   boolean dense_op;

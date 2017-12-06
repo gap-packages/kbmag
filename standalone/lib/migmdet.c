@@ -40,7 +40,7 @@ static fsa *migm_determinize_short(fsa *migmptr, storage_type op_table_type,
                                    boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, nssi, ns, dr, *fsarow, nt, cstate, csi, im, i, j, k,
-      g1, len, nlab, ct;
+      g1, len = 0, nlab, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   gen **w;

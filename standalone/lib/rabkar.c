@@ -145,7 +145,7 @@ int slow_rws_reduce_rk(gen *w, reduction_struct *rs_rws)
 {
   int len, st, j, l, longer, rkminlen, **table, *histptr, *histptre, *nextptr,
       subrelno, *slowhistorysp, **slowhistory;
-  unsigned bighashval, hashval;
+  unsigned bighashval = 0, hashval;
   gen *midwd, *ptr1, *ptr2, *ptr, *lhs;
   rewriting_system *rwsptr = rs_rws->rws;
   rkminlen = rwsptr->rkminlen;
@@ -280,7 +280,7 @@ boolean slow_check_rws_reduce_rk(gen *w, int i, rewriting_system *rwsptr)
                      *histptre, *nextptr,
                      *slowhistorysp = rwsptr->slowhistorysp,
                      **slowhistory = rwsptr->slowhistory;
-  unsigned bighashval, hashval;
+  unsigned bighashval = 0, hashval;
   gen *midwd, *ptr1, *ptr2, *ptr, *lhs;
 
 restart:

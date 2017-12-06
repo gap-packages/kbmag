@@ -1759,7 +1759,7 @@ void typelength_sort_eqns(int n, rewriting_system *rwsptr)
   boolean *newdone;
   int ne = rwsptr->num_eqns;
   reduction_equation *eqn = rwsptr->eqns;
-  reduction_equation eqni;
+  reduction_equation eqni = {0,0,0,0,0};
   int sep = rwsptr->separator;
 
   maxl = 0;
@@ -1850,7 +1850,7 @@ void typelength_sort_eqns(int n, rewriting_system *rwsptr)
  */
 int wd_sort_eqns(int x, rewriting_system *rwsptr)
 {
-  int i, j, ct, ret, newmaxeqns;
+  int i, j, ct, ret, newmaxeqns = 0;
   int ne = rwsptr->num_eqns;
   reduction_equation *eqn = rwsptr->eqns;
   reduction_equation eqni;

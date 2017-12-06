@@ -443,7 +443,7 @@ void rws_clear(rewriting_system *rwsptr)
 void read_subgens(FILE *rfile, gen **words, boolean names, boolean inverses,
                   rewriting_system *rwsptr)
 {
-  int ng, numsubgens, invgen, invgenno, i, delim;
+  int ng = 0, numsubgens = 0, invgen, invgenno, i, delim;
   gen *subgenword;
   boolean seensubgens, seensubgennames, seeninversenames, foundname;
 

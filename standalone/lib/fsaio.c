@@ -521,7 +521,7 @@ void srec_read(FILE *rfile, srec *srptr, int maxsize)
       labelsset, alphabetset, setToLabelsset, nonempty;
   int *buf1, *buf2, *swapbuf, bufsize; /* for reading lists of integers */
   gen *wbp;
-  storage_type st;
+  storage_type st = DENSE;
   read_ident(rfile, kbm_buffer, &delim, FALSE);
   if (delim != '(' || strcmp(kbm_buffer, "rec") != 0) {
     fprintf(stderr, "#Input error: \"rec(\" expected\n");
@@ -976,9 +976,9 @@ void table_read(FILE *rfile, table_struc *tableptr,
                 storage_type table_storage_type, int dr, int ns, int maxstates,
                 int ne, boolean nondet)
 {
-  int delim, i, j, k, ntleft, dt = 0;
+  int delim, i, j, k, ntleft = 0, dt = 0;
   boolean filenameset, numTransitionsset, transitionsset;
-  int **table, *sparseptr;
+  int **table, *sparseptr = 0;
 
   numTransitionsset = FALSE;
   transitionsset = FALSE;
@@ -1185,7 +1185,7 @@ void table_read(FILE *rfile, table_struc *tableptr,
 void fsa_read(FILE *rfile, fsa *fsaptr, storage_type table_storage_type, int dr,
               int maxstates, boolean assignment, char *name)
 {
-  int delim, i, j, k, ct, ns, ne, *ia, *buf1, *buf2, *swapbuf, bufsize;
+  int delim, i, j, k, ct, ns = 0, ne = 0, *ia, *buf1, *buf2, *swapbuf, bufsize;
   boolean isFSAset, statesset, alphabetset, initialset, acceptingset, flagsset,
       tableset, in, compressed;
 

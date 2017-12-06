@@ -129,7 +129,7 @@ int add_wd_fsa_cos(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
                    boolean reverse, reduction_struct *rs)
 {
   gen *wd1, *wd2, *stw, g1, g2;
-  char **names;
+  char **names = 0;
   int i, j, l, l1, l2, maxl, state, image, size_pba, **table, ***wd_table;
   int ans = 0;
   gen testword[TESTWORDLEN];

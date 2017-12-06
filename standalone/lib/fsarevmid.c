@@ -66,7 +66,7 @@ static fsa *fsa_reverse_short(fsa *fsaptr, storage_type op_table_type,
                               char *tempfilename)
 {
   int **table, ne, nsi, ns, is, dr, *fsarow, nt, cstate, cs, csi, im, i, g, n,
-      len, ct;
+      len = 0, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_ip, dense_op;
@@ -295,7 +295,7 @@ static fsa *fsa_mireverse_short(fsa *fsaptr, storage_type op_table_type,
                                 boolean destroy, char *tempfilename)
 {
   int **table, ne, nsi, ns, nai, is, dr, *fsarow, nt, cstate, cs, csi, im, i, g,
-      len, ct;
+      len = 0, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_ip, dense_op;
@@ -542,7 +542,7 @@ static fsa *fsa_miexists1_short(fsa *fsaptr, storage_type op_table_type,
                                 boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, ns, nsi, dr, *fsarow, e, es, ef, nt, cstate, cs, csi,
-      im, i, g1, len, ct, ni;
+      im, i, g1, len = 0, ct, ni;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_ip, dense_op;
@@ -807,7 +807,7 @@ static fsa *fsa_miexists2_short(fsa *fsaptr, storage_type op_table_type,
                                 boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, ngens1, ns, nsi, dr, *fsarow, e, es, ef, nt, cstate,
-      cs, csi, im, i, g2, len, ct, ni;
+      cs, csi, im, i, g2, len = 0, ct, ni;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_ip, dense_op;

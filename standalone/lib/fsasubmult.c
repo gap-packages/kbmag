@@ -44,7 +44,7 @@ fsa *fsa_submult(fsa *subwaptr, fsa *multptr, storage_type op_table_type,
                  boolean destroy, char *tempfilename, boolean readback)
 {
   int **subwatable, ***multtable, ngens, ngens1, nsswa1, ne, nsswa, ns, *fsarow,
-      nt, cstate, csswa1, csswa2, csmult, im, i, e, len, ct;
+      nt, cstate, csswa1, csswa2, csmult, im, i, e, len = 0, ct;
   unsigned short *ht_ptr;
   boolean dense_op, acc;
   fsa *submultptr;
@@ -281,7 +281,7 @@ fsa *fsa_submult(fsa *subwaptr, fsa *multptr, storage_type op_table_type,
 int words_and_not(fsa *fsaptr1, fsa *fsaptr2, gen **words, int maxwords)
 {
   int **table1, **table2, ne, ns, dr1, dr2, bstate, bg, numwords, cstate, csa,
-      csb, im, i, g, len;
+      csb, im, i, g, len = 0;
   unsigned short *ht_ptr;
   boolean dense_ip1, dense_ip2;
   short_hash_table ht;

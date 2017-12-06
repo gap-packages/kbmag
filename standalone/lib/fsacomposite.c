@@ -66,7 +66,7 @@ static fsa *fsa_genmult2_short(fsa *genmultptr, storage_type op_table_type,
                                boolean readback)
 {
   int **table, ne, ngens, ngens1, ns, *fsarow, e, e1, e2, es1, ef1, dr, nt,
-      cstate, im, csa, csb, csima, csimb, i, j, j1, j2, g1, g2, g3, len, reclen,
+      cstate, im, csa, csb, csima, csimb, i, j, j1, j2, g1, g2, g3, len = 0, reclen,
       nlab, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
@@ -76,7 +76,7 @@ static fsa *fsa_genmult2_short(fsa *genmultptr, storage_type op_table_type,
   short_hash_table ht, labelht;
   fsa *genmult2ptr;
   srec *labelset;
-  FILE *tablefile;
+  FILE *tablefile = 0;
 
   if (kbm_print_level >= 3)
     printf("    #Calling fsa_genmult2_short.\n");
@@ -513,7 +513,7 @@ static fsa *fsa_genmult2_int(fsa *genmultptr, storage_type op_table_type,
                              boolean readback)
 {
   int **table, ne, ngens, ngens1, ns, *fsarow, e, e1, e2, es1, ef1, dr, nt,
-      cstate, im, csa, csb, csima, csimb, i, j, j1, j2, g1, g2, g3, len, reclen,
+      cstate, im, csa, csb, csima, csimb, i, j, j1, j2, g1, g2, g3, len = 0, reclen,
       nlab, ct;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_ip, dense_op, got, leftpad, rightpad, keeptable;
@@ -522,7 +522,7 @@ static fsa *fsa_genmult2_int(fsa *genmultptr, storage_type op_table_type,
   hash_table ht, labelht;
   fsa *genmult2ptr;
   srec *labelset;
-  FILE *tablefile;
+  FILE *tablefile = 0;
 
   if (kbm_print_level >= 3)
     printf("    #Calling fsa_genmult2_int.\n");
@@ -1148,7 +1148,7 @@ static fsa *fsa_composite_short(fsa *mult1ptr, fsa *mult2ptr,
                                 char *compfilename, boolean readback)
 {
   int **table1, **table2, ne, ngens, ngens1, ns, *fsarow, e, e1, e2, es1, ef1,
-      dr1, dr2, nt, cstate, im, csa, csb, csima, csimb, i, ct, g1, g2, g3, len,
+      dr1, dr2, nt, cstate, im, csa, csb, csima, csimb, i, ct, g1, g2, g3, len = 0,
       reclen;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
@@ -1498,7 +1498,7 @@ static fsa *fsa_composite_int(fsa *mult1ptr, fsa *mult2ptr,
                               char *compfilename, boolean readback)
 {
   int **table1, **table2, ne, ngens, ngens1, ns, *fsarow, e, e1, e2, es1, ef1,
-      dr1, dr2, nt, cstate, im, csa, csb, csima, csimb, i, ct, g1, g2, g3, len,
+      dr1, dr2, nt, cstate, im, csa, csb, csima, csimb, i, ct, g1, g2, g3, len = 0,
       reclen;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_ip1, dense_ip2, dense_op, got, leftpad, rightpad;

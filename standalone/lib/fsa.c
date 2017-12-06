@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "defs.h"
 #include "fsa.h"
 #include "hash.h"
@@ -1474,11 +1475,11 @@ int fsa_count(fsa *fsaptr)
 int fsa_enumerate(FILE *wfile, fsa *fsaptr, int min, int max, boolean putcomma,
                   int stateno)
 {
-  int i, g1, g2, ne, ngens, ngens1, **table, dr, *cword, firste, clength,
+  int i, g1, g2, ne, ngens, ngens1 = 0, **table, dr, *cword, firste, clength,
       clength1, clength2, cstate, im, *statelist;
   boolean dense, done, backtrack, foundword, prod, numbers;
   gen *cword1 = 0, *cword2 = 0;
-  char **names;
+  char **names = 0;
 
   if (!fsaptr->flags[DFA]) {
     fprintf(stderr, "Error: fsa_enumerate only applies to DFA's.\n");
@@ -1624,6 +1625,7 @@ int fsa_enumerate(FILE *wfile, fsa *fsaptr, int min, int max, boolean putcomma,
   }
 
   if (numbers) {
+    assert(names);
     for (i = 1; i <= ne; i++)
       tfree(names[i]);
     tfree(names);
@@ -1939,7 +1941,7 @@ print_poly(FILE *f, int *poly, unsigned d, char *var)
 int fsa_growth(FILE *wfile, fsa *fsaptr, unsigned *primes, char *var)
 {
   boolean cr;
-  fraction f, newf;
+  fraction f = {0,0,0,0}, newf;
   int i;
   boolean consistent = TRUE;
   boolean printres;

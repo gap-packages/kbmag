@@ -86,8 +86,8 @@ static fsa *fsa_mitriples_short(fsa *waptr, fsa *diffptr,
                                 int maxeqns, boolean eqnstop,
                                 boolean *foundeqns, boolean readback)
 {
-  int **watable, ***difftable, identity, ngens, ngens1, nswa1, ne, ns, *fsarow,
-      nt, cstate, cswa1, cswa2, csdiff, im, i, j, k, e, len, rlen, ct, bstate,
+  int **watable, ***difftable, identity, ngens, ngens1, nswa1, ne, ns = 0, *fsarow,
+      nt, cstate, cswa1, cswa2, csdiff, im, i, j, k, e, len = 0, rlen, ct, bstate,
       bigger, numeqns, num_init;
   gen *subwd, reduced_genno[MAXGEN + 1], reduced_gen[2];
   /* for calculating and storing reductions of generators in case some
@@ -108,7 +108,7 @@ static fsa *fsa_mitriples_short(fsa *waptr, fsa *diffptr,
     gen g1;
     gen g2;
     int state;
-  } * definition, *newdef;
+  } * definition = 0, *newdef;
   /* This is used to store the defining transition for the states of *mitriples.
    * If definition[i] = v, then state i is defined by the transition from
    * state v.state, with generator (v.g1,v.g2).
@@ -545,8 +545,8 @@ static fsa *fsa_mitriples_int(fsa *waptr, fsa *diffptr,
                               int maxeqns, boolean eqnstop, boolean *foundeqns,
                               boolean readback)
 {
-  int **watable, ***difftable, identity, ngens, ngens1, nswa1, ne, ns, *fsarow,
-      nt, cstate, cswa1, cswa2, csdiff, im, i, j, k, e, len, rlen, ct, bstate,
+  int **watable, ***difftable, identity, ngens, ngens1, nswa1, ne, ns = 0, *fsarow,
+      nt, cstate, cswa1, cswa2, csdiff, im, i, j, k, e, len = 0, rlen, ct, bstate,
       bigger, numeqns, num_init;
   gen *subwd, reduced_genno[MAXGEN + 1], reduced_gen[2];
   /* for calculating and storing reductions of generators in case some
@@ -567,7 +567,7 @@ static fsa *fsa_mitriples_int(fsa *waptr, fsa *diffptr,
     gen g1;
     gen g2;
     int state;
-  } * definition, *newdef;
+  } * definition = 0, *newdef;
   /* This is used to store the defining transition for the states of *mitriples.
    * If definition[i] = v, then state i is defined by the transition from
    * state v.state, with generator (v.g1,v.g2).

@@ -48,7 +48,7 @@ static void badusage(void);
 
 int main(int argc, char *argv[])
 {
-  int arg, min, max, i, n, rv;
+  int arg, min = 0, max = 0, i, n, rv;
   fsa testfsa;
   char inf[100], outf[100], fsaname[100];
   storage_type ip_store = DENSE;

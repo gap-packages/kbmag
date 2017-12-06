@@ -64,7 +64,7 @@ static fsa *fsa_wa_short(fsa *fsaptr, storage_type op_table_type,
                          boolean destroy, char *tempfilename)
 {
   int ***dtable, ne, ngens, ndiff, ns, *fsarow, nt, cstate, cs, csdiff, csi, im,
-      i, k, g1, g2, len, identity;
+      i, k, g1, g2, len = 0, identity;
   unsigned short *ht_ptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_op, no_trans, good;
   char *cf;
@@ -328,7 +328,7 @@ static fsa *fsa_wa_int(fsa *fsaptr, storage_type op_table_type, boolean destroy,
                        char *tempfilename)
 {
   int ***dtable, ne, ngens, ndiff, ns, *fsarow, nt, cstate, cs, csdiff, csi, im,
-      i, k, g1, g2, len, identity;
+      i, k, g1, g2, len = 0, identity;
   int *ht_ptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_op, no_trans, good;
   char *cf;

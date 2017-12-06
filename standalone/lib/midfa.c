@@ -39,7 +39,7 @@ fsa *midfa_determinize(fsa *fsaptr, storage_type op_table_type, boolean destroy,
 static fsa *midfa_determinize_short(fsa *fsaptr, storage_type op_table_type,
                                     boolean destroy, char *tempfilename)
 {
-  int **table, ngens, nssi, ns, dr, *fsarow, nt, cstate, csi, im, i, g1, len,
+  int **table, ngens, nssi, ns, dr, *fsarow, nt, cstate, csi, im, i, g1, len = 0,
       ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
@@ -240,7 +240,7 @@ static fsa *midfa_determinize_short(fsa *fsaptr, storage_type op_table_type,
 static fsa *midfa_determinize_int(fsa *fsaptr, storage_type op_table_type,
                                   boolean destroy, char *tempfilename)
 {
-  int **table, ngens, nssi, ns, dr, *fsarow, nt, cstate, csi, im, i, g1, len,
+  int **table, ngens, nssi, ns, dr, *fsarow, nt, cstate, csi, im, i, g1, len = 0,
       ct;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_ip, dense_op;

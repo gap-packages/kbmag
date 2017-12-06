@@ -45,7 +45,7 @@ static fsa *fsa_micomposite_int(fsa *mult1ptr, fsa *mult2ptr,
 int mimult_minimize(fsa *fsaptr)
 {
   int *block_numa, *block_numb, *block_swap, ct, ss, sst, *gotlist, i, j, k, l,
-      m, len, *ptr, *ptre, *ptr2, *ptr2e, *ht_ptr, ni, ne, ns_orig, **table,
+      m, len = 0, *ptr, *ptre, *ptr2, *ptr2e, *ht_ptr, ni, ne, ns_orig, **table,
       ns_final, ns_new, num_iterations, nlab, *lablen;
   hash_table ht;
   boolean fixed, *got, ok, acc;
@@ -401,7 +401,7 @@ static fsa *fsa_migm2_short(fsa *migmptr, storage_type op_table_type,
                             boolean readback, char *prefix)
 {
   int **table, ne, ngens, ngens1, ns, *fsarow, e, e1, e2, es1, ef1, dr, nt,
-      cstate, im, csa, csb, csima, csimb, j1, j2, i, j, ct, g1, g2, g3, len,
+      cstate, im, csa, csb, csima, csimb, j1, j2, i, j, ct, g1, g2, g3, len = 0,
       len1, reclen, ninit_ip, ninit_op, pl, nlabs;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
@@ -1030,7 +1030,7 @@ int fsa_mimakemult(fsa *migmptr, int g, char *prefix)
  */
 int fsa_mimakemult2(fsa *migm2ptr, int g1, int g2, char *prefix)
 {
-  int ngens, ns, nlabs, i, j, k, ct, len, ni, preflen, shift, alphsize;
+  int ngens, ns, nlabs, i, j, k, ct, len = 0, ni, preflen, shift, alphsize;
   gen ***labellist, ***newlabellist, **oldlist;
   char **alph;
   boolean *accept, found;
@@ -1211,7 +1211,7 @@ static fsa *fsa_micomposite_short(fsa *mult1ptr, fsa *mult2ptr,
 {
   int **table1, **table2, ne, ngens, ngens1, ns, *fsarow, e, e1, e2, es1, ef1,
       dr1, dr2, nt, cstate, im, csa, csb, csima, csimb, i, j, l1, l2, ct, g1,
-      g2, g3, len, reclen, ni1, ni2, ni;
+      g2, g3, len = 0, reclen, ni1, ni2, ni;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_ip1, dense_ip2, dense_op, got, leftpad, rightpad;

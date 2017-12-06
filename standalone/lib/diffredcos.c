@@ -31,7 +31,7 @@
 int diff_reduce_cos(gen *w, reduction_struct *rs_wd)
 {
   int ndiff, ngens, identity, padsymbol, wordlen, ***difftab, gct, *gpref,
-      level, gen1, gen2, diff, diffct, newdiff, olen, nlen, i, j;
+      level, gen1, gen2, diff, diffct = 0, newdiff, olen, nlen, i, j = 0;
   boolean deqi, donesub, *cf, coset = FALSE;
   gen *ptr, *ptre, *ptrc;
   gen prefix[8192];

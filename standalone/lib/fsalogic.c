@@ -233,14 +233,14 @@ fsa *fsa_and_not(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type,
 
 static fsa *fsa_binop(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type,
                       boolean destroy, char *tempfilename, kbm_binop op,
-                      boolean labels)
+                      const boolean labels)
 {
   int **table1, **table2, ne, ns, dr1, dr2, *fsarow, nt, cstate, csa, csb, im,
-      i, g, len, ct, *ht_ptr;
+      i, g, len = 0, ct, *ht_ptr;
   boolean dense_ip1, dense_ip2, dense_op, accept;
   fsa *and_or_not;
   hash_table ht;
-  setToLabelsType *lab;
+  setToLabelsType *lab = 0;
   FILE *tempfile;
 
   if (kbm_print_level >= 3)
@@ -850,7 +850,7 @@ static fsa *fsa_exists_short(fsa *fsaptr, storage_type op_table_type,
                              boolean destroy, char *tempfilename)
 {
   int **table, ne, ngens, ns, dr, *fsarow, e, es, ef, nt, cstate, cs, csi, im,
-      i, g1, len, ct;
+      i, g1, len = 0, ct;
   unsigned short *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre,
       *ptr;
   boolean dense_ip, dense_op, got;
@@ -1111,7 +1111,7 @@ fsa *fsa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy,
                     char *tempfilename)
 {
   int **table, ne, ngens, ns, dr, *fsarow, e, es, ef, nt, cstate, cs, csi, im,
-      i, g1, len, ct;
+      i, g1, len = 0, ct;
   int *ht_ptr, *ht_chptr, *ht_ptrb, *ht_ptre, *cs_ptr, *cs_ptre, *ptr;
   boolean dense_ip, dense_op, got;
   hash_table ht;

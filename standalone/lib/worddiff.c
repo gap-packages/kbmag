@@ -111,7 +111,7 @@ int build_wd_fsa(fsa *wd_fsaptr, boolean *new_wd, reduction_struct *rsptr)
 int add_wd_fsa(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
                boolean reverse, reduction_struct *rsptr)
 {
-  char **names;
+  char **names = 0;
   gen *wd1, *wd2, *stw, g1, g2;
   int i, j, l, l1, l2, maxl, state, image, size_pba, **table, ***wd_table;
   int ans = 0;
