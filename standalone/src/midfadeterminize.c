@@ -24,11 +24,11 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_midfadeterminize();
+void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg;
+int main(int argc, char *argv[])
+{
+  int arg;
   fsa fsain, *midfadeterminize;
   char inf[100], outf[100], fsaname[100], tempfilename[100];
   storage_type ip_store = DENSE;
@@ -36,110 +36,113 @@ main (int argc, char *argv[])
   storage_type op_store = DENSE;
 
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   inf[0] = '\0';
   outf[0] = '\0';
   arg = 1;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-ip")==0) {
+    if (strcmp(argv[arg], "-ip") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_midfadeterminize();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         ip_store = DENSE;
       else if (argv[arg][0] == 's') {
         ip_store = SPARSE;
         if (stringlen(argv[arg]) > 1)
-          dr = atoi(argv[arg]+1);
+          dr = atoi(argv[arg] + 1);
       }
       else
-        badusage_midfadeterminize();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-op")==0) {
+    else if (strcmp(argv[arg], "-op") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_midfadeterminize();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         op_store = DENSE;
-      else if (strcmp(argv[arg],"s")==0)
+      else if (strcmp(argv[arg], "s") == 0)
         op_store = SPARSE;
       else
-        badusage_midfadeterminize();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
-    else if (strcmp(argv[arg],"-l")==0)
+    else if (strcmp(argv[arg], "-l") == 0)
       kbm_large = TRUE;
-    else if (strcmp(argv[arg],"-h")==0)
+    else if (strcmp(argv[arg], "-h") == 0)
       kbm_huge = TRUE;
     else {
-       if (argv[arg][0] == '-')
-         badusage_midfadeterminize();
-       if (strcmp(inf,""))
-         badusage_midfadeterminize();
-       strcpy(inf,argv[arg]);
+      if (argv[arg][0] == '-')
+        badusage();
+      if (strcmp(inf, ""))
+        badusage();
+      strcpy(inf, argv[arg]);
     }
     arg++;
   }
-  if (stringlen(inf)!=0) {
-    strcpy(outf,inf);
-    strcat(outf,".midfadeterminize");
+  if (stringlen(inf) != 0) {
+    strcpy(outf, inf);
+    strcat(outf, ".midfadeterminize");
 
-    if ((rfile = fopen(inf,"r")) == 0) {
-      fprintf(stderr,"Cannot open file %s.\n",inf);
+    if ((rfile = fopen(inf, "r")) == 0) {
+      fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
     }
   }
   else
     rfile = stdin;
-  fsa_read(rfile,&fsain,ip_store,dr,0,TRUE,fsaname);
-  if (stringlen(inf)!=0)
+  fsa_read(rfile, &fsain, ip_store, dr, 0, TRUE, fsaname);
+  if (stringlen(inf) != 0)
     fclose(rfile);
 
-  strcpy(tempfilename,inf);
-  strcat(tempfilename,"temp_mid_XXX");
-  midfadeterminize = midfa_determinize(&fsain,op_store,TRUE,tempfilename);
-  if (midfadeterminize==0) exit(1);
+  strcpy(tempfilename, inf);
+  strcat(tempfilename, "temp_mid_XXX");
+  midfadeterminize = midfa_determinize(&fsain, op_store, TRUE, tempfilename);
+  if (midfadeterminize == 0)
+    exit(1);
 
   fsa_clear(&fsain);
 
-  if (kbm_print_level>1)
-   printf("  #Number of states of midfadeterminize before minimisation = %d.\n",
+  if (kbm_print_level > 1)
+    printf(
+        "  #Number of states of midfadeterminize before minimisation = %d.\n",
         midfadeterminize->states->size);
-  if (fsa_minimize(midfadeterminize)== -1) exit(1);
-  if (kbm_print_level>1)
+  if (fsa_minimize(midfadeterminize) == -1)
+    exit(1);
+  if (kbm_print_level > 1)
     printf("  #Number of states of midfadeterminize after minimisation = %d.\n",
-        midfadeterminize->states->size);
+           midfadeterminize->states->size);
 
-  strcat(fsaname,"_midfadeterminize");
+  strcat(fsaname, "_midfadeterminize");
 
-  if (stringlen(inf)!=0)
-    wfile = fopen(outf,"w");
+  if (stringlen(inf) != 0)
+    wfile = fopen(outf, "w");
   else
-    wfile=stdout;
-  fsa_print(wfile,midfadeterminize,fsaname);
-  if (stringlen(inf)!=0)
+    wfile = stdout;
+  fsa_print(wfile, midfadeterminize, fsaname);
+  if (stringlen(inf) != 0)
     fclose(wfile);
-  if (kbm_print_level>0)
+  if (kbm_print_level > 0)
     printf("#\"Determinized\" fsa with %d states computed.\n",
-	midfadeterminize->states->size);
+           midfadeterminize->states->size);
 
   fsa_clear(midfadeterminize);
   tfree(midfadeterminize);
   exit(0);
 }
- 
-void 
-badusage_midfadeterminize (void)
+
+void badusage(void)
 {
-    fprintf(stderr,
-    "Usage: midfadeterminize [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]\n\
+  fprintf(
+      stderr,
+      "Usage: midfadeterminize [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]\n\
 	    [filename]\n");
-    exit(1);
+  exit(1);
 }

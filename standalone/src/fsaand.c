@@ -23,127 +23,127 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_fsaand();
+static void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg;
+int main(int argc, char *argv[])
+{
+  int arg;
   fsa fsa1, fsa2, *fsaand;
   char inf1[100], inf2[100], outf[100], fsaname1[100], fsaname2[100],
-       tempfilename[100];
+      tempfilename[100];
   storage_type ip_store = DENSE;
   int dr = 0;
   storage_type op_store = DENSE;
 
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   inf1[0] = '\0';
   inf2[0] = '\0';
   outf[0] = '\0';
   arg = 1;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-ip")==0) {
+    if (strcmp(argv[arg], "-ip") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_fsaand();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         ip_store = DENSE;
       else if (argv[arg][0] == 's') {
         ip_store = SPARSE;
         if (stringlen(argv[arg]) > 1)
-          dr = atoi(argv[arg]+1);
+          dr = atoi(argv[arg] + 1);
       }
       else
-        badusage_fsaand();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-op")==0) {
+    else if (strcmp(argv[arg], "-op") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_fsaand();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         op_store = DENSE;
-      else if (strcmp(argv[arg],"s")==0)
+      else if (strcmp(argv[arg], "s") == 0)
         op_store = SPARSE;
       else
-        badusage_fsaand();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
-    else if (strcmp(argv[arg],"-l")==0)
+    else if (strcmp(argv[arg], "-l") == 0)
       kbm_large = TRUE;
-    else if (strcmp(argv[arg],"-h")==0)
+    else if (strcmp(argv[arg], "-h") == 0)
       kbm_huge = TRUE;
     else {
-       if (argv[arg][0] == '-')
-         badusage_fsaand();
-       if (strcmp(outf,""))
-         badusage_fsaand();
-       if (strcmp(inf1,"")==0)
-         strcpy(inf1,argv[arg]);
-       else if (strcmp(inf2,"")==0)
-         strcpy(inf2,argv[arg]);
-       else
-         strcpy(outf,argv[arg]);
+      if (argv[arg][0] == '-')
+        badusage();
+      if (strcmp(outf, ""))
+        badusage();
+      if (strcmp(inf1, "") == 0)
+        strcpy(inf1, argv[arg]);
+      else if (strcmp(inf2, "") == 0)
+        strcpy(inf2, argv[arg]);
+      else
+        strcpy(outf, argv[arg]);
     }
     arg++;
   }
-  if (stringlen(inf1)==0 || stringlen(inf1)==0 || stringlen(outf)==0)
-    badusage_fsaand();
+  if (stringlen(inf1) == 0 || stringlen(inf1) == 0 || stringlen(outf) == 0)
+    badusage();
 
-  if ((rfile = fopen(inf1,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf1);
+  if ((rfile = fopen(inf1, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf1);
     exit(1);
   }
-  fsa_read(rfile,&fsa1,ip_store,dr,0,TRUE,fsaname1);
+  fsa_read(rfile, &fsa1, ip_store, dr, 0, TRUE, fsaname1);
   fclose(rfile);
 
-  if ((rfile = fopen(inf2,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf2);
+  if ((rfile = fopen(inf2, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf2);
     exit(1);
   }
-  fsa_read(rfile,&fsa2,ip_store,dr,0,TRUE,fsaname2);
+  fsa_read(rfile, &fsa2, ip_store, dr, 0, TRUE, fsaname2);
   fclose(rfile);
-  
-  strcpy(tempfilename,inf1);
-  strcat(tempfilename,"temp_and_XXX");
-  fsaand = fsa_and(&fsa1,&fsa2,op_store,TRUE,tempfilename);
-  if (fsaand==0) exit(1);
 
-  if (kbm_print_level>1)
+  strcpy(tempfilename, inf1);
+  strcat(tempfilename, "temp_and_XXX");
+  fsaand = fsa_and(&fsa1, &fsa2, op_store, TRUE, tempfilename);
+  if (fsaand == 0)
+    exit(1);
+
+  if (kbm_print_level > 1)
     printf("  #Number of states of fsaand before minimisation = %d.\n",
-        fsaand->states->size);
-  if (fsa_minimize(fsaand)== -1) exit(1);
-  if (kbm_print_level>1)
+           fsaand->states->size);
+  if (fsa_minimize(fsaand) == -1)
+    exit(1);
+  if (kbm_print_level > 1)
     printf("  #Number of states of fsaand after minimisation = %d.\n",
-        fsaand->states->size);
+           fsaand->states->size);
 
   base_prefix(fsaname1);
-  strcat(fsaname1,"_and");
-  wfile = fopen(outf,"w");
-  fsa_print(wfile,fsaand,fsaname1);
+  strcat(fsaname1, "_and");
+  wfile = fopen(outf, "w");
+  fsa_print(wfile, fsaand, fsaname1);
   fclose(wfile);
 
-  if (kbm_print_level>0)
-    printf("#\"And\" fsa with %d states computed.\n",fsaand->states->size);
+  if (kbm_print_level > 0)
+    printf("#\"And\" fsa with %d states computed.\n", fsaand->states->size);
 
   fsa_clear(fsaand);
   tfree(fsaand);
 
   exit(0);
 }
- 
-void 
-badusage_fsaand (void)
+
+void badusage(void)
 {
-    fprintf(stderr,
-      "Usage: fsaand [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]\n");
-    fprintf(stderr,
-      "       filename1 filename2 outfilename\n");
-    exit(1);
+  fprintf(stderr,
+          "Usage: fsaand [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]\n");
+  fprintf(stderr, "       filename1 filename2 outfilename\n");
+  exit(1);
 }

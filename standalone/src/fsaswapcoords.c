@@ -23,89 +23,90 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage();
+static void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg;
+int main(int argc, char *argv[])
+{
+  int arg;
   fsa testfsa;
   char inf[100], outf[100], fsaname[100];
   boolean op_format_set = FALSE;
   storage_type op_format = SPARSE;
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   inf[0] = '\0';
   outf[0] = '\0';
   arg = 1;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-op")==0) {
+    if (strcmp(argv[arg], "-op") == 0) {
       arg++;
-      op_format_set=TRUE;
+      op_format_set = TRUE;
       if (arg >= argc)
         badusage();
-      if (strcmp(argv[arg],"d")==0)
-        op_format=DENSE;
-      else if (strcmp(argv[arg],"s")==0)
-        op_format=SPARSE;
+      if (strcmp(argv[arg], "d") == 0)
+        op_format = DENSE;
+      else if (strcmp(argv[arg], "s") == 0)
+        op_format = SPARSE;
       else
         badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
     else if (argv[arg][0] == '-')
       badusage();
     else {
-       if (argv[arg][0] == '-')
-         badusage();
-       if (strcmp(outf,""))
-         badusage();
-       if (strcmp(inf,"")==0)
-         strcpy(inf,argv[arg]);
-       else
-         strcpy(outf,argv[arg]);
+      if (argv[arg][0] == '-')
+        badusage();
+      if (strcmp(outf, ""))
+        badusage();
+      if (strcmp(inf, "") == 0)
+        strcpy(inf, argv[arg]);
+      else
+        strcpy(outf, argv[arg]);
     }
     arg++;
   }
-  if (stringlen(inf)==0)
-    rfile=stdin;
-  else if ((rfile = fopen(inf,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf);
+  if (stringlen(inf) == 0)
+    rfile = stdin;
+  else if ((rfile = fopen(inf, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
   }
 
-  fsa_read(rfile,&testfsa,DENSE,0,0,TRUE,fsaname);
-  if (stringlen(inf)!=0)
+  fsa_read(rfile, &testfsa, DENSE, 0, 0, TRUE, fsaname);
+  if (stringlen(inf) != 0)
     fclose(rfile);
 
-  if (fsa_swap_coords(&testfsa)== -1) exit(1);
+  if (fsa_swap_coords(&testfsa) == -1)
+    exit(1);
 
   if (op_format_set)
     testfsa.table->printing_format = op_format;
 
   base_prefix(fsaname);
-  strcat(fsaname,"_swap_coords");
-  if (stringlen(outf)==0)
-    wfile=stdout;
+  strcat(fsaname, "_swap_coords");
+  if (stringlen(outf) == 0)
+    wfile = stdout;
   else
-    wfile = fopen(outf,"w");
-  fsa_print(wfile,&testfsa,fsaname);
-  if (stringlen(outf)!=0)
+    wfile = fopen(outf, "w");
+  fsa_print(wfile, &testfsa, fsaname);
+  if (stringlen(outf) != 0)
     fclose(wfile);
 
   fsa_clear(&testfsa);
   exit(0);
 }
 
-void 
-badusage (void)
+void badusage(void)
 {
-    fprintf(stderr,
-    "Usage: fsaswapcoords [-op d/s] [-silent] [-v] [filename1 filename2]\n");
-    exit(1);
+  fprintf(
+      stderr,
+      "Usage: fsaswapcoords [-op d/s] [-silent] [-v] [filename1 filename2]\n");
+  exit(1);
 }

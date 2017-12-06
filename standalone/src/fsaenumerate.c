@@ -44,21 +44,21 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_fsaenumerate();
+static void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg, min, max, i, n, rv;
+int main(int argc, char *argv[])
+{
+  int arg, min, max, i, n, rv;
   fsa testfsa;
   char inf[100], outf[100], fsaname[100];
   storage_type ip_store = DENSE;
-  int stateno=0;
-  boolean labels=FALSE;
+  int stateno = 0;
+  boolean labels = FALSE;
   boolean bfs, minset, maxset, putcomma;
-  
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   minset = maxset = FALSE;
   bfs = FALSE;
@@ -69,112 +69,116 @@ main (int argc, char *argv[])
     if (strcmp(argv[arg], "-is") == 0) {
       arg++;
       if (arg >= argc)
-         badusage_fsaenumerate();
+        badusage();
       n = atoi(argv[arg]);
     }
-    else if (strcmp(argv[arg],"-ip")==0) {
+    else if (strcmp(argv[arg], "-ip") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_fsaenumerate();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         ip_store = DENSE;
       else if (argv[arg][0] == 's')
         ip_store = SPARSE;
       else
-        badusage_fsaenumerate();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-dfs")==0)
+    else if (strcmp(argv[arg], "-dfs") == 0)
       bfs = FALSE;
-    else if (strcmp(argv[arg],"-bfs")==0)
+    else if (strcmp(argv[arg], "-bfs") == 0)
       bfs = TRUE;
-    else if (strcmp(argv[arg],"-l")==0) 
+    else if (strcmp(argv[arg], "-l") == 0)
       labels = TRUE;
-    else if (strcmp(argv[arg],"-s")==0)
-      stateno = 1; 
+    else if (strcmp(argv[arg], "-s") == 0)
+      stateno = 1;
     else {
-       if (argv[arg][0] == '-')
-         badusage_fsaenumerate();
-       if (strcmp(inf,""))
-         badusage_fsaenumerate();
-       if (!minset) {
-         if (!is_int(argv[arg])) badusage_fsaenumerate();
-         min = atoi(argv[arg]);
-         minset = TRUE;
-       }
-       else if (!maxset) {
-         if (!is_int(argv[arg])) badusage_fsaenumerate();
-         max = atoi(argv[arg]);
-         maxset = TRUE;
-       }
-       else strcpy(inf,argv[arg]);
+      if (argv[arg][0] == '-')
+        badusage();
+      if (strcmp(inf, ""))
+        badusage();
+      if (!minset) {
+        if (!is_int(argv[arg]))
+          badusage();
+        min = atoi(argv[arg]);
+        minset = TRUE;
+      }
+      else if (!maxset) {
+        if (!is_int(argv[arg]))
+          badusage();
+        max = atoi(argv[arg]);
+        maxset = TRUE;
+      }
+      else
+        strcpy(inf, argv[arg]);
     }
     arg++;
   }
-  if (stringlen(inf)==0)
-    rfile=stdin;
+  if (stringlen(inf) == 0)
+    rfile = stdin;
   else {
-    strcpy(outf,inf);
-    strcat(outf,".enumerate");
-    if ((rfile = fopen(inf,"r")) == 0) {
-      fprintf(stderr,"Cannot open file %s.\n",inf);
+    strcpy(outf, inf);
+    strcat(outf, ".enumerate");
+    if ((rfile = fopen(inf, "r")) == 0) {
+      fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
     }
   }
-  fsa_read(rfile,&testfsa,ip_store,0,0,TRUE,fsaname);
+  fsa_read(rfile, &testfsa, ip_store, 0, 0, TRUE, fsaname);
   if (stringlen(inf))
     fclose(rfile);
-  strcat(fsaname,".words");
+  strcat(fsaname, ".words");
 
   if (labels && stateno) {
-    fprintf(stderr,"Error: cannot use -s and -l together.\n");
+    fprintf(stderr, "Error: cannot use -s and -l together.\n");
     exit(1);
   }
-  if (labels) stateno=2;
-  if (n>testfsa.states->size) {
-    fprintf(stderr,"Error: specified initial state is too large.\n");
+  if (labels)
+    stateno = 2;
+  if (n > testfsa.states->size) {
+    fprintf(stderr, "Error: specified initial state is too large.\n");
     exit(1);
   }
-  if (n>0 && testfsa.num_initial>0) {
-    testfsa.initial[1]=n;
+  if (n > 0 && testfsa.num_initial > 0) {
+    testfsa.initial[1] = n;
     /* This may destroy various properties of the automata */
-    testfsa.flags[MINIMIZED]=FALSE;
-    testfsa.flags[BFS]=FALSE;
-    testfsa.flags[ACCESSIBLE]=FALSE;
-    testfsa.flags[TRIM]=FALSE;
+    testfsa.flags[MINIMIZED] = FALSE;
+    testfsa.flags[BFS] = FALSE;
+    testfsa.flags[ACCESSIBLE] = FALSE;
+    testfsa.flags[TRIM] = FALSE;
   }
 
   if (stringlen(inf))
-    wfile = fopen(outf,"w");
+    wfile = fopen(outf, "w");
   else
-    wfile=stdout;
-  fprintf(wfile,"%s := [\n",fsaname);
+    wfile = stdout;
+  fprintf(wfile, "%s := [\n", fsaname);
 
   putcomma = FALSE;
   if (bfs) {
-    for (i=min;i<=max;i++) {
-      rv = fsa_enumerate(wfile,&testfsa,i,i,putcomma,stateno);
-      if (rv== -1) exit(1);
+    for (i = min; i <= max; i++) {
+      rv = fsa_enumerate(wfile, &testfsa, i, i, putcomma, stateno);
+      if (rv == -1)
+        exit(1);
       putcomma = (boolean)rv || putcomma;
     }
   }
   else {
-    rv = fsa_enumerate(wfile,&testfsa,min,max,putcomma,stateno);
-    if (rv== -1) exit(1);
+    rv = fsa_enumerate(wfile, &testfsa, min, max, putcomma, stateno);
+    if (rv == -1)
+      exit(1);
   }
 
-  fprintf(wfile,"\n];\n");
+  fprintf(wfile, "\n];\n");
   if (stringlen(inf))
     fclose(wfile);
 
   fsa_clear(&testfsa);
   exit(0);
 }
- 
-void 
-badusage_fsaenumerate (void)
+
+void badusage(void)
 {
-    fprintf(stderr,
-"Usage: fsaenumerate [-is n] [-ip d/s] [-bfs/-dfs] min max [-l/-s] [filename]\n"
-);
-    exit(1);
+  fprintf(stderr, "Usage: fsaenumerate [-is n] [-ip d/s] [-bfs/-dfs] min max "
+                  "[-l/-s] [filename]\n");
+  exit(1);
 }

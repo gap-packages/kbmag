@@ -24,7 +24,7 @@
  * -diff1/diff2	take input from groupname.(mi)diff1 or groupname.(mi)diff2
  *		((mi)diff2 is default). Latter needs more space and is
  *		slower, but can sometimes save time later.
- * 
+ *
  */
 
 #include <stdio.h>
@@ -34,127 +34,136 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_gpwa();
+static void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg;
+int main(int argc, char *argv[])
+{
+  int arg;
   fsa *fsawd, *gpwa;
-  char gpname[100], cosgpname[100], inf[100], outf[100],
-       fsaname[100], tempfilename[100];
+  char gpname[100], cosgpname[100], inf[100], outf[100], fsaname[100],
+      tempfilename[100];
   storage_type op_store = DENSE;
   boolean diff1_ip, cosets, seengpname, seencosname;
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   inf[0] = '\0';
   arg = 1;
-  diff1_ip=cosets=seengpname=seencosname=FALSE;
+  diff1_ip = cosets = seengpname = seencosname = FALSE;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-cos")==0)
-      cosets=TRUE;
-    else if (strcmp(argv[arg],"-op")==0) {
+    if (strcmp(argv[arg], "-cos") == 0)
+      cosets = TRUE;
+    else if (strcmp(argv[arg], "-op") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpwa();
-      if (strcmp(argv[arg],"d")==0)
-        op_store=DENSE;
-      else if (strcmp(argv[arg],"s")==0)
-        op_store=SPARSE;
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
+        op_store = DENSE;
+      else if (strcmp(argv[arg], "s") == 0)
+        op_store = SPARSE;
       else
-        badusage_gpwa();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
-    else if (strcmp(argv[arg],"-l")==0)
+    else if (strcmp(argv[arg], "-l") == 0)
       kbm_large = TRUE;
-    else if (strcmp(argv[arg],"-h")==0)
+    else if (strcmp(argv[arg], "-h") == 0)
       kbm_huge = TRUE;
-    else if (strcmp(argv[arg],"-diff1")==0)
+    else if (strcmp(argv[arg], "-diff1") == 0)
       diff1_ip = TRUE;
-    else if (strcmp(argv[arg],"-diff2")==0)
+    else if (strcmp(argv[arg], "-diff2") == 0)
       diff1_ip = FALSE;
     else if (argv[arg][0] == '-')
-      badusage_gpwa();
+      badusage();
     else if (!seengpname) {
-      seengpname=TRUE;
-      strcpy(gpname,argv[arg]);
+      seengpname = TRUE;
+      strcpy(gpname, argv[arg]);
     }
     else if (!seencosname) {
-      seencosname=TRUE;
-      sprintf(cosgpname,"%s.%s",gpname,argv[arg]);
+      seencosname = TRUE;
+      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
     }
     else
-      badusage_gpwa();
+      badusage();
     arg++;
   }
   if (!seengpname)
-    badusage_gpwa();
+    badusage();
   if (cosets && !seencosname)
-    sprintf(cosgpname,"%s.cos",gpname);
+    sprintf(cosgpname, "%s.cos", gpname);
 
-  if (cosets) strcpy(inf,cosgpname);
-  else strcpy(inf,gpname);
-
-  strcpy(outf,inf);
-  strcat(outf,".wa");
-
-  strcpy(tempfilename,inf);
-  strcat(tempfilename,"temp_wa_XXX");
-
-  if (diff1_ip)
-    {if (cosets) strcat(inf,".midiff1"); else strcat(inf,".diff1");}
+  if (cosets)
+    strcpy(inf, cosgpname);
   else
-    {if (cosets) strcat(inf,".midiff2"); else strcat(inf,".diff2");}
+    strcpy(inf, gpname);
 
-  tmalloc(fsawd,fsa,1);
+  strcpy(outf, inf);
+  strcat(outf, ".wa");
 
-/* We always use dense format for the word-difference machine -
- * this is much faster, and the machine is usually not too big.
- */
-  if ((rfile = fopen(inf,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf);
+  strcpy(tempfilename, inf);
+  strcat(tempfilename, "temp_wa_XXX");
+
+  if (diff1_ip) {
+    if (cosets)
+      strcat(inf, ".midiff1");
+    else
+      strcat(inf, ".diff1");
+  }
+  else {
+    if (cosets)
+      strcat(inf, ".midiff2");
+    else
+      strcat(inf, ".diff2");
+  }
+
+  tmalloc(fsawd, fsa, 1);
+
+  /* We always use dense format for the word-difference machine -
+   * this is much faster, and the machine is usually not too big.
+   */
+  if ((rfile = fopen(inf, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
   }
-  fsa_read(rfile,fsawd,DENSE,0,0,TRUE,fsaname);
+  fsa_read(rfile, fsawd, DENSE, 0, 0, TRUE, fsaname);
   fclose(rfile);
 
-  gpwa = cosets ? fsa_wa_cos(fsawd,op_store,TRUE,tempfilename) :
-                  fsa_wa(fsawd,op_store,TRUE,tempfilename);
+  gpwa = cosets ? fsa_wa_cos(fsawd, op_store, TRUE, tempfilename)
+                : fsa_wa(fsawd, op_store, TRUE, tempfilename);
   tfree(fsawd);
 
-  if (kbm_print_level>1)
+  if (kbm_print_level > 1)
     printf("  #Number of states of gpwa before minimisation = %d.\n",
-        gpwa->states->size);
+           gpwa->states->size);
   fsa_minimize(gpwa);
-  if (kbm_print_level>1)
+  if (kbm_print_level > 1)
     printf("  #Number of states of gpwa after minimisation = %d.\n",
-        gpwa->states->size);
+           gpwa->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname,".wa");
-  wfile = fopen(outf,"w");
-  fsa_print(wfile,gpwa,fsaname);
+  strcat(fsaname, ".wa");
+  wfile = fopen(outf, "w");
+  fsa_print(wfile, gpwa, fsaname);
   fclose(wfile);
 
-  if (kbm_print_level>0)
-    printf("#Word-acceptor with %d states computed.\n",gpwa->states->size);
+  if (kbm_print_level > 0)
+    printf("#Word-acceptor with %d states computed.\n", gpwa->states->size);
 
   fsa_clear(gpwa);
   tfree(gpwa);
   exit(0);
 }
 
-void 
-badusage_gpwa (void)
+void badusage(void)
 {
-    fprintf(stderr,
-    "Usage: gpwa [-op d/s] [-silent] [-v] [-l/-h] [-diff1/-diff2]\n");
-    fprintf(stderr,"\t\t[-cos] groupname[ -cosname]\n");
-    exit(1);
+  fprintf(stderr,
+          "Usage: gpwa [-op d/s] [-silent] [-v] [-l/-h] [-diff1/-diff2]\n");
+  fprintf(stderr, "\t\t[-cos] groupname[ -cosname]\n");
+  exit(1);
 }

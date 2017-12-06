@@ -53,15 +53,15 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_gpgenmult();
-int   (*reduce_word)();
+static void badusage(void);
+int (*reduce_word)(gen *w, reduction_struct *rs_rws);
 
-int 
-main (int argc, char *argv[])
-{ int arg, i, *inv, ngens, maxwdiffs, maxeqns;
+int main(int argc, char *argv[])
+{
+  int arg, i, *inv, ngens, maxwdiffs, maxeqns;
   fsa wa, diff1, diff2, *genmultptr;
-  char inf1[100], inf2[100],
-       inf3[100], outf[100], fsaname[100], tempfilename[100];
+  char inf1[100], inf2[100], inf3[100], outf[100], fsaname[100],
+      tempfilename[100];
   reduction_equation *eqnptr;
   reduction_struct rs_wd;
   boolean correction = FALSE;
@@ -70,141 +70,147 @@ main (int argc, char *argv[])
   boolean eqnstop = TRUE;
   boolean readback = TRUE;
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   maxwdiffs = MAXWDIFFS;
   maxeqns = MAXEQNS;
   inf1[0] = '\0';
   arg = 1;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-op")==0) {
+    if (strcmp(argv[arg], "-op") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpgenmult();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         op_store = DENSE;
-      else if (strcmp(argv[arg],"s")==0)
+      else if (strcmp(argv[arg], "s") == 0)
         op_store = SPARSE;
       else
-        badusage_gpgenmult();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
-    else if (strcmp(argv[arg],"-l")==0)
+    else if (strcmp(argv[arg], "-l") == 0)
       kbm_large = TRUE;
-    else if (strcmp(argv[arg],"-h")==0)
+    else if (strcmp(argv[arg], "-h") == 0)
       kbm_huge = TRUE;
-    else if (strcmp(argv[arg],"-c")==0)
+    else if (strcmp(argv[arg], "-c") == 0)
       correction = TRUE;
-    else if (strcmp(argv[arg],"-ns")==0)
+    else if (strcmp(argv[arg], "-ns") == 0)
       eqnstop = FALSE;
-    else if (strcmp(argv[arg],"-f")==0)
+    else if (strcmp(argv[arg], "-f") == 0)
       readback = FALSE;
-    else if (strcmp(argv[arg],"-mwd")==0) {
+    else if (strcmp(argv[arg], "-mwd") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpgenmult();
+        badusage();
       maxwdiffs = atoi(argv[arg]);
     }
-    else if (strcmp(argv[arg],"-m")==0) {
+    else if (strcmp(argv[arg], "-m") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpgenmult();
+        badusage();
       maxeqns = atoi(argv[arg]);
     }
     else {
-       if (argv[arg][0] == '-')
-         badusage_gpgenmult();
-       if (strcmp(inf1,"")!=0)
-         badusage_gpgenmult();
-       else
-         strcpy(inf1,argv[arg]);
+      if (argv[arg][0] == '-')
+        badusage();
+      if (strcmp(inf1, "") != 0)
+        badusage();
+      else
+        strcpy(inf1, argv[arg]);
     }
     arg++;
   }
-  
-  strcpy(tempfilename,inf1);
-  strcat(tempfilename,"temp_triples_XXX");
 
-  strcpy(inf2,inf1);
-  strcat(inf2,".diff2");
+  strcpy(tempfilename, inf1);
+  strcat(tempfilename, "temp_triples_XXX");
+
+  strcpy(inf2, inf1);
+  strcat(inf2, ".diff2");
 
   if (correction) {
-    strcpy(inf3,inf1);
-    strcat(inf3,".diff1");
+    strcpy(inf3, inf1);
+    strcat(inf3, ".diff1");
   }
 
-  strcpy(outf,inf1);
-  strcat(outf,".gm");
+  strcpy(outf, inf1);
+  strcat(outf, ".gm");
 
-  strcat(inf1,".wa");
+  strcat(inf1, ".wa");
 
-  if ((rfile = fopen(inf1,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf1);
-      exit(1);
-  }
-  fsa_read(rfile,&wa,DENSE,0,0,TRUE,fsaname);
-  fclose(rfile);
-  if ((rfile = fopen(inf2,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf2);
+  if ((rfile = fopen(inf1, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf1);
     exit(1);
   }
-  fsa_read(rfile,&diff2,DENSE,0,0,TRUE,fsaname);
+  fsa_read(rfile, &wa, DENSE, 0, 0, TRUE, fsaname);
+  fclose(rfile);
+  if ((rfile = fopen(inf2, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf2);
+    exit(1);
+  }
+  fsa_read(rfile, &diff2, DENSE, 0, 0, TRUE, fsaname);
   fclose(rfile);
 
   if (correction)
-    tmalloc(eqnptr,reduction_equation,maxeqns)
-  else {
-    eqnptr = 0;
-    maxeqns = 0;
-  }
+    tmalloc(eqnptr, reduction_equation, maxeqns) else
+    {
+      eqnptr = 0;
+      maxeqns = 0;
+    }
 
-  genmultptr = fsa_triples(&wa,&diff2,op_store,TRUE,tempfilename,eqnptr,
-			maxeqns,eqnstop,&foundeqns,readback);
+  genmultptr = fsa_triples(&wa, &diff2, op_store, TRUE, tempfilename, eqnptr,
+                           maxeqns, eqnstop, &foundeqns, readback);
 
   if (foundeqns) { /*This is the case where new equations were found. */
-    if (correction)  {
-      if (kbm_print_level>1)
+    if (correction) {
+      if (kbm_print_level > 1)
         printf("  #Altering wd-machine to make it accept new equations.\n");
-      if ((rfile = fopen(inf3,"r")) == 0) {
-        fprintf(stderr,"Cannot open file %s.\n",inf3);
-          exit(1);
+      if ((rfile = fopen(inf3, "r")) == 0) {
+        fprintf(stderr, "Cannot open file %s.\n", inf3);
+        exit(1);
       }
-      fsa_read(rfile,&diff1,DENSE,0,maxwdiffs,TRUE,fsaname);
+      fsa_read(rfile, &diff1, DENSE, 0, maxwdiffs, TRUE, fsaname);
       fclose(rfile);
-      if (fsa_table_dptr_init(&diff1)== -1) exit(1);
+      if (fsa_table_dptr_init(&diff1) == -1)
+        exit(1);
       reduce_word = diff_reduce;
-      if (fsa_table_dptr_init(&diff1)== -1) exit(1);
+      if (fsa_table_dptr_init(&diff1) == -1)
+        exit(1);
 
-/* We need to know the inverses of generators - let's just work them out! */
+      /* We need to know the inverses of generators - let's just work them out!
+       */
       ngens = diff1.alphabet->base->size;
       rs_wd.wd_fsa = &diff2;
-      if (calculate_inverses(&inv,ngens,&rs_wd)==-1) exit(1);
+      if (calculate_inverses(&inv, ngens, &rs_wd) == -1)
+        exit(1);
 
-      i=0;
-      while (eqnptr[i].lhs && i<maxeqns) {
-        if (add_wd_fsa(&diff1,eqnptr+i,inv,FALSE,&rs_wd)== -1) exit(1);
+      i = 0;
+      while (eqnptr[i].lhs && i < maxeqns) {
+        if (add_wd_fsa(&diff1, eqnptr + i, inv, FALSE, &rs_wd) == -1)
+          exit(1);
         i++;
       }
 
-      if (kbm_print_level>1)
+      if (kbm_print_level > 1)
         printf("  #Word-difference machine now has %d states.\n",
-                 diff1.states->size);
+               diff1.states->size);
 
-      wfile = fopen(inf3,"w");
-      fsa_print(wfile,&diff1,fsaname);
+      wfile = fopen(inf3, "w");
+      fsa_print(wfile, &diff1, fsaname);
       fclose(wfile);
 
       tfree(inv);
       fsa_clear(&diff1);
-      i=0;
-      while (eqnptr[i].lhs && i<maxeqns) {
-        tfree(eqnptr[i].lhs); tfree(eqnptr[i].rhs);
+      i = 0;
+      while (eqnptr[i].lhs && i < maxeqns) {
+        tfree(eqnptr[i].lhs);
+        tfree(eqnptr[i].rhs);
         i++;
       }
       tfree(eqnptr);
@@ -213,29 +219,31 @@ main (int argc, char *argv[])
     exit(2);
   }
 
-  if (genmultptr==0) exit(1);
+  if (genmultptr == 0)
+    exit(1);
 
-  if (kbm_print_level>1)
+  if (kbm_print_level > 1)
     printf("  #Number of states of triples before minimisation = %d.\n",
-        genmultptr->states->size);
+           genmultptr->states->size);
   if (readback) {
-    if (fsa_labeled_minimize(genmultptr)== -1) exit(1);
+    if (fsa_labeled_minimize(genmultptr) == -1)
+      exit(1);
   }
-  else
-    if (fsa_ip_labeled_minimize(genmultptr)== -1) exit(1);
-  if (kbm_print_level>1)
+  else if (fsa_ip_labeled_minimize(genmultptr) == -1)
+    exit(1);
+  if (kbm_print_level > 1)
     printf("  #Number of states of triples after minimisation = %d.\n",
-        genmultptr->states->size);
+           genmultptr->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname,".gm");
-  wfile = fopen(outf,"w");
-    fsa_print(wfile,genmultptr,fsaname);
+  strcat(fsaname, ".gm");
+  wfile = fopen(outf, "w");
+  fsa_print(wfile, genmultptr, fsaname);
   fclose(wfile);
 
-  if (kbm_print_level>0)
+  if (kbm_print_level > 0)
     printf("#Generalised multiplier with %d states computed.\n",
-            genmultptr->states->size);
+           genmultptr->states->size);
 
   fsa_clear(genmultptr);
   tfree(genmultptr);
@@ -243,13 +251,11 @@ main (int argc, char *argv[])
     tfree(eqnptr);
   exit(0);
 }
- 
-void 
-badusage_gpgenmult (void)
+
+void badusage(void)
 {
-    fprintf(stderr,
-   "Usage: gpgenmult [-op d/s] [-silent] [-v] [-l/-h] [-c] [-mwd maxwdiffs]\n");
-    fprintf(stderr,
-        "\t\t [-m maxeqns] [-ns] [-f] groupname.\n");
-    exit(1);
+  fprintf(stderr, "Usage: gpgenmult [-op d/s] [-silent] [-v] [-l/-h] [-c] "
+                  "[-mwd maxwdiffs]\n");
+  fprintf(stderr, "\t\t [-m maxeqns] [-ns] [-f] groupname.\n");
+  exit(1);
 }

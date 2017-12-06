@@ -29,11 +29,11 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_gpgenmult2();
+static void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg;
+int main(int argc, char *argv[])
+{
+  int arg;
   fsa genmult, *genmult2ptr;
   char inf[100], outf[100], fsaname[100], tablefilename[100];
   storage_type ip_store = DENSE;
@@ -41,112 +41,115 @@ main (int argc, char *argv[])
   storage_type op_store = SPARSE;
   boolean readback = TRUE;
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   inf[0] = '\0';
   arg = 1;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-ip")==0) {
+    if (strcmp(argv[arg], "-ip") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpgenmult2();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         ip_store = DENSE;
       else if (argv[arg][0] == 's') {
         ip_store = SPARSE;
         if (stringlen(argv[arg]) > 1)
-          dr = atoi(argv[arg]+1);
+          dr = atoi(argv[arg] + 1);
       }
       else
-        badusage_gpgenmult2();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-op")==0) {
+    else if (strcmp(argv[arg], "-op") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpgenmult2();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         op_store = DENSE;
-      else if (strcmp(argv[arg],"s")==0)
+      else if (strcmp(argv[arg], "s") == 0)
         op_store = SPARSE;
       else
-        badusage_gpgenmult2();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
-    else if (strcmp(argv[arg],"-l")==0)
+    else if (strcmp(argv[arg], "-l") == 0)
       kbm_large = TRUE;
-    else if (strcmp(argv[arg],"-h")==0)
+    else if (strcmp(argv[arg], "-h") == 0)
       kbm_huge = TRUE;
-    else if (strcmp(argv[arg],"-f")==0)
+    else if (strcmp(argv[arg], "-f") == 0)
       readback = FALSE;
     else {
-       if (argv[arg][0] == '-')
-         badusage_gpgenmult2();
-       if (strcmp(inf,"")!=0)
-         badusage_gpgenmult2();
-       else
-         strcpy(inf,argv[arg]);
+      if (argv[arg][0] == '-')
+        badusage();
+      if (strcmp(inf, "") != 0)
+        badusage();
+      else
+        strcpy(inf, argv[arg]);
     }
     arg++;
   }
-  if (stringlen(inf)==0)
-    badusage_gpgenmult2();
-  
-  strcpy(tablefilename,inf);
-  strcat(tablefilename,".gm2_ut");
+  if (stringlen(inf) == 0)
+    badusage();
 
-  strcpy(outf,inf);
-  strcat(outf,".gm2");
+  strcpy(tablefilename, inf);
+  strcat(tablefilename, ".gm2_ut");
 
-  strcat(inf,".gm");
+  strcpy(outf, inf);
+  strcat(outf, ".gm2");
 
-  if ((rfile = fopen(inf,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf);
-      exit(1);
+  strcat(inf, ".gm");
+
+  if ((rfile = fopen(inf, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf);
+    exit(1);
   }
-  fsa_read(rfile,&genmult,ip_store,dr,0,TRUE,fsaname);
+  fsa_read(rfile, &genmult, ip_store, dr, 0, TRUE, fsaname);
   fclose(rfile);
 
-  genmult2ptr = fsa_genmult2(&genmult,op_store,TRUE,tablefilename,readback);
-  if (genmult2ptr==0) exit(1);
+  genmult2ptr = fsa_genmult2(&genmult, op_store, TRUE, tablefilename, readback);
+  if (genmult2ptr == 0)
+    exit(1);
 
-  if (kbm_print_level>1)
-    printf("  #Number of states of genmult2 = %d.\n",genmult2ptr->states->size);
+  if (kbm_print_level > 1)
+    printf("  #Number of states of genmult2 = %d.\n",
+           genmult2ptr->states->size);
 
   if (readback) {
-    if (fsa_labeled_minimize(genmult2ptr)==-1) exit(1);
+    if (fsa_labeled_minimize(genmult2ptr) == -1)
+      exit(1);
   }
   else {
-    if (fsa_ip_labeled_minimize(genmult2ptr)==-1) exit(1);
+    if (fsa_ip_labeled_minimize(genmult2ptr) == -1)
+      exit(1);
   }
-  if (kbm_print_level>1)
+  if (kbm_print_level > 1)
     printf("  #Number of states of genmult2 after minimization = %d.\n",
-             genmult2ptr->states->size);
+           genmult2ptr->states->size);
   base_prefix(fsaname);
-  strcat(fsaname,".gm2");
-  wfile = fopen(outf,"w");
-  fsa_print(wfile,genmult2ptr,fsaname);
+  strcat(fsaname, ".gm2");
+  wfile = fopen(outf, "w");
+  fsa_print(wfile, genmult2ptr, fsaname);
   fclose(wfile);
 
-  if (kbm_print_level>0)
+  if (kbm_print_level > 0)
     printf("#Generalised length-2 multiplier with %d states computed.\n",
-            genmult2ptr->states->size);
+           genmult2ptr->states->size);
 
   fsa_clear(genmult2ptr);
   tfree(genmult2ptr);
   exit(0);
 }
- 
-void 
-badusage_gpgenmult2 (void)
+
+void badusage(void)
 {
-    fprintf(stderr,"Usage: \n");
-    fprintf(stderr,
-"gpgenmult2 [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h] [-f] groupname.\n");
-    exit(1);
+  fprintf(stderr, "Usage: \n");
+  fprintf(stderr, "gpgenmult2 [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h] "
+                  "[-f] groupname.\n");
+  exit(1);
 }

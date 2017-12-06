@@ -64,7 +64,7 @@ Also rws structure introduced.
 (i) introduced boolean array done.
 For i an equation number, done[i] true means that equation number i has
 been processed. So if done[i] and done[j] are both true, then there is no
-need to test for overlaps. This is mainly useful when re-running. 
+need to test for overlaps. This is mainly useful when re-running.
 (ii) The option -r (resume) to take input from group.kbprog, presumed
 to be output of a previous run.
 (iii) -cn confnum option introduced. If more than this number of pairs
@@ -78,7 +78,7 @@ A new feature - not all generators need have inverses listed, but all
 listed inverses must be 2-sided, and the inv_of function must be involutory.
 Only generators with inverses will be cancelled in the routine "insert".
 
-!! options added by dfh starting 30/3/94. 
+!! options added by dfh starting 30/3/94.
    -mlr maxlenleft maxlenright
    Only equations with lhs having length at most maxlenleft,
    rhs having length at most maxlenright are stored.
@@ -232,9 +232,9 @@ CHANGES TO KBPROG
 #include "definitions.h"
 
 #define MAXREDUCELENFAC 200
-#define MAXCYCLES  16384
+#define MAXCYCLES 16384
 
-#define  USAGE\
+#define USAGE                                                                  \
   "Usage: kbprog [-r] [-ro] [-t tidyint] [-me maxeqns] [-ms maxstates]\n\
   [-sort maxoplen] [-mlr maxlenleft maxlenright] [-mo maxoverlaplen]\n\
   [-mrl maxreducelen] [-v] [-ve] [-vv] [-silent]\n\
@@ -242,32 +242,26 @@ CHANGES TO KBPROG
   [-wd] [-vwd] [-mwd maxwdiffs] [-mt min_time] [-hf halting_factor]\n\
   [-rk minlen mineqns] [-cn confnum] [-op] groupname\n"
 
-boolean kbm_onintr; /* set true on interrupt signal */
-static char  inf[100],   /* name of input file */
-            outf[100], /* name of output file for rewriting system 
-                              = inf.kbprog   */
-           outfr[100], /* name of output file for rws.reduction_fsa
-           for rewriting system - inf.reduce */
-           outf1[100], /* name of output file for first wd-machine 
-                              = inf.diff1   */
-           outf2[100], /* name of output file for second wd-machine 
-                              = inf.diff2   */
-           outfec[100], /* name of output file for GAP exit code
-                              = inf.kbprog.ec   */
-           outflog[100]; /* name of logfile for automata run */
-static  FILE  *rfile, *wfile;
+boolean kbm_onintr;   /* set true on interrupt signal */
+static char inf[100], /* name of input file */
+    outf[100],        /* name of output file for rewriting system
+                             = inf.kbprog   */
+    outfr[100],       /* name of output file for rws.reduction_fsa
+          for rewriting system - inf.reduce */
+    outf1[100],       /* name of output file for first wd-machine
+                             = inf.diff1   */
+    outf2[100],       /* name of output file for second wd-machine
+                             = inf.diff2   */
+    outfec[100],      /* name of output file for GAP exit code
+                            = inf.kbprog.ec   */
+    outflog[100];     /* name of logfile for automata run */
+static FILE *rfile, *wfile;
 
 /* Functions defined in this file: */
-void read_kbprog_command();
-void interrupt_kbprog(int);
-void output_and_exit_kbprog();
-void badusage_kbprog();
+static void badusage(void);
+static void output_and_exit_kbprog(rewriting_system *rwsptr);
 
-void
-read_kbprog_command(argc,argv,rwsptr)
-  int             argc;
-  char           *argv[];
-  rewriting_system *rwsptr;
+void read_kbprog_command(int argc, char *argv[], rewriting_system *rwsptr)
 {
   int arg = 1;
   while (argc > arg) {
@@ -281,54 +275,54 @@ read_kbprog_command(argc,argv,rwsptr)
       rwsptr->tidyintset = TRUE;
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->tidyint = atoi(argv[arg]);
-                }
+    }
     else if (strcmp(argv[arg], "-me") == 0) {
       rwsptr->maxeqnsset = TRUE;
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxeqns = atoi(argv[arg]);
     }
     else if (strcmp(argv[arg], "-ms") == 0) {
       rwsptr->maxstatesset = TRUE;
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxstates = atoi(argv[arg]);
     }
     else if (strcmp(argv[arg], "-sort") == 0) {
       rwsptr->sorteqns = TRUE;
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxoplen = atoi(argv[arg]);
     }
     else if (strcmp(argv[arg], "-mlr") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxlenleft = atoi(argv[arg]);
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxlenright = atoi(argv[arg]);
-      if (rwsptr->maxlenleft<=0 || rwsptr->maxlenright<=0)
-                        /* invalid setting */
-        rwsptr->maxlenleft=rwsptr->maxlenright=0;
+      if (rwsptr->maxlenleft <= 0 || rwsptr->maxlenright <= 0)
+        /* invalid setting */
+        rwsptr->maxlenleft = rwsptr->maxlenright = 0;
     }
     else if (strcmp(argv[arg], "-mo") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxoverlaplen = atoi(argv[arg]);
     }
     else if (strcmp(argv[arg], "-mrl") == 0) {
       rwsptr->maxreducelenset = TRUE;
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxreducelen = atoi(argv[arg]);
     }
     else if (strcmp(argv[arg], "-rec") == 0) {
@@ -341,7 +335,7 @@ read_kbprog_command(argc,argv,rwsptr)
     }
     else if (strcmp(argv[arg], "-lex") == 0) {
       rwsptr->orderingset = TRUE;
-      rwsptr->ordering = SHORTLEX;  /* DEFAULT! */
+      rwsptr->ordering = SHORTLEX; /* DEFAULT! */
     }
     else if (strcmp(argv[arg], "-wtlex") == 0) {
       rwsptr->orderingset = TRUE;
@@ -355,39 +349,39 @@ read_kbprog_command(argc,argv,rwsptr)
       rwsptr->confnumset = TRUE;
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->confnum = atoi(argv[arg]);
-                }
+    }
     else if (strcmp(argv[arg], "-op") == 0) {
       rwsptr->outputprefixes = TRUE;
-                }
+    }
     else if (strcmp(argv[arg], "-rk") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->rkminlen = atoi(argv[arg]);
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->rkmineqns = atoi(argv[arg]);
-      if (rwsptr->rkminlen<=0 || rwsptr->rkmineqns<0)
-                        /* invalid setting */
-        rwsptr->rkminlen=rwsptr->rkmineqns=0;
+      if (rwsptr->rkminlen <= 0 || rwsptr->rkmineqns < 0)
+        /* invalid setting */
+        rwsptr->rkminlen = rwsptr->rkmineqns = 0;
     }
     else if (strcmp(argv[arg], "-wd") == 0) {
       rwsptr->worddiffs = TRUE;
     }
-                else if (strcmp(argv[arg], "-vwd") == 0) {
-                        kbm_print_level *= 7;
-                        rwsptr->verboseset = TRUE;
-                }
+    else if (strcmp(argv[arg], "-vwd") == 0) {
+      kbm_print_level *= 7;
+      rwsptr->verboseset = TRUE;
+    }
     else if (strcmp(argv[arg], "-mwd") == 0) {
       rwsptr->maxwdiffset = TRUE;
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxwdiffs = atoi(argv[arg]);
-                }
+    }
     else if (strcmp(argv[arg], "-silent") == 0) {
       rwsptr->silentset = TRUE;
       kbm_print_level = 0;
@@ -407,33 +401,33 @@ read_kbprog_command(argc,argv,rwsptr)
     else if (strcmp(argv[arg], "-mh") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->maxhad = atoi(argv[arg]);
     }
     else if (strcmp(argv[arg], "-mt") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->min_time = atoi(argv[arg]);
-                }
+    }
     else if (strcmp(argv[arg], "-hf") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_kbprog();
+        badusage();
       rwsptr->halting_factor = atoi(argv[arg]);
-                }
+    }
     else {
       if (argv[arg][0] == '-')
-        badusage_kbprog();
+        badusage();
       strcpy(inf, argv[arg]);
       strcpy(outf, inf);
       strcat(outf, ".");
       strcat(outf, "kbprog");
-      strcpy(outfec,outf);
-      strcat(outfec,".ec");
+      strcpy(outfec, outf);
+      strcat(outfec, ".ec");
       strcpy(outfr, inf);
-      strcat(outfr,".reduce");
-      if (rwsptr->worddiffs){
+      strcat(outfr, ".reduce");
+      if (rwsptr->worddiffs) {
         strcpy(outf1, inf);
         strcat(outf1, ".");
         strcat(outf1, "diff1");
@@ -447,15 +441,14 @@ read_kbprog_command(argc,argv,rwsptr)
     }
     arg++;
   }
-  if (stringlen(inf)==0)
-    badusage_kbprog();
+  if (stringlen(inf) == 0)
+    badusage();
 }
 
-void 
-interrupt_kbprog (int sig)
 /* When the program receives an interrupt  signal, it continues until the
  * next tidying, and then stops and outputs.
  */
+void interrupt_kbprog(int sig)
 {
   kbm_onintr = TRUE;
   signal(SIGINT, SIG_DFL);
@@ -463,82 +456,81 @@ interrupt_kbprog (int sig)
   signal(SIGQUIT, SIG_DFL);
 }
 
-int 
-main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   rewriting_system rws;
   rewriting_system *rwsptr;
-  int             i, k;
+  int i, k;
 
-  setbuf(stdout, (char *) 0);
-  setbuf(stderr, (char *) 0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
-/* First set some default values of the rewriting-system fields. They may be
- * overridden by command-line or input in file.
- */
-  rwsptr= &rws;
-  set_defaults(rwsptr,FALSE);
-  read_kbprog_command(argc,argv,rwsptr);
-  rws.print_eqns = kbm_print_level>2 && kbm_print_level%5==0;
+  /* First set some default values of the rewriting-system fields. They may be
+   * overridden by command-line or input in file.
+   */
+  rwsptr = &rws;
+  set_defaults(rwsptr, FALSE);
+  read_kbprog_command(argc, argv, rwsptr);
+  rws.print_eqns = kbm_print_level > 2 && kbm_print_level % 5 == 0;
 
   if (rws.resume) {
-      if ((rfile=fopen(outf,"r"))==0){
-      fprintf(stderr,"Error: cannot open file %s\n",outf);
-        exit(1);
-      }
-      read_kbinput(rfile,FALSE,rwsptr);
-/* If we are re-running from previous output, validity checks on input
- * should not be necessary.
- */
+    if ((rfile = fopen(outf, "r")) == 0) {
+      fprintf(stderr, "Error: cannot open file %s\n", outf);
+      exit(1);
+    }
+    read_kbinput(rfile, FALSE, rwsptr);
+    /* If we are re-running from previous output, validity checks on input
+     * should not be necessary.
+     */
   }
   else {
-      if ((rfile=fopen(inf,"r"))==0){
-      fprintf(stderr,"Error: cannot open file %s\n",inf);
-        exit(1);
-      }
-      read_kbinput(rfile,TRUE,rwsptr);
+    if ((rfile = fopen(inf, "r")) == 0) {
+      fprintf(stderr, "Error: cannot open file %s\n", inf);
+      exit(1);
+    }
+    read_kbinput(rfile, TRUE, rwsptr);
   }
   fclose(rfile);
 
   if (rws.resume_with_orig) {
-      if ((rfile=fopen(inf,"r"))==0){
-      fprintf(stderr,"Error: cannot open file %s\n",inf);
+    if ((rfile = fopen(inf, "r")) == 0) {
+      fprintf(stderr, "Error: cannot open file %s\n", inf);
+      exit(1);
+    }
+    read_extra_kbinput(rfile, FALSE, rwsptr);
+    fclose(rfile);
+  }
+
+  if (rws.maxlenleft > 0) {
+    k = rws.maxlenleft > rws.maxlenright ? rws.maxlenleft : rws.maxlenright;
+    if (rws.maxreducelen > MAXREDUCELENFAC * k)
+      rws.maxreducelen = 50 * k;
+  }
+
+  if (rws.worddiffs) {
+    /*
+        if (rws.ordering != SHORTLEX) {
+                fprintf(stderr,
+      "Word-difference calculation only makes sense for the shortlex
+      ordering.\n"); exit(1);
+        }
+    */
+    if (!rws.confnumset)
+      rws.confnum *= 8;
+    /* If we are calculating word-differences, we are not interested in
+     * lots of confluence tests.
+     */
+    for (i = 1; i <= rws.num_gens; i++)
+      if (rws.inv_of[i] == 0) {
+        fprintf(stderr, "Word-difference calculation requires that all "
+                        "generators have inverses.\n");
         exit(1);
       }
-      read_extra_kbinput(rfile,FALSE,rwsptr);
-      fclose(rfile);
-  }
-
-  if (rws.maxlenleft>0) {
-    k = rws.maxlenleft>rws.maxlenright ?
-      rws.maxlenleft : rws.maxlenright;
-    if (rws.maxreducelen>MAXREDUCELENFAC*k)
-      rws.maxreducelen=50*k;
-  }
-
-  if (rws.worddiffs){
-/*
-    if (rws.ordering != SHORTLEX) {
-            fprintf(stderr,
-  "Word-difference calculation only makes sense for the shortlex ordering.\n");
-     exit(1);
-    }
-*/
-    if (!rws.confnumset)
-      rws.confnum *=8;
-/* If we are calculating word-differences, we are not interested in
- * lots of confluence tests.
- */
-    for (i=1;i<=rws.num_gens;i++) if (rws.inv_of[i]==0){
-      fprintf(stderr,
-   "Word-difference calculation requires that all generators have inverses.\n");
+    tmalloc(rws.wd_fsa, fsa, 1);
+    if (initialise_wd_fsa(rws.wd_fsa, rws.reduction_fsa->alphabet,
+                          rws.maxwdiffs) == -1)
       exit(1);
-    }
-    tmalloc(rws.wd_fsa,fsa,1);
-    if (initialise_wd_fsa(
-          rws.wd_fsa,rws.reduction_fsa->alphabet,rws.maxwdiffs)==-1)
-      exit(1);
-    tmalloc(rws.wd_record,struct wdr,MAXCYCLES+1);
+    tmalloc(rws.wd_record, struct wdr, MAXCYCLES + 1);
     rws.hadct = 0;
     rws.tot_eqns = 0;
   }
@@ -547,119 +539,117 @@ main (int argc, char *argv[])
   signal(SIGKILL, interrupt_kbprog);
   signal(SIGQUIT, interrupt_kbprog);
 
-  if (kbprog(rwsptr)==-1) exit(1);
+  if (kbprog(rwsptr) == -1)
+    exit(1);
   output_and_exit_kbprog(rwsptr);
 }
 
-void
-output_and_exit_kbprog(rwsptr)
-  rewriting_system *rwsptr;
-{  int i, j, l;
+static void output_and_exit_kbprog(rewriting_system *rwsptr)
+{
+  int i, j, l;
   gen **pref, *w;
   int ndiff1, ndiff2;
   reduction_struct rs_rws;
-  rs_rws.rws=rwsptr;
-  if (rwsptr->exit_status==1)
+  rs_rws.rws = rwsptr;
+  if (rwsptr->exit_status == 1)
     exit(rwsptr->exit_status);
-  if (rwsptr->worddiffs){
+  if (rwsptr->worddiffs) {
     rwsptr->new_wd = 0;
-    build_wd_fsa(rwsptr->wd_fsa,rwsptr->new_wd,&rs_rws);
+    build_wd_fsa(rwsptr->wd_fsa, rwsptr->new_wd, &rs_rws);
     should_we_halt(rwsptr); /* to calculate factors */
     ndiff1 = rwsptr->wd_fsa->states->size;
-    wfile = fopen(outf1,"w");
-    print_wdoutput(wfile,".diff1",rwsptr);
+    wfile = fopen(outf1, "w");
+    print_wdoutput(wfile, ".diff1", rwsptr);
     fclose(wfile);
-    if (make_full_wd_fsa(rwsptr->wd_fsa,rwsptr->inv_of,1,&rs_rws)== -1)
+    if (make_full_wd_fsa(rwsptr->wd_fsa, rwsptr->inv_of, 1, &rs_rws) == -1)
       exit(1);
     ndiff2 = rwsptr->wd_fsa->states->size;
-    wfile = fopen(outf2,"w");
-    print_wdoutput(wfile,".diff2",rwsptr);
+    wfile = fopen(outf2, "w");
+    print_wdoutput(wfile, ".diff2", rwsptr);
     fclose(wfile);
     fsa_clear(rwsptr->wd_fsa);
     tfree(rwsptr->wd_fsa);
-    if (kbm_print_level>0) {
-      printf("#Halting with %d equations.\n",rwsptr->num_eqns);
-      printf(
-                   "#First word-difference machine with %d states computed.\n",
-                  ndiff1);
-      printf(
-                   "#Second word-difference machine with %d states computed.\n",
-                  ndiff2);
+    if (kbm_print_level > 0) {
+      printf("#Halting with %d equations.\n", rwsptr->num_eqns);
+      printf("#First word-difference machine with %d states computed.\n",
+             ndiff1);
+      printf("#Second word-difference machine with %d states computed.\n",
+             ndiff2);
     }
-    if (kbm_print_level>=2) {
-      printf("  #eqn_factor=%d, states_factor=%d\n",
-          rwsptr->eqn_factor,rwsptr->states_factor);
+    if (kbm_print_level >= 2) {
+      printf("  #eqn_factor=%d, states_factor=%d\n", rwsptr->eqn_factor,
+             rwsptr->states_factor);
     }
-    if (rwsptr->exit_status==0 && kbm_print_level>0)
-    printf("#System is confluent, or halting factor condition holds.\n");
+    if (rwsptr->exit_status == 0 && kbm_print_level > 0)
+      printf("#System is confluent, or halting factor condition holds.\n");
     tfree(rwsptr->wd_record);
     if (rwsptr->rk_on)
       rk_clear(rwsptr);
   }
   else {
     if (rwsptr->sorteqns)
-      sort_eqns(rwsptr->maxoplen,rwsptr);
-    wfile = fopen(outf,"w");
-    print_kboutput(wfile,rwsptr);
+      sort_eqns(rwsptr->maxoplen, rwsptr);
+    wfile = fopen(outf, "w");
+    print_kboutput(wfile, rwsptr);
     fclose(wfile);
-/* We complete the definition of the fsa before printing it */
-    strcat(rwsptr->name,".reductionFSA");
+    /* We complete the definition of the fsa before printing it */
+    strcat(rwsptr->name, ".reductionFSA");
     rwsptr->reduction_fsa->states->size = rwsptr->num_states;
     rwsptr->reduction_fsa->num_accepting = rwsptr->num_states;
-    if (rwsptr->num_states==1) {
-      tmalloc(rwsptr->reduction_fsa->accepting,int,2);
-      rwsptr->reduction_fsa->accepting[1]=1;
+    if (rwsptr->num_states == 1) {
+      tmalloc(rwsptr->reduction_fsa->accepting, int, 2);
+      rwsptr->reduction_fsa->accepting[1] = 1;
     }
-    if (rwsptr->outputprefixes){
-/* In this case we want to output the prefixes of the left-hand sides of
- * equations associated with the states. First we must calculate them.
- */
+    if (rwsptr->outputprefixes) {
+      /* In this case we want to output the prefixes of the left-hand sides of
+       * equations associated with the states. First we must calculate them.
+       */
       rwsptr->reduction_fsa->states->type = WORDS;
       rwsptr->reduction_fsa->states->alphabet_size =
-                     rwsptr->reduction_fsa->alphabet->size;
-      for (i=1;i<=rwsptr->reduction_fsa->alphabet->size;i++) {
-       tmalloc(rwsptr->reduction_fsa->states->alphabet[i],char,
-                   stringlen(rwsptr->reduction_fsa->alphabet->names[i])+1);
-       strcpy(rwsptr->reduction_fsa->states->alphabet[i],
-                                rwsptr->reduction_fsa->alphabet->names[i]);
+          rwsptr->reduction_fsa->alphabet->size;
+      for (i = 1; i <= rwsptr->reduction_fsa->alphabet->size; i++) {
+        tmalloc(rwsptr->reduction_fsa->states->alphabet[i], char,
+                stringlen(rwsptr->reduction_fsa->alphabet->names[i]) + 1);
+        strcpy(rwsptr->reduction_fsa->states->alphabet[i],
+               rwsptr->reduction_fsa->alphabet->names[i]);
       }
-      tmalloc(rwsptr->reduction_fsa->states->words,gen *,rwsptr->num_states+1);
+      tmalloc(rwsptr->reduction_fsa->states->words, gen *,
+              rwsptr->num_states + 1);
       pref = rwsptr->reduction_fsa->states->words;
-      for (i=1;i<=rwsptr->num_states;i++){
+      for (i = 1; i <= rwsptr->num_states; i++) {
         l = rwsptr->preflen[i];
         w = rwsptr->eqns[rwsptr->prefno[i]].lhs;
-/* Copy prefix from w to pref[i] */
-        tmalloc(pref[i],gen,l+1);
-        for (j=0;j<l;j++)
-           pref[i][j] = w[j];
+        /* Copy prefix from w to pref[i] */
+        tmalloc(pref[i], gen, l + 1);
+        for (j = 0; j < l; j++)
+          pref[i][j] = w[j];
         pref[i][l] = 0;
       }
     }
-    wfile = fopen(outfr,"w");
-    fsa_print(wfile,rwsptr->reduction_fsa,rwsptr->name);
+    wfile = fopen(outfr, "w");
+    fsa_print(wfile, rwsptr->reduction_fsa, rwsptr->name);
     fclose(wfile);
-    if (kbm_print_level>0)
-      printf("#Halting with %d equations.\n",rwsptr->num_eqns);
+    if (kbm_print_level > 0)
+      printf("#Halting with %d equations.\n", rwsptr->num_eqns);
   }
   rws_clear(rwsptr);
   fsa_clear(rwsptr->reduction_fsa);
-        tfree(rwsptr->reduction_fsa);
-  if (rwsptr->lostinfo && kbm_print_level>0) {
+  tfree(rwsptr->reduction_fsa);
+  if (rwsptr->lostinfo && kbm_print_level > 0) {
     printf(
-"WARNING: The monoid defined by the presentation may have changed, since\n\
+        "WARNING: The monoid defined by the presentation may have changed, since\n\
          equations have been discarded.\n\
          If you re-run, include the original equations.\n");
   }
-  if (kbm_print_level>1)
-    printf("  #Exit status is %d\n",rwsptr->exit_status);
-        wfile=fopen(outfec,"w");
-        fprintf(wfile,"_ExitCode := %d;\n",rwsptr->exit_status);
-        fclose(wfile);
+  if (kbm_print_level > 1)
+    printf("  #Exit status is %d\n", rwsptr->exit_status);
+  wfile = fopen(outfec, "w");
+  fprintf(wfile, "_ExitCode := %d;\n", rwsptr->exit_status);
+  fclose(wfile);
   exit(rwsptr->exit_status);
 }
 
-void 
-badusage_kbprog (void)
+static void badusage(void)
 {
   fprintf(stderr, USAGE);
   exit(1);

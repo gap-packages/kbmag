@@ -9,7 +9,7 @@
  * have already been run of G.
  *
  * SYNOPSIS:
- * gpmigenmult2 [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h] 
+ * gpmigenmult2 [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]
  *              [-pref prefix] groupname [cosname]
  *
  * Input is from groupname.cosname.migm
@@ -34,141 +34,142 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_gpmigenmult2();
+static void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg;
+int main(int argc, char *argv[])
+{
+  int arg;
   fsa migenmult, *migm2ptr;
   char gpname[100], inf[100], outf[100], fsaname[100], tablefilename[100],
-       prefix[16];
+      prefix[16];
   storage_type ip_store = DENSE;
   int dr = 0;
   storage_type op_store = SPARSE;
   boolean readback = TRUE;
   boolean seengpname, seencosname;
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
-  strcpy(prefix,"_x");
+  strcpy(prefix, "_x");
   arg = 1;
-  seengpname=seencosname=FALSE;
+  seengpname = seencosname = FALSE;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-ip")==0) {
+    if (strcmp(argv[arg], "-ip") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpmigenmult2();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         ip_store = DENSE;
       else if (argv[arg][0] == 's') {
         ip_store = SPARSE;
         if (stringlen(argv[arg]) > 1)
-          dr = atoi(argv[arg]+1);
+          dr = atoi(argv[arg] + 1);
       }
       else
-        badusage_gpmigenmult2();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-op")==0) {
+    else if (strcmp(argv[arg], "-op") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpmigenmult2();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         op_store = DENSE;
-      else if (strcmp(argv[arg],"s")==0)
+      else if (strcmp(argv[arg], "s") == 0)
         op_store = SPARSE;
       else
-        badusage_gpmigenmult2();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
-    else if (strcmp(argv[arg],"-l")==0)
+    else if (strcmp(argv[arg], "-l") == 0)
       kbm_large = TRUE;
-    else if (strcmp(argv[arg],"-h")==0)
+    else if (strcmp(argv[arg], "-h") == 0)
       kbm_huge = TRUE;
-    else if (strcmp(argv[arg],"-pref")==0) {
+    else if (strcmp(argv[arg], "-pref") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpmigenmult2();
-      strcpy(prefix,argv[arg]);
+        badusage();
+      strcpy(prefix, argv[arg]);
     }
-    else if (strcmp(argv[arg],"-f")==0){
+    else if (strcmp(argv[arg], "-f") == 0) {
       readback = FALSE;
-      fprintf(stderr,"Sorry - readback option not yet available.\n");
+      fprintf(stderr, "Sorry - readback option not yet available.\n");
       exit(1);
     }
     else if (argv[arg][0] == '-')
-      badusage_gpmigenmult2();
+      badusage();
     else if (!seengpname) {
-      seengpname=TRUE;
-      strcpy(gpname,argv[arg]);
+      seengpname = TRUE;
+      strcpy(gpname, argv[arg]);
     }
     else if (!seencosname) {
-      seencosname=TRUE;
-      sprintf(inf,"%s.%s",gpname,argv[arg]);
+      seencosname = TRUE;
+      sprintf(inf, "%s.%s", gpname, argv[arg]);
     }
     else
-      badusage_gpmigenmult2();
+      badusage();
     arg++;
   }
   if (!seengpname)
-    badusage_gpmigenmult2();
+    badusage();
   if (!seencosname)
-    sprintf(inf,"%s.cos",gpname);
-  
-  strcpy(tablefilename,inf);
-  strcat(tablefilename,".migm2_ut");
+    sprintf(inf, "%s.cos", gpname);
 
-  strcpy(outf,inf);
-  strcat(outf,".migm2");
+  strcpy(tablefilename, inf);
+  strcat(tablefilename, ".migm2_ut");
 
-  strcat(inf,".migm");
+  strcpy(outf, inf);
+  strcat(outf, ".migm2");
 
-  if ((rfile = fopen(inf,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf);
-      exit(1);
+  strcat(inf, ".migm");
+
+  if ((rfile = fopen(inf, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf);
+    exit(1);
   }
-  fsa_read(rfile,&migenmult,ip_store,dr,0,TRUE,fsaname);
+  fsa_read(rfile, &migenmult, ip_store, dr, 0, TRUE, fsaname);
   fclose(rfile);
 
   migm2ptr =
-     fsa_migm2(&migenmult,op_store,TRUE,tablefilename,readback,prefix);
-  if (migm2ptr==0) exit(1);
+      fsa_migm2(&migenmult, op_store, TRUE, tablefilename, readback, prefix);
+  if (migm2ptr == 0)
+    exit(1);
 
-  if (kbm_print_level>1)
-    printf("  #Number of states of migenmult2 = %d.\n",migm2ptr->states->size);
+  if (kbm_print_level > 1)
+    printf("  #Number of states of migenmult2 = %d.\n", migm2ptr->states->size);
 
-  if (readback){
-    if (midfa_labeled_minimize(migm2ptr)==-1) exit(1);
+  if (readback) {
+    if (midfa_labeled_minimize(migm2ptr) == -1)
+      exit(1);
   }
-  if (kbm_print_level>1)
+  if (kbm_print_level > 1)
     printf("  #Number of states of migenmult2 after minimization = %d.\n",
-             migm2ptr->states->size);
+           migm2ptr->states->size);
   base_prefix(fsaname);
-  strcat(fsaname,".gm2");
-  wfile = fopen(outf,"w");
-  fsa_print(wfile,migm2ptr,fsaname);
+  strcat(fsaname, ".gm2");
+  wfile = fopen(outf, "w");
+  fsa_print(wfile, migm2ptr, fsaname);
   fclose(wfile);
 
-  if (kbm_print_level>0)
+  if (kbm_print_level > 0)
     printf("#Generalised length-2 multiplier with %d states computed.\n",
-            migm2ptr->states->size);
+           migm2ptr->states->size);
 
   fsa_clear(migm2ptr);
   tfree(migm2ptr);
   exit(0);
 }
- 
-void 
-badusage_gpmigenmult2 (void)
+
+void badusage(void)
 {
-    fprintf(stderr,"Usage: \n");
-    fprintf(stderr,
-      "gpmimigenmult2 [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]\n");
-    fprintf(stderr,"		[-pref prefix] groupname [cosname].\n");
-    exit(1);
+  fprintf(stderr, "Usage: \n");
+  fprintf(stderr,
+          "gpmimigenmult2 [-ip d/s[dr]] [-op d/s] [-silent] [-v] [-l/-h]\n");
+  fprintf(stderr, "		[-pref prefix] groupname [cosname].\n");
+  exit(1);
 }

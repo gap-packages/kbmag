@@ -14,103 +14,116 @@
 
 #include <inttypes.h>
 
-#define MAXINT 		2147483647
-#define MAXSHORT 	32767
-#define MAXUSHORT 	65535
-#define MAXCHAR 	127
-#define MAXUCHAR 	255
+#define MAXINT 2147483647
+#define MAXSHORT 32767
+#define MAXUSHORT 65535
+#define MAXCHAR 127
+#define MAXUCHAR 255
 
-#define tmalloc(D,T,N) {D = (T *) malloc(sizeof(T)*(N)); \
- kbm_store_ptrs++;\
-  if (D==0) { fprintf(stderr,"Malloc failed to allocate %"PRIuPTR" bytes.\n",\
-  sizeof(T)*(N)); exit(2);}}
-#define tfree(D) {if (D) {free( (char *) D); D=0; kbm_store_ptrs--;}}
+#define tmalloc(D, T, N)                                                       \
+  {                                                                            \
+    D = (T *)malloc(sizeof(T) * (N));                                          \
+    kbm_store_ptrs++;                                                          \
+    if (D == 0) {                                                              \
+      fprintf(stderr, "Malloc failed to allocate %" PRIuPTR " bytes.\n",       \
+              sizeof(T) * (N));                                                \
+      exit(2);                                                                 \
+    }                                                                          \
+  }
+#define tfree(D)                                                               \
+  {                                                                            \
+    if (D) {                                                                   \
+      free((char *)D);                                                         \
+      D = 0;                                                                   \
+      kbm_store_ptrs--;                                                        \
+    }                                                                          \
+  }
 
 #define FALSE 0
-#define TRUE  1
-typedef  char boolean;
+#define TRUE 1
+typedef char boolean;
 #define MAXGEN MAXCHAR /* maximum number of generators */
-typedef char gen; /* for generators of monoids and groups */
+typedef char gen;      /* for generators of monoids and groups */
 
 /* The following macro is used for finding base-prefix of names of fsa's */
-#define base_prefix(w) {char * p=w; while (*p) if (*p=='.') *p='\0'; else p++;}
+#define base_prefix(w)                                                         \
+  {                                                                            \
+    char *p = w;                                                               \
+    while (*p)                                                                 \
+      if (*p == '.')                                                           \
+        *p = '\0';                                                             \
+      else                                                                     \
+        p++;                                                                   \
+  }
 
+#include "rws.h"
 
 /* function prototypes */
-extern boolean is_int(char *x);
-extern boolean isdelim(int c);
-extern boolean isvalid(int c);
-extern boolean read_int(FILE *rfile, int *integ, int *delim);
-extern boolean read_string(FILE *rfile, char *string, int *delim);
-extern boolean read_word();
-extern boolean slow_check_rws_reduce_rk();
-extern boolean slow_check_rws_reduce();
-extern boolean srec_equal();
-extern boolean table_equal();
-extern int add_expanded_word_to_buffer(FILE *wfile, gen *word, char **symbols);
-extern int add_iword_to_buffer(FILE *wfile,int *word,char **symbols);
-extern int add_wd_fsa_cos();
-extern int add_wd_fsa();
-extern int add_word_to_buffer(FILE *wfile, gen *word, char **symbols);
-extern int build_wd_fsa_cos();
-extern int build_wd_fsa();
-extern int calculate_inverses();
-extern int diff_no();
-extern int diff_reduce_cos();
-extern int diff_reduce_wl();
-extern int diff_reduce();
-extern int genstrcmp(gen *c, gen *d);
-extern int genstrlen(gen *c);
-extern int initialise_wd_fsa_cos();
-extern int initialise_wd_fsa();
-extern int insert();
-extern int int_len(int n);
-extern int kbprog();
-extern int make_full_wd_fsa_cos();
-extern int make_full_wd_fsa();
-extern int midfa_labeled_minimize();
-extern int mimult_minimize();
-extern int modify_table();
-extern int rk_init();
-extern int rws_reduce();
-extern int slow_rws_reduce_rk();
-extern int slow_rws_reduce();
-extern int sparse_target();
-extern int stringlen(char *c);
-extern void add_to_buffer(int n, char *w);
-extern void build_quicktable();
-extern void check_next_char(FILE *rfile, int c);
-extern void clear_wd_fsa();
-extern void compressed_transitions_read();
-extern void genstrcat(gen *c, gen *d);
-extern void genstrcpy(gen *c, gen *d);
-extern void make_fsa_nice();
-extern void output_and_exit_kbprogcos();
-extern void print_kboutput();
-extern void print_rws_simple();
-extern void print_wdoutput();
-extern void printbuffer(FILE *wfile);
-extern void process_names();
-extern void read_delim(FILE *rfile, int *delim);
-extern void read_extra_kbinput();
-extern void read_gens();
-extern void read_ident(FILE *rfile, char *ident, int *delim, boolean inv);
-extern void read_inverses();
-extern void read_kbinput_simple();
-extern void read_kbinput();
-extern void read_subgens();
-extern void rk_add_lhs();
-extern void rk_clear();
-extern void rk_reset();
-extern void rws_clear();
-extern void set_defaults();
-extern void should_we_halt();
-extern void skip_gap_expression(FILE *rfile, int *delim);
-extern void sort_eqns();
-extern void srec_clear();
-extern void srec_copy();
-extern void type_sort_eqns_final();
-extern void typelength_sort_eqns();
+boolean is_int(char *x);
+boolean isdelim(int c);
+boolean isvalid(int c);
+boolean read_int(FILE *rfile, int *integ, int *delim);
+boolean read_string(FILE *rfile, char *string, int *delim);
+boolean read_word(FILE *rfile, gen *gen_word, gen *end_word, int *delim,
+                  char **name, int num_names, boolean check);
+int add_expanded_word_to_buffer(FILE *wfile, gen *word, char **symbols);
+int add_iword_to_buffer(FILE *wfile, int *word, char **symbols);
 
+int initialise_wd_fsa(fsa *wd_fsaptr, srec *alphptr, int maxwdiffs);
+int add_wd_fsa(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
+               boolean reverse, reduction_struct *rsptr);
+int build_wd_fsa(fsa *wd_fsaptr, boolean *new_wd, reduction_struct *rsptr);
+void clear_wd_fsa(fsa *wd_fsaptr);
+int make_full_wd_fsa(fsa *wd_fsaptr, int *inv, int start_no,
+                     reduction_struct *rsptr);
+
+int initialise_wd_fsa_cos(fsa *wd_fsaptr, srec *alphptr, int maxwdiffs);
+int add_wd_fsa_cos(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
+                   boolean reverse, reduction_struct *rs);
+int build_wd_fsa_cos(fsa *wd_fsaptr, boolean *new_wd, reduction_struct *rs);
+int make_full_wd_fsa_cos(fsa *wd_fsaptr, int *inv, int start_no,
+                         reduction_struct *rs);
+
+int add_word_to_buffer(FILE *wfile, gen *word, char **symbols);
+int genstrcmp(gen *c, gen *d);
+int genstrlen(gen *c);
+int int_len(int n);
+int stringlen(char *c);
+void add_to_buffer(int n, char *w);
+void check_next_char(FILE *rfile, int c);
+void genstrcat(gen *c, gen *d);
+void genstrcpy(gen *c, gen *d);
+void printbuffer(FILE *wfile);
+void process_names(char **name, int num_names);
+void read_delim(FILE *rfile, int *delim);
+void read_ident(FILE *rfile, char *ident, int *delim, boolean inv);
+
+void skip_gap_expression(FILE *rfile, int *delim);
+
+void srec_clear(srec *srptr);
+void srec_copy(srec *srptr1, srec *srptr2);
+boolean srec_equal(srec *srptr1, srec *srptr2);
+
+int diff_reduce(gen *w, reduction_struct *rs_wd);
+int diff_reduce_cos(gen *w, reduction_struct *rs_wd);
+int diff_reduce_wl(gen *w, reduction_struct *rs_wd);
+
+int calculate_inverses(int **invptr, int ngens, reduction_struct *rsptr);
+
+int kbprog(rewriting_system *rwsptr);
+void should_we_halt(rewriting_system *rwsptr);
+void make_fsa_nice(rewriting_system *rwsptr);
+void type_sort_eqns_final(rewriting_system *rwsptr);
+void typelength_sort_eqns(int n, rewriting_system *rwsptr);
+void sort_eqns(int n, rewriting_system *rwsptr);
+
+int midfa_labeled_minimize(fsa *fsaptr);
+
+void print_kboutput(FILE *wfile, rewriting_system *rwsptr);
+void print_wdoutput(FILE *wfile, char *suffix, rewriting_system *rwsptr);
+void print_rws_simple(FILE *wfile, rewriting_system *rwsptr);
+
+int fsa_checkgeowa(fsa *geowaptr, fsa *diffptr, reduction_equation *eqnptr,
+                   int maxeqns);
 
 #endif

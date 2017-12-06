@@ -21,7 +21,7 @@
  * 22/9/95 - added capability of doing the calculations for coset
  * automatic groups - with the -cos option
  * This program assumes that kbprog, gpwa, gpgenmult have already been
- * run on the group G. 
+ * run on the group G.
  * The theory of this checking process for the general multiplier is as
  * follows.
  *
@@ -40,7 +40,7 @@
  * map to 0, and  w  is never considered.
  *
  * SYNOPSIS:
- * gpcheckmult [-ip d/s[dr]] [-v] [-silent] [-l/-h] [-m maxeqns] 
+ * gpcheckmult [-ip d/s[dr]] [-v] [-silent] [-l/-h] [-m maxeqns]
  *	       [-ow] [-mwd maxwdiffs] [-cos] [-wtlex] groupname [cosname]
  *
  * If -cos is not set,
@@ -67,7 +67,7 @@
  * -mwd maxwdiffs
  *		At most maxwdiffs word-differences possible.
  * -ow          If the general multiplier turns out to be incorrect, do
- *              not correct the diff2 machine, but simply output the 
+ *              not correct the diff2 machine, but simply output the
  *              culprit words. More precisely output a file to
  *              groupname.(cosname.)wg (words and generators), containing a
  *              list declaration of the form  ???.wg := [...], where
@@ -93,20 +93,20 @@
 
 static FILE *rfile, *wfile;
 
-void  badusage_gpcheckmult();
-int  (*reduce_word)();
+static void badusage(void);
+int (*reduce_word)(gen *w, reduction_struct *rs_rws);
 
-int 
-main (int argc, char *argv[])
-{ int arg, i, ct, *inv, old_ndiff, maxneweqns, numeqns, ngens, maxwdiffs;
-  fsa  diff2, genmult;
-  char gpname[100], cosgpname[100], inf1[100], inf2[100], inf3[100],
-       outf[100], outfwg[100], outfec[100], fsaname[100];
+int main(int argc, char *argv[])
+{
+  int arg, i, ct, *inv, old_ndiff, maxneweqns, numeqns, ngens, maxwdiffs;
+  fsa diff2, genmult;
+  char gpname[100], cosgpname[100], inf1[100], inf2[100], inf3[100], outf[100],
+      outfwg[100], outfec[100], fsaname[100];
   fsa *wd_fsa; /* This is for doing word-reductions in the case that we
-              * correct the diff2 machine
-              */
-  fsa wa;     /* The word-acceptor in the wtlex case */
-  int weight[MAXGEN+1]; /* The weights of the generators in the wtlex case */
+                * correct the diff2 machine
+                */
+  fsa wa;      /* The word-acceptor in the wtlex case */
+  int weight[MAXGEN + 1]; /* The weights of the generators in the wtlex case */
   gen testword[MAXREDUCELEN]; /* for word reduction */
   char **names; /* generator names in case we need to output words */
   reduction_equation *eqnptr;
@@ -114,14 +114,14 @@ main (int argc, char *argv[])
   storage_type ip_store = DENSE;
   int dr = 0;
   boolean seengpname, seencosname;
-  boolean cosets=FALSE;
-  boolean wtlex=FALSE;
-  rewriting_system  rws;
+  boolean cosets = FALSE;
+  boolean wtlex = FALSE;
+  rewriting_system rws;
   boolean outputwords = FALSE;
-  int separator=0;
+  int separator = 0;
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   rws.maxeqns = MAXRWSEQNS;
   maxneweqns = MAXNEWEQNS;
@@ -130,140 +130,149 @@ main (int argc, char *argv[])
   inf2[0] = '\0';
   outf[0] = '\0';
   arg = 1;
-  seengpname=seencosname=FALSE;
+  seengpname = seencosname = FALSE;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-ip")==0) {
+    if (strcmp(argv[arg], "-ip") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpcheckmult();
-      if (strcmp(argv[arg],"d")==0)
+        badusage();
+      if (strcmp(argv[arg], "d") == 0)
         ip_store = DENSE;
       else if (argv[arg][0] == 's') {
         ip_store = SPARSE;
         if (stringlen(argv[arg]) > 1)
-          dr = atoi(argv[arg]+1);
+          dr = atoi(argv[arg] + 1);
       }
       else
-        badusage_gpcheckmult();
+        badusage();
     }
-    else if (strcmp(argv[arg],"-silent")==0)
+    else if (strcmp(argv[arg], "-silent") == 0)
       kbm_print_level = 0;
-    else if (strcmp(argv[arg],"-v")==0)
+    else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
-    else if (strcmp(argv[arg],"-vv")==0)
+    else if (strcmp(argv[arg], "-vv") == 0)
       kbm_print_level = 3;
-    else if (strcmp(argv[arg],"-l")==0)
+    else if (strcmp(argv[arg], "-l") == 0)
       kbm_large = TRUE;
-    else if (strcmp(argv[arg],"-h")==0)
+    else if (strcmp(argv[arg], "-h") == 0)
       kbm_huge = TRUE;
-    else if (strcmp(argv[arg],"-ow")==0)
+    else if (strcmp(argv[arg], "-ow") == 0)
       outputwords = TRUE;
-    else if (strncmp(argv[arg],"-cos",4)==0)
+    else if (strncmp(argv[arg], "-cos", 4) == 0)
       cosets = TRUE;
-    else if (strcmp(argv[arg],"-m")==0) {
+    else if (strcmp(argv[arg], "-m") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpcheckmult();
+        badusage();
       maxneweqns = atoi(argv[arg]);
     }
-    else if (strcmp(argv[arg],"-mwd")==0) {
+    else if (strcmp(argv[arg], "-mwd") == 0) {
       arg++;
       if (arg >= argc)
-        badusage_gpcheckmult();
+        badusage();
       maxwdiffs = atoi(argv[arg]);
     }
-    else if (strcmp(argv[arg],"-wtlex")==0)
+    else if (strcmp(argv[arg], "-wtlex") == 0)
       wtlex = TRUE;
     else if (argv[arg][0] == '-')
-      badusage_gpcheckmult();
+      badusage();
     else if (!seengpname) {
-      seengpname=TRUE;
-      strcpy(gpname,argv[arg]);
+      seengpname = TRUE;
+      strcpy(gpname, argv[arg]);
     }
     else if (!seencosname) {
-      seencosname=TRUE;
-      sprintf(cosgpname,"%s.%s",gpname,argv[arg]);
+      seencosname = TRUE;
+      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
     }
     else
-      badusage_gpcheckmult();
+      badusage();
     arg++;
   }
   if (!seengpname)
-    badusage_gpcheckmult();
+    badusage();
   if (cosets && wtlex) {
     fprintf(stderr,
-        "Sorry: -cos and -wtlex options cannot be used together.\n");
-    badusage_gpcheckmult();
+            "Sorry: -cos and -wtlex options cannot be used together.\n");
+    badusage();
   }
   if (cosets && !seencosname)
-    sprintf(cosgpname,"%s.cos",gpname);
+    sprintf(cosgpname, "%s.cos", gpname);
 
-  if (cosets) strcpy(inf1,cosgpname);
-  else strcpy(inf1,gpname);
+  if (cosets)
+    strcpy(inf1, cosgpname);
+  else
+    strcpy(inf1, gpname);
 
-  strcpy(inf2,inf1);
-  strcat(inf1,".gm");
+  strcpy(inf2, inf1);
+  strcat(inf1, ".gm");
 
-  if (cosets) sprintf(outfec,"%s.cm.ec",cosgpname);
-  else sprintf(outfec,"%s.cm.ec",gpname);
+  if (cosets)
+    sprintf(outfec, "%s.cm.ec", cosgpname);
+  else
+    sprintf(outfec, "%s.cm.ec", gpname);
 
-  if ((rfile = fopen(inf1,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf1);
-      exit(1);
+  if ((rfile = fopen(inf1, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf1);
+    exit(1);
   }
-  fsa_read(rfile,&genmult,ip_store,dr,0,TRUE,fsaname);
+  fsa_read(rfile, &genmult, ip_store, dr, 0, TRUE, fsaname);
   fclose(rfile);
 
-  tmalloc(eqnptr,reduction_equation,maxneweqns)
-  if (cosets)
-     separator=rs_wd.separator=genmult.alphabet->base->size+1;
-  if ((numeqns =
-         fsa_checkmult(&genmult,eqnptr,maxneweqns,cosets,separator)) > 0) {
- /* A multiplier was not valid, so groupname.(mi)diff2 will need updating. */
+  tmalloc(eqnptr, reduction_equation, maxneweqns) if (cosets) separator =
+      rs_wd.separator = genmult.alphabet->base->size + 1;
+  if ((numeqns = fsa_checkmult(&genmult, eqnptr, maxneweqns, cosets,
+                               separator)) > 0) {
+    /* A multiplier was not valid, so groupname.(mi)diff2 will need updating. */
 
     if (outputwords) {
-    /* We do not update gpname.diff2, but output the offending words. */
-      if (cosets) strcpy(outfwg,cosgpname);
-      else strcpy(outfwg,gpname);
-      strcat(outfwg,".wg");
-      wfile=fopen(outfwg,"w");
+      /* We do not update gpname.diff2, but output the offending words. */
+      if (cosets)
+        strcpy(outfwg, cosgpname);
+      else
+        strcpy(outfwg, gpname);
+      strcat(outfwg, ".wg");
+      wfile = fopen(outfwg, "w");
       base_prefix(fsaname);
-      fprintf(wfile,"%s.wg := [\n",fsaname);
-      names=genmult.alphabet->base->names;
-      for (i=0;i<numeqns;i++) {
-        strcpy(kbm_buffer,"  [");
+      fprintf(wfile, "%s.wg := [\n", fsaname);
+      names = genmult.alphabet->base->names;
+      for (i = 0; i < numeqns; i++) {
+        strcpy(kbm_buffer, "  [");
         if (cosets)
-          add_word_to_buffer(wfile,eqnptr[i].lhs+1,names);
+          add_word_to_buffer(wfile, eqnptr[i].lhs + 1, names);
         else
-          add_word_to_buffer(wfile,eqnptr[i].lhs,names);
-        strcat(kbm_buffer,",");
-        add_word_to_buffer(wfile,eqnptr[i].rhs,names);
-        if (i<numeqns-1) strcat(kbm_buffer,"],");
-        else strcat(kbm_buffer,"]");
-        fprintf(wfile,"%s\n",kbm_buffer);
+          add_word_to_buffer(wfile, eqnptr[i].lhs, names);
+        strcat(kbm_buffer, ",");
+        add_word_to_buffer(wfile, eqnptr[i].rhs, names);
+        if (i < numeqns - 1)
+          strcat(kbm_buffer, "],");
+        else
+          strcat(kbm_buffer, "]");
+        fprintf(wfile, "%s\n", kbm_buffer);
       }
-      fprintf(wfile,"];\n");
+      fprintf(wfile, "];\n");
       fclose(wfile);
       fsa_clear(&genmult);
-      for (i=0;i<numeqns;i++) {
+      for (i = 0; i < numeqns; i++) {
         tfree(eqnptr[i].lhs);
         tfree(eqnptr[i].rhs);
       }
       tfree(eqnptr);
-      wfile=fopen(outfec,"w");
-      fprintf(wfile,"_ExitCode := 2;\n");
+      wfile = fopen(outfec, "w");
+      fprintf(wfile, "_ExitCode := 2;\n");
       fclose(wfile);
       exit(2);
     }
     fsa_clear(&genmult);
-    if (cosets) strcat(inf2,".midiff2");
-    else strcat(inf2,".diff2");
-    strcpy(outf,inf2);
-    if (kbm_print_level>1)
+    if (cosets)
+      strcat(inf2, ".midiff2");
+    else
+      strcat(inf2, ".diff2");
+    strcpy(outf, inf2);
+    if (kbm_print_level > 1)
       printf("  #Altering wd-machine to make it accept new equations.\n");
-    if ((rfile = fopen(inf2,"r")) == 0) {
-        fprintf(stderr,"Cannot open file %s.\n",inf2);
-          exit(1);
+    if ((rfile = fopen(inf2, "r")) == 0) {
+      fprintf(stderr, "Cannot open file %s.\n", inf2);
+      exit(1);
     }
     /* We read groupname.(mi)diff2 into diff2,  and then copy it into
      * wd_fsa. The copy is used for reducing words - Not surprisingly,
@@ -271,123 +280,131 @@ main (int argc, char *argv[])
      * the same time!
      */
 
-    fsa_read(rfile,&diff2,DENSE,0,maxwdiffs,TRUE,fsaname);
+    fsa_read(rfile, &diff2, DENSE, 0, maxwdiffs, TRUE, fsaname);
     fclose(rfile);
-    tmalloc(wd_fsa,fsa,1);
-    fsa_copy(wd_fsa,&diff2);
+    tmalloc(wd_fsa, fsa, 1);
+    fsa_copy(wd_fsa, &diff2);
     if (wtlex) { /* we have to read in the weights from the group file */
-      if ((rfile = fopen(gpname,"r")) == 0) {
-        fprintf(stderr,"Cannot open file %s.\n",gpname);
-          exit(1);
+      if ((rfile = fopen(gpname, "r")) == 0) {
+        fprintf(stderr, "Cannot open file %s.\n", gpname);
+        exit(1);
       }
-      read_kbinput_simple(rfile,TRUE,&rws);
+      read_kbinput_simple(rfile, TRUE, &rws);
       fclose(rfile);
       /* we only need the weights, which we can simply copy */
-      for (i=1;i<=rws.num_gens;i++)
+      for (i = 1; i <= rws.num_gens; i++)
         weight[i] = rws.weight[i];
-      weight[rws.num_gens+1]=0; /* padding symbol */
+      weight[rws.num_gens + 1] = 0; /* padding symbol */
       rws_clear(&rws);
-      strcpy(inf3,gpname);
-      strcat(inf3,".wa");
-      if ((rfile = fopen(inf3,"r")) == 0) {
-        fprintf(stderr,"Cannot open file %s.\n",inf3);
-          exit(1);
+      strcpy(inf3, gpname);
+      strcat(inf3, ".wa");
+      if ((rfile = fopen(inf3, "r")) == 0) {
+        fprintf(stderr, "Cannot open file %s.\n", inf3);
+        exit(1);
       }
-      fsa_read(rfile,&wa,DENSE,0,0,TRUE,fsaname);
+      fsa_read(rfile, &wa, DENSE, 0, 0, TRUE, fsaname);
       fclose(rfile);
     }
     rs_wd.wd_fsa = wd_fsa;
     reduce_word =
-           cosets ? diff_reduce_cos : wtlex ? diff_reduce_wl : diff_reduce;
-    if (fsa_table_dptr_init(wd_fsa)==-1) return -1;
-    if (fsa_table_dptr_init(&diff2)== -1) return -1;
-    if (cosets){
-      tmalloc(diff2.is_initial,boolean,maxwdiffs+1);
-      for (i=1;i<=maxwdiffs;i++) diff2.is_initial[i]=FALSE;
-      for (i=1;i<=diff2.num_initial;i++)
-        diff2.is_initial[diff2.initial[i]]=TRUE;
+        cosets ? diff_reduce_cos : wtlex ? diff_reduce_wl : diff_reduce;
+    if (fsa_table_dptr_init(wd_fsa) == -1)
+      return -1;
+    if (fsa_table_dptr_init(&diff2) == -1)
+      return -1;
+    if (cosets) {
+      tmalloc(diff2.is_initial, boolean, maxwdiffs + 1);
+      for (i = 1; i <= maxwdiffs; i++)
+        diff2.is_initial[i] = FALSE;
+      for (i = 1; i <= diff2.num_initial; i++)
+        diff2.is_initial[diff2.initial[i]] = TRUE;
     }
-    else if (wtlex){
+    else if (wtlex) {
       rs_wd.wa = &wa;
       rs_wd.weight = weight;
       rs_wd.maxreducelen = MAXREDUCELEN;
     }
-/* We need to know the inverses of generators - let's just work them out!  */
+    /* We need to know the inverses of generators - let's just work them out! */
     ngens = diff2.alphabet->base->size;
-    if (calculate_inverses(&inv,ngens,&rs_wd)==-1) return -1;
+    if (calculate_inverses(&inv, ngens, &rs_wd) == -1)
+      return -1;
     old_ndiff = diff2.states->size;
 
-/* Now add the new equations
- * The right hand side of the equation to be added will be the reduction of
- * the lhs times the generator which is currently in the rhs.
- */
-    for (i=0;i<numeqns;i++) {
-      genstrcat(eqnptr[i].lhs,eqnptr[i].rhs);
+    /* Now add the new equations
+     * The right hand side of the equation to be added will be the reduction of
+     * the lhs times the generator which is currently in the rhs.
+     */
+    for (i = 0; i < numeqns; i++) {
+      genstrcat(eqnptr[i].lhs, eqnptr[i].rhs);
       tfree(eqnptr[i].rhs);
-      genstrcpy(testword,eqnptr[i].lhs);
-      reduce_word(testword,&rs_wd);
-      tmalloc(eqnptr[i].rhs,gen,genstrlen(testword)+1);
-      genstrcpy(eqnptr[i].rhs,testword);
+      genstrcpy(testword, eqnptr[i].lhs);
+      reduce_word(testword, &rs_wd);
+      tmalloc(eqnptr[i].rhs, gen, genstrlen(testword) + 1);
+      genstrcpy(eqnptr[i].rhs, testword);
       if (cosets) {
-        if (add_wd_fsa_cos(&diff2,eqnptr+i,inv,TRUE,&rs_wd)== -1) exit(1);
+        if (add_wd_fsa_cos(&diff2, eqnptr + i, inv, TRUE, &rs_wd) == -1)
+          exit(1);
       }
-      else
-        if (add_wd_fsa(&diff2,eqnptr+i,inv,TRUE,&rs_wd)== -1) exit(1);
+      else if (add_wd_fsa(&diff2, eqnptr + i, inv, TRUE, &rs_wd) == -1)
+        exit(1);
     }
-    
+
     if (cosets) {
       tfree(diff2.initial);
-      tmalloc(diff2.initial,int,diff2.num_initial+1);
-      ct=0;
-      for (i=1;i<=diff2.states->size;i++) if (diff2.is_initial[i])
-        diff2.initial[++ct]=i;
+      tmalloc(diff2.initial, int, diff2.num_initial + 1);
+      ct = 0;
+      for (i = 1; i <= diff2.states->size; i++)
+        if (diff2.is_initial[i])
+          diff2.initial[++ct] = i;
       tfree(diff2.is_initial);
-      make_full_wd_fsa_cos(&diff2,inv,old_ndiff+1,&rs_wd);
+      make_full_wd_fsa_cos(&diff2, inv, old_ndiff + 1, &rs_wd);
     }
     else
-      make_full_wd_fsa(&diff2,inv,old_ndiff+1,&rs_wd);
-    if (kbm_print_level>1)
+      make_full_wd_fsa(&diff2, inv, old_ndiff + 1, &rs_wd);
+    if (kbm_print_level > 1)
       printf("  #Word-difference machine now has %d states.\n",
-               diff2.states->size);
+             diff2.states->size);
 
-    wfile = fopen(inf2,"w");
-    fsa_print(wfile,&diff2,fsaname);
+    wfile = fopen(inf2, "w");
+    fsa_print(wfile, &diff2, fsaname);
     fclose(wfile);
 
     tfree(inv);
-    fsa_clear(wd_fsa); fsa_clear(&diff2);
+    fsa_clear(wd_fsa);
+    fsa_clear(&diff2);
     tfree(wd_fsa);
     if (wtlex)
       fsa_clear(&wa);
-    for (i=0;i<numeqns;i++) {
+    for (i = 0; i < numeqns; i++) {
       tfree(eqnptr[i].lhs);
       tfree(eqnptr[i].rhs);
     }
     tfree(eqnptr);
-    wfile=fopen(outfec,"w");
-    fprintf(wfile,"_ExitCode := 2;\n");
+    wfile = fopen(outfec, "w");
+    fprintf(wfile, "_ExitCode := 2;\n");
     fclose(wfile);
     exit(2);
   }
-  else if (numeqns<0) exit(1);
+  else if (numeqns < 0)
+    exit(1);
 
-  if (kbm_print_level>0)
+  if (kbm_print_level > 0)
     printf("#Validity test on general multiplier succeeded.\n");
 
   fsa_clear(&genmult);
   tfree(eqnptr);
-  wfile=fopen(outfec,"w");
-  fprintf(wfile,"_ExitCode := 0;\n");
+  wfile = fopen(outfec, "w");
+  fprintf(wfile, "_ExitCode := 0;\n");
   fclose(wfile);
   exit(0);
 }
- 
-void 
-badusage_gpcheckmult (void)
+
+void badusage(void)
 {
-    fprintf(stderr,
-     "Usage: gpcheckmult [-ip d/s[dr]] [-silent] [-v] [-l/-h] [-m maxeqns]\n");
-    fprintf(stderr,
-        "\t\t[-ow] [-mwd maxwdiffs] [-cos] [-wtlex] groupname [cosname]\n");
-    exit(1);
+  fprintf(
+      stderr,
+      "Usage: gpcheckmult [-ip d/s[dr]] [-silent] [-v] [-l/-h] [-m maxeqns]\n");
+  fprintf(stderr,
+          "\t\t[-ow] [-mwd maxwdiffs] [-cos] [-wtlex] groupname [cosname]\n");
+  exit(1);
 }

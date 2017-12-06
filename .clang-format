@@ -1,0 +1,16 @@
+# AlignConsecutiveDeclarations: true
+# AlignTrailingComments: true
+# AllowShortBlocksOnASingleLine: true
+AllowShortFunctionsOnASingleLine: false
+# AllowShortIfStatementsOnASingleLine: false
+# AllowShortLoopsOnASingleLine: false
+# BinPackArguments: true
+# BinPackParameters: false
+BreakBeforeBraces: Stroustrup
+# ColumnLimit: 78
+# Cpp11BracedListStyle: false
+# IndentCaseLabels: false
+IndentWidth: 2
+MaxEmptyLinesToKeep: 2
+UseTab: Never
+SortIncludes: false

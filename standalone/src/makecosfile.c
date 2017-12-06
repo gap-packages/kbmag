@@ -41,7 +41,7 @@
  * OPTIONS:
  * -sg	Insert new generators for the subgroup generators
  * -ni  (Only relevant if -sg called.) Do not insert inverse generator names
- *     (of standard form x^-1) for the new subgroup generators. 
+ *     (of standard form x^-1) for the new subgroup generators.
  */
 
 #include <stdio.h>
@@ -51,174 +51,179 @@
 #include "rws.h"
 #include "definitions.h"
 
-#define MAXEQNS		2048
-#define MAXREDUCELEN	4096
+#define MAXEQNS 2048
+#define MAXREDUCELEN 4096
 
 static FILE *rfile, *wfile;
 
 /* Functions defined in this file */
-void badusage_makecosfile();
+void badusage(void);
 
-int 
-main (int argc, char *argv[])
-{ int arg, ngens, neqns, i, *templevel;
+int main(int argc, char *argv[])
+{
+  int arg, ngens, neqns, i, *templevel;
   gen **words;
-  boolean subgens=FALSE, invsubgens=TRUE;
+  boolean subgens = FALSE, invsubgens = TRUE;
   rewriting_system rws, *rwsptr;
   reduction_equation *eqn;
   char gpname[100], inf[100], subname[100], outf[100];
 
-  rwsptr= &rws;
+  rwsptr = &rws;
   rwsptr->maxeqns = MAXEQNS;
   rwsptr->maxreducelen = MAXREDUCELEN;
   rwsptr->cosets = FALSE;
-   /* even in the cosets case we read relations from original group file */
+  /* even in the cosets case we read relations from original group file */
 
-  rwsptr->inv_of=0;
-  rwsptr->weight=0;rwsptr->level=0;rwsptr->history=0;
-  rwsptr->slowhistory=0;rwsptr->slowhistorysp=0;
-  rwsptr->confluent=FALSE;
-  rwsptr->tidyintset=FALSE;
-  rwsptr->preflen=0;rwsptr->prefno=0;
+  rwsptr->inv_of = 0;
+  rwsptr->weight = 0;
+  rwsptr->level = 0;
+  rwsptr->history = 0;
+  rwsptr->slowhistory = 0;
+  rwsptr->slowhistorysp = 0;
+  rwsptr->confluent = FALSE;
+  rwsptr->tidyintset = FALSE;
+  rwsptr->preflen = 0;
+  rwsptr->prefno = 0;
 
-  setbuf(stdout,(char*)0);
-  setbuf(stderr,(char*)0);
+  setbuf(stdout, (char *)0);
+  setbuf(stderr, (char *)0);
 
   gpname[0] = '\0';
   subname[0] = '\0';
   arg = 1;
   while (argc > arg) {
-    if (strcmp(argv[arg],"-sg")==0)
-      subgens=TRUE;
-    else if (strcmp(argv[arg],"-ni")==0)
-      invsubgens=FALSE;
+    if (strcmp(argv[arg], "-sg") == 0)
+      subgens = TRUE;
+    else if (strcmp(argv[arg], "-ni") == 0)
+      invsubgens = FALSE;
     else {
-       if (argv[arg][0] == '-')
-         badusage_makecosfile();
-       if (strcmp(gpname,"")!=0 && strcmp(subname,"")!=0)
-         badusage_makecosfile();
-       if (strcmp(gpname,"")!=0)
-         strcpy(subname,argv[arg]);
-       else
-         strcpy(gpname,argv[arg]);
+      if (argv[arg][0] == '-')
+        badusage();
+      if (strcmp(gpname, "") != 0 && strcmp(subname, "") != 0)
+        badusage();
+      if (strcmp(gpname, "") != 0)
+        strcpy(subname, argv[arg]);
+      else
+        strcpy(gpname, argv[arg]);
     }
     arg++;
   }
-  if (stringlen(gpname)==0)
-    badusage_makecosfile();
-  strcpy(inf,gpname);
-  strcat(inf,".");
-  if (stringlen(subname)==0)
-     strcpy(subname,"sub");
-  strcat(inf,subname);
-  if (strncmp(subname,"sub",3)==0) {
-    strcpy(outf,gpname);
-    strcat(outf,".cos");
-    strcat(outf,subname+3);
+  if (stringlen(gpname) == 0)
+    badusage();
+  strcpy(inf, gpname);
+  strcat(inf, ".");
+  if (stringlen(subname) == 0)
+    strcpy(subname, "sub");
+  strcat(inf, subname);
+  if (strncmp(subname, "sub", 3) == 0) {
+    strcpy(outf, gpname);
+    strcat(outf, ".cos");
+    strcat(outf, subname + 3);
   }
   else {
-    strcpy(outf,gpname);
-    strcat(outf,".");
-    strcat(outf,subname);
-    strcat(outf,"_cos");
+    strcpy(outf, gpname);
+    strcat(outf, ".");
+    strcat(outf, subname);
+    strcat(outf, "_cos");
   }
   if (!subgens)
-    invsubgens=FALSE;
-  
-/* First read in the defining relations for the group. */
-  if ((rfile = fopen(gpname,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",gpname);
-      exit(1);
+    invsubgens = FALSE;
+
+  /* First read in the defining relations for the group. */
+  if ((rfile = fopen(gpname, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", gpname);
+    exit(1);
   }
-  read_kbinput_simple(rfile,TRUE,rwsptr);
+  read_kbinput_simple(rfile, TRUE, rwsptr);
   fclose(rfile);
-  if (rws.ordering==WTLEX) {
-      fprintf(stderr,
-   "Sorry - cannot currently handle subgroup generators in the wtlex case.\n");
-      exit(1);
+  if (rws.ordering == WTLEX) {
+    fprintf(stderr, "Sorry - cannot currently handle subgroup generators in "
+                    "the wtlex case.\n");
+    exit(1);
   }
   ngens = rws.num_gens;
   neqns = rws.num_eqns;
 
-/* Now read in the subgroup generators from the separate file. */
-  if ((rfile = fopen(inf,"r")) == 0) {
-    fprintf(stderr,"Cannot open file %s.\n",inf);
-      exit(1);
+  /* Now read in the subgroup generators from the separate file. */
+  if ((rfile = fopen(inf, "r")) == 0) {
+    fprintf(stderr, "Cannot open file %s.\n", inf);
+    exit(1);
   }
-  tmalloc(words,gen *,MAXGEN+1);
-  read_subgens(rfile,words,subgens,invsubgens,rwsptr);
+  tmalloc(words, gen *, MAXGEN + 1);
+  read_subgens(rfile, words, subgens, invsubgens, rwsptr);
   fclose(rfile);
 
-  rws.separator=ngens+1;
+  rws.separator = ngens + 1;
   /* Note ngens remains the original number of main generators, but
    * rws.num_gens is now the total number, including new generators.
    * Adjust the ordering as necessary.
    */
-  if (rws.ordering==SHORTLEX) {
-    rws.ordering=WREATHPROD;
-    tmalloc(rws.level,int,rws.num_gens+1);
-    for (i=1;i<=ngens;i++)
-       rws.level[i]=2;
-    for (i=rws.separator;i<=rws.num_gens;i++)
-       rws.level[i]=1;
+  if (rws.ordering == SHORTLEX) {
+    rws.ordering = WREATHPROD;
+    tmalloc(rws.level, int, rws.num_gens + 1);
+    for (i = 1; i <= ngens; i++)
+      rws.level[i] = 2;
+    for (i = rws.separator; i <= rws.num_gens; i++)
+      rws.level[i] = 1;
   }
-  else if (rws.ordering==RECURSIVE || rws.ordering==RT_RECURSIVE) {
-   /* This will change the ordering back from RT_RECURSIVE to RECURSIVE. */
-    rws.ordering=WREATHPROD;
-    tmalloc(rws.level,int,rws.num_gens+1);
-    for (i=1;i<=ngens;i++)
-       rws.level[i]=i+1;
-    for (i=rws.separator;i<=rws.num_gens;i++)
-       rws.level[i]=1;
+  else if (rws.ordering == RECURSIVE || rws.ordering == RT_RECURSIVE) {
+    /* This will change the ordering back from RT_RECURSIVE to RECURSIVE. */
+    rws.ordering = WREATHPROD;
+    tmalloc(rws.level, int, rws.num_gens + 1);
+    for (i = 1; i <= ngens; i++)
+      rws.level[i] = i + 1;
+    for (i = rws.separator; i <= rws.num_gens; i++)
+      rws.level[i] = 1;
   }
-  else if (rws.ordering==WREATHPROD) {
-    tmalloc(templevel,int,rws.num_gens+1);
-    for (i=1;i<=ngens;i++)
-       templevel[i]=rws.level[i]+1;
-    for (i=rws.separator;i<=rws.num_gens;i++)
-       templevel[i]=1;
+  else if (rws.ordering == WREATHPROD) {
+    tmalloc(templevel, int, rws.num_gens + 1);
+    for (i = 1; i <= ngens; i++)
+      templevel[i] = rws.level[i] + 1;
+    for (i = rws.separator; i <= rws.num_gens; i++)
+      templevel[i] = 1;
     tfree(rws.level);
-    rws.level=templevel;
+    rws.level = templevel;
   }
 
   /* Now add the new equations */
-  i=1;
+  i = 1;
   while (words[i]) {
-    eqn= &(rws.eqns[++neqns]); 
-    tmalloc(eqn->lhs,gen,genstrlen(words[i])+2);
-    eqn->lhs[0]=rws.separator;
-    genstrcpy(eqn->lhs+1,words[i]);
+    eqn = &(rws.eqns[++neqns]);
+    tmalloc(eqn->lhs, gen, genstrlen(words[i]) + 2);
+    eqn->lhs[0] = rws.separator;
+    genstrcpy(eqn->lhs + 1, words[i]);
     tfree(words[i]);
     if (subgens) {
-      tmalloc(eqn->rhs,gen,3);
-      eqn->rhs[0]= rws.separator+i;
-      eqn->rhs[1]= rws.separator;
-      eqn->rhs[2]='\0';;
+      tmalloc(eqn->rhs, gen, 3);
+      eqn->rhs[0] = rws.separator + i;
+      eqn->rhs[1] = rws.separator;
+      eqn->rhs[2] = '\0';
+      ;
     }
     else {
-      tmalloc(eqn->rhs,gen,2);
-      eqn->rhs[0]=rws.separator;
-      eqn->rhs[1]='\0';;
+      tmalloc(eqn->rhs, gen, 2);
+      eqn->rhs[0] = rws.separator;
+      eqn->rhs[1] = '\0';
+      ;
     }
     i++;
   }
   tfree(words);
-  rws.num_eqns=neqns;
+  rws.num_eqns = neqns;
 
   /* Add a suffix to the name of the rewriting system */
-  strcat(rws.name,"_Cos");
+  strcat(rws.name, "_Cos");
 
   /* Now we just output! */
-  wfile=fopen(outf,"w");
-  print_rws_simple(wfile,rwsptr);
+  wfile = fopen(outf, "w");
+  print_rws_simple(wfile, rwsptr);
   fclose(wfile);
   rws_clear(&rws);
   exit(0);
 }
 
-void 
-badusage_makecosfile (void)
+void badusage(void)
 {
-   fprintf(stderr,"Usage:  makecosfile [-sg] [-ni] groupname [subname] \n");
-	exit(1);
+  fprintf(stderr, "Usage:  makecosfile [-sg] [-ni] groupname [subname] \n");
+  exit(1);
 }
