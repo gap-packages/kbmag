@@ -559,7 +559,7 @@ hash_locate (hash_table *htptr, int reclen)
  * In any case, we return the number of the record.
  */
 { int nr, *rec, *cand, candlen, *nextptr, candno, hashval, coeff,
-      k, m, hv, i, ms;
+      k, m, hv, i;
   boolean found, fixed;
 
   nr = htptr->num_recs;
@@ -604,11 +604,11 @@ hash_locate (hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     hash_morerecs(htptr);
-  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
-     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
-    ms=hash_morespace(htptr); 
-  if (ms== -1) return(-1);
+     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) ) {
+    int ms=hash_morespace(htptr);
+    if (ms== -1) return(-1);
+  }
 
   return(nr);
 }
@@ -626,7 +626,7 @@ short_hash_locate (short_hash_table *htptr, int reclen)
  * In any case, we return the number of the record.
  */
 { int nr, candlen, *nextptr, candno, hashval, coeff,
-      k, m, hv, i, ms;
+      k, m, hv, i;
   unsigned short *rec, *cand; 
   boolean found, fixed;
 
@@ -672,11 +672,11 @@ short_hash_locate (short_hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     short_hash_morerecs(htptr);
-  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
-     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
-    ms=short_hash_morespace(htptr); 
-  if (ms== -1) return(-1);
+     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) ) {
+    int ms=short_hash_morespace(htptr);
+    if (ms== -1) return(-1);
+  }
 
   return(nr);
 }
@@ -694,7 +694,7 @@ char_hash_locate (char_hash_table *htptr, int reclen)
  * In any case, we return the number of the record.
  */
 { int nr, candlen, *nextptr, candno, hashval, coeff,
-      k, m, hv, i, ms;
+      k, m, hv, i;
   char *rec, *cand; 
   boolean found, fixed;
 
@@ -740,11 +740,11 @@ char_hash_locate (char_hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     char_hash_morerecs(htptr);
-  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
-     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
-    ms=char_hash_morespace(htptr); 
-  if (ms== -1) return(-1);
+     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) ) {
+    int ms=char_hash_morespace(htptr);
+    if (ms== -1) return(-1);
+  }
 
   return(nr);
 }
@@ -762,7 +762,7 @@ gen_hash_locate (gen_hash_table *htptr, int reclen)
  * In any case, we return the number of the record.
  */
 { int nr, candlen, *nextptr, candno, hashval, coeff,
-      k, m, hv, i, ms;
+      k, m, hv, i;
   gen *rec, *cand; 
   boolean found, fixed;
 
@@ -808,11 +808,11 @@ gen_hash_locate (gen_hash_table *htptr, int reclen)
 
   if (nr+2 >= htptr->maxrecs)
     gen_hash_morerecs(htptr);
-  ms=0;
   if ((fixed && htptr->space_inc - htptr->block_space < reclen) ||
-     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) )
-    ms=gen_hash_morespace(htptr); 
-  if (ms== -1) return(-1);
+     (!fixed && htptr->space_inc - htptr->block_space <= HTMARGIN) ) {
+    int ms=gen_hash_morespace(htptr);
+    if (ms== -1) return(-1);
+  }
 
   return(nr);
 }
