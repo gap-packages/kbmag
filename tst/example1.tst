@@ -7,7 +7,6 @@ gap> fsa_infolevel_saved := InfoLevel( InfoFSA );;
 gap> SetInfoLevel( InfoFSA, 0 );; 
 gap> rws_infolevel_saved := InfoLevel( InfoRWS );; 
 gap> SetInfoLevel( InfoRWS, 0 );; 
-
 gap> ## SubSection 1.9, Example 1  
 gap> ## We start with a easy example - the alternating group A4.
 gap> F := FreeGroup( "a", "b" );;
@@ -25,6 +24,7 @@ rec(
          [_g1*_g2*_g1,_g3*_g1*_g3]
        ]
 )
+
 gap> ## Notice that monoid generators printed as _g1, _g2, _g3 are used
 gap> ## internally. These correspond to the group generators a, b, b^-1.
 gap> KnuthBendix( R );
@@ -51,15 +51,15 @@ rec(
          [_g1*_g3*_g1*_g2,_g2*_g1*_g3]
        ]
 )
+
 gap> ## The ‘equations’ field of <R> is now a complete system of rewriting rules
 gap> Size(R);
 12
 gap> EnumerateReducedWords(R,0,12);
-[ <identity ...>, a, a*b, a*b*a, a*b^-1, a*b^-1*a, b, b*a, b*a*b^-1, b^-1,
+[ <identity ...>, a, a*b, a*b*a, a*b^-1, a*b^-1*a, b, b*a, b*a*b^-1, b^-1, 
   b^-1*a, b^-1*a*b ]
 gap> ## We have enumerated all of the elements of the group - 
 gap> ## note that they are returned as words in the free group F.
-
 gap> ## SetInfoLevel( InfoFSA, fsa_infolevel_saved );; 
 gap> ## SetInfoLevel( InfoRWS, rws_infolevel_saved );; 
 gap> STOP_TEST( "example1.tst", 10000 );

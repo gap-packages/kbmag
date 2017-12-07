@@ -7,7 +7,6 @@ gap> fsa_infolevel_saved := InfoLevel( InfoFSA );;
 gap> SetInfoLevel( InfoFSA, 0 );; 
 gap> rws_infolevel_saved := InfoLevel( InfoRWS );; 
 gap> SetInfoLevel( InfoRWS, 0 );; 
-
 gap> ## SubSection 1.9, Example 5 
 gap> ## Our final example illustrates the use of the AutomaticStructure 
 gap> ## command, which runs the automatic groups programs. The group has a 
@@ -23,7 +22,7 @@ gap> G := F/[ Comm(a,Comm(a,b))*c^-1, Comm(b,Comm(b,c))*a^-1,
 gap> R := KBMAGRewritingSystem( G );
 rec(
            isRWS := true,
-         verbose := true,
+          silent := true,
   generatorOrder := [_g1,_g2,_g3,_g4,_g5,_g6],
         inverses := [_g2,_g1,_g4,_g3,_g6,_g5],
         ordering := "shortlex",
@@ -33,6 +32,7 @@ rec(
          [_g6*_g2*_g6*_g1*_g5,_g3*_g2*_g6*_g1]
        ]
 )
+
 gap> ## SetInfoLevel( InfoRWS, 1 );
 gap> AutomaticStructure( R, true );
 true
@@ -42,7 +42,6 @@ gap> Order( R, a );
 infinity
 gap> Order( R, Comm(a,b) );
 infinity
-
 gap> #
 gap> ## SetInfoLevel( InfoFSA, fsa_infolevel_saved );; 
 gap> ## SetInfoLevel( InfoRWS, rws_infolevel_saved );; 

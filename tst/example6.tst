@@ -7,7 +7,6 @@ gap> fsa_infolevel_saved := InfoLevel( InfoFSA );;
 gap> SetInfoLevel( InfoFSA, 0 );; 
 gap> rws_infolevel_saved := InfoLevel( InfoRWS );; 
 gap> SetInfoLevel( InfoRWS, 0 );; 
-
 gap> ## SubSection 1.15, Example 1  
 gap> F := FreeGroup( "a", "b", "c" );;
 gap> a:=F.1;;  b:=F.2;;  c:=F.3;;
@@ -28,6 +27,7 @@ rec(
          [_g2*_g4*_g5*_g3*_g5,_g5*_g4*_g6*_g3]
        ]
 )
+
 gap> S := SubgroupOfKBMAGRewritingSystem( R, [ a^3, c*a^2 ] );
 rec(
            isRWS := true,
@@ -38,6 +38,7 @@ rec(
        equations := [
        ]
 )
+
 gap> KnuthBendixOnCosetsWithSubgroupRewritingSystem( R, S );
 true
 gap> Index( R, S );
@@ -47,12 +48,11 @@ false
 gap> ReducedFormOfCosetRepresentative( R, S, b*a*b*a );
 b^-1*a^-1
 gap> EnumerateReducedCosetRepresentatives( R, S, 0, 4 );
-[ <identity ...>, a, a*b, a*b*c, a*b^-1, a^-1, a^-1*b, a^-1*b*c, a^-1*b^-1,
+[ <identity ...>, a, a*b, a*b*c, a*b^-1, a^-1, a^-1*b, a^-1*b*c, a^-1*b^-1, 
   b, b*c, b*c*a, b*c*a^-1, b*c^-1, b^-1, b^-1*a, b^-1*a^-1, b^-1*a^-1*b ]
 gap> SS := RewritingSystemOfSubgroupOfKBMAGRewritingSystem( R, S );;
 gap> Size( SS );
 60
-
 gap> ## SetInfoLevel( InfoFSA, fsa_infolevel_saved );; 
 gap> ## SetInfoLevel( InfoRWS, rws_infolevel_saved );; 
 gap> STOP_TEST( "example6.tst", 10000 );

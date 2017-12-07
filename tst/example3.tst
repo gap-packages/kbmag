@@ -7,7 +7,6 @@ gap> fsa_infolevel_saved := InfoLevel( InfoFSA );;
 gap> SetInfoLevel( InfoFSA, 0 );; 
 gap> rws_infolevel_saved := InfoLevel( InfoRWS );; 
 gap> SetInfoLevel( InfoRWS, 0 );; 
-
 gap> ## SubSection 1.9, Example 3 
 gap> ## The Heisenberg group - that is, the free 2-generator nilpotent 
 gap> ## group of class 2. For this to complete, we need to use the recursive 
@@ -30,6 +29,7 @@ rec(
          [_g6*_g4,_g4*_g6]
        ]
 )
+
 gap> SetOrderingOfKBMAGRewritingSystem( R, "recursive" );
 gap> ReorderAlphabetOfKBMAGRewritingSystem( R, (1,6)(2,5)(3,4) );
 gap> R;
@@ -45,6 +45,7 @@ rec(
          [_g6*_g4,_g4*_g6]
        ]
 )
+
 gap> SetInfoLevel( InfoRWS, 1 );
 gap> KnuthBendix( R );
 #I  Calling external Knuth-Bendix program.
@@ -79,6 +80,7 @@ rec(
          [_g5*_g3,_g3*_g5]
        ]
 )
+
 gap> Size( R );
 infinity
 gap> IsReducedWord( R, z*y*x );
@@ -87,7 +89,6 @@ gap> ReducedForm( R, z*y*x );
 x*y*z^2
 gap> IsReducedForm( R, x*y*z^2 );
 true
-
 gap> ## SetInfoLevel( InfoFSA, fsa_infolevel_saved );; 
 gap> ## SetInfoLevel( InfoRWS, rws_infolevel_saved );; 
 gap> STOP_TEST( "example3.tst", 10000 );

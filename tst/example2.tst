@@ -7,7 +7,6 @@ gap> fsa_infolevel_saved := InfoLevel( InfoFSA );;
 gap> SetInfoLevel( InfoFSA, 0 );; 
 gap> rws_infolevel_saved := InfoLevel( InfoRWS );; 
 gap> SetInfoLevel( InfoRWS, 0 );; 
-
 gap> ## SubSection 1.9, Example 2 
 gap> ## The Fibonacci group F(2, 5) defined by a semigroup rather than a 
 gap> ## group presentation. Interestingly this defines the same structure 
@@ -31,6 +30,7 @@ rec(
          [_s5*_s1,_s2]
        ]
 )
+
 gap> KnuthBendix( R );
 true
 gap> Size( R );
@@ -45,7 +45,6 @@ gap> Size( R );
 11
 gap> EnumerateReducedWords( R, 0, 11 );
 [ s1, s1^2, s1^3, s1^4, s1^5, s1^6, s1^7, s1^8, s1^9, s1^10, s1^11 ]
-
 gap> ## SetInfoLevel( InfoFSA, fsa_infolevel_saved );; 
 gap> ## SetInfoLevel( InfoRWS, rws_infolevel_saved );; 
 gap> STOP_TEST( "example2.tst", 10000 );
