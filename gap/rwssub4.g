@@ -433,6 +433,7 @@ KBCosets := function ( arg )
      callstring := Concatenation(callstring," -sg ");
   fi;
   callstring := Concatenation(callstring," ",_KBTmpFileName," sub");
+  Info(InfoRWS,3,"  ",callstring);
   Exec(callstring);
 
   callstring :=  Filename(_KBExtDir,"kbprogcos");
@@ -479,6 +480,7 @@ KBCosets := function ( arg )
 
   callstring := Concatenation(callstring,_KBTmpFileName," cos");
   Info(InfoRWS,1,"Calling external Knuth-Bendix cosets program.\n");
+  Info(InfoRWS,3,"  ",callstring);
   Exec(callstring);
   filename := Concatenation(_KBTmpFileName,".cos");
   UpdateRWS(cosrws,filename,true,true);
@@ -642,6 +644,7 @@ AutCosets := function ( arg )
   WriteSubgroupRWS(rws,subrws,_KBTmpFileName);
   callstring := Concatenation(Filename(_KBExtDir,"makecosfile"),"  -sg ");
   callstring := Concatenation(callstring,_KBTmpFileName," sub");
+  Info(InfoRWS,3,"  ",callstring);
   Exec(callstring);
 
   callstring := Filename(_KBExtDir,"autcos");
@@ -658,6 +661,7 @@ AutCosets := function ( arg )
                       optstring := Concatenation(optstring," -vv "); fi;
   callstring := Concatenation(callstring,optstring,_KBTmpFileName);
   Info(InfoRWS,1,"Calling external automatic cosets groups program.\n");
+  Info(InfoRWS,3,"  ",callstring);
   Exec(callstring);
   if subpres then
   # read subgroup presentation

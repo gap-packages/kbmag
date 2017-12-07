@@ -3061,6 +3061,7 @@ DeterminizeFSA := function(fsa)
     fi;
     callstring := Concatenation(callstring," ",filename);
     Info(InfoFSA,1,"Calling fsa determinization program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa determinization program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsafordet.determinize")) then
@@ -3103,6 +3104,7 @@ MinimizeFSA := function(fsa)
     fi;
     callstring := Concatenation(callstring," ",filename);
     Info(InfoFSA,1,"Calling fsa minimization program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa minimization program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaformin.min")) then
@@ -3146,6 +3148,7 @@ NotFSA := function(fsa)
     fi;
     callstring := Concatenation(callstring," ",filename);
     Info(InfoFSA,1,"Calling fsa `not' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `not' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsafornot.not")) then
@@ -3189,6 +3192,7 @@ StarFSA := function(fsa)
     fi;
     callstring := Concatenation(callstring," ",filename);
     Info(InfoFSA,1,"Calling fsa `star' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `star' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaforstar.star")) then
@@ -3243,6 +3247,7 @@ ReverseFSA := function(arg)
     fi;
     callstring := Concatenation(callstring," ",filename);
     Info(InfoFSA,1,"Calling fsa `reverse' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `reverse' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaforreverse.reverse")) then
@@ -3290,6 +3295,7 @@ ExistsFSA := function(fsa)
     fi;
     callstring := Concatenation(callstring," ",filename);
     Info(InfoFSA,1,"Calling fsa `exists' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `exists' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaforexists.exists")) then
@@ -3339,6 +3345,7 @@ SwapCoordsFSA := function(fsa)
     callstring := Concatenation(callstring," ",filename," ",filename,".o");
  #Print(callstring,"\n");
     Info(InfoFSA,1,"Calling fsa `swap_coords' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `swap_coords' program complete.\n");
     if not
@@ -3395,6 +3402,7 @@ AndFSA := function(fsa1, fsa2)
     callstring := Concatenation(callstring," ",
                      filename1," ",filename2," ",filename3);
     Info(InfoFSA,1,"Calling fsa `and' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `and' program complete.\n");
     if not READ(filename3) then
@@ -3451,6 +3459,7 @@ OrFSA := function(fsa1, fsa2)
     callstring := Concatenation(callstring," ",
                      filename1," ",filename2," ",filename3);
     Info(InfoFSA,1,"Calling fsa `or' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `or' program complete.\n");
     if not READ(filename3) then
@@ -3508,6 +3517,7 @@ ConcatFSA := function(fsa1, fsa2)
     callstring := Concatenation(callstring," ",
                      filename1," ",filename2," ",filename3);
     Info(InfoFSA,1,"Calling fsa `concat' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `concat' program complete.\n");
     if not READ(filename3) then
@@ -3584,6 +3594,7 @@ GrowthFSA := function(fsa)
     fi;
     callstring := Concatenation(callstring," ",filename);
     Info(InfoFSA,1,"Calling fsa `growth' program.\n");
+    Info(InfoFSA,3,"  ",callstring);
     Exec(callstring);
     Info(InfoFSA,1,"External fsa `growth' program complete.\n");
     gf := ReadAsFunction(Concatenation(_KBTmpFileName,".fsaforgrowth.growth"));

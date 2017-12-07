@@ -1510,7 +1510,7 @@ end;
 ##  An error message results if the external program aborts without outputting.
 ##  Public function.
 KBRWS := function ( rws )
-    local O;
+    local O, callstring;
     if not IsKBMAGRewritingSystemRep(rws)  then
        Error("First argument is not a rewriting system.");
     fi;
@@ -1527,9 +1527,10 @@ KBRWS := function ( rws )
       rws!.originalEquations := StructuralCopy(rws!.equations);
     fi;
     WriteRWS(rws,_KBTmpFileName);
+    callstring := Concatenation(Filename(_KBExtDir,"kbprog")," ",_KBTmpFileName);
     Info(InfoRWS,1,"Calling external Knuth-Bendix program.");
-    Info(InfoRWS,3,"  via '", Concatenation(Filename(_KBExtDir,"kbprog")," ",_KBTmpFileName), "'");
-    Exec(Concatenation(Filename(_KBExtDir,"kbprog")," ",_KBTmpFileName));
+    Info(InfoRWS,3,"  ", callstring);
+    Exec(callstring);
     UpdateRWS(rws,_KBTmpFileName,true);
     Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
     Info(InfoRWS,1,"External Knuth-Bendix program complete.");
@@ -1610,6 +1611,7 @@ AutRWS := function ( arg )
                       optstring := Concatenation(optstring," -vv "); fi;
     callstring := Concatenation(callstring,optstring,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external automatic groups program.");
+    Info(InfoRWS,3,"  ", callstring);
     Exec(callstring);
     callstring := Filename(_KBExtDir,"gpminkb");
     optstring := " ";
@@ -1623,6 +1625,7 @@ AutRWS := function ( arg )
     if READ(Concatenation(_KBTmpFileName,".success")) then
      Info(InfoRWS,1,
          "Computation was successful - automatic structure computed.");
+      Info(InfoRWS,3,"  ", callstring);
       Exec(callstring);
       UpdateRWS(rws,_KBTmpFileName,false);
       Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
@@ -1684,6 +1687,7 @@ KBWD := function ( arg )
     callstring := Concatenation(callstring,optstring,_KBTmpFileName);
     Info(InfoRWS,1,
         "Calling external Knuth-Bendix program for word-differences.");
+    Info(InfoRWS,3,"  ", callstring);
     Exec(callstring);
     Info(InfoRWS,1,"External Knuth-Bendix program complete.");
 
@@ -1772,6 +1776,7 @@ GpWA := function ( arg )
     fi;
     callstring := Concatenation(callstring,optstring,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external word-acceptor program.");
+    Info(InfoRWS,3,"  ", callstring);
     Exec(callstring);
     Info(InfoRWS,1,"External word-acceptor program complete.");
 
@@ -1827,6 +1832,7 @@ GpGenMult := function ( arg )
                       optstring := Concatenation(optstring," -vv "); fi;
     callstring := Concatenation(callstring,optstring,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external generalised multiplier program.");
+    Info(InfoRWS,3,"  ", callstring);
     Exec(callstring);
     Info(InfoRWS,1,"External generalised-multiplier program complete.");
 
@@ -1903,6 +1909,7 @@ GpCheckMult := function ( arg )
                       optstring := Concatenation(optstring," -vv "); fi;
     callstring := Concatenation(callstring,optstring,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external multiplier checking program.");
+    Info(InfoRWS,3,"  ", callstring);
     Exec(callstring);
     Info(InfoRWS,1,"External multiplier checking program complete.");
     if not READ(Concatenation(_KBTmpFileName,".cm.ec")) then
@@ -2065,6 +2072,7 @@ GpAxioms := function ( arg )
                       optstring := Concatenation(optstring," -vv "); fi;
     callstring := Concatenation(callstring,optstring,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external axiom checking program.");
+    Info(InfoRWS,3,"  ", callstring);
     Exec(callstring);
     Info(InfoRWS,1,"External axiom checking program complete.");
     if not READ(Concatenation(_KBTmpFileName,".axioms.ec")) then
