@@ -448,9 +448,9 @@ int insert(gen **lhs, gen **rhs, rewriting_system *rwsptr)
   if (ptr1 == ptre1 && ptr2 == ptre2)
     return 0;
   if (*ptr1 && *ptr2)
-    while (*(ptre1 - 1) == *(ptre2 - 1) &&
-           (inv[*(ptre1 - 1)] || *(ptre1 - 1) == rwsptr->separator) &&
-           ptre1 > ptr1 && ptre2 > ptr2) {
+    while (ptre1 > ptr1 && ptre2 > ptr2 &&
+           *(ptre1 - 1) == *(ptre2 - 1) &&
+           (inv[*(ptre1 - 1)] || *(ptre1 - 1) == rwsptr->separator)) {
       ptre1--;
       ptre2--;
     }
