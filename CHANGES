@@ -1,5 +1,12 @@
 This file describes changes in the kbmag package.
 
+X.Y (2017-12-XX)
+  - Fixed a crash in the gpmakefsa tools, used e.g. by AutomaticStructure
+    (long-standing bug in kbmag which was exposed by modern compiler
+    optimizing more aggressively)
+  - Internal change: completed conversion of C code to ANSI C, fixed
+    many more warnings and a few (harmless) coding mistakes.
+
 1.5.4 (2017-02-01)
   - Stop accessing the obsolete global variable `Revision`
   - Other minor internal cleanup
