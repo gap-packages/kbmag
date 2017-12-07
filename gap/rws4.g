@@ -1528,6 +1528,7 @@ KBRWS := function ( rws )
     fi;
     WriteRWS(rws,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external Knuth-Bendix program.");
+    Info(InfoRWS,3,"  via '", Concatenation(Filename(_KBExtDir,"kbprog")," ",_KBTmpFileName), "'");
     Exec(Concatenation(Filename(_KBExtDir,"kbprog")," ",_KBTmpFileName));
     UpdateRWS(rws,_KBTmpFileName,true);
     Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
