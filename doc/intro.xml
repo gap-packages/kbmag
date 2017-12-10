@@ -1,0 +1,130 @@
+<!-- ------------------------------------------------------------------- -->
+<!--                                                                     -->
+<!--  intro.xml            KBMag documentation               Derek Holt  -->
+<!--                                                                     -->
+<!--  Copyright (C) 2000-2017, The GAP Group                             --> 
+<!--                                                                     -->
+<!-- ------------------------------------------------------------------- -->
+
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<Chapter Label="chap-intro">
+
+<Heading>Introduction</Heading>
+
+<Index Key="kbmag"> <Package>kbmag</Package> </Index> 
+
+&KBMAG;  (pronounced ``Kay-bee-mag'') stands  for 
+<E>Knuth--Bendix on Monoids, and Automatic Groups</E>.  
+It  is a stand-alone package  written in `C', for use under UNIX, 
+with an interface to &GAP;.  
+This chapter describes  its use as  an external library from within &GAP;.
+There are interfaces for the use of &KBMAG; with finitely
+presented groups, monoids and semigroups defined within &GAP;.
+The package also contains a collection of routines for manipulating
+finite state automata, which can be accessed via the &GAP; interface.
+<P/>
+To use  this  package effectively, some  knowledge  of the underlying
+theory  and algorithms  is  advisable.  
+The  Knuth-Bendix algorithm is described in various places in the literature. 
+Good general references that deal with the applications to groups and monoids 
+are <Cite Key="LeC86"/> and  the  first few  chapters of <Cite Key="Sims94"/>.   
+For the  theory of automatic   groups  see  the   multi-author book  
+<Cite Key="ECHLPT92"/>. 
+The algorithms employed by &KBMAG; are described more  specifically  in
+<Cite Key="EHR91"/> and <Cite Key="Holt94"/>.
+<P/>
+The manual for the stand-alone &KBMAG; package (which can be found in
+the `standalone/doc' directory of the package) provides more detailed
+information on the external `C' programs that  are called  from &GAP;.
+<P/>
+Suppose that <M>G</M> is a finitely presented semigroup, monoid or group
+defined as a quotient of the free structure <M>F</M>.
+The overall  objective of &KBMAG; is  to construct a  normal form for
+the elements of  <M>G</M> in terms of the generators of <M>F</M>,
+together with  a word reduction algorithm for  calculating
+the normal form representative  of an element in  <M>G</M>, given by a word
+in the generators of <M>F</M>.
+If this can be achieved,  then it is also possible
+to enumerate the words  in normal form up to   a given length,  and to
+determine the order  of <M>G</M>, by counting  the number of words in
+normal  form. In most  serious  applications,  this will be  infinite,
+since (for example) finite groups are (with some  exceptions) usually
+handled better by Todd-Coxeter related methods.
+In fact a  finite state automaton <M>W</M>
+is  calculated  that accepts precisely the   language of words  in the
+monoid  generators of <M>F</M> that are in normal form,  and <M>W</M>  is used for the
+enumeration  and counting  functions.
+<P/>
+The  normal form of an element  <M>g \in G</M> is defined  to be the least
+word in the generators of <M>F</M> (and their inverses) that represents 
+<M>g</M>, with respect to  a specified ordering on the  set of all  
+words in the generators of <M>F</M>.  
+The available  orderings are described  in "Setting the ordering" below.
+<P/>
+&KBMAG; offers two possible means of achieving these objectives.  The
+first   is   to apply   the   Knuth-Bendix   algorithm  to  the
+presentation, with one of the  available orderings on words, and  hope
+that the algorithm will complete with a finite confluent presentation.
+(If <M>G</M> is finite, then it is  guaranteed to complete eventually
+but,  like the  Todd-Coxeter procedure, it  may  take a long  time, or
+require more space  than  is  available.)  The second  is  to  use the
+automatic group program, which is only applicable to groups (not to
+monoids or semigroups). This  also uses the Knuth-Bendix procedure as
+one component of the algorithm, but  it aims to compute certain finite
+state  automata rather  than to obtain   a  finite confluent rewriting
+system, and it completes successfully on many  examples for which such
+a finite system does not exist. In the current standalone implementation,
+its use is  restricted to the ``shortlex\" ordering  on words.  That is,
+words are
+ordered first by increasing length, and then words of equal length are
+ordered lexicographically,   using the    specified ordering  of   the
+generators. However, there are now some &GAP; procedures available
+in the package written by Sarah Rees that enable it be used also for the
+``wtlex\" ordering, and the ``wreathprod\" ordering. See below for further
+details of these orderings.
+<P/>
+For both of the above procedures, the first step is to create a &GAP;
+object   known as  a  {\it Knuth-Bendix rewriting  system}  <M>R</M> from the
+finitely
+presented structure <M>G</M>.  There are functions available that can be used to
+specify  the input parameters  for the external  programs, such as the
+ordering on words to be used by the Knuth-Bendix procedure. One of the
+two  external programs is then run  on  <M>R</M>. If successful, it updates
+<M>R</M>, which  can then be  used to reduce words in
+the generators of <M>F</M> to normal form, and  to count and  enumerate the
+words in normal form.
+<P/>
+There are also now some routines available for performing
+corresponding operations with the cosets of a specified subgroup
+<M>H</M> of the group <M>G</M>. (These are not currently available for semigroups or
+monoids.) The words in normal form then correspond to minimal
+representatives under the ordering of the system of the right
+cosets of <M>H</M> in <M>G</M>. 
+If successful, the index of <M>H</M> in <M>G</M> can be determined. 
+The Knuth-Bendix routines also allow a confluent
+rewriting system for <M>H</M> to be computed, whereas the automatic groups
+routines allow a presentation of <M>H</M> to be computed (although not yet on
+a user-specified generating set).
+<P/>
+In the descriptions of the  functions that follow,  it is important to
+distinguish between  irreducible words, and  words in normal form.  As
+already stated, a word is in normal form if it is the least word under
+the ordering of the  rewriting system that  defines a particular group
+element or coset.  So  there is always  a unique word in  normal form
+for each group element or coset,  and it is  determined by the  group
+generators and the
+ordering on words  in  the group   generators. A word  in a  rewriting
+system is said to be irreducible if it  does not contain the left hand
+side of any of the reduction  rules in the  system as a subword. Words
+in normal form are always irreducible, but the converse is true if and
+only   if  the rewriting system  is   confluent.  The automatic groups
+programs provide a  method of  reducing  words to normal  form without
+obtaining a  finite  confluent rewriting  system  (which may  not even
+exist).
+<P/>
+Various levels of diagnostic  output  from the &GAP;  procedures   can
+be turned on  by
+setting the Info variable  `InfoRWS'  to 1, 2 or 3.
+<P/>
+</Chapter>

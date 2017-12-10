@@ -1,0 +1,92 @@
+<!-- ------------------------------------------------------------------- -->
+<!--                                                                     -->
+<!--  kbmag.xml               KBMag documentation                        -->
+<!--                                                                     -->
+<!--  Copyright (C) 2000-2017, The GAP Group                             --> 
+<!--                                                                     -->
+<!-- ------------------------------------------------------------------- -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE Book SYSTEM "gapdoc.dtd"
+  [<!ENTITY KBMAG '<Package>KBMag</Package>'>
+   <!ENTITY rkbp '<M>{\sf rkbp}</M>'>
+   <!ENTITY Automata '<M>{\sf Automata}</M>'> 
+   <!ENTITY fsa '<M>{\sf fsa}</M>'>
+   <!ENTITY fsa1 '<M>{\sf fsa1}</M>'>
+   <!ENTITY fsa2 '<M>{\sf fsa2}</M>'>
+   <!ENTITY rws '<M>{\sf rws}</M>'>
+   <!ENTITY ordering '<M>{\bf ordering}</M>'>
+   <!ENTITY shortlex '<M>{\bf shortlex}</M>'>
+   <!ENTITY wtlex '<M>{\bf wtlex}</M>'>
+   <!ENTITY wreathprod '<M>{\bf wreathprod}</M>'>
+   <!ENTITY recursive '<M>{\bf recursive}</M>'>
+   <#Include Label="PKGVERSIONDATA"> 
+  ]>
+
+<Book Name="KBMag">
+
+<TitlePage>
+  <Title>&KBMAG;</Title>
+  <Subtitle>Knuth--Bendix on Monoids, and Automatic Groups</Subtitle> 
+  <Version>Version &KBMAGVERSION;</Version>   
+  <Date>&KBMAGRELEASEDATE;</Date> 
+  <Author> Derek Holt
+    <Address> 
+      Mathematoics Institute<Br/> 
+      University of Warwick, Coventry, CV4 7AL 
+    </Address> 
+  </Author>
+
+<Abstract>
+The &KBMAG; package for &GAP;4 provides <P/>
+The latest version is &KBMAGVERSION; of &KBMAGLONGRELEASEDATE;.  
+<P/>
+Bug reports, comments, suggestions for additional features, 
+and offers to implement some of these, will all be very welcome. 
+<P/>
+Please submit any issues at 
+<URL>http://github.com/gap-packages/kbmag/issues/</URL>
+or send an email to 
+<Email>???</Email>. 
+</Abstract>
+
+<Copyright> 
+<Index>License</Index>
+&copyright; &KBMAGCOPYRIGHTYEARS; Derek Holt <P/>
+
+<Package>KBMag</Package> is free software; you can redistribute it 
+and/or modify it under the terms of the 
+<URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL> 
+as published by the Free Software Foundation; 
+either version 2 of the License, or (at your option) any later version.
+</Copyright>
+
+<Acknowledgements>
+This documentation was prepared with the <Package>GAPDoc</Package> 
+package <Cite Key="GAPDoc" /> of Frank L&#xfc;beck and Max Neunh&#xf6;ffer. 
+<P/> 
+The procedure used to mount new releases on GitHub uses the packages 
+<Package>GitHubPagesForGAP</Package> 
+<Cite Key="GitHubPagesForGAP" /> 
+and <Package>ReleaseTools</Package> of Max Horn. 
+</Acknowledgements>
+
+</TitlePage>
+
+<TableOfContents/>
+
+<Body>
+
+<#Include SYSTEM "intro.xml">
+<#Include SYSTEM "rws.xml">
+<#Include SYSTEM "cosets.xml">
+<#Include SYSTEM "standalone.xml">
+
+</Body>
+
+<Bibliography Databases="bib.xml"/>
+
+<TheIndex/>
+
+</Book>

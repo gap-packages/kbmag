@@ -1,0 +1,607 @@
+<!-- ------------------------------------------------------------------- -->
+<!--                                                                     -->
+<!--  standalone.xml            KBMag documentation           Derek Holt -->
+<!--                                                                     -->
+<!--  Copyright (C) 2000-2017, The GAP Group                             --> 
+<!--                                                                     -->
+<!-- ------------------------------------------------------------------- -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Chapter Label="chap-standalone">
+<Heading>The stand alone package</Heading>
+
+<Index Key="stand alone package">stand alone package</Index> 
+
+The &KBMAG; package contains &GAP; interfaces to many of the functions
+for manipulating finite state automata (&fsa;) that are available in the
+standalone. We shall list these here, without giving much detail.
+For more detail, the user could try looking in the source file
+<File>gap/fsa4.g</File>.
+
+<Section Label="sec-manip-fsa">
+<Heading>Functions for manipulating finite state automata</Heading>
+
+<Index Key="finite state automata">finite state automata</Index> 
+
+&fsa; are currently implemented as &GAP; records, as they were
+previously in &GAP;3. This interface may be updated to the style of
+&GAP;4 at some stage. (Note that the abbreviation &fsa; will be used for
+both singular and the plural.)
+<P/>
+The alphabet of an &fsa; is itself a record that must contain at least
+the two components <C>type</C> and <C>size</C>, 
+where <C>type</C> is a string, and <C>size</C> a positive integer. 
+The easiest possibility is to use the
+type <C>simple</C>, and then no other record components are necessary.
+There are several more complicated possibilities, which are used by
+the other rewriting system functions. For example, there is the type
+<C>identifiers</C>, for which fields <C>format</C> 
+and <C>names</C> are necessary.
+For example: 
+<P/>
+<Example>
+<![CDATA[
+gap> M:=FreeMonoid(3);;
+gap> alph := rec(type:="identifiers", size:=3,
+         format:="dense", names:=[M.1,M.2,M.3] );;
+]]>
+</Example>
+defines a valid alphabet for an &fsa;.
+The members of the alphabet are referred to as <C>letters</C>, and can be
+represented either by a positive integer or by their name (usually
+a generator of a free group or monoid) if they have one.
+<P/>
+The functions <Ref Func="ReductionAutomaton"/>,  
+<Ref Func="WordAcceptor"/>,
+<Ref Func="FirstWordDifferenceAutomaton"/>, 
+<Ref Func="SecondWordDifferenceAutomaton"/> 
+and <Ref Func="GeneralMultiplier"/>  
+mentioned in earlier sections all return a &fsa;. 
+The other possibilities for the user to construct
+a &fsa; are to use the function <Ref Func="FSA"/>  
+or to read one in from a file.
+In the latter case, the user must immediately call 
+<Ref Func="InitializeFSA"/> on the record that has been read in. 
+For example, running &GAP; from the package directory:
+<P/>
+<Example>
+<![CDATA[
+gap> Read("standalone/fsa_data/fsa_2");
+gap> InitializeFSA(fsa_2);
+]]>
+</Example>
+
+<ManSection>
+   <Func Name="IsInitializedFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Tests whether &fsa; is a record describing a valid initialized &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="InitializeFSA" 
+     Arg = "fsa" /> 
+<Description>
+Initializes a record representing a &fsa; that has been read in from
+a file.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="FSA" 
+     Arg = "alph" /> 
+<Description>
+Returns an initialized &fsa; with alphabet <C>alph</C> having one state that is
+an initial and final state, and no transitions (edges).
+<P/>
+The arguments of the following functions must be initialized &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Oper Name="WriteFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Displays &fsa; nicely. 
+(In a proper implementation, this would be the <C>ViewObj"</C> function.)
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="IsDeterministicFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Tests whether &fsa; is a deterministic &fsa;.
+Many of the functions below work only for deterministic &fsa;.
+A deterministic &fsa; with the same language as &fsa; can
+be constructed with the function <Ref Func="DeterminizeFSA"/>.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="AlphabetFSA" 
+     Arg = "fsa" />
+   <Func Name="StatesFSA" 
+     Arg = "fsa" /> 
+<Description>
+Return, respectively, the records representing the alphabet and state-set
+of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="NumberOfStatesFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Returns the number of states of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="NumberOfLettersFSA" 
+     Arg = "fsa"  /> 
+   <Func Name="SizeOfAlphabetFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Returns the size of the alphabet of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Oper Name="AcceptingStatesFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Returns the list of accepting states of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="InitialStatesFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Returns the list of initial states of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="DenseDTableFSA" 
+      Arg = "fsa" /> 
+<Description>
+&fsa; must be deterministic. The transition table is returned as a list
+of lists, where the <M>e</M>-th entry in the <M>s</M>-th inner list is
+<Ref Func="TargetDFA"/>,   
+called as <C>TargetDFA(fsa,e,s);</C>" (see below).
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="SparseTableFSA" 
+     Arg = "fsa" /> 
+<Description>
+The transition table is returned as a list of lists,
+where each entry in the <M>s</M>-th inner list is
+is a two-element list <C>[e,t]</C> of integers that represents a transition
+from state number <M>s</M> to state number <M>t</M> 
+under letter number <M>e</M>.
+We can also have <M>e=0</M>, representing transitions with no label
+(<M>\epsilon</M> transitions).
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="TargetDFA" 
+     Arg = "fsa e s"  /> 
+<Description>
+&fsa; must be a deterministic &fsa;, <M>e</M> should be a number or name
+of a letter of the alphabet, and <M>s</M> a number of a state of &fsa;.
+The target of <M>s</M> under <M>e</M> is returned, or <M>0</M> if there is no target.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="TargetsFSA" 
+      Arg = "fsa e s"  /> 
+<Description>
+Similar to <Ref Func="TargetDFA"/> , but &fsa; need not be deterministic, and a list
+of targets is returned.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="SourcesFSA" 
+     Arg = "fsa e s"  /> 
+<Description>
+Similar to <Ref Func="TargetsFSA"/> , but the list of sources of transitions to <M>s</M>
+under <M>e</M> is returned. <M>e</M> can also be zero here.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="WordTargetDFA" 
+     Arg = "fsa w"  /> 
+<Description>
+&fsa; must be a deterministic &fsa;, and <M>w</M> should be a list of integers
+or a word in the alphabet (in the case when the alphabet is defined
+from a free group or monoid). The target of the initial state of &fsa;
+under <M>w</M> is returned, or <M>0</M> if there is no such target.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="IsAcceptedWordDFA" 
+     Arg = "fsa w"  /> 
+<Description>
+&fsa; must be a deterministic &fsa;, and <M>w</M> should be a list of integers
+or a word in the alphabet (in the case when the alphabet is defined
+from a free group or monoid). This function tests whether <M>w</M> is in
+the language of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="AddStateFSA" 
+     Arg = "fsa" /> 
+<Description>
+Adds an extra non-accepting state to &fsa; with no transitions to or from it.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="DeleteStateFSA" 
+     Arg = "fsa" /> 
+<Description>
+Deletes the highest numbered state together with all transitions to and from
+it from &fsa;. Use <Ref Func="PermuteStatesFSA"/>  first to delete a different state.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Oper Name="PermuteStatesFSA" 
+     Arg = "fsa p" /> 
+<Description>
+<M>p</M> should be a permutation of <C>[1..ns]</C>, 
+where &fsa; has <M>ns</M> states.
+The states are permuted, where the original state number <M>n</M> becomes
+the new state number <M>n^p</M>.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="AddLetterFSA" 
+     Arg = "fsa [,name]"  /> 
+<Description>
+Adds an extra letter to the alphabet of &fsa; with no associated transitions.
+If the alphabet of &fsa; is defined over a free group or monoid, then
+<C>name</C> specifies the element of this free structure corresponding to
+the new letter.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="DeleteLetterFSA" 
+     Arg = "fsa"  /> 
+<Description>
+Deletes the highest numbered letter together with all associated transitions
+from the alphabet of &fsa;. 
+Use <Ref Func="PermuteLettersFSA"/>  first to delete a different letter.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Oper Name="PermuteLettersFSA" 
+     Arg = "fsa p"  /> 
+<Description>
+<M>p</M> should be a permutation of <C>[1..na]</C>, where the alphabet of
+&fsa; has <M>na</M> letters.
+The letters are permuted, where the original letter number <M>n</M> becomes
+the new letter number <M>n^p</M>.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="AddEdgeFSA" 
+     Arg = "fsa e s t"  /> 
+<Description>
+Adds an extra transition to &fsa; with source <M>s</M>, target <M>t</M>
+and letter <M>e</M>. 
+If there is already such a transition, then this function does nothing.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="DeleteEdgeFSA" 
+     Arg = "fsa e s t"  /> 
+<Description>
+Deletes the transition from &fsa; with source <M>s</M>, target <M>t</M>
+and letter <M>e</M> if there is one.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="SetAcceptingFSA" 
+     Arg = "fsa s flag"  /> 
+<Description>
+<C>flag</C> should be true or false, and state number <M>s</M> 
+is made accepting or non-accepting, respectively.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="SetInitialFSA" 
+    Arg = "fsa s flag"  /> 
+<Description>
+<C>flag</C> should be true or false, and state number <M>s</M> 
+is made initial or non-initial, respectively.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="IsAccessibleFSA" 
+     Arg = "fsa" /> 
+<Description>
+Tests whether &fsa; is accessible; that is, whether all states can be
+reached from the initial states.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="AccessibleFSA" 
+     Arg = "fsa" /> 
+<Description>
+Removes all inaccessible states from &fsa; thus rendering it accessible
+without altering its language.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="IsTrimFSA" 
+     Arg = "fsa" /> 
+<Description>
+Tests whether &fsa; is trim; that is, whether all states can be
+reached from the initial states, and a final state can be reached from
+all states.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="TrimFSA" 
+     Arg = "fsa" /> 
+<Description>
+Removes all inaccessible states from &fsa; and all states from which an
+accepting state cannot be reached, thus rendering it trim
+without altering its language.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="IsBFSFSA(" 
+     Arg = "fsa" /> 
+<Description>
+Tests whether &fsa; is in <C>bfs</C> (breadth-first-search) form; that is,
+whether the initial states come first and the other states
+appear in ascending order if one scans the transition table first
+by state number and then by alphabet number. Note that &fsa; must
+be accessible for it to be <C>bfs</C>.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="BFSFSA" 
+     Arg = "fsa" /> 
+<Description>
+Replaces &fsa; by one with the same language but in <C>bfs</C> form.
+This can be useful for comparing the languages of two &fsa;.
+In fact <Ref Func="MinimizeFSA"/>  and <Ref Func="BFSFSA"/>  
+are applied in turn to a deteministic &fsa;, 
+then the resulting transition table is
+uniquely determined by the language of the &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="LSizeDFA" 
+     Arg = "fsa" /> 
+<Description>
+The size of the acceted language of &fsa;, which must be deterministic.
+This only works if &fsa; is trim. 
+If not, then <Ref Func="TrimFSA"/>  must be called first.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="LEnumerateDFA" 
+     Arg = "fsa min max"  /> 
+<Description>
+The words in the language of &fsa; of length <M>l</M> satisfying
+<M>min \le l \le max</M> are returned in a list. The words will either
+be lists of integers, for <E>simple</E> type alphabets, of lists of
+words in the underlying free group or monoid for alphabets of type
+<E>identifiers</E>.
+<P/>
+</Description>
+</ManSection> 
+
+</Section> 
+
+<!-- ------------------------------------------------------------------- -->
+
+<Section Label="sec-ext-fsa">
+<Heading>Functions calling external programs</Heading>
+
+<Index Key="external programs">external programs</Index> 
+
+The remaining &fsa; functions all call external programs from the
+standalone. All of them except <Ref Func="DeterminizeFSA"/>  take only
+deterministic &fsa; as input, and all of them return deterministic &fsa;
+as output.
+<P/>
+
+<ManSection>
+   <Func Name="DeterminizeFSA" 
+     Arg = "fsa" /> 
+<Description>
+Returns a deterministic &fsa; with the same language as &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="MinimizeFSA" 
+     Arg = "fsa" /> 
+<Description>
+Returns a &fsa; with the same language as &fsa; and a minimal
+number of states.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="NotFSA" 
+     Arg = "fsa" /> 
+<Description>
+Returns a &fsa; with the same alphabet as &fsa; whose language is the
+complement of that of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="StarFSA" 
+     Arg = "fsa" /> 
+<Description>
+Returns a &fsa; whose language is <M>L^{*}</M>, where <M>L</M> 
+is the langauge of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="ReverseFSA" 
+     Arg = "fsa" /> 
+<Description>
+Returns a &fsa; whose language consists of the reversed words in the language
+of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="ExistsFSA" 
+     Arg = "fsa" /> 
+<Description>
+&fsa; should be two-variable &fsa; on an alphabet <M>A</M>. 
+An &fsa; is returned that accepts a word <M>w_1 \in A^{*}</M> 
+if and only if there exists a word <M>w_2 \in A^{*}</M> 
+with <M>(w_1,w_2)</M> in the language of &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="SwapCoordsFSA" 
+     Arg = "fsa" /> 
+<Description>
+&fsa; should be two-variable &fsa; on an alphabet <M>A</M>. 
+A two-variable &fsa; on <M>A</M> is returned that accepts <M>(w_1,w_2)</M> 
+if and only if <M>(w_2,w_1)</M> is accepted by &fsa;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="AndFSA" 
+     Arg = "fsa1 fsa2" /> 
+<Description>
+&fsa1; and &fsa2; must have the same alphabet. The returned &fsa; has
+language equal to the interssection of those of &fsa1; and &fsa2;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="OrFSA" 
+     Arg = "fsa1 fsa2"  /> 
+<Description>
+&fsa1; and &fsa2; must have the same alphabet. The returned &fsa; has
+language equal to the union of those of &fsa1; and &fsa2;.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="ConcatFSA" 
+     Arg = "fsa1 fsa2"  /> 
+<Description>
+&fsa1; and &fsa2; must have the same alphabet. The returned &fsa; accepts
+words of the form <M>w_1w_2</M>, where <M>w_1</M> and <M>w_2</M> are in the 
+languages of &fsa1; and &fsa2;, respectively.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="LanguagesEqualFSA" 
+     Arg = "fsa1 fsa2" /> 
+<Description>
+&fsa1; and &fsa2; must have the same alphabet. This function tests
+whether the languages of &fsa1; and &fsa2; are equal, and
+returns <C>true</C> or <C>false</C>.
+<P/>
+</Description>
+</ManSection>
+
+<ManSection>
+   <Func Name="GrowthFSA" 
+     Arg = "fsa" /> 
+<Description>
+Returns the growth function of &fsa;. 
+This is a rational function, of which the the coefficient of <M>x^n</M> 
+in its Taylor expansion is equal to the number of words of length <M>n</M> 
+in the accepted language of &fsa;.
+<P/>
+If the coefficients in this rational function are larger than about <M>16000</M>
+then strange error messages will appear and <C>fail</C> will be returned.
+<P/>
+</Description>
+</ManSection>
+
+</Section> 
+
+</Chapter>
+
