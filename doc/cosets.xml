@@ -2,7 +2,7 @@
 <!--                                                                     -->
 <!--  cosets.xml              KBMag documentation             Derek Holt -->
 <!--                                                                     -->
-<!--  Copyright (C) 2000-2017, The GAP Group                             --> 
+<!--  Copyright (C) 1997-2017, Derek Holt.                               --> 
 <!--                                                                     -->
 <!-- ------------------------------------------------------------------- -->
 
@@ -11,7 +11,7 @@
 <Chapter Label="chap-cosets">
 <Heading>The Knuth-Bendix program on cosets</Heading>
 
-It is possible to use the Knuth-Bendix and Automatic groups program
+It is possible to use the Knuth-Bendix and Automatic Structure program
 on cosets  of a specified subgroup <M>H</M> of <M>G</M>. Most of the
 functions in the preceding chapter have analogues for cosets rather
 than for elements. It is also possible sometimes to compute a complete
@@ -31,11 +31,13 @@ rewriting system is defined from a group <M>G</M>.
 <Description>
 The subgroup <M>H</M> of the group <M>G</M> 
 (= <C>SemigroupOfRewritingSystem(rws)</C> )
-from which &rws; is defined can be specified either as a subgroup of
-<M>G</M> or as a list of elements of <M>G</M> that generate <M>H</M>, 
+from which &rws; is defined can be specified either as 
+a subgroup of <M>G</M>; 
+or as a list of elements of <M>G</M> that generate <M>H</M>; 
 or as a subgroup of <M>F</M> = <C>FreeStructureOfRewritingSystem(rws)</C> 
-that maps onto <M>H</M>, or as
-a list of elements of <M>F</M> that generate a subgroup mapping onto <M>H</M>.
+that maps onto <M>H</M>; 
+or as a list of elements of <M>F</M> that generate a subgroup 
+mapping onto <M>H</M>.
 <P/>
 <Ref Func="SubgroupOfKBMAGRewritingSystem"/>  returns a rewriting system <C>subrws</C> for <M>H</M>,
 but <C>subrws</C> has no rules, and is only intended to be used as a parameter
@@ -77,10 +79,11 @@ Knuth-Bendix program on cosets</Index>
    <Oper Name="KnuthBendixOnCosetsWithSubgroupRewritingSystem" 
      Arg = "rws subrws"  /> 
 <Description>
-Run the external Knuth-Bendix program  on the rewriting system  &rws;
+<C>KnuthBendixOnCosets</C> runs the external Knuth-Bendix program  
+on the rewriting system  &rws;
 with respect to the cosets of the subgroup corresponding to <C>subrws</C>.
-<Ref Func="KnuthBendixOnCosets"/>  returns  <C>true</C>  if it  finds   a  confluent rewriting system  on coset representatives, 
-and otherwise <C>false</C>.
+It returns  <C>true</C>  if it  finds   a  confluent rewriting system  
+on coset representatives, and otherwise <C>false</C>.
 <P/>
 If <Ref Func="KnuthBendixOnCosets"/>  halts without finding a confluent system, 
 but still manages to output the current system and update &rws;, 
@@ -109,6 +112,16 @@ to define <C>subrws</C>.
 </Description>
 </ManSection>
 
+<ManSection>
+   <Oper Name="IsConfluentOnCosets" 
+         Arg = "rws" />
+<Description>
+This operation returns <C>true</C> if &rws; is a rewriting system 
+on cosets that is known to be confluent.
+<P/>
+</Description>
+</ManSection>
+
 </Section> 
 
 <!-- ------------------------------------------------------------------- -->
@@ -119,16 +132,15 @@ to define <C>subrws</C>.
 automatic cosets program</Index> 
 
 <ManSection>
-   <Oper Name="AutomaticStructureOnCosets" 
+   <Func Name="AutomaticStructureOnCosets" 
       Arg = "rws subrws [large filestore diff1]"  /> 
-   <Oper Name="AutomaticStructureOnCosetsWithSubgroupPresentation" 
+   <Func Name="AutomaticStructureOnCosetsWithSubgroupPresentation" 
       Arg = "rws subrws [large filestore diff1]"  /> 
 <Description>
-Run  the  external automatic cosets  program  on  the rewriting system
-&rws; with respect to the cosets of the subgroup <M>H</M> from which 
-<C>subrws</C> was defined.
-<Ref Func="AutomaticStructureOnCosets"/>  returns <C>true</C> if successful 
-and <C>false</C> otherwise.
+<C>AutomaticStructureOnCosets</C> runs the external automatic cosets program 
+on the rewriting system &rws; with respect to the cosets 
+of the subgroup <M>H</M> from which <C>subrws</C> was defined.
+It returns <C>true</C> if successful and <C>false</C> otherwise.
 <P/>
 The optional parameters to <Ref Func="AutomaticStructureOnCosets"/>  
 are the same as for <Ref Func="AutomaticStructure"/>.
@@ -165,10 +177,10 @@ used to define <M>H</M>.
    <Oper Name="IsReducedCosetRepresentative" 
      Arg = "rws subrws w"  /> 
 <Description>
-Test  whether the word <M>w</M> in  the generators of  the freestructure
-<C>FreeStructure(rws)</C>  of the rewriting system system
+This operation tests whether the word <M>w</M> in  the generators 
+of  the freestructure <C>FreeStructure(rws)</C> of the rewriting system system 
 &rws; is reduced or not as a coset representative of the subgroup <M>H</M>
-of <M>G</M>, and return <C>true</C> or <C>false</C>.
+of <M>G</M>. It returns <C>true</C> or <C>false</C>.
 <P/>
 <Ref Func="IsReducedCosetRepresentative"/>  can only be used after
 <Ref Func="KnuthBendixOnCosets"/>  or <Ref Func="AutomaticStructureOnCosets"/> 
@@ -186,15 +198,16 @@ then  it is guaranteed that  all irreducible words are in normal form.
 </ManSection>
 
 <ManSection>
-   <Oper Name="ReducedFormOfCosetRepresentative"
-     Arg = "rws subrws w"  /> 
    <Oper Name="ReducedCosetRepresentative" 
      Arg = "rws subrws w"  /> 
+   <Oper Name="ReducedFormOfCosetRepresentative"
+     Arg = "rws subrws w"  /> 
 <Description>
-Reduce the word  <M>w</M> in the generators of the free structure
+<C>ReducedCosetRepresentative</C> reduces the word  <M>w</M> 
+in the generators of the free structure
 <C>FreeStructure(rws)</C>  of the rewriting system  &rws;
 as a coset representative of the subgroup <M>H</M> from which <C>subrws</C>
-was defined, and return the result.
+was defined, and returns the result.
 <P/>
 <Ref Func="ReducedFormOfCosetRepresentative"/>  can only be used after
 <Ref Func="KnuthBendixOnCosets"/>  or <Ref Func="AutomaticStructureOnCosets"/>  has been run successfully on &rws; and <C>subrws</C>.
@@ -220,7 +233,7 @@ in normal form.
    <Meth Name="Index" 
      Arg = "rws subrws" /> 
 <Description>
-Returns the number of irreducible words for coset represenatitives of the
+Returns the number of irreducible words for coset representatives of the
 subgroup <M>H</M> of <M>G</M> corresponding to <C>subrws</C>.
 <P/>
 <Ref Func="Index"/> can only be  used  after <Ref Func="KnuthBendixOnCosets"/> 
@@ -263,7 +276,7 @@ it is guaranteed that all words in the list will be in normal form.
 </ManSection>
 
 <ManSection>
-   <Oper Name="GrowthFunctionOfCosetRepresentatives" 
+   <Func Name="GrowthFunctionOfCosetRepresentatives" 
      Arg = "rws subrws"  /> 
 <Description>
 Returns the growth function of the set of irreducible words for coset 
@@ -293,7 +306,7 @@ it is guaranteed that all words in the list will be in normal form.
 <!-- ------------------------------------------------------------------- -->
 
 <Section Label="sec-ex-cosets">
-<Heading>Examples of the Use of Rewriting System On Cosets</Heading>
+<Heading>Examples of the use of Rewriting System on Cosets</Heading>
 
 <Index Key="rewriting systems on cosets" Subkey="examples">
 rewriting systems on cosets (examples)</Index> 
@@ -305,11 +318,11 @@ Here are two examples to illustrate the operations described above.
 
 <Example>
 <![CDATA[
-gap> F:=FreeGroup("a","b","c");;
-gap> a:=F.1;;b:=F.2;;c:=F.3;;
+gap> F := FreeGroup( "a", "b", "c" );;
+gap> a := F.1;;  b := F.2;;  c := F.3;;
 gap> G := F/[b^3,c^3,(b*c)^4,(b*c^-1)^5,a^-1*b^-1*c*b*c*b^-1*c*b*c^-1];
 <fp group on the generators [ a, b, c ]>
-gap> R:=KBMAGRewritingSystem(G);
+gap> R := KBMAGRewritingSystem( G );
 rec(
        isRWS := true,
       silent := true,
@@ -324,7 +337,7 @@ rec(
      [_g2*_g4*_g5*_g3*_g5,_g5*_g4*_g6*_g3]
        ]
 )
-gap> S:=SubgroupOfKBMAGRewritingSystem(R,[a^3,c*a^2]);  
+gap> S := SubgroupOfKBMAGRewritingSystem( R, [ a^3, c*a^2 ] );  
 rec(
        isRWS := true,
       silent := true,
@@ -334,19 +347,19 @@ rec(
        equations := [
        ]
 )
-gap> KnuthBendixOnCosetsWithSubgroupRewritingSystem(R,S);
+gap> KnuthBendixOnCosetsWithSubgroupRewritingSystem( R, S );
 true
-gap> Index(R,S);
+gap> Index( R, S );
 18
-gap> IsReducedCosetRepresentative(R,S,b*a*b*a);
+gap> IsReducedCosetRepresentative( R, S, b*a*b*a );
 false
-gap> ReducedFormOfCosetRepresentative(R,S,b*a*b*a);
+gap> ReducedFormOfCosetRepresentative( R, S, b*a*b*a );
 b^-1*a^-1
-gap> EnumerateReducedCosetRepresentatives(R,S,0,4);
+gap> EnumerateReducedCosetRepresentatives( R, S, 0, 4 );
 [ <identity ...>, a, a*b, a*b*c, a*b^-1, a^-1, a^-1*b, a^-1*b*c, a^-1*b^-1, 
   b, b*c, b*c*a, b*c*a^-1, b*c^-1, b^-1, b^-1*a, b^-1*a^-1, b^-1*a^-1*b ]
-gap> SS:=RewritingSystemOfSubgroupOfKBMAGRewritingSystem(R,S);;
-gap> Size(SS);
+gap> SS := RewritingSystemOfSubgroupOfKBMAGRewritingSystem( R, S );;
+gap> Size( SS );
 60
 ]]>
 </Example>
@@ -361,18 +374,19 @@ This example may take about <M>20</M> minutes to run on a typical WorkStation.
 <P/>
 <Example>
 <![CDATA[
-gap> F:=FreeGroup(8);;
-gap> a:=F.1; b:=F.2; c:=F.3; d:=F.4; e:=F.5; f:=F.6; g:=F.7; h:=F.8;
+gap> F := FreeGroup( 8 );;
+gap> a := F.1;  b := F.2;  c := F.3;  d := F.4; 
+gap> e := F.5;  f := F.6;  g := F.7;  h := F.8;
 gap> G := F/[a*b*c^-1, b*c*d^-1, c*d*e^-1, d*e*f^-1,
->        e*f*g^-1, f*g*h^-1, g*h*a^-1, h*a*b^-1];
-gap> R:=KBMAGRewritingSystem(G);;
-gap> S:=SubgroupOfKBMAGRewritingSystem(R,[a,e]);;
-gap> AutomaticStructureOnCosetsWithSubgroupPresentation(R,S);
-gap> P:=PresentationOfSubgroupOfKBMAGRewritingSystem(R,S);
+>            e*f*g^-1, f*g*h^-1, g*h*a^-1, h*a*b^-1];
+gap> R := KBMAGRewritingSystem( G );;
+gap> S := SubgroupOfKBMAGRewritingSystem( R, [a,e] );;
+gap> AutomaticStructureOnCosetsWithSubgroupPresentation( R, S );
+gap> P := PresentationOfSubgroupOfKBMAGRewritingSystem( R, S );
 <fp group on the generators [ f1, f3 ]>
-gap> RelatorsOfFpGroup(P);
+gap> RelatorsOfFpGroup( P );
 [  ]
-gap> Index(R,S);                 
+gap> Index( R, S );                 
 infinity
 ]]>
 </Example>

@@ -2,7 +2,7 @@
 <!--                                                                     -->
 <!--  intro.xml            KBMag documentation               Derek Holt  -->
 <!--                                                                     -->
-<!--  Copyright (C) 2000-2017, The GAP Group                             --> 
+<!--  Copyright (C) 1997-2017, Derek Holt                                --> 
 <!--                                                                     -->
 <!-- ------------------------------------------------------------------- -->
 
@@ -18,11 +18,14 @@
 <E>Knuth--Bendix on Monoids, and Automatic Groups</E>.  
 It  is a stand-alone package  written in `C', for use under UNIX, 
 with an interface to &GAP;.  
-This chapter describes  its use as  an external library from within &GAP;.
+Chapters <Ref Chap="chap-rws"/> and <Ref Chap="chap-cosets"/>
+describe its use as  an external library from within &GAP;.
 There are interfaces for the use of &KBMAG; with finitely
 presented groups, monoids and semigroups defined within &GAP;.
 The package also contains a collection of routines for manipulating
-finite state automata, which can be accessed via the &GAP; interface.
+finite state automata, which can be accessed via the &GAP; interface. 
+Chapter <Ref Chap="chap-standalone"/> 
+lists the functions in the stand-alone package. 
 <P/>
 To use  this  package effectively, some  knowledge  of the underlying
 theory  and algorithms  is  advisable.  
@@ -34,8 +37,8 @@ For the  theory of automatic   groups  see  the   multi-author book
 The algorithms employed by &KBMAG; are described more  specifically  in
 <Cite Key="EHR91"/> and <Cite Key="Holt94"/>.
 <P/>
-The manual for the stand-alone &KBMAG; package (which can be found in
-the `standalone/doc' directory of the package) provides more detailed
+The manual for the stand-alone &KBMAG; package (which can be found in the 
+<File>standalone/doc</File> directory of the package) provides more detailed
 information on the external `C' programs that  are called  from &GAP;.
 <P/>
 Suppose that <M>G</M> is a finitely presented semigroup, monoid or group
@@ -60,34 +63,38 @@ The  normal form of an element  <M>g \in G</M> is defined  to be the least
 word in the generators of <M>F</M> (and their inverses) that represents 
 <M>g</M>, with respect to  a specified ordering on the  set of all  
 words in the generators of <M>F</M>.  
-The available  orderings are described  in "Setting the ordering" below.
+The available  orderings are described in section <Ref Sect="sec-set-order"/>.
 <P/>
-&KBMAG; offers two possible means of achieving these objectives.  The
-first   is   to apply   the   Knuth-Bendix   algorithm  to  the
+&KBMAG; offers two possible means of achieving these objectives.  
+The first is to apply the Knuth-Bendix algorithm to the
 presentation, with one of the  available orderings on words, and  hope
 that the algorithm will complete with a finite confluent presentation.
 (If <M>G</M> is finite, then it is  guaranteed to complete eventually
 but,  like the  Todd-Coxeter procedure, it  may  take a long  time, or
-require more space  than  is  available.)  The second  is  to  use the
-automatic group program, which is only applicable to groups (not to
-monoids or semigroups). This  also uses the Knuth-Bendix procedure as
+require more space  than  is  available.)  
+The second  is  to  use the automatic group program, 
+which is only applicable to groups (not to monoids or semigroups). 
+This  also uses the Knuth-Bendix procedure as
 one component of the algorithm, but  it aims to compute certain finite
 state  automata rather  than to obtain   a  finite confluent rewriting
 system, and it completes successfully on many  examples for which such
-a finite system does not exist. In the current standalone implementation,
-its use is  restricted to the ``shortlex\" ordering  on words.  That is,
+a finite system does not exist. 
+In the current stand-alone implementation, its use is  restricted to the 
+&shortlex; ordering  on words.  That is,
 words are
 ordered first by increasing length, and then words of equal length are
 ordered lexicographically,   using the    specified ordering  of   the
 generators. However, there are now some &GAP; procedures available
-in the package written by Sarah Rees that enable it be used also for the
-``wtlex\" ordering, and the ``wreathprod\" ordering. See below for further
-details of these orderings.
+in the package written by Sarah Rees 
+<M>{\bf (what~package~is~this?)}</M>
+that enable it be used also for the
+&wtlex; ordering, and the &wreathprod; ordering. 
+See section <Ref Sect="sec-set-order"/> for further details of these orderings.
 <P/>
 For both of the above procedures, the first step is to create a &GAP;
-object   known as  a  {\it Knuth-Bendix rewriting  system}  <M>R</M> from the
-finitely
-presented structure <M>G</M>.  There are functions available that can be used to
+object   known as  a  <E>Knuth-Bendix rewriting  system</E>  <M>R</M> 
+from the finitely presented structure <M>G</M>.  
+There are functions available that can be used to
 specify  the input parameters  for the external  programs, such as the
 ordering on words to be used by the Knuth-Bendix procedure. One of the
 two  external programs is then run  on  <M>R</M>. If successful, it updates
@@ -115,7 +122,7 @@ element or coset.  So  there is always  a unique word in  normal form
 for each group element or coset,  and it is  determined by the  group
 generators and the
 ordering on words  in  the group   generators. A word  in a  rewriting
-system is said to be irreducible if it  does not contain the left hand
+system is said to be <E>irreducible</E> if it  does not contain the left hand
 side of any of the reduction  rules in the  system as a subword. Words
 in normal form are always irreducible, but the converse is true if and
 only   if  the rewriting system  is   confluent.  The automatic groups
@@ -125,6 +132,10 @@ exist).
 <P/>
 Various levels of diagnostic  output  from the &GAP;  procedures   can
 be turned on  by
-setting the Info variable  `InfoRWS'  to 1, 2 or 3.
+setting the Info variable  <C>InfoRWS</C>  to <M>1, 2</M> or <M>3</M>.
+<P/>
+In the descriptions that follow functions declared in the main &GAP; 
+library, for which additional methods are implemented, are referred to 
+as <E>library functions</E>. 
 <P/>
 </Chapter>

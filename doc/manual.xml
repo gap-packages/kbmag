@@ -2,7 +2,7 @@
 <!--                                                                     -->
 <!--  kbmag.xml               KBMag documentation                        -->
 <!--                                                                     -->
-<!--  Copyright (C) 2000-2017, The GAP Group                             --> 
+<!--  Copyright (C) 1997-2017, Derek Holt                                --> 
 <!--                                                                     -->
 <!-- ------------------------------------------------------------------- -->
 
@@ -33,22 +33,24 @@
   <Date>&KBMAGRELEASEDATE;</Date> 
   <Author> Derek Holt
     <Address> 
-      Mathematoics Institute<Br/> 
+      Mathematics Institute<Br/> 
       University of Warwick, Coventry, CV4 7AL 
     </Address> 
   </Author>
 
 <Abstract>
-The &KBMAG; package for &GAP;4 provides <P/>
+The &KBMAG; package for &GAP;4 provides an interface to some `C' programs 
+for running the Knuth-Bendix completion program on finite semigroup, 
+monoid or group presentations, and for attempting to compute  automatic 
+structures of finitely presented groups. 
+<P/>
 The latest version is &KBMAGVERSION; of &KBMAGLONGRELEASEDATE;.  
 <P/>
 Bug reports, comments, suggestions for additional features, 
 and offers to implement some of these, will all be very welcome. 
 <P/>
 Please submit any issues at 
-<URL>http://github.com/gap-packages/kbmag/issues/</URL>
-or send an email to 
-<Email>???</Email>. 
+<URL>http://github.com/gap-packages/kbmag/issues/</URL>. 
 </Abstract>
 
 <Copyright> 

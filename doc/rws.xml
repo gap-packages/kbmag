@@ -2,7 +2,7 @@
 <!--                                                                     -->
 <!--  rws.xml                 KBMag documentation             Derek Holt -->
 <!--                                                                     -->
-<!--  Copyright (C) 2000-2017, The GAP Group                             --> 
+<!--  Copyright (C) 1997-2017, Derek Holt                                --> 
 <!--                                                                     -->
 <!-- ------------------------------------------------------------------- -->
 
@@ -17,10 +17,11 @@
 <Index Key="rewriting systems" Subkey="creating"> 
 rewriting systems (creating)</Index> 
 
-First the user should be aware of a technicality. The words in a
-rewriting system created in &GAP; for use by &KBMAG; are defined over an
-alphabet that consists of the generators of a free monoid, called the
-`word-monoid' of the system. Suppose, as before,  that the rewriting system
+First the user should be aware of a technicality. 
+The words in a rewriting system created in &GAP; for use by &KBMAG; 
+are defined over an alphabet that consists of the generators of a free monoid, 
+called the <E>word-monoid</E> of the system. 
+Suppose, as before,  that the rewriting system
 is defined from the semigroup, monoid or group <M>G</M> which is a quotient of
 the free structure <M>F</M>. Then the generators of this alphabet will be  in
 one-one correspondence with the generators (or, when <M>G</M> is a group, the
@@ -43,7 +44,7 @@ all to the way that they are actually stored internally!
    <Oper Name="KBMAGRewritingSystem" 
          Arg = "G" />
 <Description>
-constructs and returns a rewriting system <M>R</M> from a
+This operation constructs and returns a rewriting system <M>R</M> from a
 finitely presented semigroup, monoid or group <M>G</M>.
 When <M>G</M> is a group, the alphabet members of <M>R</M> correspond to the generators of  <M>F</M>  together with inverses  for  those  generators 
 which are not obviously involutory in <M>G</M>.
@@ -64,38 +65,43 @@ rewriting systems (elementary functions)</Index>
 <ManSection>
    <Filt Name="IsKBMAGRewritingSystemRep" 
          Arg = "rws"
-         Type = "Representation" /> 
+         Type = "representation" /> 
+   <Filt Name="IsRewritingSystem" 
+         Arg = "rws"
+         Type = "category" /> 
 <Description>
-Returns true if &rws; is a rewriting system created by 
-<Ref Func="KBMAGRewritingSystem"/>. 
+<C>IsKBMAGRewritingSystemRep</C> returns <C>true</C> if &rws; 
+is a rewriting system created by <Ref Func="KBMAGRewritingSystem"/>. 
 The function <Ref Func="IsRewritingSystem" BookName="Reference"/> 
-will also return true on such a system.
-(The function <C>IsKnuthBendixRewritingSystem</C> 
-is currently not declared.) 
+will also return <C>true</C> on such a system.
+(The function <C>IsKnuthBendixRewritingSystem</C> has been considered 
+for inclusion, but is not currently declared.) 
 <P/>
 </Description>
 </ManSection>
 
 <ManSection>
-   <Prop Name="IsConfluent" 
+   <Meth Name="IsConfluent" 
          Arg = "rws" />
 <Description>
-Returns true if &rws; is a rewriting system that is known to be confluent.
+This library property returns <C>true</C> if &rws; is a rewriting system 
+that is known to be confluent.
 <P/>
 </Description>
 </ManSection>
 
 <ManSection>
-   <Oper Name="SemigroupOfRewritingSytem" 
+   <Meth Name="SemigroupOfRewritingSytem" 
          Arg = "rws" /> 
-   <Oper Name="FreeStructureOfSystem" 
+   <Meth Name="FreeStructureOfSystem" 
          Arg = "rws" /> 
    <Oper Name="WordMonoidOfRewritingSystem" 
          Arg = "rws" /> 
 <Description>
-These return, respectively, the semigroup, monoid or group <M>G</M>,
-the free structure <M>F</M>, and the word-monoid of the rewriting system,
-as defined in the preceding section.
+The first two library functions return, respectively, the semigroup, 
+monoid or group <M>G</M>, and the free structure <M>F</M>.  
+The third returns the word-monoid of the rewriting system,
+as defined in section <Ref Sect="sec-create-rws"/>. 
 <P/>
 </Description>
 </ManSection>
@@ -106,9 +112,9 @@ as defined in the preceding section.
    <Func Name="InternalWordToExternalWordOfRewritingSystem" 
          Arg = "rws w" /> 
 <Description>
-These are the functions for converting between external words,
+These are the functions for converting between <E>external words</E>,
 which are those defined over the free structure <M>F</M> of &rws;,
-and the internal words, which are defined over the word-monoid of &rws;.
+and the <E>internal words</E>, which are defined over the word-monoid of &rws;.
 <P/>
 </Description>
 </ManSection>
@@ -120,16 +126,16 @@ and the internal words, which are defined over the word-monoid of &rws;.
 This is an ordered list of the generators of the word-monoid of &rws;.
 It will not necessarily be in the normal order of these generators,
 and it can be re-ordered by the function 
-<Ref Func="ReorderAlphabetOfKBMAGRewritingSystem"/>  (see below).
+<Ref Func="ReorderAlphabetOfKBMAGRewritingSystem"/>.
 <P/>
 </Description>
 </ManSection>
 
 <ManSection>
-   <Oper Name="Rules" 
+   <Meth Name="Rules" 
      Arg = "rws" /> 
 <Description>
-A list of the reduction rules of &rws;. 
+This library function returns a list of the <E>reduction rules</E> of &rws;. 
 Each rule is a two-element list containing the left and right hand sides 
 of the rule, which are words in the alphabet of &rws;.
 <P/>
@@ -168,7 +174,7 @@ rewriting systems (setting the order)</Index>
      Arg = "rws p" />
    <Func Name="OrderingOfKBMAGRewritingSystem" 
      Arg = "rws" />
-   <Func Name="OrderingOfRewritingSystem" 
+   <Meth Name="OrderingOfRewritingSystem" 
      Arg = "rws" /> 
 <Description>
 <C>SetOrderingOfKBMAGRewritingSystem</C> changes the ordering on 
@@ -186,7 +192,7 @@ in the cases &wtlex; and &wreathprod;, respectively.
 <P/>
 Each  of these orderings depends on  the order of  the alphabet. 
 The current ordering of generators is displayed under the 
-<C>generatorOrder"</C> field  when &rws; is  viewed.  
+<C>generatorOrder</C> field  when &rws; is  viewed.  
 This ordering can   be changed  by the function  
 <Ref Func="ReorderAlphabetOfKBMAGRewritingSystem"/> .
 The  second  parameter <M>p</M> to  this function should be a permutation 
@@ -207,7 +213,7 @@ So &shortlex; is the special case of &wtlex; in which all generators
 have the same nonzero weight.
 <P/>
 The &recursive; ordering is  the special case  of &wreathprod;
-in which the levels of the <C>ng</C> generators are 
+in which the levels of the <M>ng</M> generators are 
 <M>1,2,\ldots,ng</M>, in the order of the alphabet.  
 We shall not attempt
 to give  a complete definition of  these orderings here, but refer the
@@ -218,14 +224,15 @@ reverse  order from the usual  convention  for polycyclic groups.
 The confluent  presentation will then  be the  same as the power-conjugate
 presentation.  
 For example,  for the  Heisenberg  group 
-<M>\langle x,y,z\, \| \,  [x,z]=[y,z]=1,  [y,x]=z \rangle</M>, 
+<M>\langle x,y,z ~|~ [x,z]=[y,z]=1,  [y,x]=z \rangle</M>, 
 a good   ordering  is &recursive;  with    the  order of  generators
 <M>[z^{-1},z,y^{-1},y,x^{-1},x]</M>.   
-This example is included in <Ref Sect="sec-examples"/>
-<E>Rewriting System Examples</E> below.
+This example is included as Example 3 in 
+<Ref Subsect="subsec-example3"/> below.
 <P/>
-Finally, <Ref Func="OrderingOfRewritingSystem"/>  returns the appropriate  
-&GAP; ordering on the elements of the word-monoid of &rws;. 
+Finally, a method is included for the attribute 
+<Ref Func="OrderingOfRewritingSystem"/> which returns the 
+appropriate &GAP; ordering on the elements of the word-monoid of &rws;. 
 The standard &GAP; ordering functions, such as 
 <Ref Func="IsLessThanUnder" BookName="Reference"/>  
 can then be used.
@@ -246,8 +253,8 @@ rewriting systems (control parameters)</Index>
 <ManSection>
    <InfoClass Name="InfoRWS"  /> 
 <Description>
-This `Info' variable can be set to 0, 1, 2 or 3 to control the level
-of diagnostic output.
+This `Info' variable can be set to <M>0,1,2</M> or <M>3</M> 
+to control the level of diagnostic output.
 <P/>
 The Knuth-Bendix procedure is unusually sensitive to the settings of a
 number of parameters  that control its  operation. In some examples, a
@@ -281,13 +288,13 @@ have no effect!
 <Item>
 <C>OR.maxeqns</C><Br/>
     A positive integer specifying  the maximum number of rewriting
-    rules allowed in &rws;.  The  default is 32767. If this number
-    is exceeded, then <Ref Func="KnuthBendix"/>  
+    rules allowed in &rws;.  The  default is <M>32767</M>. 
+    If this number is exceeded, then <Ref Func="KnuthBendix"/>  
     or <Ref Func="AutomaticStructure"/>  will abort.
 </Item>
 <Item>
 <C>OR.tidyint</C><Br/>
-      A positive integer,  100 by default.  During the  Knuth-Bendix
+      A positive integer, <M>100</M> by default.  During the  Knuth-Bendix
       procedure, the search for overlaps is interrupted periodically
       to tidy up the existing system  by removing and/or simplifying
       rewriting rules  that have become  redundant. 
@@ -296,7 +303,7 @@ have no effect!
 </Item>
 <Item>
 <C>OR.confnum</C><Br/>
-      A  positive integer, 500    by  default.  If   <C>OR.confnum</C>
+      A  positive integer, <M>500</M> by  default.  If <C>OR.confnum</C>
       overlaps are processed  in  the Knuth-Bendix procedure  but no
       new rules  are  found, then  a  fast test  for confluence   is
       carried out. This saves a lot of time  if the system really is
@@ -304,45 +311,46 @@ have no effect!
 </Item>
 <Item>
 <C>OR.maxstoredlen</C><Br/>
-      This is a list   of  two   positive integers, <C>maxlhs</C>  and
+      This is a list of  two   positive integers, <C>maxlhs</C>  and
       <C>maxrhs</C>; the  default is that both  are infinite.  Only those
       rewriting rules for  which the  left hand  side has  length at
       most   <C>maxlhs</C>  and the right hand    side has length at most
-      <C>maxrhs</C> are stored;  longer   rules are  discarded. In   some
+      <C>maxrhs</C> are stored;  longer   rules are  discarded.  In some
       examples it  is essential to   impose such limits in order  to
       obtain  a  confluent  rewriting   system. Of  course, if   the
       Knuth-Bendix procedure  halts with  such limits imposed,  then
       the    resulting system need   not be  confluent. 
       However, the confluence can  then be  tested be  re-running 
-      <Ref Func="KnuthBendix"/>   with  the
-      limits removed.  (To remove the  limits, unbind the field.)
+      <Ref Func="KnuthBendix"/> with the limits removed.  
+      (To remove the  limits, unbind the field.)
 </Item>
 <Item>
 <C>OR.maxoverlaplen</C><Br/>
-      This  is apositive integer, which  is  infinite by default 
+      This  is a positive integer, which  is  infinite by default 
       (when not set). Only those overlaps of total length
       <C>OR.maxoverlaplen</C>  are processed. 
       Similar remarks apply to those for <C>OR.maxstoredlen</C>.
 </Item>
 <Item>
 <C>OR.sorteqns</C><Br/>
-      This should be true or false, and false  is the default.  When
-      it is  true,   the rewriting  rules  are output  in order   of
+      This should be <C>true</C> or <C>false</C>, 
+      and <C>false</C>  is the default.  When it is  <C>true</C>, 
+      the rewriting  rules  are output  in order   of
       increasing length  of left  hand  side.  (The  default is that
-      they are output in the order that they were found).
+      they are output in the order that they were found.) 
 </Item>
 <Item>
 <C>OR.maxoplen</C><Br/>
-      This is an  integer, which is  infinite  by default (when  not
-      set).  When it is set, the rewriting rules are output in order
+      This is an  integer, which is  infinite  by default (when not set).  
+      When it is set, the rewriting rules are output in order
       of increasing length of left hand side (as if <C>OR.sorteqns</C>
-      were true), and only  those  rules having  left hand sides  of
-      length up to     <C>OR.maxoplen</C> are output   at all.  Again,
-      similar remarks apply to those for <C>OR.maxstoredlen</C>.
+      were <C>true</C>), and only  those  rules having  left hand sides  of
+      length up to <C>OR.maxoplen</C> are output at all.  
+      Again, similar remarks apply to those for <C>OR.maxstoredlen</C>.
 </Item>
 <Item>
 <C>OR.maxreducelen</C><Br/>
-      A positive integer,  32767  by default.  This is  the  maximum
+      A positive integer, <M>32767</M> by default.  This is  the  maximum
       length that a word is   allowed to have during the   reduction
       process.  It is  only likely to  be   exceeded when using  the
       &wreathprod; or &recursive; ordering.
@@ -351,9 +359,9 @@ have no effect!
 <C>OR.maxstates</C>, <C>OR.maxwdiffs</C><Br/>
       These are positive integers, controlling the maximum number of
       states of the word-reduction  automaton used by 
-      <Ref Func="KnuthBendix"/> ,  and the
+      <Ref Func="KnuthBendix"/>,   and the
       maximum  number   of  word-differences allowed   when  running
-      <Ref Func="AutomaticStructure"/> , respectively. 
+      <Ref Func="AutomaticStructure"/>,  respectively. 
       These numbers are normally increased
       automatically   when required, so it   unusual to  want to set
       these  flags. They can   be set when  either  it is desired to
@@ -380,13 +388,13 @@ have no effect!
 <ManSection>
    <Oper Name="KnuthBendix" 
      Arg = "rws" />
-   <Oper Name="MakeConfluent" 
+   <Meth Name="MakeConfluent" 
      Arg = "rws" /> 
 <Description>
 These two functions do the same thing, namely to
 run the external Knuth-Bendix program  on the rewriting system  &rws;.
-<Ref Func="KnuthBendix"/> returns  true if it finds a confluent rewriting 
-system  and otherwise false. 
+<Ref Func="KnuthBendix"/> returns  <C>true</C> if it finds a confluent rewriting 
+system  and otherwise <C>false</C>. 
 In either case,  if it halts  normally, then it  will update the list
 of the rewriting rules of &rws;, and also store a  finite state automaton 
 <C>ReductionAutomaton(rws)</C> that can be  used for  word reduction,  
@@ -398,16 +406,19 @@ set  before calling <Ref Func="KnuthBendix"/>.
 finds a finite confluent system of rewriting rules, or when one of the
 control parameters (such as <C>OR.maxeqns</C>) requires it to stop.  
 The program can also  be made to halt and  output manually at any time 
-by hitting the interrupt key (normally <Q>ctrl-C</Q>) once. 
+by hitting the interrupt key (normally `ctrl-C') once. 
 (Hitting it twice has unpredictable consequences, since  &GAP;    
 may intercept the signal.)
+<P/> 
+A method is installed to make the library operation <C>MakeConfluent</C> 
+run the <C>KnuthBendix</C> operation. 
 <P/>      
 If <Ref Func="KnuthBendix"/>  halts without finding a confluent system, 
 but still manages to output the current system and update &rws;, 
 then it is possible to use the  resulting   rewriting system  
 to  reduce  words,  and  count  and enumerate   the irreducible words; 
 it  cannot   be guaranteed that the irreducible words are all in normal form, however. It is also possible to re-run <Ref Func="KnuthBendix"/>   on the current system,  usually after altering some of the control parameters. 
-In fact, is some more difficult examples, this
+In fact, in some more difficult examples, this
 seems to be the only means of finding a finite confluent system.
 <P/>
 </Description>
@@ -417,8 +428,9 @@ seems to be the only means of finding a finite confluent system.
    <Func Name="ReductionAutomaton" 
      Arg = "rws"  /> 
 <Description>
-the reduction automaton of &rws;. Only expert users will wish to see this
-explicitly.  See the section on finite state automata below for general
+Returns the reduction automaton of &rws;. 
+Only expert users will wish to see this explicitly.  
+See the section on finite state automata below for general
 information on functions for manipulating automata.
 <P/>
 </Description>
@@ -434,36 +446,37 @@ information on functions for manipulating automata.
 <Index Key="automatic groups program"> automatic groups program</Index> 
 
 <ManSection>
-   <Oper Name="AutomaticStructure" 
+   <Func Name="AutomaticStructure" 
      Arg = "rws [,large filestore diff1]"  /> 
 <Description>
-Run  the  external automatic groups  program  on  the rewriting system &rws;.  
-<Ref Func="AutomaticStructure"/>  returns true if successful and false otherwise. 
+This function runs the  external automatic groups  program  
+on  the rewriting system &rws;.  
+It returns <C>true</C> if successful and <C>false</C> otherwise. 
 If  successful, it stores three finite state automata
 <C>FirstWordDifferenceAutomaton(rws)</C>, 
 <C>SecondWordDifferenceAutomaton(rws)</C> 
-and <C>WordAcceptor(rws)</C>. 
+and <C>WordAcceptor(rws)</C>: see <Ref Func="WordAcceptor"/> below. 
 The  first two  of  these  are used for word-reduction, 
 and the third for counting and enumeration of irreducible words 
-(i.e. words in normal  form).
+(i.e. words in normal form).
 <P/>
 The three optional parameters to <Ref Func="AutomaticStructure"/>  
-are all boolean, and false by  default.  
-Setting  <C>large</C>  true results in   some of  the control
+are all boolean, and <C>false</C> by  default.  
+Setting  <C>large</C> to be <C>true</C> results in   some of  the control
 parameters (such as  <C>maxeqns</C>  and <C>tidyint</C>) being   set
 larger than they would be   otherwise. 
 This is necessary for  examples that require a large amount of space. 
-Setting <C>filestore</C> true results
+Setting <C>filestore</C> to be <C>true</C> results
 in more  use being made  of temporary files  than would  be otherwise.
 This makes the program run slower, but it may be  necessary if you are
 short of  core memory. 
-Setting <C>diff1</C> to  be true is a more technical
+Setting <C>diff1</C> to  be <C>true</C> is a more technical
 option, which is  explained more fully   in the documentation for  the
 stand-alone &KBMAG; package. It is not  usually necessary or helpful,
 but it enables  one or two  examples to complete  that would otherwise
 run out of space.
 <P/>
-The ordering field of &rws; will usually be equal to &shortlex;
+The &ordering; field of &rws; will usually be set to &shortlex;
 for <Ref Func="AutomaticStructure"/>  to be applicable.
 However, it is now possible to use some procedures written by Sarah Rees
 that work when the ordering is &wtlex; or &wreathprod;. In the latter
@@ -489,10 +502,10 @@ These functions return, respectively, the word acceptor, the first and
 second word-difference automata, and the general multiplier automaton of &rws;. 
 They can only be called after a successful call of
 <C>AutomaticStructure(rws)</C>. 
-All except the word-acceptor are 2-variable
+All except the word acceptor are <M>2</M>-variable
 automata that read pairs of words in the alphabet of &rws;.
 Note that the general multiplier has
-its states labeled, where the different labels represents the accepting
+its states labeled, where the different labels represent the accepting
 states for the different letters in the alphabet of &rws;.
 <P/>
 </Description>
@@ -508,29 +521,29 @@ states for the different letters in the alphabet of &rws;.
 <ManSection>
    <Oper Name="IsReducedWord" 
      Arg = "rws w"  /> 
-   <Oper Name="IsReducedForm" 
+   <Meth Name="IsReducedForm" 
      Arg = "rws w"  /> 
 <Description>
 These two functions do the same thing, namely to
 test  whether the word <M>w</M> in  the generators of  the freestructure
 <C>FreeStructure(rws)</C>  of the rewriting system system
-&rws; is reduced or not, and return true or false.
+&rws; is reduced or not, and return <C>true</C> or <C>false</C>.
 <P/>
 <Ref Func="IsReducedWord"/>  can only be used after <Ref Func="KnuthBendix"/> 
 or <Ref Func="AutomaticStructure"/>  has been run successfully on &rws;. 
-In the former case, if <Ref Func="KnuthBendix"/>  halted without
+In the former case, if <C>KnuthBendix</C>  halted without
 a  confluent set of rules, then  irreducible words are not necessarily
 in  normal form (but  reducible  words are  definitely  not in  normal form).    
-If  <Ref Func="KnuthBendix"/>  completes with a  confluent rewriting system or 
-<Ref Func="AutomaticStructure"/>  completes  successfully, then  it   is guaranteed that all irreducible words are in normal form.
+If  <C>KnuthBendix</C>  completes with a  confluent rewriting system or 
+<C>AutomaticStructure</C>  completes  successfully, then  it   is guaranteed that all irreducible words are in normal form.
 <P/>
 </Description>
 </ManSection>
 
 <ManSection>
-   <Oper Name="ReducedForm" 
-     Arg = "rws w"  /> 
    <Oper Name="ReducedWord" 
+     Arg = "rws w"  /> 
+   <Meth Name="ReducedForm" 
      Arg = "rws w"  /> 
 <Description>
 Reduce the word  <M>w</M> in the generators of the freestructure
@@ -540,11 +553,11 @@ and return the result.
 <P/>
 <Ref Func="ReducedForm"/>  can only be used after <Ref Func="KnuthBendix"/>  or <Ref Func="AutomaticStructure"/> 
 has been run successfully on &rws;.  
-In the former case, if  <Ref Func="KnuthBendix"/>  halted without  a
+In the former case, if  <C>KnuthBendix</C>  halted without  a
 confluent  set of  rules, then the   irreducible word returned is  not
 necessarily in  normal   form.  
-If <Ref Func="KnuthBendix"/>   completes   with  a confluent
-rewriting  system or  <Ref Func="AutomaticStructure"/> completes successfully, 
+If <C>KnuthBendix</C>   completes   with  a confluent
+rewriting  system or  <C>AutomaticStructure</C> completes successfully, 
 then it  is guaranteed that all irreducible words are in normal form.
 <P/>
 </Description>
@@ -565,12 +578,12 @@ Returns the number of irreducible words in the rewriting system &rws;.
 <P/>
 <Ref Func="Size"/> can only be  used  after <Ref Func="KnuthBendix"/> or 
 <Ref Func="AutomaticStructure"/>  has been run successfully  on &rws;. 
-In  the former case, if  <Ref Func="KnuthBendix"/>  halted without a
+In  the former case, if  <C>KnuthBendix</C>  halted without a
 confluent  set of rules, then the  number of  irreducible words may be
 greater than the number of words in normal form (which is equal to the
 order  of the underlying group, monoid or semigroup <M>G</M>  of  &rws;).  
-If <Ref Func="KnuthBendix"/>   completes with a confluent rewriting system  
-or <Ref Func="AutomaticStructure"/>  completes successfully, 
+If <C>KnuthBendix</C>   completes with a confluent rewriting system  
+or <C>AutomaticStructure</C>  completes successfully, 
 then it is  guaranteed that
 <Ref Func="Size"/>  will  return the correct order of <M>G</M>.
 <P/>
@@ -608,11 +621,11 @@ and so  the words in the  list returned  are ordered lexicographically
 <Ref Func="EnumerateReducedWords"/>  can only be used after 
 <Ref Func="KnuthBendix"/> 
 or <Ref Func="AutomaticStructure"/>  has been run successfully on &rws;. 
-In  the former case,  if <Ref Func="KnuthBendix"/>  halted  without a
+In  the former case,  if <C>KnuthBendix</C>  halted  without a
 confluent set of  rules, then not all irreducible   words in the  list
 returned will necessarily be in normal form.  
-If <Ref Func="KnuthBendix"/>  completes with a
-confluent rewriting  system or <Ref Func="AutomaticStructure"/>  
+If <C>KnuthBendix</C>  completes with a
+confluent rewriting  system or <C>AutomaticStructure</C>  
 completes successfully, then
 it is guaranteed that all words in the list will be in normal form.
 <P/>
@@ -628,16 +641,16 @@ rewriting system &rws;. This is a rational function, of which
 the coefficient of <M>x^n</M> in its Taylor expansion is equal to the number of
 irreducible words of length <M>n</M>.
 <P/>
-If the coefficients in this rational function are larger than about 16000
-then strange error messages will appear and fail will be returned.
+If the coefficients in this rational function are larger than about <M>16000</M> 
+then strange error messages will appear and <C>fail</C> will be returned.
 <P/>
 <Ref Func="GrowthFunction"/>  can only be used after <Ref Func="KnuthBendix"/> 
 or <Ref Func="AutomaticStructure"/>  has been run successfully on &rws;. 
-In  the former case,  if <Ref Func="KnuthBendix"/>  halted  without a
+In  the former case,  if <C>KnuthBendix</C>  halted  without a
 confluent set of  rules, then not all irreducible   words in the  list
 returned will necessarily be in normal form.  
-If <Ref Func="KnuthBendix"/>  completes with a
-confluent rewriting  system or <Ref Func="AutomaticStructure"/>  
+If <C>KnuthBendix</C>  completes with a
+confluent rewriting  system or <C>AutomaticStructure</C>  
 completes successfully, then it is guaranteed that all words in the list 
 will be in normal form.
 <P/>
@@ -663,10 +676,10 @@ We start with a easy example - the alternating group <M>A_4</M>.
 <P/>
 <Example>
 <![CDATA[
-gap> F:=FreeGroup("a","b");;
-gap> a:=F.1;; b:=F.2;;
-gap> G:=F/[a^2, b^3, (a*b)^3];;
-gap> R:=KBMAGRewritingSystem(G);
+gap> F := FreeGroup( "a", "b" );;
+gap> a := F.1;;  b := F.2;;
+gap> G := F/[a^2, b^3, (a*b)^3];;
+gap> R := KBMAGRewritingSystem( G );
 rec(
        isRWS := true,
   generatorOrder := [_g1,_g2,_g3],
@@ -679,12 +692,12 @@ rec(
 )
 ]]>
 </Example>
-Notice that monoid generators printed as <C>_g1, _g2, _g3</C> are used
+Notice that monoid generators, printed as <C>_g1, _g2, _g3</C>, are used
 internally. These correspond to the group generators <M>a, b, b^{-1}</M>.
 <P/>
 <Example>
 <![CDATA[
-gap> KnuthBendix(R);
+gap> KnuthBendix( R );
 true
 gap> R;
 rec(
@@ -714,9 +727,9 @@ of rewriting rules.
 <P/>
 <Example>
 <![CDATA[
-gap> Size(R);
+gap> Size( R );
 12
-gap> EnumerateReducedWords(R,0,12);
+gap> EnumerateReducedWords( R, 0, 12 );
 [ <identity ...>, a, a*b, a*b*a, a*b^-1, a*b^-1*a, b, b*a, b*a*b^-1, b^-1, 
   b^-1*a, b^-1*a*b ]
 ]]>
@@ -729,16 +742,18 @@ are returned as words in the free group <M>F</M>.
 <Subsection Label="subsec-example2">
 <Heading>Example 2</Heading>
 
-The Fibonacci group <M>F(2,5)</M> defined by a semigroup rather than a group
-presentation. Interestingly this defines the same structure (although
-it would not do so for <M>F(2,r)</M> with <M>r</M> even).
+We construct the Fibonacci group <M>F(2,5)</M>, 
+defined by a semigroup rather than a group presentation. 
+Interestingly these define the same structure (although
+they would not do so for <M>F(2,r)</M> with <M>r</M> even).
 <P/>
 <Example>
 <![CDATA[
-gap> S:=FreeSemigroup(5);; a:=S.1;; b:=S.2;; c:=S.3;; d:=S.4;; e:=S.5;;
+gap> S := FreeSemigroup( 5 );; 
+gap> a := S.1;;  b := S.2;;  c := S.3;;  d := S.4;;  e := S.5;;
 gap> Q := S/[ [a*b,c], [b*c,d], [c*d,e], [d*e,a], [e*a,b] ];
 <fp semigroup on the generators [ s1, s2, s3, s4, s5 ]>
-gap> R:=KBMAGRewritingSystem(Q); 
+gap> R := KBMAGRewritingSystem( Q ); 
 rec(
        isRWS := true,
       silent := true,
@@ -753,11 +768,11 @@ rec(
      [_s5*_s1,_s2]
    ]
 )
-gap> KnuthBendix(R);
+gap> KnuthBendix( R );
 true
-gap> Size(R);
+gap> Size( R );
 11
-gap> EnumerateReducedWords(R,0,4);
+gap> EnumerateReducedWords( R, 0, 4 );
 [ s1, s1^2, s1^2*s4, s1*s3, s1*s4, s2, s2^2, s2*s5, s3, s4, s5 ]
 ]]>
 </Example>
@@ -765,12 +780,12 @@ Let's do the same thing using the <E>recursive</E> ordering.
 <P/>
 <Example>
 <![CDATA[
-gap> SetOrderingOfKBMAGRewritingSystem(R,"recursive");
-gap> KnuthBendix(R);
+gap> SetOrderingOfKBMAGRewritingSystem( R, "recursive" );
+gap> KnuthBendix( R );
 true
-gap> Size(R); 
+gap> Size( R ); 
 11
-gap> EnumerateReducedWords(R,0,11);
+gap> EnumerateReducedWords( R, 0, 11 );
 [ s1, s1^2, s1^3, s1^4, s1^5, s1^6, s1^7, s1^8, s1^9, s1^10, s1^11 ]
 ]]>
 </Example>
@@ -780,19 +795,19 @@ gap> EnumerateReducedWords(R,0,11);
 
 <Subsection Label="subsec-example3">
 <Heading>Example 3</Heading>
-The Heisenberg group  - that is,  the free <M>2</M>-generator nilpotent 
+The Heisenberg group is the free <M>2</M>-generator nilpotent 
 group of class <M>2</M>.   
-For  this to complete,  we   need to use   the recursive
+For <C>KnuthBendix</C> to complete,  we   need to use   the recursive
 ordering, and reverse our initial order of generators. (Alternatively,
 we  could avoid this reversal,  by using a &wreathprod; ordering, and
 setting the levels of the generators to be <M>6,5,4,3,2,1</M>.)
 <P/>
 <Example>
 <![CDATA[
-gap> F:=FreeGroup("x","y","z");;
-gap> x:=F.1;; y:=F.2;; z:=F.3;;
-gap> G:=F/[Comm(y,x)*z^-1, Comm(z,x), Comm(z,y)];;
-gap> R:=KBMAGRewritingSystem(G);
+gap> F := FreeGroup("x","y","z");;
+gap> x := F.1;;  y := F.2;;  z := F.3;;
+gap> G := F/[Comm(y,x)*z^-1, Comm(z,x), Comm(z,y)];;
+gap> R := KBMAGRewritingSystem( G );
 rec(
        isRWS := true,
   generatorOrder := [_g1,_g2,_g3,_g4,_g5,_g6],
@@ -804,8 +819,8 @@ rec(
      [_g6*_g4,_g4*_g6]
    ]
 )
-gap> SetOrderingOfKBMAGRewritingSystem(R,"recursive");
-gap> ReorderAlphabetOfKBMAGRewritingSystem(R,(1,6)(2,5)(3,4));
+gap> SetOrderingOfKBMAGRewritingSystem( R, "recursive" );
+gap> ReorderAlphabetOfKBMAGRewritingSystem( R, (1,6)(2,5)(3,4) );
 gap> R;
 rec(
        isRWS := true,
@@ -818,8 +833,8 @@ rec(
      [_g6*_g4,_g4*_g6]
    ]
 )
-gap> SetInfoLevel(InfoRWS,1);
-gap> KnuthBendix(R);
+gap> SetInfoLevel( InfoRWS, 1 );
+gap> KnuthBendix( R );
 #I  Calling external Knuth-Bendix program.
 #System is confluent.
 #Halting with 18 equations.
@@ -854,13 +869,13 @@ rec(
      [_g5*_g3,_g3*_g5]
    ]
 )
-gap> Size(R);
+gap> Size( R );
 infinity
-gap> IsReducedWord(R,z*y*x);
+gap> IsReducedWord( R, z*y*x );
 false
-gap> ReducedForm(R,z*y*x);
+gap> ReducedForm( R, z*y*x );
 x*y*z^2
-gap> IsReducedForm(R,x*y*z^2);
+gap> IsReducedForm( R, x*y*z^2 );
 true
 ]]>
 </Example>
@@ -880,8 +895,9 @@ of using the <C>maxstoredlen</C> control parameter.
 <P/>
 The group  is   
 <Display>  
-\langle a,b   \,\|  \,[b,a,b], [b,a,a,a,a],  [b,a,a,a,b,a,a] \rangle 
-</Display> with left-normed commutators.
+\langle a,b ~|~ [b,a,b], [b,a,a,a,a],  [b,a,a,a,b,a,a] \rangle 
+</Display> 
+with left-normed commutators.
 The first step  in the  method is to   check that there is  a  maximal
 nilpotent quotient of the group, for which we  could use, for example,
 the &GAP; <Ref Func="NilpotentQuotient" BookName="nq"/> command, 
@@ -890,7 +906,7 @@ We find that  there is a  maximal  such quotient, and it  has
 class <M>7</M>, and the  layers going down  the lower central series have the
 abelian structures <M>[0,0], [0], [0], [0], [0], [2], [2]</M>.
 <P/>
-By  using the  stand-alone  <Q>C</Q>   nilpotent  quotient program,  it  is
+By  using the  stand-alone  `C'   nilpotent  quotient program,  it  is
 possible to  find  a  power-commutator  presentation of  this  maximal
 quotient.  We now construct  a new presentation of  the same group, by
 introducing  the  generators  in  this  power-commutator presentation,
@@ -902,11 +918,11 @@ order in the first place!
 <P/>
 <Example>
 <![CDATA[
-gap> F:=FreeGroup("h","g","f","e","d","c","b","a");;
-gap> h:=F.1;;g:=F.2;;f:=F.3;;e:=F.4;;d:=F.5;;c:=F.6;;b:=F.7;;a:=F.8;;
-gap> G:=F/[Comm(b,a)*c^-1, Comm(c,a)*d^-1, Comm(d,a)*e^-1,
-> Comm(e,b)*f^-1, Comm(f,a)*g^-1, Comm(g,b)*h^-1,
-> Comm(g,a), Comm(c,b), Comm(e,a)];;
+gap> F := FreeGroup( "h", "g", "f", "e", "d", "c", "b", "a" );;
+gap> h := F.1;;  g := F.2;;  f := F.3;;  e := F.4;; 
+gap> d := F.5;;  c := F.6;;  b := F.7;;  a := F.8;;
+gap> G := F/[Comm(b,a)*c^-1, Comm(c,a)*d^-1, Comm(d,a)*e^-1, Comm(e,b)*f^-1, 
+>            Comm(f,a)*g^-1, Comm(g,b)*h^-1, Comm(g,a), Comm(c,b), Comm(e,a)];;
 gap> R:=KBMAGRewritingSystem(G);
 rec(
        isRWS := true,
@@ -927,7 +943,6 @@ rec(
      [_g8*_g16,_g16*_g8]
    ]
 )
-gap> SetOrderingOfKBMAGRewritingSystem(R,"recursive");
 ]]>
 </Example>
 A little experimentation reveals that this example works  best  when
@@ -936,10 +951,11 @@ only those equations with left and right hand sides of lengths at most
 <P/>
 <Example>
 <![CDATA[
-gap> O:=OptionsRecordOfKBMAGRewritingSystem(R);
-gap> O.maxstoredlen:=[10,10];;
-gap> SetInfoLevel(InfoRWS,2);
-gap> KnuthBendix(R);
+gap> SetOrderingOfKBMAGRewritingSystem( R, "recursive" );
+gap> O := OptionsRecordOfKBMAGRewritingSystem( R );
+gap> O.maxstoredlen := [10,10];;
+gap> SetInfoLevel( InfoRWS, 2 );
+gap> KnuthBendix( R );
   # 60 eqns; total len: lhs, rhs = 129, 143; 25 states; 0 secs.
   # 68 eqns; total len: lhs, rhs = 364, 326; 28 states; 0 secs.
   # 77 eqns; total len: lhs, rhs = 918, 486; 45 states; 0 secs.
@@ -984,8 +1000,8 @@ to check that the system really is confluent.
 <P/>
 <Example>
 <![CDATA[
-gap> Unbind(O.maxstoredlen);
-gap> KnuthBendix(R);
+gap> Unbind( O.maxstoredlen );
+gap> KnuthBendix( R );
   # 101 eqns; total len: lhs, rhs = 200, 239; 15 states; 0 secs.
   #No new eqns for some time - testing for confluence
 #System is confluent.
@@ -1040,11 +1056,11 @@ group.
 <P/>
 <Example>
 <![CDATA[
-gap> F:=FreeGroup("a","b","c");;
-gap> a:=F.1;;b:=F.2;;c:=F.3;;
-gap> G:=F/[Comm(a,Comm(a,b))*c^-1, Comm(b,Comm(b,c))*a^-1,
->         Comm(c,Comm(c,a))*b^-1];;
-gap> R:=KBMAGRewritingSystem(G);
+gap> F := FreeGroup( "a", "b", "c" );;
+gap> a := F.1;;  b := F.2;;  c := F.3;;
+gap> G := F/[Comm(a,Comm(a,b))*c^-1, Comm(b,Comm(b,c))*a^-1,
+>            Comm(c,Comm(c,a))*b^-1];;
+gap> R := KBMAGRewritingSystem( G );
 rec(
        isRWS := true,
      verbose := true,
@@ -1057,8 +1073,8 @@ rec(
      [_g6*_g2*_g6*_g1*_g5,_g3*_g2*_g6*_g1]
    ]
 )
-gap> SetInfoLevel(InfoRWS,1);
-gap> AutomaticStructure(R,true);
+gap> SetInfoLevel( InfoRWS, 1 );
+gap> AutomaticStructure( R, true );
 #I  Calling external automatic groups program.
 #Running Knuth-Bendix Program
  (pathname)/kbprog -mt 20 -hf 100 -cn 0 -wd -me 262144 -t 500 (filename)
@@ -1087,11 +1103,11 @@ gap> AutomaticStructure(R,true);
 #Correct diff2 fsa with 271 states computed.
 true
 
-gap> Size(R);
+gap> Size( R );
 infinity
-gap> Order(R,a);
+gap> Order( R, a );
 infinity
-gap> Order(R,Comm(a,b));
+gap> Order( R, Comm(a,b) );
 infinity
 ]]>
 </Example>
