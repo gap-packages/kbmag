@@ -85,9 +85,7 @@ words are
 ordered first by increasing length, and then words of equal length are
 ordered lexicographically,   using the    specified ordering  of   the
 generators. However, there are now some &GAP; procedures available
-in the package written by Sarah Rees 
-<M>{\bf (what~package~is~this?)}</M>
-that enable it be used also for the
+in the package written by Sarah Rees that enable it be used also for the
 &wtlex; ordering, and the &wreathprod; ordering. 
 See section <Ref Sect="sec-set-order"/> for further details of these orderings.
 <P/>

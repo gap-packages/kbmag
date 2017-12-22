@@ -14,8 +14,7 @@
 <Section Label="sec-create-rws">
 <Heading>Creating a rewriting system</Heading> 
 
-<Index Key="rewriting systems" Subkey="creating"> 
-rewriting systems (creating)</Index> 
+<Index Key="rewriting systems" Subkey="creating"></Index> 
 
 First the user should be aware of a technicality. 
 The words in a rewriting system created in &GAP; for use by &KBMAG; 
@@ -59,8 +58,7 @@ which are not obviously involutory in <M>G</M>.
 <Section Label="sec-rws-fns">
 <Heading>Elementary functions on rewriting systems</Heading>
 
-<Index Key="rewriting systems" Subkey="elementary functions">
-rewriting systems (elementary functions)</Index> 
+<Index Key="rewriting systems" Subkey="elementary functions"></Index> 
 
 <ManSection>
    <Filt Name="IsKBMAGRewritingSystemRep" 
@@ -163,8 +161,7 @@ after  this call.
 <Section Label="sec-set-order">
 <Heading>Setting the ordering</Heading>
 
-<Index Key="rewriting systems" Subkey="setting the ordering">
-rewriting systems (setting the order)</Index> 
+<Index Key="rewriting systems" Subkey="setting the ordering"></Index> 
 
 
 <ManSection>
@@ -247,8 +244,7 @@ can then be used.
 <Section Label="sec-ctrl-param">
 <Heading>Control parameters</Heading>
 
-<Index Key="rewriting systems" Subkey="control parameters">
-rewriting systems (control parameters)</Index> 
+<Index Key="rewriting systems" Subkey="control parameters"></Index> 
 
 <ManSection>
    <InfoClass Name="InfoRWS"  /> 
@@ -664,8 +660,7 @@ will be in normal form.
 <Section Label="sec-examples">
 <Heading>Rewriting System Examples</Heading>
 
-<Index Key="rewriting systems" Subkey="examples">
-rewriting systems (examples)</Index> 
+<Index Key="rewriting systems" Subkey="examples"></Index> 
 
 Here are five examples to illustrate the operations described above. 
 
