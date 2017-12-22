@@ -1,17 +1,17 @@
-##  makedoc.g,  version 06/12/17
+##  makedoc.g,  version 21/12/17
 ##  This builds the documentation of the KBMag package
 ##  Needs: GAPDoc package, latex, pdflatex, mkindex
 ##  
 LoadPackage( "GAPDoc" );
 
 MakeGAPDocDoc( "doc",      # path to the directory containing the main file
-               "manual",   # the name of the main file (without extension)
+               "kbmag",    # the name of the main file (without extension)
                            # list of (probably source code) files relative 
                            # to path which contain pieces of documentation 
                            # which must be included in the document
                [ "../PackageInfo.g" ], 
                "kbmag",    # the name of the book used by GAP's online help
-               "../../..", # optional: relative path to the main GAP root 
+  GAPInfo.RootPaths[3],    # optional: relative path to the main GAP root 
                            # directory to produce HTML files with relative 
                            # paths to external books.
                            # optional: use "MathJax", "Tth" and/or "MathML"

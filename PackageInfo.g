@@ -3,13 +3,13 @@ SetPackageInfo( rec(
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
 Version := "1.5.4dev",
-Date := "12/12/2017",
+Date := "21/12/2017",
 
 ##  duplicate these values for inclusion in the manual: 
 ##  <#GAPDoc Label="PKGVERSIONDATA">
 ##  <!ENTITY KBMAGVERSION "1.54dev">
-##  <!ENTITY KBMAGRELEASEDATE "12/12/2017">
-##  <!ENTITY KBMAGLONGRELEASEDATE "12th December 2017">
+##  <!ENTITY KBMAGRELEASEDATE "21/12/2017">
+##  <!ENTITY KBMAGLONGRELEASEDATE "21st December 2017">
 ##  <!ENTITY KBMAGTARFILENAME "kbmag-1.54dev.tar.gz">
 ##  <!ENTITY KBMAGHTMLFILENAME "kbmag.html">
 ##  <!ENTITY KBMAGCOPYRIGHTYEARS "1997-2017">

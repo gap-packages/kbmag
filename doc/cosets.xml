@@ -72,6 +72,7 @@ that are now to be described.
 
 <Index Key="Knuth-Bendix program on cosets">
 Knuth-Bendix program on cosets</Index> 
+<Index Key="rewriting systems on cosets" Subkey="creating"></Index> 
 
 <ManSection>
    <Oper Name="KnuthBendixOnCosets" 
@@ -308,8 +309,7 @@ it is guaranteed that all words in the list will be in normal form.
 <Section Label="sec-ex-cosets">
 <Heading>Examples of the use of Rewriting System on Cosets</Heading>
 
-<Index Key="rewriting systems on cosets" Subkey="examples">
-rewriting systems on cosets (examples)</Index> 
+<Index Key="rewriting systems on cosets" Subkey="examples"></Index> 
 
 Here are two examples to illustrate the operations described above. 
 

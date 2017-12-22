@@ -1,0 +1,47 @@
+<!-- ------------------------------------------------------------------- -->
+<!--                                                                     -->
+<!--  kbmag.xml               Utils documentation                        -->
+<!--                                                                     -->
+<!--  Copyright (C) 1997-2017, Derek Holt                                --> 
+<!--                                                                     -->
+<!-- ------------------------------------------------------------------- -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE Book SYSTEM "gapdoc.dtd"
+[
+<!ENTITY KBMAG '<Package>KBMag</Package>'>
+<!ENTITY rkbp '<M>{\sf rkbp}</M>'>
+<!ENTITY Automata '<M>{\sf Automata}</M>'> 
+<!ENTITY fsa '<M>{\sf fsa}</M>'>
+<!ENTITY fsa1 '<M>{\sf fsa1}</M>'>
+<!ENTITY fsa2 '<M>{\sf fsa2}</M>'>
+<!ENTITY rws '<M>{\sf rws}</M>'>
+<!ENTITY ordering '<M>{\bf ordering}</M>'>
+<!ENTITY shortlex '<M>{\bf shortlex}</M>'>
+<!ENTITY wtlex '<M>{\bf wtlex}</M>'>
+<!ENTITY wreathprod '<M>{\bf wreathprod}</M>'>
+<!ENTITY recursive '<M>{\bf recursive}</M>'>
+
+<#Include Label="PKGVERSIONDATA"> 
+]> 
+
+<Book Name="KBmag">
+
+<#Include SYSTEM "title.xml">
+
+<TableOfContents/>
+
+<Body>
+<Index>&KBMAG;</Index>
+<#Include SYSTEM "intro.xml">
+<#Include SYSTEM "rws.xml">
+<#Include SYSTEM "cosets.xml">
+<#Include SYSTEM "standalone.xml">
+</Body>
+
+<Bibliography Databases="bib.xml"/>
+
+<TheIndex/>
+
+</Book>

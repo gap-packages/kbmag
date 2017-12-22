@@ -1,35 +1,16 @@
 <!-- ------------------------------------------------------------------- -->
 <!--                                                                     -->
-<!--  kbmag.xml               KBMag documentation                        -->
+<!--  title.xml               KBMag documentation                        -->
 <!--                                                                     -->
 <!--  Copyright (C) 1997-2017, Derek Holt                                --> 
 <!--                                                                     -->
 <!-- ------------------------------------------------------------------- -->
 
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!DOCTYPE Book SYSTEM "gapdoc.dtd"
-  [<!ENTITY KBMAG '<Package>KBMag</Package>'>
-   <!ENTITY rkbp '<M>{\sf rkbp}</M>'>
-   <!ENTITY Automata '<M>{\sf Automata}</M>'> 
-   <!ENTITY fsa '<M>{\sf fsa}</M>'>
-   <!ENTITY fsa1 '<M>{\sf fsa1}</M>'>
-   <!ENTITY fsa2 '<M>{\sf fsa2}</M>'>
-   <!ENTITY rws '<M>{\sf rws}</M>'>
-   <!ENTITY ordering '<M>{\bf ordering}</M>'>
-   <!ENTITY shortlex '<M>{\bf shortlex}</M>'>
-   <!ENTITY wtlex '<M>{\bf wtlex}</M>'>
-   <!ENTITY wreathprod '<M>{\bf wreathprod}</M>'>
-   <!ENTITY recursive '<M>{\bf recursive}</M>'>
-   <#Include Label="PKGVERSIONDATA"> 
-  ]>
-
-<Book Name="KBMag">
-
 <TitlePage>
+
   <Title>&KBMAG;</Title>
   <Subtitle>Knuth--Bendix on Monoids, and Automatic Groups</Subtitle> 
-  <Version>Version &KBMAGVERSION;</Version>   
+  <Version>&KBMAGVERSION;</Version>   
   <Date>&KBMAGRELEASEDATE;</Date> 
   <Author> Derek Holt
     <Address> 
@@ -57,7 +38,7 @@ Please submit any issues at
 <Index>License</Index>
 &copyright; &KBMAGCOPYRIGHTYEARS; Derek Holt <P/>
 
-<Package>KBMag</Package> is free software; you can redistribute it 
+&KBMAG; is free software; you can redistribute it 
 and/or modify it under the terms of the 
 <URL Text="GNU General Public License">http://www.fsf.org/licenses/gpl.html</URL> 
 as published by the Free Software Foundation; 
@@ -75,20 +56,3 @@ and <Package>ReleaseTools</Package> of Max Horn.
 </Acknowledgements>
 
 </TitlePage>
-
-<TableOfContents/>
-
-<Body>
-
-<#Include SYSTEM "intro.xml">
-<#Include SYSTEM "rws.xml">
-<#Include SYSTEM "cosets.xml">
-<#Include SYSTEM "standalone.xml">
-
-</Body>
-
-<Bibliography Databases="bib.xml"/>
-
-<TheIndex/>
-
-</Book>
