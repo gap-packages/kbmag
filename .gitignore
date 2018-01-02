@@ -3,24 +3,33 @@
 /standalone/lib/*.o
 /standalone/lib/*.a
 /standalone/src/*.o
+/standalone/doc/*.aux
 
 /gh-pages/
 /tmp/
 
-/doc/manual.aux
-/doc/manual.bbl
-/doc/manual.blg
-/doc/manual.dvi
-/doc/manual.idx
-/doc/manual.ilg
-/doc/manual.ind
+/doc/chap* 
+/doc/*.css
+/doc/*.js
+/doc/kbmag.xml
+/doc/mkbmag.aux
+/doc/kbmag.aux
+/doc/kbmag.bbl
+/doc/kbmag.blg
+/doc/kbmag.brf
+/doc/kbmag.idx
+/doc/kbmag.ilg
+/doc/kbmag.ind
+/doc/kbmag.log
+/doc/kbmag.out
+/doc/kbmag.pnr
+/doc/kbmag.toc
 /doc/manual.lab
-/doc/manual.log
 /doc/manual.pdf
 /doc/manual.ps
 /doc/manual.six
-/doc/manual.toc
 /doc/manual.example-1.tst
+/doc/title.xml
 /doc/tthmacros.tex
 /doc/tthout
 
