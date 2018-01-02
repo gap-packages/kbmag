@@ -3,17 +3,7 @@ SetPackageInfo( rec(
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
 Version := "1.5.4dev",
-Date := "21/12/2017",
-
-##  duplicate these values for inclusion in the manual: 
-##  <#GAPDoc Label="PKGVERSIONDATA">
-##  <!ENTITY KBMAGVERSION "1.54dev">
-##  <!ENTITY KBMAGRELEASEDATE "21/12/2017">
-##  <!ENTITY KBMAGLONGRELEASEDATE "21st December 2017">
-##  <!ENTITY KBMAGTARFILENAME "kbmag-1.54dev.tar.gz">
-##  <!ENTITY KBMAGHTMLFILENAME "kbmag.html">
-##  <!ENTITY KBMAGCOPYRIGHTYEARS "1997-2017">
-##  <#/GAPDoc>
+Date := "02/01/2018",
 
 Persons := [
   rec(
@@ -80,14 +70,6 @@ ArchiveURL      := Concatenation( ~.SourceRepository.URL,
                                  "/", ~.PackageName, "-", ~.Version ),
 ArchiveFormats := ".tar.gz",
 
-AbstractHTML :=
-  "The <span class=\"pkgname\">kbmag</span> package is a\
-       <span class=\"pkgname\">GAP</span> interface to some `C' programs\
-   for running the Knuth-Bendix completion program on finite semigroup,\
-   monoid or group presentations, and for attempting to compute  automatic\
-   structures of finitely presented groups",
-
-
 PackageDoc := rec(
   BookName  := "kbmag",
   ArchiveURLSubset := ["doc", "htm"],
@@ -101,7 +83,7 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">=4.7",
-  NeededOtherPackages := [],
+  NeededOtherPackages := [ [ "GAPDoc", ">= 1.5" ] ],
   SuggestedOtherPackages := [],
   ExternalConditions := ["Unix only"]
 ),
@@ -129,8 +111,38 @@ Autoload := false,
 Keywords := [
   "Knuth-Bendix",
   "Automatic Groups"
-]
+],
 
 #TestFile := "tst/testall.g",
+
+AutoDoc := rec(
+    TitlePage := rec(
+        Copyright := Concatenation(
+            "&copyright; 1997 by Derek Holt<P/>\n\n",
+            "This package may be distributed under the terms and conditions of the\n",
+            "GNU Public License Version 2.\n"
+            ),
+        Abstract := Concatenation( 
+            "The &KBMAG; package is a &GAP; interface to some `C' ",
+            "programs for running the Knuth-Bendix completion program ", 
+            "on finite semigroup, monoid or group presentations, ", 
+            "and for attempting to compute  automatic structures ", 
+            "of finitely presented groups.<P/>", 
+            "Bug reports, comments, suggestions for additional features, and ", 
+            "offers to implement some of these, will all be very welcome.<P/>", 
+            "Please submit any issues at ", 
+            "<File>http://github.com/gap-packages/kbmag/issues/</File>.<P/>" 
+            ), 
+        Acknowledgements := Concatenation( 
+            "This documentation was prepared with the ", 
+            "<Package>GAPDoc</Package> package <Cite Key='GAPDoc' /> ", 
+            "of Frank L&#xfc;beck and Max Neunh&#xf6;ffer.<P/>", 
+            "The procedure used to produce new releases uses the packages ", 
+            "<Package>GitHubPagesForGAP</Package> ", 
+            "<Cite Key='GitHubPagesForGAP' /> ", 
+            "and <Package>ReleaseTools</Package> of Max Horn.<P/>" 
+            ),
+    ) 
+),
 
 ));
