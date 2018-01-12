@@ -20,7 +20,7 @@ X.Y (2017-12-XX)
   - Convert C functions from K&R to ANSI C
 
 1.5.1 (2016-01-14)
-  - Moved package homepage to http://gap-packages.github.io/kbmag/
+  - Moved package homepage to https://gap-packages.github.io/kbmag/
   - Added GPL v2 license
   - Improve build system
   - Fix many warnings in the C code
