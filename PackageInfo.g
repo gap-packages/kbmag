@@ -1,9 +1,10 @@
 SetPackageInfo( rec(
 
+Packagename := "kbmag",
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
 Version := "1.5.4dev",
-Date := "02/01/2018",
+Date := "12/01/2018",
 
 Persons := [
   rec(
@@ -12,7 +13,7 @@ Persons := [
     IsAuthor      := true,
     IsMaintainer  := false,
     Email := "D.F.Holt@warwick.ac.uk",
-    WWWHome := "http://homepages.warwick.ac.uk/staff/D.F.Holt/",
+    WWWHome := "https://homepages.warwick.ac.uk/staff/D.F.Holt/",
     PostalAddress := Concatenation( [
                        "Mathematics Institute\n",
                        "University of Warwick\n",
@@ -70,10 +71,17 @@ ArchiveURL      := Concatenation( ~.SourceRepository.URL,
                                  "/", ~.PackageName, "-", ~.Version ),
 ArchiveFormats := ".tar.gz",
 
+AbstractHTML :=
+  "The <span class=\"pkgname\">kbmag</span> package is a\
+       <span class=\"pkgname\">GAP</span> interface to some `C' programs\
+   for running the Knuth-Bendix completion program on finite semigroup,\
+   monoid or group presentations, and for attempting to compute automatic\
+   structures of finitely presented groups",
+
 PackageDoc := rec(
   BookName  := "kbmag",
-  ArchiveURLSubset := ["doc", "htm"],
-  HTMLStart := "htm/chapters.htm",
+  ArchiveURLSubset := ["doc"],
+  HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Knuth-Bendix on Monoids and Automatic Groups",
@@ -83,8 +91,8 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">=4.7",
-  NeededOtherPackages := [ [ "GAPDoc", ">= 1.5" ] ],
-  SuggestedOtherPackages := [],
+  NeededOtherPackages := [ ],
+  SuggestedOtherPackages := [ [ "AutoDoc", ">= 2017.09.15" ] ],
   ExternalConditions := ["Unix only"]
 ),
 
@@ -131,16 +139,16 @@ AutoDoc := rec(
             "Bug reports, comments, suggestions for additional features, and ", 
             "offers to implement some of these, will all be very welcome.<P/>", 
             "Please submit any issues at ", 
-            "<File>http://github.com/gap-packages/kbmag/issues/</File>.<P/>" 
+            "<File>https://github.com/gap-packages/kbmag/issues/</File>.<P/>" 
             ), 
         Acknowledgements := Concatenation( 
             "This documentation was prepared with the ", 
-            "<Package>GAPDoc</Package> package <Cite Key='GAPDoc' /> ", 
-            "of Frank L&#xfc;beck and Max Neunh&#xf6;ffer.<P/>", 
-            "The procedure used to produce new releases uses the packages ", 
+            "&GAPDoc; <Cite Key='GAPDoc'/> and ", 
+            "&AutoDoc; <Cite Key='AutoDoc'/> packages.<P/>\n", 
+            "The procedure used to produce new releases uses the package ", 
             "<Package>GitHubPagesForGAP</Package> ", 
             "<Cite Key='GitHubPagesForGAP' /> ", 
-            "and <Package>ReleaseTools</Package> of Max Horn.<P/>" 
+            "and the package <Package>ReleaseTools</Package>.<P/>" 
             ),
     ) 
 ),
