@@ -4,6 +4,9 @@
 /standalone/lib/*.a
 /standalone/src/*.o
 /standalone/doc/*.aux
+/standalone/doc/manual.log
+/standalone/doc/manual.synctex.gz
+/standalone/doc/manual.toc
 
 /gh-pages/
 /tmp/
@@ -11,8 +14,8 @@
 /doc/chap* 
 /doc/*.css
 /doc/*.js
-/doc/kbmag.xml
-/doc/mkbmag.aux
+/doc/_AutoDocMainFile.xml
+/doc/chooser.html
 /doc/kbmag.aux
 /doc/kbmag.bbl
 /doc/kbmag.blg
@@ -23,7 +26,9 @@
 /doc/kbmag.log
 /doc/kbmag.out
 /doc/kbmag.pnr
+/doc/kbmag.tex
 /doc/kbmag.toc
+/doc/kbmag.xml
 /doc/manual.lab
 /doc/manual.pdf
 /doc/manual.ps
@@ -32,5 +37,3 @@
 /doc/title.xml
 /doc/tthmacros.tex
 /doc/tthout
-
-/htm/
