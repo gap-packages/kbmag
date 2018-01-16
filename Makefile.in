@@ -19,7 +19,7 @@ clean:
 distclean:
 	cd standalone/lib; $(MAKE) clean
 	cd standalone/src; $(MAKE) clean
-	rm -rf bin htm
+	rm -rf bin
 	rm standalone/ag_data/*.* 
 	rm standalone/kb_data/*.* 
 	rm standalone/fsa_data/*.* 

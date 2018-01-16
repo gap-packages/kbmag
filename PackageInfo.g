@@ -4,7 +4,7 @@ Packagename := "kbmag",
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
 Version := "1.5.4dev",
-Date := "12/01/2018",
+Date := "16/01/2018",
 
 Persons := [
   rec(
@@ -127,8 +127,8 @@ AutoDoc := rec(
     TitlePage := rec(
         Copyright := Concatenation(
             "&copyright; 1997 by Derek Holt<P/>\n\n",
-            "This package may be distributed under the terms and conditions of the\n",
-            "GNU Public License Version 2.\n"
+            "This package may be distributed under the terms and conditions ",
+            "of the GNU Public License Version 2.\n"
             ),
         Abstract := Concatenation( 
             "The &KBMAG; package is a &GAP; interface to some `C' ",
