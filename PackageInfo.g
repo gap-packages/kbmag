@@ -1,10 +1,9 @@
 SetPackageInfo( rec(
 
-Packagename := "kbmag",
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
 Version := "1.5.4dev",
-Date := "16/01/2018",
+Date := "17/01/2018",
 
 Persons := [
   rec(
@@ -92,7 +91,7 @@ PackageDoc := rec(
 Dependencies := rec(
   GAP := ">=4.7",
   NeededOtherPackages := [ ],
-  SuggestedOtherPackages := [ [ "AutoDoc", ">= 2017.09.15" ] ],
+  SuggestedOtherPackages := [ ],
   ExternalConditions := ["Unix only"]
 ),
 
