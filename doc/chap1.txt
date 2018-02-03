@@ -1,0 +1,102 @@
+  
+  [1X1 [33X[0;0YIntroduction[133X[101X
+  
+  [33X[0;0Y[5XKBMag[105X  (pronounced ``Kay-bee-mag'') stands for [13XKnuth--Bendix on Monoids, and
+  Automatic  Groups[113X. It is a stand-alone package written in `C', for use under
+  UNIX,  with  an  interface  to  [5XGAP[105X. Chapters [14X2[114X and [14X3[114X describe its use as an
+  external  library from within [5XGAP[105X. There are interfaces for the use of [5XKBMag[105X
+  with  finitely  presented groups, monoids and semigroups defined within [5XGAP[105X.
+  The  package  also contains a collection of routines for manipulating finite
+  state automata, which can be accessed via the [5XGAP[105X interface. Chapter [14X4[114X lists
+  the functions in the stand-alone package.[133X
+  
+  [33X[0;0YTo use this package effectively, some knowledge of the underlying theory and
+  algorithms  is advisable. The Knuth-Bendix algorithm is described in various
+  places  in  the  literature.  Good  general  references  that  deal with the
+  applications to groups and monoids are [LeC86] and the first few chapters of
+  [Sim94].  For  the  theory  of  automatic  groups  see the multi-author book
+  [ECH+92].  The  algorithms employed by [5XKBMag[105X are described more specifically
+  in [HER91] and [Holar].[133X
+  
+  [33X[0;0YThe  manual  for  the  stand-alone  [5XKBMag[105X package (which can be found in the
+  [11Xstandalone/doc[111X  directory of the package) provides more detailed information
+  on the external `C' programs that are called from [5XGAP[105X.[133X
+  
+  [33X[0;0YSuppose that [22XG[122X is a finitely presented semigroup, monoid or group defined as
+  a  quotient  of  the  free structure [22XF[122X. The overall objective of [5XKBMag[105X is to
+  construct  a normal form for the elements of [22XG[122X in terms of the generators of
+  [22XF[122X,  together with a word reduction algorithm for calculating the normal form
+  representative  of  an element in [22XG[122X, given by a word in the generators of [22XF[122X.
+  If  this can be achieved, then it is also possible to enumerate the words in
+  normal  form  up  to  a  given  length,  and to determine the order of [22XG[122X, by
+  counting  the  number of words in normal form. In most serious applications,
+  this  will  be  infinite,  since  (for example) finite groups are (with some
+  exceptions)  usually handled better by Todd-Coxeter related methods. In fact
+  a finite state automaton [22XW[122X is calculated that accepts precisely the language
+  of  words  in  the  monoid generators of [22XF[122X that are in normal form, and [22XW[122X is
+  used for the enumeration and counting functions.[133X
+  
+  [33X[0;0YThe  normal  form of an element [22Xg ∈ G[122X is defined to be the least word in the
+  generators  of  [22XF[122X  (and their inverses) that represents [22Xg[122X, with respect to a
+  specified  ordering  on  the  set  of  all words in the generators of [22XF[122X. The
+  available orderings are described in section [14X2.3[114X.[133X
+  
+  [33X[0;0Y[5XKBMag[105X  offers two possible means of achieving these objectives. The first is
+  to  apply  the  Knuth-Bendix  algorithm to the presentation, with one of the
+  available orderings on words, and hope that the algorithm will complete with
+  a  finite  confluent presentation. (If [22XG[122X is finite, then it is guaranteed to
+  complete eventually but, like the Todd-Coxeter procedure, it may take a long
+  time,  or  require  more  space than is available.) The second is to use the
+  automatic  group program, which is only applicable to groups (not to monoids
+  or  semigroups).  This also uses the Knuth-Bendix procedure as one component
+  of  the  algorithm,  but  it  aims  to compute certain finite state automata
+  rather  than to obtain a finite confluent rewriting system, and it completes
+  successfully on many examples for which such a finite system does not exist.
+  In  the  current  stand-alone  implementation,  its use is restricted to the
+  [12Xshortlex[112X  ordering  on words. That is, words are ordered first by increasing
+  length,  and then words of equal length are ordered lexicographically, using
+  the  specified  ordering  of the generators. However, there are now some [5XGAP[105X
+  procedures  available in the package written by Sarah Rees that enable it be
+  used  also  for the [12Xwtlex[112X ordering, and the [12Xwreathprod[112X ordering. See section
+  [14X2.3[114X for further details of these orderings.[133X
+  
+  [33X[0;0YFor  both  of the above procedures, the first step is to create a [5XGAP[105X object
+  known  as  a  [13XKnuth-Bendix  rewriting  system[113X  [22XR[122X from the finitely presented
+  structure  [22XG[122X.  There are functions available that can be used to specify the
+  input parameters for the external programs, such as the ordering on words to
+  be  used  by the Knuth-Bendix procedure. One of the two external programs is
+  then run on [22XR[122X. If successful, it updates [22XR[122X, which can then be used to reduce
+  words  in the generators of [22XF[122X to normal form, and to count and enumerate the
+  words in normal form.[133X
+  
+  [33X[0;0YThere  are  also  now  some  routines available for performing corresponding
+  operations  with the cosets of a specified subgroup [22XH[122X of the group [22XG[122X. (These
+  are  not currently available for semigroups or monoids.) The words in normal
+  form  then  correspond  to minimal representatives under the ordering of the
+  system of the right cosets of [22XH[122X in [22XG[122X. If successful, the index of [22XH[122X in [22XG[122X can
+  be  determined.  The  Knuth-Bendix routines also allow a confluent rewriting
+  system  for  [22XH[122X to be computed, whereas the automatic groups routines allow a
+  presentation  of  [22XH[122X  to  be  computed  (although not yet on a user-specified
+  generating set).[133X
+  
+  [33X[0;0YIn  the  descriptions  of  the  functions  that  follow,  it is important to
+  distinguish  between irreducible words, and words in normal form. As already
+  stated,  a word is in normal form if it is the least word under the ordering
+  of the rewriting system that defines a particular group element or coset. So
+  there  is  always  a  unique  word  in normal form for each group element or
+  coset,  and  it  is  determined  by the group generators and the ordering on
+  words  in  the  group generators. A word in a rewriting system is said to be
+  [13Xirreducible[113X  if  it  does  not  contain  the  left  hand  side of any of the
+  reduction  rules in the system as a subword. Words in normal form are always
+  irreducible, but the converse is true if and only if the rewriting system is
+  confluent.  The automatic groups programs provide a method of reducing words
+  to  normal form without obtaining a finite confluent rewriting system (which
+  may not even exist).[133X
+  
+  [33X[0;0YVarious levels of diagnostic output from the [5XGAP[105X procedures can be turned on
+  by setting the Info variable [10XInfoRWS[110X to [22X1, 2[122X or [22X3[122X.[133X
+  
+  [33X[0;0YIn  the descriptions that follow functions declared in the main [5XGAP[105X library,
+  for  which  additional  methods  are implemented, are referred to as [13Xlibrary
+  functions[113X.[133X
+  

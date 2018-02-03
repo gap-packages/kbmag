@@ -1,0 +1,895 @@
+  
+  [1X2 [33X[0;0YThe Knuth-Bendix program on semigroups, monoids and groups[133X[101X
+  
+  
+  [1X2.1 [33X[0;0YCreating a rewriting system[133X[101X
+  
+  [33X[0;0YFirst  the  user should be aware of a technicality. The words in a rewriting
+  system  created  in  [5XGAP[105X  for use by [5XKBMag[105X are defined over an alphabet that
+  consists  of  the generators of a free monoid, called the [13Xword-monoid[113X of the
+  system.  Suppose,  as  before, that the rewriting system is defined from the
+  semigroup,  monoid  or  group [22XG[122X which is a quotient of the free structure [22XF[122X.
+  Then  the generators of this alphabet will be in one-one correspondence with
+  the generators (or, when [22XG[122X is a group, the generators and their inverses) of
+  [22XF[122X,  but  will  not  be  identical  to  them.  This feature was necessary for
+  technical reasons. Most of the user-level functions take and return words in
+  [22XF[122X  rather  than the alphabet, but they do this by converting from one to the
+  other and back.[133X
+  
+  [33X[0;0YUser-level  functions  have  also been provided to carry out this conversion
+  explicitly if required.[133X
+  
+  [33X[0;0YThe  user  should  also  be aware of a peculiarity in the way that rewriting
+  sytems  are  displayed,  which is really a hangover from the [5XGAP[105X3 interface.
+  They  are  displayed nicely as a record, which gives a useful description of
+  the  system,  but  it  does  not  correspond at all to the way that they are
+  actually stored internally![133X
+  
+  [1X2.1-1 KBMAGRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XKBMAGRewritingSystem[102X( [3XG[103X ) [32X operation[133X
+  
+  [33X[0;0YThis  operation  constructs and returns a rewriting system [22XR[122X from a finitely
+  presented  semigroup,  monoid  or  group  [22XG[122X. When [22XG[122X is a group, the alphabet
+  members  of  [22XR[122X  correspond to the generators of [22XF[122X together with inverses for
+  those generators which are not obviously involutory in [22XG[122X.[133X
+  
+  
+  [1X2.2 [33X[0;0YElementary functions on rewriting systems[133X[101X
+  
+  [1X2.2-1 IsKBMAGRewritingSystemRep[101X
+  
+  [33X[1;0Y[29X[2XIsKBMAGRewritingSystemRep[102X( [3Xrws[103X ) [32X representation[133X
+  [33X[1;0Y[29X[2XIsRewritingSystem[102X( [3Xrws[103X ) [32X category[133X
+  
+  [33X[0;0Y[10XIsKBMAGRewritingSystemRep[110X  returns [10Xtrue[110X if [22Xrws[122X is a rewriting system created
+  by  [2XKBMAGRewritingSystem[102X ([14X2.1-1[114X). The function [2XIsRewritingSystem[102X ([14XReference:
+  IsRewritingSystem[114X)  will  also  return  [10Xtrue[110X on such a system. (The function
+  [10XIsKnuthBendixRewritingSystem[110X  has  been considered for inclusion, but is not
+  currently declared.)[133X
+  
+  [1X2.2-2 IsConfluent[101X
+  
+  [33X[1;0Y[29X[2XIsConfluent[102X( [3Xrws[103X ) [32X method[133X
+  
+  [33X[0;0YThis  library  property  returns  [10Xtrue[110X  if [22Xrws[122X is a rewriting system that is
+  known to be confluent.[133X
+  
+  [1X2.2-3 SemigroupOfRewritingSytem[101X
+  
+  [33X[1;0Y[29X[2XSemigroupOfRewritingSytem[102X( [3Xrws[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XFreeStructureOfSystem[102X( [3Xrws[103X ) [32X method[133X
+  [33X[1;0Y[29X[2XWordMonoidOfRewritingSystem[102X( [3Xrws[103X ) [32X operation[133X
+  
+  [33X[0;0YThe  first two library functions return, respectively, the semigroup, monoid
+  or  group  [22XG[122X, and the free structure [22XF[122X. The third returns the word-monoid of
+  the rewriting system, as defined in section [14X2.1[114X.[133X
+  
+  [1X2.2-4 ExternalWordToInternalWordOfRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XExternalWordToInternalWordOfRewritingSystem[102X( [3Xrws[103X, [3Xw[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XInternalWordToExternalWordOfRewritingSystem[102X( [3Xrws[103X, [3Xw[103X ) [32X function[133X
+  
+  [33X[0;0YThese  are  the  functions  for converting between [13Xexternal words[113X, which are
+  those  defined  over  the  free  structure [22XF[122X of [22Xrws[122X, and the [13Xinternal words[113X,
+  which are defined over the word-monoid of [22Xrws[122X.[133X
+  
+  [1X2.2-5 Alphabet[101X
+  
+  [33X[1;0Y[29X[2XAlphabet[102X( [3Xrws[103X ) [32X attribute[133X
+  
+  [33X[0;0YThis is an ordered list of the generators of the word-monoid of [22Xrws[122X. It will
+  not  necessarily  be  in the normal order of these generators, and it can be
+  re-ordered by the function [2XReorderAlphabetOfKBMAGRewritingSystem[102X ([14X2.3-1[114X).[133X
+  
+  [1X2.2-6 Rules[101X
+  
+  [33X[1;0Y[29X[2XRules[102X( [3Xrws[103X ) [32X method[133X
+  
+  [33X[0;0YThis  library  function  returns  a list of the [13Xreduction rules[113X of [22Xrws[122X. Each
+  rule  is  a two-element list containing the left and right hand sides of the
+  rule, which are words in the alphabet of [22Xrws[122X.[133X
+  
+  [1X2.2-7 ResetRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XResetRewritingSystem[102X( [3Xrws[103X ) [32X function[133X
+  
+  [33X[0;0YThis  function  resets  the  rewriting system [22Xrws[122X back to its form as it was
+  before the application of [2XKnuthBendix[102X ([14X2.5-1[114X) or [2XAutomaticStructure[102X ([14X2.6-1[114X).
+  However,  the  current ordering and values of control parameters will not be
+  changed.  The normal form and reduction algorithms will be unavailable after
+  this call.[133X
+  
+  
+  [1X2.3 [33X[0;0YSetting the ordering[133X[101X
+  
+  [1X2.3-1 SetOrderingOfKBMAGRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XSetOrderingOfKBMAGRewritingSystem[102X( [3Xrws[103X, [3Xordering[103X[, [3Xlist[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XReorderAlphabetOfKBMAGRewritingSystem[102X( [3Xrws[103X, [3Xp[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XOrderingOfKBMAGRewritingSystem[102X( [3Xrws[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XOrderingOfRewritingSystem[102X( [3Xrws[103X ) [32X method[133X
+  
+  [33X[0;0Y[10XSetOrderingOfKBMAGRewritingSystem[110X  changes  the ordering on the words of the
+  rewriting system [22Xrws[122X to [12Xordering[112X. [22Xrws[122X is reset when the ordering is changed,
+  so any previously calculated results will be destroyed. [12Xordering[112X must be one
+  of  the  strings  [12Xshortlex[112X,  [12Xrecursive[112X, [12Xwtlex[112X and [12Xwreathprod[112X. The default is
+  [12Xshortlex[112X,  and  this  is  the  ordering  of  rewriting  systems  returned by
+  [2XKBMAGRewritingSystem[102X ([14X2.1-1[114X). The orderings [12Xwtlex[112X and [12Xwreathprod[112X require the
+  third  parameter, [10Xlist[110X, which must be a list of positive integers in one-one
+  correspondence  with the alphabet of [22Xrws[122X in its current order. They have the
+  effect  of attaching weights or levels to the alphabet members, in the cases
+  [12Xwtlex[112X and [12Xwreathprod[112X, respectively.[133X
+  
+  [33X[0;0YEach  of  these  orderings depends on the order of the alphabet. The current
+  ordering  of generators is displayed under the [10XgeneratorOrder[110X field when [22Xrws[122X
+  is    viewed.    This    ordering   can   be   changed   by   the   function
+  [2XReorderAlphabetOfKBMAGRewritingSystem[102X  .  The  second  parameter  [22Xp[122X  to this
+  function  should  be a permutation that moves at most [22Xng[122X points, where [22Xng[122X is
+  the number of generators. This permutation is applied to the current list of
+  generators.[133X
+  
+  [33X[0;0Y[2XOrderingOfKBMAGRewritingSystem[102X  merely  prints  out  a  description  of  the
+  current ordering.[133X
+  
+  [33X[0;0YIn  the  [12Xshortlex[112X  ordering, shorter words come before longer ones, and, for
+  words of equal length, the lexicographically smaller word comes first, using
+  the  ordering of the alphabet. The [12Xwtlex[112X ordering is similar, but instead of
+  using the length of the word as the first criterion, the total weight of the
+  word is used; this is defined as the sum of the weights of the generators in
+  the  word.  So [12Xshortlex[112X is the special case of [12Xwtlex[112X in which all generators
+  have the same nonzero weight.[133X
+  
+  [33X[0;0YThe [12Xrecursive[112X ordering is the special case of [12Xwreathprod[112X in which the levels
+  of  the [22Xng[122X generators are [22X1,2,...,ng[122X, in the order of the alphabet. We shall
+  not attempt to give a complete definition of these orderings here, but refer
+  the reader instead to pages 46--50 of [Sim94]. The [12Xrecursive[112X ordering is the
+  one  appropriate  for  a power-conjugate presentation of a polycyclic group,
+  but  where  the  generators  are ordered in the reverse order from the usual
+  convention  for  polycyclic  groups. The confluent presentation will then be
+  the   same  as  the  power-conjugate  presentation.  For  example,  for  the
+  Heisenberg  group  [22X⟨  x,y,z ~|~ [x,z]=[y,z]=1, [y,x]=z ⟩[122X, a good ordering is
+  [12Xrecursive[112X  with the order of generators [22X[z^-1,z,y^-1,y,x^-1,x][122X. This example
+  is included as Example 3 in [14X2.9-3[114X below.[133X
+  
+  [33X[0;0YFinally,  a  method  is included for the attribute [2XOrderingOfRewritingSystem[102X
+  which   returns  the  appropriate  [5XGAP[105X  ordering  on  the  elements  of  the
+  word-monoid   of   [22Xrws[122X.   The  standard  [5XGAP[105X  ordering  functions,  such  as
+  [2XIsLessThanUnder[102X ([14XReference: IsLessThanUnder[114X) can then be used.[133X
+  
+  
+  [1X2.4 [33X[0;0YControl parameters[133X[101X
+  
+  [1X2.4-1 InfoRWS[101X
+  
+  [33X[1;0Y[29X[2XInfoRWS[102X[32X info class[133X
+  
+  [33X[0;0YThis  `Info'  variable  can  be  set  to  [22X0,1,2[122X or [22X3[122X to control the level of
+  diagnostic output.[133X
+  
+  [33X[0;0YThe  Knuth-Bendix  procedure  is  unusually  sensitive  to the settings of a
+  number  of  parameters that control its operation. In some examples, a small
+  change  in one of these parameters can mean the difference between obtaining
+  a  confluent  rewriting  system  fairly  quickly  on  the  one hand, and the
+  procedure running on until it uses all available memory on the other hand.[133X
+  
+  [33X[0;0YUnfortunately,  it is almost impossible to give even very general guidelines
+  on  these  settings,  although  the  [12Xwreathprod[112X  orderings appear to be more
+  sensitive than the [12Xshortlex[112X and [12Xwtlex[112X orderings. The user can only acquire a
+  feeling  for the influence of these parameters by experimentation on a large
+  number of examples.[133X
+  
+  [33X[0;0YThe  control parameters are defined by the user by setting values of certain
+  fields of the [13Xoptions record[113X of a rewriting system.[133X
+  
+  [1X2.4-2 OptionsRecordOfKBMAGRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XOptionsRecordOfKBMAGRewritingSystem[102X( [3Xrws[103X ) [32X function[133X
+  
+  [33X[0;0YReturns  the options record [10XOR[110X of the rewriting system [22Xrws[122X. The fields of [10XOR[110X
+  listed  below  can  be  set by the user. Be careful to spell them correctly,
+  because otherwise they will have no effect![133X
+  
+  [30X    [33X[0;6Y[10XOR.maxeqns[110X[133X
+        [33X[0;6YA  positive  integer  specifying the maximum number of rewriting rules
+        allowed in [22Xrws[122X. The default is [22X32767[122X. If this number is exceeded, then
+        [2XKnuthBendix[102X ([14X2.5-1[114X) or [2XAutomaticStructure[102X ([14X2.6-1[114X) will abort.[133X
+  
+  [30X    [33X[0;6Y[10XOR.tidyint[110X[133X
+        [33X[0;6YA positive integer, [22X100[122X by default. During the Knuth-Bendix procedure,
+        the  search  for  overlaps  is interrupted periodically to tidy up the
+        existing  system  by  removing and/or simplifying rewriting rules that
+        have  become  redundant. This tidying is done after finding [10XOR.tidyint[110X
+        rules since the last tidying.[133X
+  
+  [30X    [33X[0;6Y[10XOR.confnum[110X[133X
+        [33X[0;6YA  positive  integer,  [22X500[122X  by  default.  If  [10XOR.confnum[110X  overlaps are
+        processed  in  the  Knuth-Bendix procedure but no new rules are found,
+        then  a  fast  test for confluence is carried out. This saves a lot of
+        time  if the system really is confluent, but usually wastes time if it
+        is not.[133X
+  
+  [30X    [33X[0;6Y[10XOR.maxstoredlen[110X[133X
+        [33X[0;6YThis  is  a  list  of  two  positive  integers, [10Xmaxlhs[110X and [10Xmaxrhs[110X; the
+        default  is  that  both  are  infinite. Only those rewriting rules for
+        which  the left hand side has length at most [10Xmaxlhs[110X and the right hand
+        side has length at most [10Xmaxrhs[110X are stored; longer rules are discarded.
+        In  some  examples  it  is essential to impose such limits in order to
+        obtain  a  confluent  rewriting system. Of course, if the Knuth-Bendix
+        procedure  halts  with  such limits imposed, then the resulting system
+        need  not  be confluent. However, the confluence can then be tested be
+        re-running [2XKnuthBendix[102X ([14X2.5-1[114X) with the limits removed. (To remove the
+        limits, unbind the field.)[133X
+  
+  [30X    [33X[0;6Y[10XOR.maxoverlaplen[110X[133X
+        [33X[0;6YThis  is  a  positive  integer, which is infinite by default (when not
+        set).  Only  those  overlaps  of  total  length  [10XOR.maxoverlaplen[110X  are
+        processed. Similar remarks apply to those for [10XOR.maxstoredlen[110X.[133X
+  
+  [30X    [33X[0;6Y[10XOR.sorteqns[110X[133X
+        [33X[0;6YThis  should  be  [10Xtrue[110X  or [10Xfalse[110X, and [10Xfalse[110X is the default. When it is
+        [10Xtrue[110X,  the rewriting rules are output in order of increasing length of
+        left hand side. (The default is that they are output in the order that
+        they were found.)[133X
+  
+  [30X    [33X[0;6Y[10XOR.maxoplen[110X[133X
+        [33X[0;6YThis  is an integer, which is infinite by default (when not set). When
+        it  is  set,  the  rewriting  rules  are output in order of increasing
+        length of left hand side (as if [10XOR.sorteqns[110X were [10Xtrue[110X), and only those
+        rules having left hand sides of length up to [10XOR.maxoplen[110X are output at
+        all. Again, similar remarks apply to those for [10XOR.maxstoredlen[110X.[133X
+  
+  [30X    [33X[0;6Y[10XOR.maxreducelen[110X[133X
+        [33X[0;6YA  positive integer, [22X32767[122X by default. This is the maximum length that
+        a  word  is  allowed  to have during the reduction process. It is only
+        likely to be exceeded when using the [12Xwreathprod[112X or [12Xrecursive[112X ordering.[133X
+  
+  [30X    [33X[0;6Y[10XOR.maxstates[110X, [10XOR.maxwdiffs[110X[133X
+        [33X[0;6YThese  are positive integers, controlling the maximum number of states
+        of  the  word-reduction automaton used by [2XKnuthBendix[102X ([14X2.5-1[114X), and the
+        maximum    number    of    word-differences   allowed   when   running
+        [2XAutomaticStructure[102X  ([14X2.6-1[114X),  respectively. These numbers are normally
+        increased  automatically  when  required, so it unusual to want to set
+        these  flags. They can be set when either it is desired to limit these
+        parameters  (and  prevent  them being increased automatically), or (as
+        occasionally  happens),  the  number of word-differences increases too
+        rapidly  for  the  program  to  cope  -  when this happens, the run is
+        usually doomed to failure anyway.[133X
+  
+  
+  [1X2.5 [33X[0;0YThe Knuth-Bendix program[133X[101X
+  
+  [1X2.5-1 KnuthBendix[101X
+  
+  [33X[1;0Y[29X[2XKnuthBendix[102X( [3Xrws[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XMakeConfluent[102X( [3Xrws[103X ) [32X method[133X
+  
+  [33X[0;0YThese  two  functions  do  the  same  thing,  namely  to  run  the  external
+  Knuth-Bendix  program  on the rewriting system [22Xrws[122X. [2XKnuthBendix[102X returns [10Xtrue[110X
+  if  it  finds  a  confluent  rewriting system and otherwise [10Xfalse[110X. In either
+  case,  if  it  halts normally, then it will update the list of the rewriting
+  rules    of    [22Xrws[122X,    and    also    store   a   finite   state   automaton
+  [10XReductionAutomaton(rws)[110X  that  can  be  used  for  word  reduction,  and the
+  counting and enumeration of irreducible words.[133X
+  
+  [33X[0;0YAll  control  parameters (as defined in the preceding section) should be set
+  before  calling  [2XKnuthBendix[102X.  [2XKnuthBendix[102X  will halt either when it finds a
+  finite  confluent  system  of  rewriting  rules,  or when one of the control
+  parameters (such as [10XOR.maxeqns[110X) requires it to stop. The program can also be
+  made  to  halt  and output manually at any time by hitting the interrupt key
+  (normally  `ctrl-C') once. (Hitting it twice has unpredictable consequences,
+  since [5XGAP[105X may intercept the signal.)[133X
+  
+  [33X[0;0YA  method  is  installed to make the library operation [10XMakeConfluent[110X run the
+  [10XKnuthBendix[110X operation.[133X
+  
+  [33X[0;0YIf  [2XKnuthBendix[102X  halts without finding a confluent system, but still manages
+  to  output the current system and update [22Xrws[122X, then it is possible to use the
+  resulting  rewriting  system  to  reduce  words, and count and enumerate the
+  irreducible  words;  it  cannot be guaranteed that the irreducible words are
+  all  in  normal  form, however. It is also possible to re-run [2XKnuthBendix[102X on
+  the  current  system, usually after altering some of the control parameters.
+  In fact, in some more difficult examples, this seems to be the only means of
+  finding a finite confluent system.[133X
+  
+  [1X2.5-2 ReductionAutomaton[101X
+  
+  [33X[1;0Y[29X[2XReductionAutomaton[102X( [3Xrws[103X ) [32X function[133X
+  
+  [33X[0;0YReturns  the  reduction automaton of [22Xrws[122X. Only expert users will wish to see
+  this  explicitly. See the section on finite state automata below for general
+  information on functions for manipulating automata.[133X
+  
+  
+  [1X2.6 [33X[0;0YThe automatic groups program[133X[101X
+  
+  [1X2.6-1 AutomaticStructure[101X
+  
+  [33X[1;0Y[29X[2XAutomaticStructure[102X( [3Xrws[103X[, [3Xlarge[103X, [3Xfilestore[103X, [3Xdiff1[103X] ) [32X function[133X
+  
+  [33X[0;0YThis  function  runs  the external automatic groups program on the rewriting
+  system   [22Xrws[122X.  It  returns  [10Xtrue[110X  if  successful  and  [10Xfalse[110X  otherwise.  If
+  successful,      it      stores      three     finite     state     automata
+  [10XFirstWordDifferenceAutomaton(rws)[110X,   [10XSecondWordDifferenceAutomaton(rws)[110X  and
+  [10XWordAcceptor(rws)[110X:  see  [2XWordAcceptor[102X  ([14X2.6-2[114X) below. The first two of these
+  are  used  for word-reduction, and the third for counting and enumeration of
+  irreducible words (i.e. words in normal form).[133X
+  
+  [33X[0;0YThe  three  optional  parameters  to [2XAutomaticStructure[102X are all boolean, and
+  [10Xfalse[110X  by  default.  Setting [10Xlarge[110X to be [10Xtrue[110X results in some of the control
+  parameters (such as [10Xmaxeqns[110X and [10Xtidyint[110X) being set larger than they would be
+  otherwise.  This  is  necessary  for examples that require a large amount of
+  space.  Setting  [10Xfilestore[110X  to  be  [10Xtrue[110X  results  in more use being made of
+  temporary  files than would be otherwise. This makes the program run slower,
+  but it may be necessary if you are short of core memory. Setting [10Xdiff1[110X to be
+  [10Xtrue[110X  is  a  more  technical  option,  which  is explained more fully in the
+  documentation for the stand-alone [5XKBMag[105X package. It is not usually necessary
+  or  helpful,  but  it  enables  one  or  two examples to complete that would
+  otherwise run out of space.[133X
+  
+  [33X[0;0YThe   [12Xordering[112X   field   of   [22Xrws[122X  will  usually  be  set  to  [12Xshortlex[112X  for
+  [2XAutomaticStructure[102X to be applicable. However, it is now possible to use some
+  procedures  written  by  Sarah  Rees that work when the ordering is [12Xwtlex[112X or
+  [12Xwreathprod[112X.  In  the latter case, each generator must have the same level as
+  its inverse.[133X
+  
+  [33X[0;0YThe  only  control  parameters  for  [22Xrws[122X  that are likely to be relevant are
+  [10Xmaxeqns[110X and [10Xmaxwdiffs[110X.[133X
+  
+  [1X2.6-2 WordAcceptor[101X
+  
+  [33X[1;0Y[29X[2XWordAcceptor[102X( [3Xrws[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XFirstWordDifferenceAutomaton[102X( [3Xrws[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XSecondWordDifferenceAutomaton[102X( [3Xrws[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XGeneralMultiplier[102X( [3Xrws[103X ) [32X function[133X
+  
+  [33X[0;0YThese  functions  return,  respectively,  the  word  acceptor, the first and
+  second  word-difference  automata,  and  the general multiplier automaton of
+  [22Xrws[122X.    They   can   only   be   called   after   a   successful   call   of
+  [10XAutomaticStructure(rws)[110X.   All  except  the  word  acceptor  are  [22X2[122X-variable
+  automata  that  read  pairs  of  words in the alphabet of [22Xrws[122X. Note that the
+  general  multiplier  has  its  states  labeled,  where  the different labels
+  represent  the accepting states for the different letters in the alphabet of
+  [22Xrws[122X.[133X
+  
+  
+  [1X2.7 [33X[0;0YWord reduction[133X[101X
+  
+  [1X2.7-1 IsReducedWord[101X
+  
+  [33X[1;0Y[29X[2XIsReducedWord[102X( [3Xrws[103X, [3Xw[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XIsReducedForm[102X( [3Xrws[103X, [3Xw[103X ) [32X method[133X
+  
+  [33X[0;0YThese  two functions do the same thing, namely to test whether the word [22Xw[122X in
+  the  generators  of  the  freestructure  [10XFreeStructure(rws)[110X of the rewriting
+  system system [22Xrws[122X is reduced or not, and return [10Xtrue[110X or [10Xfalse[110X.[133X
+  
+  [33X[0;0Y[2XIsReducedWord[102X    can   only   be   used   after   [2XKnuthBendix[102X   ([14X2.5-1[114X)   or
+  [2XAutomaticStructure[102X  ([14X2.6-1[114X)  has been run successfully on [22Xrws[122X. In the former
+  case,  if  [10XKnuthBendix[110X  halted  without  a  confluent  set  of  rules,  then
+  irreducible  words  are  not necessarily in normal form (but reducible words
+  are  definitely  not  in  normal  form).  If  [10XKnuthBendix[110X  completes  with a
+  confluent  rewriting  system  or  [10XAutomaticStructure[110X completes successfully,
+  then it is guaranteed that all irreducible words are in normal form.[133X
+  
+  [1X2.7-2 ReducedWord[101X
+  
+  [33X[1;0Y[29X[2XReducedWord[102X( [3Xrws[103X, [3Xw[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XReducedForm[102X( [3Xrws[103X, [3Xw[103X ) [32X method[133X
+  
+  [33X[0;0YReduce  the word [22Xw[122X in the generators of the freestructure [10XFreeStructure(rws)[110X
+  of  the  rewriting  system  [22Xrws[122X  (or, equivalently, in the generators of the
+  underlying group of [22Xrws[122X), and return the result.[133X
+  
+  [33X[0;0Y[2XReducedForm[102X can only be used after [2XKnuthBendix[102X ([14X2.5-1[114X) or [2XAutomaticStructure[102X
+  ([14X2.6-1[114X) has been run successfully on [22Xrws[122X. In the former case, if [10XKnuthBendix[110X
+  halted  without a confluent set of rules, then the irreducible word returned
+  is not necessarily in normal form. If [10XKnuthBendix[110X completes with a confluent
+  rewriting  system  or  [10XAutomaticStructure[110X completes successfully, then it is
+  guaranteed that all irreducible words are in normal form.[133X
+  
+  
+  [1X2.8 [33X[0;0YCounting and enumerating irreducible words[133X[101X
+  
+  [1X2.8-1 Size[101X
+  
+  [33X[1;0Y[29X[2XSize[102X( [3Xrws[103X ) [32X method[133X
+  
+  [33X[0;0YReturns the number of irreducible words in the rewriting system [22Xrws[122X.[133X
+  
+  [33X[0;0Y[2XSize[102X  can  only  be  used  after  [2XKnuthBendix[102X  ([14X2.5-1[114X) or [2XAutomaticStructure[102X
+  ([14X2.6-1[114X) has been run successfully on [22Xrws[122X. In the former case, if [10XKnuthBendix[110X
+  halted  without  a  confluent  set  of rules, then the number of irreducible
+  words may be greater than the number of words in normal form (which is equal
+  to  the  order  of  the  underlying group, monoid or semigroup [22XG[122X of [22Xrws[122X). If
+  [10XKnuthBendix[110X    completes    with    a    confluent   rewriting   system   or
+  [10XAutomaticStructure[110X  completes  successfully, then it is guaranteed that [2XSize[102X
+  will return the correct order of [22XG[122X.[133X
+  
+  [1X2.8-2 Order[101X
+  
+  [33X[1;0Y[29X[2XOrder[102X( [3Xrws[103X, [3Xw[103X ) [32X method[133X
+  
+  [33X[0;0YThe  order  of the element [22Xw[122X of the free structure [10XFreeStructure(rws)[110X of [22Xrws[122X
+  as an element of the group or monoid from which [22Xrws[122X was defined.[133X
+  
+  [33X[0;0Y[2XOrder[102X  can  only  be  used  after  [2XKnuthBendix[102X ([14X2.5-1[114X) or [2XAutomaticStructure[102X
+  ([14X2.6-1[114X)  has been run successfully on [22Xrws[122X. It is not guaranteed to terminate
+  in the case of infinite order, but it usually seems to do so in practice![133X
+  
+  [1X2.8-3 EnumerateReducedWords[101X
+  
+  [33X[1;0Y[29X[2XEnumerateReducedWords[102X( [3Xrws[103X, [3Xmin[103X, [3Xmax[103X ) [32X operation[133X
+  
+  [33X[0;0YEnumerate  all  irreducible  words  in  the  rewriting  system [22Xrws[122X that have
+  lengths  between  [10Xmin[110X  and  [10Xmax[110X  (inclusive),  which  should be non-negative
+  integers.  The  result is returned as a list of words. The enumeration is by
+  depth-first search of a finite state automaton, and so the words in the list
+  returned are ordered lexicographically (not by [12Xshortlex[112X).[133X
+  
+  [33X[0;0Y[2XEnumerateReducedWords[102X   can  only  be  used  after  [2XKnuthBendix[102X  ([14X2.5-1[114X)  or
+  [2XAutomaticStructure[102X  ([14X2.6-1[114X)  has been run successfully on [22Xrws[122X. In the former
+  case,  if  [10XKnuthBendix[110X halted without a confluent set of rules, then not all
+  irreducible  words  in the list returned will necessarily be in normal form.
+  If   [10XKnuthBendix[110X   completes   with   a   confluent   rewriting   system  or
+  [10XAutomaticStructure[110X  completes  successfully,  then it is guaranteed that all
+  words in the list will be in normal form.[133X
+  
+  [1X2.8-4 GrowthFunction[101X
+  
+  [33X[1;0Y[29X[2XGrowthFunction[102X( [3Xrws[103X ) [32X function[133X
+  
+  [33X[0;0YReturns the growth function of the set of irreducible words in the rewriting
+  system  [22Xrws[122X. This is a rational function, of which the coefficient of [22Xx^n[122X in
+  its  Taylor  expansion is equal to the number of irreducible words of length
+  [22Xn[122X.[133X
+  
+  [33X[0;0YIf  the  coefficients  in this rational function are larger than about [22X16000[122X
+  then strange error messages will appear and [10Xfail[110X will be returned.[133X
+  
+  [33X[0;0Y[2XGrowthFunction[102X   can   only   be   used   after   [2XKnuthBendix[102X   ([14X2.5-1[114X)   or
+  [2XAutomaticStructure[102X  ([14X2.6-1[114X)  has been run successfully on [22Xrws[122X. In the former
+  case,  if  [10XKnuthBendix[110X halted without a confluent set of rules, then not all
+  irreducible  words  in the list returned will necessarily be in normal form.
+  If   [10XKnuthBendix[110X   completes   with   a   confluent   rewriting   system  or
+  [10XAutomaticStructure[110X  completes  successfully,  then it is guaranteed that all
+  words in the list will be in normal form.[133X
+  
+  
+  [1X2.9 [33X[0;0YRewriting System Examples[133X[101X
+  
+  [33X[0;0YHere are five examples to illustrate the operations described above.[133X
+  
+  
+  [1X2.9-1 [33X[0;0YExample 1[133X[101X
+  
+  [33X[0;0YWe start with a easy example - the alternating group [22XA_4[122X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XF := FreeGroup( "a", "b" );;[127X[104X
+    [4X[25Xgap>[125X [27Xa := F.1;;  b := F.2;;[127X[104X
+    [4X[25Xgap>[125X [27XG := F/[a^2, b^3, (a*b)^3];;[127X[104X
+    [4X[25Xgap>[125X [27XR := KBMAGRewritingSystem( G );[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X  generatorOrder := [_g1,_g2,_g3],[128X[104X
+    [4X[28X    inverses := [_g1,_g3,_g2],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_g2^2,_g3],[128X[104X
+    [4X[28X     [_g1*_g2*_g1,_g3*_g1*_g3][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YNotice   that  monoid  generators,  printed  as  [10X_g1,  _g2,  _g3[110X,  are  used
+  internally. These correspond to the group generators [22Xa, b, b^-1[122X.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XKnuthBendix( R );[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XR;[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X isConfluent := true,[128X[104X
+    [4X[28X  generatorOrder := [_g1,_g2,_g3],[128X[104X
+    [4X[28X    inverses := [_g1,_g3,_g2],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_g1^2,IdWord],[128X[104X
+    [4X[28X     [_g2*_g3,IdWord],[128X[104X
+    [4X[28X     [_g3*_g2,IdWord],[128X[104X
+    [4X[28X     [_g2^2,_g3],[128X[104X
+    [4X[28X     [_g3*_g1*_g3,_g1*_g2*_g1],[128X[104X
+    [4X[28X     [_g3^2,_g2],[128X[104X
+    [4X[28X     [_g2*_g1*_g2,_g1*_g3*_g1],[128X[104X
+    [4X[28X     [_g3*_g1*_g2*_g1,_g2*_g1*_g3],[128X[104X
+    [4X[28X     [_g1*_g2*_g1*_g3,_g3*_g1*_g2],[128X[104X
+    [4X[28X     [_g2*_g1*_g3*_g1,_g3*_g1*_g2],[128X[104X
+    [4X[28X     [_g1*_g3*_g1*_g2,_g2*_g1*_g3][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YThe [13Xequations[113X field of [22XR[122X is now a complete system of rewriting rules.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XSize( R );[127X[104X
+    [4X[28X12[128X[104X
+    [4X[25Xgap>[125X [27XEnumerateReducedWords( R, 0, 12 );[127X[104X
+    [4X[28X[ <identity ...>, a, a*b, a*b*a, a*b^-1, a*b^-1*a, b, b*a, b*a*b^-1, b^-1, [128X[104X
+    [4X[28X  b^-1*a, b^-1*a*b ][128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YWe  have  enumerated  all  of the elements of the group - note that they are
+  returned as words in the free group [22XF[122X.[133X
+  
+  
+  [1X2.9-2 [33X[0;0YExample 2[133X[101X
+  
+  [33X[0;0YWe  construct the Fibonacci group [22XF(2,5)[122X, defined by a semigroup rather than
+  a   group  presentation.  Interestingly  these  define  the  same  structure
+  (although they would not do so for [22XF(2,r)[122X with [22Xr[122X even).[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XS := FreeSemigroup( 5 );; [127X[104X
+    [4X[25Xgap>[125X [27Xa := S.1;;  b := S.2;;  c := S.3;;  d := S.4;;  e := S.5;;[127X[104X
+    [4X[25Xgap>[125X [27XQ := S/[ [a*b,c], [b*c,d], [c*d,e], [d*e,a], [e*a,b] ];[127X[104X
+    [4X[28X<fp semigroup on the generators [ s1, s2, s3, s4, s5 ]>[128X[104X
+    [4X[25Xgap>[125X [27XR := KBMAGRewritingSystem( Q ); [127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X      silent := true,[128X[104X
+    [4X[28X  generatorOrder := [_s1,_s2,_s3,_s4,_s5],[128X[104X
+    [4X[28X    inverses := [,,,,],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_s1*_s2,_s3],[128X[104X
+    [4X[28X     [_s2*_s3,_s4],[128X[104X
+    [4X[28X     [_s3*_s4,_s5],[128X[104X
+    [4X[28X     [_s4*_s5,_s1],[128X[104X
+    [4X[28X     [_s5*_s1,_s2][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[25Xgap>[125X [27XKnuthBendix( R );[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XSize( R );[127X[104X
+    [4X[28X11[128X[104X
+    [4X[25Xgap>[125X [27XEnumerateReducedWords( R, 0, 4 );[127X[104X
+    [4X[28X[ s1, s1^2, s1^2*s4, s1*s3, s1*s4, s2, s2^2, s2*s5, s3, s4, s5 ][128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YLet's do the same thing using the [12Xrecursive[112X ordering.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XSetOrderingOfKBMAGRewritingSystem( R, "recursive" );[127X[104X
+    [4X[25Xgap>[125X [27XKnuthBendix( R );[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XSize( R ); [127X[104X
+    [4X[28X11[128X[104X
+    [4X[25Xgap>[125X [27XEnumerateReducedWords( R, 0, 11 );[127X[104X
+    [4X[28X[ s1, s1^2, s1^3, s1^4, s1^5, s1^6, s1^7, s1^8, s1^9, s1^10, s1^11 ][128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X2.9-3 [33X[0;0YExample 3[133X[101X
+  
+  [33X[0;0YThe Heisenberg group is the free [22X2[122X-generator nilpotent group of class [22X2[122X. For
+  [10XKnuthBendix[110X  to complete, we need to use the [12Xrecursive[112X ordering, and reverse
+  our  initial  order  of  generators.  (Alternatively,  we  could  avoid this
+  reversal,  by  using  a  [12Xwreathprod[112X  ordering, and setting the levels of the
+  generators to be [22X6,5,4,3,2,1[122X.)[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XF := FreeGroup("x","y","z");;[127X[104X
+    [4X[25Xgap>[125X [27Xx := F.1;;  y := F.2;;  z := F.3;;[127X[104X
+    [4X[25Xgap>[125X [27XG := F/[Comm(y,x)*z^-1, Comm(z,x), Comm(z,y)];;[127X[104X
+    [4X[25Xgap>[125X [27XR := KBMAGRewritingSystem( G );[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X  generatorOrder := [_g1,_g2,_g3,_g4,_g5,_g6],[128X[104X
+    [4X[28X    inverses := [_g2,_g1,_g4,_g3,_g6,_g5],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_g4*_g2*_g3,_g5*_g2],[128X[104X
+    [4X[28X     [_g6*_g2,_g2*_g6],[128X[104X
+    [4X[28X     [_g6*_g4,_g4*_g6][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[25Xgap>[125X [27XSetOrderingOfKBMAGRewritingSystem( R, "recursive" );[127X[104X
+    [4X[25Xgap>[125X [27XReorderAlphabetOfKBMAGRewritingSystem( R, (1,6)(2,5)(3,4) );[127X[104X
+    [4X[25Xgap>[125X [27XR;[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X  generatorOrder := [_g6,_g5,_g4,_g3,_g2,_g1],[128X[104X
+    [4X[28X    inverses := [_g5,_g6,_g3,_g4,_g1,_g2],[128X[104X
+    [4X[28X    ordering := "recursive",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_g4*_g2*_g3,_g5*_g2],[128X[104X
+    [4X[28X     [_g6*_g2,_g2*_g6],[128X[104X
+    [4X[28X     [_g6*_g4,_g4*_g6][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[25Xgap>[125X [27XSetInfoLevel( InfoRWS, 1 );[127X[104X
+    [4X[25Xgap>[125X [27XKnuthBendix( R );[127X[104X
+    [4X[28X#I  Calling external Knuth-Bendix program.[128X[104X
+    [4X[28X#System is confluent.[128X[104X
+    [4X[28X#Halting with 18 equations.[128X[104X
+    [4X[28X#I  External Knuth-Bendix program complete.[128X[104X
+    [4X[28X#I  System computed is confluent.[128X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XR;[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X isConfluent := true,[128X[104X
+    [4X[28X  generatorOrder := [_g6,_g5,_g4,_g3,_g2,_g1],[128X[104X
+    [4X[28X    inverses := [_g5,_g6,_g3,_g4,_g1,_g2],[128X[104X
+    [4X[28X    ordering := "recursive",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_g6*_g5,IdWord],[128X[104X
+    [4X[28X     [_g5*_g6,IdWord],[128X[104X
+    [4X[28X     [_g4*_g3,IdWord],[128X[104X
+    [4X[28X     [_g3*_g4,IdWord],[128X[104X
+    [4X[28X     [_g2*_g1,IdWord],[128X[104X
+    [4X[28X     [_g1*_g2,IdWord],[128X[104X
+    [4X[28X     [_g6*_g2,_g2*_g6],[128X[104X
+    [4X[28X     [_g6*_g4,_g4*_g6],[128X[104X
+    [4X[28X     [_g4*_g2,_g2*_g4*_g5],[128X[104X
+    [4X[28X     [_g5*_g2,_g2*_g5],[128X[104X
+    [4X[28X     [_g6*_g1,_g1*_g6],[128X[104X
+    [4X[28X     [_g5*_g4,_g4*_g5],[128X[104X
+    [4X[28X     [_g6*_g3,_g3*_g6],[128X[104X
+    [4X[28X     [_g3*_g1,_g1*_g3*_g5],[128X[104X
+    [4X[28X     [_g4*_g1,_g1*_g4*_g6],[128X[104X
+    [4X[28X     [_g3*_g2,_g2*_g3*_g6],[128X[104X
+    [4X[28X     [_g5*_g1,_g1*_g5],[128X[104X
+    [4X[28X     [_g5*_g3,_g3*_g5][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[25Xgap>[125X [27XSize( R );[127X[104X
+    [4X[28Xinfinity[128X[104X
+    [4X[25Xgap>[125X [27XIsReducedWord( R, z*y*x );[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XReducedForm( R, z*y*x );[127X[104X
+    [4X[28Xx*y*z^2[128X[104X
+    [4X[25Xgap>[125X [27XIsReducedForm( R, x*y*z^2 );[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X2.9-4 [33X[0;0YExample 4[133X[101X
+  
+  [33X[0;0YThis  is  an  example  of the use of the Knuth-Bendix algorithm to prove the
+  nilpotence of a finitely presented group. (The method is due to Sims, and is
+  described  in  Chapter  11.8  of  [Sim94].)  This example is of intermediate
+  difficulty, and demonstrates the necessity of using the [10Xmaxstoredlen[110X control
+  parameter.[133X
+  
+  [33X[0;0YThe group is[133X
+  
+  
+  [24X[33X[0;6Y\langle a,b ~|~ [b,a,b], [b,a,a,a,a], [b,a,a,a,b,a,a] \rangle[133X
+  
+  [124X
+  
+  [33X[0;0Ywith  left-normed commutators. The first step in the method is to check that
+  there  is a maximal nilpotent quotient of the group, for which we could use,
+  for example, the [5XGAP[105X [2XNilpotentQuotient[102X ([14Xnq: NilpotentQuotient[114X) command, from
+  the  package  [5Xnq[105X.  We find that there is a maximal such quotient, and it has
+  class [22X7[122X, and the layers going down the lower central series have the abelian
+  structures [22X[0,0], [0], [0], [0], [0], [2], [2][122X.[133X
+  
+  [33X[0;0YBy  using  the stand-alone `C' nilpotent quotient program, it is possible to
+  find  a  power-commutator  presentation  of  this  maximal  quotient. We now
+  construct  a  new  presentation  of  the  same  group,  by  introducing  the
+  generators  in  this  power-commutator  presentation,  together  with  their
+  definitions  as  powers or commutators of earlier generators. It is this new
+  presentation that we use as input for the Knuth-Bendix program. Again we use
+  the  [12Xrecursive[112X  ordering,  but this time we will be careful to introduce the
+  generators in the correct order in the first place![133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XF := FreeGroup( "h", "g", "f", "e", "d", "c", "b", "a" );;[127X[104X
+    [4X[25Xgap>[125X [27Xh := F.1;;  g := F.2;;  f := F.3;;  e := F.4;; [127X[104X
+    [4X[25Xgap>[125X [27Xd := F.5;;  c := F.6;;  b := F.7;;  a := F.8;;[127X[104X
+    [4X[25Xgap>[125X [27XG := F/[Comm(b,a)*c^-1, Comm(c,a)*d^-1, Comm(d,a)*e^-1, Comm(e,b)*f^-1, [127X[104X
+    [4X[25X>[125X [27X           Comm(f,a)*g^-1, Comm(g,b)*h^-1, Comm(g,a), Comm(c,b), Comm(e,a)];;[127X[104X
+    [4X[25Xgap>[125X [27XR:=KBMAGRewritingSystem(G);[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X  generatorOrder := [_g1,_g2,_g3,_g4,_g5,_g6,_g7,_g8,_g9,_g10,[128X[104X
+    [4X[28X               _g11,_g12,_g13,_g14,_g15,_g16],[128X[104X
+    [4X[28X    inverses := [_g2,_g1,_g4,_g3,_g6,_g5,_g8,_g7,_g10,_g9,[128X[104X
+    [4X[28X               _g12,_g11,_g14,_g13,_g16,_g15],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_g14*_g16*_g13,_g11*_g16],[128X[104X
+    [4X[28X     [_g12*_g16*_g11,_g9*_g16],[128X[104X
+    [4X[28X     [_g10*_g16*_g9,_g7*_g16],[128X[104X
+    [4X[28X     [_g8*_g14*_g7,_g5*_g14],[128X[104X
+    [4X[28X     [_g6*_g16*_g5,_g3*_g16],[128X[104X
+    [4X[28X     [_g4*_g14*_g3,_g1*_g14],[128X[104X
+    [4X[28X     [_g4*_g16,_g16*_g4],[128X[104X
+    [4X[28X     [_g12*_g14,_g14*_g12],[128X[104X
+    [4X[28X     [_g8*_g16,_g16*_g8][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YA  little  experimentation  reveals  that  this example works best when only
+  those  equations  with  left  and right hand sides of lengths at most [22X10[122X are
+  kept.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XSetOrderingOfKBMAGRewritingSystem( R, "recursive" );[127X[104X
+    [4X[25Xgap>[125X [27XO := OptionsRecordOfKBMAGRewritingSystem( R );[127X[104X
+    [4X[25Xgap>[125X [27XO.maxstoredlen := [10,10];;[127X[104X
+    [4X[25Xgap>[125X [27XSetInfoLevel( InfoRWS, 2 );[127X[104X
+    [4X[25Xgap>[125X [27XKnuthBendix( R );[127X[104X
+    [4X[28X  # 60 eqns; total len: lhs, rhs = 129, 143; 25 states; 0 secs.[128X[104X
+    [4X[28X  # 68 eqns; total len: lhs, rhs = 364, 326; 28 states; 0 secs.[128X[104X
+    [4X[28X  # 77 eqns; total len: lhs, rhs = 918, 486; 45 states; 0 secs.[128X[104X
+    [4X[28X  # 91 eqns; total len: lhs, rhs = 728, 683; 58 states; 0 secs.[128X[104X
+    [4X[28X  # 102 eqns; total len: lhs, rhs = 1385, 1479; 89 states; 0 secs.[128X[104X
+    [4X[28X  . . . .[128X[104X
+    [4X[28X  # 310 eqns; total len: lhs, rhs = 4095, 4313; 489 states; 1 secs.[128X[104X
+    [4X[28X  # 200 eqns; total len: lhs, rhs = 2214, 2433; 292 states; 1 secs.[128X[104X
+    [4X[28X  # 194 eqns; total len: lhs, rhs = 835, 922; 204 states; 1 secs.[128X[104X
+    [4X[28X  # 157 eqns; total len: lhs, rhs = 702, 723; 126 states; 1 secs.[128X[104X
+    [4X[28X  # 151 eqns; total len: lhs, rhs = 553, 444; 107 states; 1 secs.[128X[104X
+    [4X[28X  # 101 eqns; total len: lhs, rhs = 204, 236; 19 states; 1 secs.[128X[104X
+    [4X[28X  #No new eqns for some time - testing for confluence[128X[104X
+    [4X[28X  #System is not confluent.[128X[104X
+    [4X[28X  # 172 eqns; total len: lhs, rhs = 616, 473; 156 states; 1 secs.[128X[104X
+    [4X[28X  # 171 eqns; total len: lhs, rhs = 606, 472; 156 states; 1 secs.[128X[104X
+    [4X[28X  #No new eqns for some time - testing for confluence[128X[104X
+    [4X[28X  #System is not confluent.[128X[104X
+    [4X[28X  # 151 eqns; total len: lhs, rhs = 452, 453; 92 states; 1 secs.[128X[104X
+    [4X[28X  # 151 eqns; total len: lhs, rhs = 452, 453; 92 states; 1 secs.[128X[104X
+    [4X[28X  #No new eqns for some time - testing for confluence[128X[104X
+    [4X[28X  #System is not confluent.[128X[104X
+    [4X[28X  # 101 eqns; total len: lhs, rhs = 200, 239; 15 states; 1 secs.[128X[104X
+    [4X[28X  # 101 eqns; total len: lhs, rhs = 200, 239; 15 states; 1 secs.[128X[104X
+    [4X[28X  #No new eqns for some time - testing for confluence[128X[104X
+    [4X[28X#System is confluent.[128X[104X
+    [4X[28X#Halting with 101 equations.[128X[104X
+    [4X[28XWARNING: The monoid defined by the presentation may have changed,[128X[104X
+    [4X[28X     since equations have been discarded.[128X[104X
+    [4X[28X     If you re-run, include the original equations.[128X[104X
+    [4X[28X  #Exit status is 0[128X[104X
+    [4X[28X#I  External Knuth-Bendix program complete.[128X[104X
+    [4X[28X#WARNING: Because of the control parameters you set, the system may[128X[104X
+    [4X[28X# not be confluent. Unbind the parameters and re-run KnuthBendix[128X[104X
+    [4X[28X# to check![128X[104X
+    [4X[28X#I  System computed is NOT confluent.[128X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YNow  it  is essential to re-run with the [10Xmaxstoredlen[110X limit removed to check
+  that the system really is confluent.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XUnbind( O.maxstoredlen );[127X[104X
+    [4X[25Xgap>[125X [27XKnuthBendix( R );[127X[104X
+    [4X[28X  # 101 eqns; total len: lhs, rhs = 200, 239; 15 states; 0 secs.[128X[104X
+    [4X[28X  #No new eqns for some time - testing for confluence[128X[104X
+    [4X[28X#System is confluent.[128X[104X
+    [4X[28X#Halting with 101 equations.[128X[104X
+    [4X[28X#Exit status is 0[128X[104X
+    [4X[28X#I  External Knuth-Bendix program complete.[128X[104X
+    [4X[28X#I  System computed is confluent.[128X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0YIn fact, in this case, we did have a confluent set already.[133X
+  
+  [33X[0;0YInspection   of  the  confluent  set  now  reveals  it  to  be  precisely  a
+  power-commutator  presentation  of  a nilpotent group, and so we have proved
+  that  the  group  we started with really is nilpotent. Of course, this means
+  also that it is equal to its largest nilpotent quotient, of which we already
+  know the structure.[133X
+  
+  
+  [1X2.9-5 [33X[0;0YExample 5[133X[101X
+  
+  [33X[0;0YOur  final  example  illustrates  the use of the [10XAutomaticStructure[110X command,
+  which  runs  the  automatic  groups  programs.  The  group  has  a  balanced
+  symmetrical   presentation  with  [22X3[122X  generators  and  [22X3[122X  relators,  and  was
+  originally proposed by Heineken as a possible example of a finite group with
+  such  a presentation. In fact, the [2XAutomaticStructure[102X ([14X2.6-1[114X) command proves
+  it to be infinite.[133X
+  
+  [33X[0;0YThis  example is of intermediate difficulty, but there is no need to use any
+  special  options.  It  takes a few minutes to run on a WorkStation. It works
+  better with the optional [13Xlarge[113X parameter of [10XAutomaticStructure[110X set to [10Xtrue[110X.[133X
+  
+  [33X[0;0YWe  will  not  attempt  to  explain  all  of  the output in detail here; the
+  interested  user  should consult the documentation for the stand-alone [5XKBMag[105X
+  package.  Roughly  speaking,  it  first runs the Knuth-Bendix program, which
+  does  not  halt  with  a  confluent rewriting system, but is used instead to
+  construct  a word-difference finite state automaton. This in turn is used to
+  construct the word-acceptor and multiplier automata for the group. Sometimes
+  the  initial constructions are incorrect, and part of the procedure consists
+  in  checking for this, and making corrections. In fact, in this example, the
+  correct  automata  are considerably smaller than the ones first constructed.
+  The  final  stage  is  to  run  an axiom-checking program, which essentially
+  checks  that  the  automata  satisfy  the group relations. If this completes
+  successfully, then the correctness of the automata has been proved, and they
+  can be used for correct word-reduction and enumeration in the group.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XF := FreeGroup( "a", "b", "c" );;[127X[104X
+    [4X[25Xgap>[125X [27Xa := F.1;;  b := F.2;;  c := F.3;;[127X[104X
+    [4X[25Xgap>[125X [27XG := F/[Comm(a,Comm(a,b))*c^-1, Comm(b,Comm(b,c))*a^-1,[127X[104X
+    [4X[25X>[125X [27X           Comm(c,Comm(c,a))*b^-1];;[127X[104X
+    [4X[25Xgap>[125X [27XR := KBMAGRewritingSystem( G );[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X     verbose := true,[128X[104X
+    [4X[28X  generatorOrder := [_g1,_g2,_g3,_g4,_g5,_g6],[128X[104X
+    [4X[28X    inverses := [_g2,_g1,_g4,_g3,_g6,_g5],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X   equations := [[128X[104X
+    [4X[28X     [_g2*_g4*_g2*_g3*_g1,_g5*_g4*_g2*_g3],[128X[104X
+    [4X[28X     [_g4*_g6*_g4*_g5*_g3,_g1*_g6*_g4*_g5],[128X[104X
+    [4X[28X     [_g6*_g2*_g6*_g1*_g5,_g3*_g2*_g6*_g1][128X[104X
+    [4X[28X   ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[25Xgap>[125X [27XSetInfoLevel( InfoRWS, 1 );[127X[104X
+    [4X[25Xgap>[125X [27XAutomaticStructure( R, true );[127X[104X
+    [4X[28X#I  Calling external automatic groups program.[128X[104X
+    [4X[28X#Running Knuth-Bendix Program[128X[104X
+    [4X[28X (pathname)/kbprog -mt 20 -hf 100 -cn 0 -wd -me 262144 -t 500 (filename)[128X[104X
+    [4X[28X#Halting with 42317 equations.[128X[104X
+    [4X[28X#First word-difference machine with 271 states computed.[128X[104X
+    [4X[28X#Second word-difference machine with 271 states computed.[128X[104X
+    [4X[28X#System is confluent, or halting factor condition holds.[128X[104X
+    [4X[28X[128X[104X
+    [4X[28X#Running program to construct word-acceptor and multiplier automata[128X[104X
+    [4X[28X (pathname)/gpmakefsa -l (filename)[128X[104X
+    [4X[28X#Word-acceptor with 1106 states computed.[128X[104X
+    [4X[28X#General multiplier with 2428 states computed.[128X[104X
+    [4X[28X#Validity test on general multiplier succeeded.[128X[104X
+    [4X[28X#Running program to verify axioms on the automatic structure[128X[104X
+    [4X[28X (pathname)/gpaxioms -l (filename)[128X[104X
+    [4X[28X#General length-2 multiplier with 2820 states computed.[128X[104X
+    [4X[28X#Checking inverse and short relations.[128X[104X
+    [4X[28X#Checking relation:  _g2*_g4*_g2*_g3*_g1 = _g5*_g4*_g2*_g3[128X[104X
+    [4X[28X#Checking relation:  _g4*_g6*_g4*_g5*_g3 = _g1*_g6*_g4*_g5[128X[104X
+    [4X[28X#Checking relation:  _g6*_g2*_g6*_g1*_g5 = _g3*_g2*_g6*_g1[128X[104X
+    [4X[28X#Axiom checking succeeded.[128X[104X
+    [4X[28X#I  Computation was successful - automatic structure computed.[128X[104X
+    [4X[28X#Minimal reducible word acceptor with 1058 states computed.[128X[104X
+    [4X[28X#Minimal Knuth-Bendix equation fsa with 1891 states computed.[128X[104X
+    [4X[28X#Correct diff1 fsa with 271 states computed.[128X[104X
+    [4X[28X#Correct diff2 fsa with 271 states computed.[128X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XSize( R );[127X[104X
+    [4X[28Xinfinity[128X[104X
+    [4X[25Xgap>[125X [27XOrder( R, a );[127X[104X
+    [4X[28Xinfinity[128X[104X
+    [4X[25Xgap>[125X [27XOrder( R, Comm(a,b) );[127X[104X
+    [4X[28Xinfinity[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  

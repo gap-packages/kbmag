@@ -1,0 +1,410 @@
+  
+  [1X4 [33X[0;0YThe stand-alone package[133X[101X
+  
+  [33X[0;0YThe  [5XKBMag[105X  package  contains  [5XGAP[105X  interfaces  to many of the functions for
+  manipulating   finite  state  automata  ([22Xfsa[122X)  that  are  available  in  the
+  stand-alone.  We shall list these here, without giving much detail. For more
+  detail, the user could try looking in the source file [11Xgap/fsa4.g[111X.[133X
+  
+  
+  [1X4.1 [33X[0;0YFunctions for manipulating finite state automata[133X[101X
+  
+  [33X[0;0Y[22Xfsa[122X  are  currently  implemented  as [5XGAP[105X records, as they were previously in
+  [5XGAP[105X3.  This  interface  may  be  updated to the style of [5XGAP[105X4 at some stage.
+  (Note  that  the  abbreviation  [22Xfsa[122X  will  be used for both singular and the
+  plural.)[133X
+  
+  [33X[0;0YThe alphabet of an [22Xfsa[122X is itself a record that must contain at least the two
+  components  [10Xtype[110X  and  [10Xsize[110X,  where  [10Xtype[110X  is  a string, and [10Xsize[110X a positive
+  integer.  The  easiest  possibility  is  to use the type [10Xsimple[110X, and then no
+  other  record  components  are necessary. There are several more complicated
+  possibilities,  which  are used by the other rewriting system functions. For
+  example,  there  is  the type [10Xidentifiers[110X, for which fields [10Xformat[110X and [10Xnames[110X
+  are necessary. For example:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XM := FreeMonoid( 3 );;[127X[104X
+    [4X[25Xgap>[125X [27Xalph := rec( type := "identifiers", size := 3,[127X[104X
+    [4X[25X>[125X [27X                format := "dense", names := [M.1,M.2,M.3] );;[127X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [33X[0;0Ydefines  a  valid  alphabet  for  an  [22Xfsa[122X.  The  members of the alphabet are
+  referred  to as [10Xletters[110X, and can be represented either by a positive integer
+  or  by  their  name  (usually a generator of a free group or monoid) if they
+  have one.[133X
+  
+  [33X[0;0YThe    functions    [2XReductionAutomaton[102X    ([14X2.5-2[114X),   [2XWordAcceptor[102X   ([14X2.6-2[114X),
+  [2XFirstWordDifferenceAutomaton[102X  ([14X2.6-2[114X), [2XSecondWordDifferenceAutomaton[102X ([14X2.6-2[114X)
+  and  [2XGeneralMultiplier[102X  ([14X2.6-2[114X)  mentioned  in earlier sections all return a
+  [22Xfsa[122X.  The other possibilities for the user to construct a [22Xfsa[122X are to use the
+  function  [2XFSA[102X ([14X4.1-3[114X) or to read one in from a file. In the latter case, the
+  user must immediately call [2XInitializeFSA[102X ([14X4.1-2[114X) on the record that has been
+  read in. For example, running [5XGAP[105X from the package directory:[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XRead( "standalone/fsa_data/fsa_2" );[127X[104X
+    [4X[25Xgap>[125X [27XInitializeFSA( fsa_2 );[127X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  [1X4.1-1 IsInitializedFSA[101X
+  
+  [33X[1;0Y[29X[2XIsInitializedFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YTests whether [22Xfsa[122X is a record describing a valid initialized [22Xfsa[122X.[133X
+  
+  [1X4.1-2 InitializeFSA[101X
+  
+  [33X[1;0Y[29X[2XInitializeFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YInitializes a record representing a [22Xfsa[122X that has been read in from a file.[133X
+  
+  [1X4.1-3 FSA[101X
+  
+  [33X[1;0Y[29X[2XFSA[102X( [3Xalph[103X ) [32X function[133X
+  
+  [33X[0;0YReturns  an  initialized  [22Xfsa[122X with alphabet [10Xalph[110X having one state that is an
+  initial and final state, and no transitions (edges).[133X
+  
+  [33X[0;0YThe arguments of the following functions must be initialized [22Xfsa[122X.[133X
+  
+  [1X4.1-4 WriteFSA[101X
+  
+  [33X[1;0Y[29X[2XWriteFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YDisplays  [22Xfsa[122X nicely. (In a proper implementation, this would be the [10XViewObj[110X
+  function.)[133X
+  
+  [1X4.1-5 IsDeterministicFSA[101X
+  
+  [33X[1;0Y[29X[2XIsDeterministicFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YTests  whether  [22Xfsa[122X is a deterministic [22Xfsa[122X. Many of the functions below work
+  only  for  deterministic  [22Xfsa[122X. A deterministic [22Xfsa[122X with the same language as
+  [22Xfsa[122X can be constructed with the function [2XDeterminizeFSA[102X ([14X4.2-1[114X).[133X
+  
+  [1X4.1-6 AlphabetFSA[101X
+  
+  [33X[1;0Y[29X[2XAlphabetFSA[102X( [3Xfsa[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XStatesFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturn, respectively, the records representing the alphabet and state-set of
+  [22Xfsa[122X.[133X
+  
+  [1X4.1-7 NumberOfStatesFSA[101X
+  
+  [33X[1;0Y[29X[2XNumberOfStatesFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns the number of states of [22Xfsa[122X.[133X
+  
+  [1X4.1-8 NumberOfLettersFSA[101X
+  
+  [33X[1;0Y[29X[2XNumberOfLettersFSA[102X( [3Xfsa[103X ) [32X function[133X
+  [33X[1;0Y[29X[2XSizeOfAlphabetFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns the size of the alphabet of [22Xfsa[122X.[133X
+  
+  [1X4.1-9 AcceptingStatesFSA[101X
+  
+  [33X[1;0Y[29X[2XAcceptingStatesFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns the list of accepting states of [22Xfsa[122X.[133X
+  
+  [1X4.1-10 InitialStatesFSA[101X
+  
+  [33X[1;0Y[29X[2XInitialStatesFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns the list of initial states of [22Xfsa[122X.[133X
+  
+  [1X4.1-11 DenseDTableFSA[101X
+  
+  [33X[1;0Y[29X[2XDenseDTableFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa[122X  must  be  deterministic.  The transition table is returned as a list of
+  lists,  where  the  [22Xe[122X-th entry in the [22Xs[122X-th inner list is [2XTargetDFA[102X ([14X4.1-13[114X),
+  called as [10XTargetDFA(fsa,e,s);[110X.[133X
+  
+  [1X4.1-12 SparseTableFSA[101X
+  
+  [33X[1;0Y[29X[2XSparseTableFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YThe transition table is returned as a list of lists, where each entry in the
+  [22Xs[122X-th inner list is is a two-element list [10X[e,t][110X of integers that represents a
+  transition  from  state number [22Xs[122X to state number [22Xt[122X under letter number [22Xe[122X. We
+  can also have [22Xe=0[122X, representing transitions with no label ([22Xϵ[122X transitions).[133X
+  
+  [1X4.1-13 TargetDFA[101X
+  
+  [33X[1;0Y[29X[2XTargetDFA[102X( [3Xfsa[103X, [3Xe[103X, [3Xs[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa[122X must be a deterministic [22Xfsa[122X, [22Xe[122X should be a number or name of a letter of
+  the  alphabet,  and [22Xs[122X a number of a state of [22Xfsa[122X. The target of [22Xs[122X under [22Xe[122X is
+  returned, or [22X0[122X if there is no target.[133X
+  
+  [1X4.1-14 TargetsFSA[101X
+  
+  [33X[1;0Y[29X[2XTargetsFSA[102X( [3Xfsa[103X, [3Xe[103X, [3Xs[103X ) [32X function[133X
+  
+  [33X[0;0YSimilar to [2XTargetDFA[102X ([14X4.1-13[114X), but [22Xfsa[122X need not be deterministic, and a list
+  of targets is returned.[133X
+  
+  [1X4.1-15 SourcesFSA[101X
+  
+  [33X[1;0Y[29X[2XSourcesFSA[102X( [3Xfsa[103X, [3Xe[103X, [3Xs[103X ) [32X function[133X
+  
+  [33X[0;0YSimilar  to [2XTargetsFSA[102X ([14X4.1-14[114X), but the list of sources of transitions to [22Xs[122X
+  under [22Xe[122X is returned. Note that [22Xe[122X can also be zero here.[133X
+  
+  [1X4.1-16 WordTargetDFA[101X
+  
+  [33X[1;0Y[29X[2XWordTargetDFA[102X( [3Xfsa[103X, [3Xw[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa[122X  must  be  a  deterministic [22Xfsa[122X, and [22Xw[122X should be a list of integers or a
+  word  in  the alphabet (in the case when the alphabet is defined from a free
+  group  or  monoid).  The  target  of  the  initial  state  of [22Xfsa[122X under [22Xw[122X is
+  returned, or [22X0[122X if there is no such target.[133X
+  
+  [1X4.1-17 IsAcceptedWordDFA[101X
+  
+  [33X[1;0Y[29X[2XIsAcceptedWordDFA[102X( [3Xfsa[103X, [3Xw[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa[122X  must  be  a  deterministic [22Xfsa[122X, and [22Xw[122X should be a list of integers or a
+  word  in  the alphabet (in the case when the alphabet is defined from a free
+  group or monoid). This function tests whether [22Xw[122X is in the language of [22Xfsa[122X.[133X
+  
+  [1X4.1-18 AddStateFSA[101X
+  
+  [33X[1;0Y[29X[2XAddStateFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YAdds an extra non-accepting state to [22Xfsa[122X with no transitions to or from it.[133X
+  
+  [1X4.1-19 DeleteStateFSA[101X
+  
+  [33X[1;0Y[29X[2XDeleteStateFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YDeletes the highest numbered state together with all transitions to and from
+  it  from  [22Xfsa[122X.  Use  [2XPermuteStatesFSA[102X  ([14X4.1-20[114X)  first to delete a different
+  state.[133X
+  
+  [1X4.1-20 PermuteStatesFSA[101X
+  
+  [33X[1;0Y[29X[2XPermuteStatesFSA[102X( [3Xfsa[103X, [3Xp[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xp[122X  should  be  a permutation of [22X[1..ns][122X, where [22Xfsa[122X has [22Xns[122X states. The states
+  are permuted, where the original state number [22Xn[122X becomes the new state number
+  [22Xn^p[122X.[133X
+  
+  [1X4.1-21 AddLetterFSA[101X
+  
+  [33X[1;0Y[29X[2XAddLetterFSA[102X( [3Xfsa[103X[, [3Xname[103X] ) [32X function[133X
+  
+  [33X[0;0YAdds  an extra letter to the alphabet of [22Xfsa[122X with no associated transitions.
+  If  the  alphabet  of  [22Xfsa[122X is defined over a free group or monoid, then [10Xname[110X
+  specifies  the  element  of  this  free  structure  corresponding to the new
+  letter.[133X
+  
+  [1X4.1-22 DeleteLetterFSA[101X
+  
+  [33X[1;0Y[29X[2XDeleteLetterFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YDeletes the highest numbered letter together with all associated transitions
+  from  the  alphabet of [22Xfsa[122X. Use [2XPermuteLettersFSA[102X ([14X4.1-23[114X) first to delete a
+  different letter.[133X
+  
+  [1X4.1-23 PermuteLettersFSA[101X
+  
+  [33X[1;0Y[29X[2XPermuteLettersFSA[102X( [3Xfsa[103X, [3Xp[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xp[122X  should  be  a  permutation  of  [22X[1..na][122X, where the alphabet of [22Xfsa[122X has [22Xna[122X
+  letters.  The  letters  are  permuted,  where  the  original letter number [22Xn[122X
+  becomes the new letter number [22Xn^p[122X.[133X
+  
+  [1X4.1-24 AddEdgeFSA[101X
+  
+  [33X[1;0Y[29X[2XAddEdgeFSA[102X( [3Xfsa[103X, [3Xe[103X, [3Xs[103X, [3Xt[103X ) [32X function[133X
+  
+  [33X[0;0YAdds  an  extra  transition  to [22Xfsa[122X with source [22Xs[122X, target [22Xt[122X and letter [22Xe[122X. If
+  there is already such a transition, then this function does nothing.[133X
+  
+  [1X4.1-25 DeleteEdgeFSA[101X
+  
+  [33X[1;0Y[29X[2XDeleteEdgeFSA[102X( [3Xfsa[103X, [3Xe[103X, [3Xs[103X, [3Xt[103X ) [32X function[133X
+  
+  [33X[0;0YDeletes  the  transition  from  [22Xfsa[122X with source [22Xs[122X, target [22Xt[122X and letter [22Xe[122X, if
+  there is one.[133X
+  
+  [1X4.1-26 SetAcceptingFSA[101X
+  
+  [33X[1;0Y[29X[2XSetAcceptingFSA[102X( [3Xfsa[103X, [3Xs[103X, [3Xflag[103X ) [32X function[133X
+  
+  [33X[0;0Y[10Xflag[110X  should  be  [10Xtrue[110X  or  [10Xfalse[110X,  and  state number [22Xs[122X is made accepting or
+  non-accepting, respectively.[133X
+  
+  [1X4.1-27 SetInitialFSA[101X
+  
+  [33X[1;0Y[29X[2XSetInitialFSA[102X( [3Xfsa[103X, [3Xs[103X, [3Xflag[103X ) [32X function[133X
+  
+  [33X[0;0Y[10Xflag[110X  should  be  [10Xtrue[110X  or  [10Xfalse[110X,  and  state  number  [22Xs[122X is made initial or
+  non-initial, respectively.[133X
+  
+  [1X4.1-28 IsAccessibleFSA[101X
+  
+  [33X[1;0Y[29X[2XIsAccessibleFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YTests  whether [22Xfsa[122X is accessible; that is, whether all states can be reached
+  from the initial states.[133X
+  
+  [1X4.1-29 AccessibleFSA[101X
+  
+  [33X[1;0Y[29X[2XAccessibleFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YRemoves  all  inaccessible  states  from  [22Xfsa[122X  thus  rendering it accessible
+  without altering its language.[133X
+  
+  [1X4.1-30 IsTrimFSA[101X
+  
+  [33X[1;0Y[29X[2XIsTrimFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YTests  whether  [22Xfsa[122X is trim; that is, whether all states can be reached from
+  the initial states, and a final state can be reached from all states.[133X
+  
+  [1X4.1-31 TrimFSA[101X
+  
+  [33X[1;0Y[29X[2XTrimFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YRemoves  all  inaccessible  states  from  [22Xfsa[122X  and  all states from which an
+  accepting  state  cannot be reached, thus rendering it trim without altering
+  its language.[133X
+  
+  [1X4.1-32 IsBFSFSA[101X
+  
+  [33X[1;0Y[29X[2XIsBFSFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YTests  whether  [22Xfsa[122X  is in [10Xbfs[110X (breadth-first-search) form; that is, whether
+  the initial states come first and the other states appear in ascending order
+  if one scans the transition table first by state number and then by alphabet
+  number. Note that [22Xfsa[122X must be accessible for it to be [10Xbfs[110X.[133X
+  
+  [1X4.1-33 BFSFSA[101X
+  
+  [33X[1;0Y[29X[2XBFSFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReplaces  [22Xfsa[122X  by  one  with  the same language but in [10Xbfs[110X form. This can be
+  useful  for  comparing the languages of two [22Xfsa[122X. In fact [2XMinimizeFSA[102X ([14X4.2-2[114X)
+  and  [2XBFSFSA[102X  are  applied  in turn to a deteministic [22Xfsa[122X, then the resulting
+  transition table is uniquely determined by the language of the [22Xfsa[122X.[133X
+  
+  [1X4.1-34 LSizeDFA[101X
+  
+  [33X[1;0Y[29X[2XLSizeDFA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YThe  size  of the acceted language of [22Xfsa[122X, which must be deterministic. This
+  only  works  if  [22Xfsa[122X  is  trim. If not, then [2XTrimFSA[102X ([14X4.1-31[114X) must be called
+  first.[133X
+  
+  [1X4.1-35 LEnumerateDFA[101X
+  
+  [33X[1;0Y[29X[2XLEnumerateDFA[102X( [3Xfsa[103X, [3Xmin[103X, [3Xmax[103X ) [32X function[133X
+  
+  [33X[0;0YThe  words in the language of [22Xfsa[122X of length [22Xl[122X satisfying [22Xmin le l le max[122X are
+  returned  in  a list. The words will either be lists of integers, for [13Xsimple[113X
+  type alphabets, of lists of words in the underlying free group or monoid for
+  alphabets of type [13Xidentifiers[113X.[133X
+  
+  
+  [1X4.2 [33X[0;0YFunctions calling external programs[133X[101X
+  
+  [33X[0;0YThe  remaining [22Xfsa[122X functions all call external programs from the standalone.
+  All  of  them  except  [2XDeterminizeFSA[102X ([14X4.2-1[114X) take only deterministic [22Xfsa[122X as
+  input, and all of them return deterministic [22Xfsa[122X as output.[133X
+  
+  [1X4.2-1 DeterminizeFSA[101X
+  
+  [33X[1;0Y[29X[2XDeterminizeFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns a deterministic [22Xfsa[122X with the same language as [22Xfsa[122X.[133X
+  
+  [1X4.2-2 MinimizeFSA[101X
+  
+  [33X[1;0Y[29X[2XMinimizeFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns a [22Xfsa[122X with the same language as [22Xfsa[122X and a minimal number of states.[133X
+  
+  [1X4.2-3 NotFSA[101X
+  
+  [33X[1;0Y[29X[2XNotFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns a [22Xfsa[122X with the same alphabet as [22Xfsa[122X whose language is the complement
+  of that of [22Xfsa[122X.[133X
+  
+  [1X4.2-4 StarFSA[101X
+  
+  [33X[1;0Y[29X[2XStarFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns a [22Xfsa[122X whose language is [22XL^*[122X, where [22XL[122X is the langauge of [22Xfsa[122X.[133X
+  
+  [1X4.2-5 ReverseFSA[101X
+  
+  [33X[1;0Y[29X[2XReverseFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns  a [22Xfsa[122X whose language consists of the reversed words in the language
+  of [22Xfsa[122X.[133X
+  
+  [1X4.2-6 ExistsFSA[101X
+  
+  [33X[1;0Y[29X[2XExistsFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa[122X  should  be  two-variable  [22Xfsa[122X on an alphabet [22XA[122X. An [22Xfsa[122X is returned that
+  accepts  a  word [22Xw_1 ∈ A^*[122X if and only if there exists a word [22Xw_2 ∈ A^*[122X with
+  [22X(w_1,w_2)[122X in the language of [22Xfsa[122X.[133X
+  
+  [1X4.2-7 SwapCoordsFSA[101X
+  
+  [33X[1;0Y[29X[2XSwapCoordsFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa[122X  should be two-variable [22Xfsa[122X on an alphabet [22XA[122X. A two-variable [22Xfsa[122X on [22XA[122X is
+  returned that accepts [22X(w_1,w_2)[122X if and only if [22X(w_2,w_1)[122X is accepted by [22Xfsa[122X.[133X
+  
+  [1X4.2-8 AndFSA[101X
+  
+  [33X[1;0Y[29X[2XAndFSA[102X( [3Xfsa1[103X, [3Xfsa2[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa1[122X  and  [22Xfsa2[122X  must  have the same alphabet. The returned [22Xfsa[122X has language
+  equal to the intersection of those of [22Xfsa1[122X and [22Xfsa2[122X.[133X
+  
+  [1X4.2-9 OrFSA[101X
+  
+  [33X[1;0Y[29X[2XOrFSA[102X( [3Xfsa1[103X, [3Xfsa2[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa1[122X  and  [22Xfsa2[122X  must  have the same alphabet. The returned [22Xfsa[122X has language
+  equal to the union of those of [22Xfsa1[122X and [22Xfsa2[122X.[133X
+  
+  [1X4.2-10 ConcatFSA[101X
+  
+  [33X[1;0Y[29X[2XConcatFSA[102X( [3Xfsa1[103X, [3Xfsa2[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa1[122X and [22Xfsa2[122X must have the same alphabet. The returned [22Xfsa[122X accepts words of
+  the  form  [22Xw_1w_2[122X,  where [22Xw_1[122X and [22Xw_2[122X are in the languages of [22Xfsa1[122X and [22Xfsa2[122X,
+  respectively.[133X
+  
+  [1X4.2-11 LanguagesEqualFSA[101X
+  
+  [33X[1;0Y[29X[2XLanguagesEqualFSA[102X( [3Xfsa1[103X, [3Xfsa2[103X ) [32X function[133X
+  
+  [33X[0;0Y[22Xfsa1[122X  and  [22Xfsa2[122X must have the same alphabet. This function tests whether the
+  languages of [22Xfsa1[122X and [22Xfsa2[122X are equal, and returns [10Xtrue[110X or [10Xfalse[110X.[133X
+  
+  [1X4.2-12 GrowthFSA[101X
+  
+  [33X[1;0Y[29X[2XGrowthFSA[102X( [3Xfsa[103X ) [32X function[133X
+  
+  [33X[0;0YReturns  the  growth  function of [22Xfsa[122X. This is a rational function, of which
+  the the coefficient of [22Xx^n[122X in its Taylor expansion is equal to the number of
+  words of length [22Xn[122X in the accepted language of [22Xfsa[122X.[133X
+  
+  [33X[0;0YIf  the  coefficients  in this rational function are larger than about [22X16000[122X
+  then strange error messages will appear and [10Xfail[110X will be returned.[133X
+  

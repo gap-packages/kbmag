@@ -1,0 +1,124 @@
+  
+  
+  [1XIndex[101X
+  
+  [2XAcceptingStatesFSA[102X 4.1-9 
+  [2XAccessibleFSA[102X 4.1-29 
+  [2XAddEdgeFSA[102X 4.1-24 
+  [2XAddLetterFSA[102X 4.1-21 
+  [2XAddStateFSA[102X 4.1-18 
+  [2XAlphabet[102X 2.2-5 
+  [2XAlphabetFSA[102X 4.1-6 
+   2.9-1 
+  [2XAndFSA[102X 4.2-8 
+  automatic cosets program 3.3 
+  automatic groups program 2.6 
+  [2XAutomaticStructure[102X 2.6-1 
+  [2XAutomaticStructureOnCosets[102X 3.3-1 
+  [2XAutomaticStructureOnCosetsWithSubgroupPresentation[102X 3.3-1 
+  [2XBFSFSA[102X 4.1-33 
+  [2XConcatFSA[102X 4.2-10 
+  [2XDeleteEdgeFSA[102X 4.1-25 
+  [2XDeleteLetterFSA[102X 4.1-22 
+  [2XDeleteStateFSA[102X 4.1-19 
+  [2XDenseDTableFSA[102X 4.1-11 
+  [2XDeterminizeFSA[102X 4.2-1 
+  [2XEnumerateReducedCosetRepresentatives[102X 3.5-2 
+  [2XEnumerateReducedWords[102X 2.8-3 
+   2.9 
+  [2XExistsFSA[102X 4.2-6 
+  external programs 4.2 
+  [2XExternalWordToInternalWordOfRewritingSystem[102X 2.2-4 
+   2.9-2 
+  finite state automata 4.1 
+  [2XFirstWordDifferenceAutomaton[102X 2.6-2 
+  [2XFreeStructureOfSystem[102X 2.2-3 
+  [2XFSA[102X 4.1-3 
+  [2XGeneralMultiplier[102X 2.6-2 
+  [2XGrowthFSA[102X 4.2-12 
+  [2XGrowthFunction[102X 2.8-4 
+  [2XGrowthFunctionOfCosetRepresentatives[102X 3.5-3 
+   2.9-3 
+  [2XIndex[102X 3.5-1 
+  [2XInfoRWS[102X 2.4-1 
+  [2XInitializeFSA[102X 4.1-2 
+  [2XInitialStatesFSA[102X 4.1-10 
+  [2XInternalWordToExternalWordOfRewritingSystem[102X 2.2-4 
+  [2XIsAcceptedWordDFA[102X 4.1-17 
+  [2XIsAccessibleFSA[102X 4.1-28 
+  [2XIsBFSFSA[102X 4.1-32 
+  [2XIsConfluent[102X 2.2-2 
+  [2XIsConfluentOnCosets[102X 3.2-3 
+  [2XIsDeterministicFSA[102X 4.1-5 
+  [2XIsInitializedFSA[102X 4.1-1 
+  [2XIsKBMAGRewritingSystemRep[102X 2.2-1 
+  [2XIsReducedCosetRepresentative[102X 3.4-1 
+  [2XIsReducedForm[102X 2.7-1 
+  [2XIsReducedWord[102X 2.7-1 
+  [2XIsRewritingSystem[102X 2.2-1 
+  [2XIsTrimFSA[102X 4.1-30 
+  [5Xkbmag[105X 1. 
+  [2XKBMAGRewritingSystem[102X 2.1-1 
+  Knuth-Bendix program 2.5 
+  Knuth-Bendix program on cosets 3.2 
+  [2XKnuthBendix[102X 2.5-1 
+  [2XKnuthBendixOnCosets[102X 3.2-1 
+  [2XKnuthBendixOnCosetsWithSubgroupRewritingSystem[102X 3.2-1 
+  [2XLanguagesEqualFSA[102X 4.2-11 
+  [2XLEnumerateDFA[102X 4.1-35 
+  [2XLSizeDFA[102X 4.1-34 
+  [2XMakeConfluent[102X 2.5-1 
+  [2XMinimizeFSA[102X 4.2-2 
+  [2XNotFSA[102X 4.2-3 
+  [2XNumberOfLettersFSA[102X 4.1-8 
+  [2XNumberOfStatesFSA[102X 4.1-7 
+  [2XOptionsRecordOfKBMAGRewritingSystem[102X 2.4-2 
+  [2XOrder[102X 2.8-2 
+  [2XOrderingOfKBMAGRewritingSystem[102X 2.3-1 
+  [2XOrderingOfRewritingSystem[102X 2.3-1 
+  [2XOrFSA[102X 4.2-9 
+  [2XPermuteLettersFSA[102X 4.1-23 
+  [2XPermuteStatesFSA[102X 4.1-20 
+  [2XPresentationOfSubgroupOfKBMAGRewritingSystem[102X 3.3-2 
+  [2XReducedCosetRepresentative[102X 3.4-2 
+  [2XReducedForm[102X 2.7-2 
+  [2XReducedFormOfCosetRepresentative[102X 3.4-2 
+  [2XReducedWord[102X 2.7-2 
+  [2XReductionAutomaton[102X 2.5-2 
+  [2XReorderAlphabetOfKBMAGRewritingSystem[102X 2.3-1 
+  [2XResetRewritingSystem[102X 2.2-7 
+  [2XResetRewritingSystemOnCosets[102X 3.1-2 
+  [2XReverseFSA[102X 4.2-5 
+  , control parameters 2.4 
+      creating 2.1 
+      elementary functions 2.2 
+      examples 2.9 
+      setting the ordering 2.3 
+      creating 3.2 
+      examples 3.6 
+  [2XRewritingSystemOfSubgroupOfKBMAGRewritingSystem[102X 3.2-2 
+  [2XRules[102X 2.2-6 
+  [2XSecondWordDifferenceAutomaton[102X 2.6-2 
+  [2XSemigroupOfRewritingSytem[102X 2.2-3 
+  [2XSetAcceptingFSA[102X 4.1-26 
+  [2XSetInitialFSA[102X 4.1-27 
+  [2XSetOrderingOfKBMAGRewritingSystem[102X 2.3-1 
+  [2XSize[102X 2.8-1 
+  [2XSizeOfAlphabetFSA[102X 4.1-8 
+  [2XSourcesFSA[102X 4.1-15 
+  [2XSparseTableFSA[102X 4.1-12 
+  stand-alone package 4. 
+  [2XStarFSA[102X 4.2-4 
+  [2XStatesFSA[102X 4.1-6 
+  [2XSubgroupOfKBMAGRewritingSystem[102X 3.1-1 
+  [2XSwapCoordsFSA[102X 4.2-7 
+  [2XTargetDFA[102X 4.1-13 
+  [2XTargetsFSA[102X 4.1-14 
+  [2XTrimFSA[102X 4.1-31 
+  [2XWordAcceptor[102X 2.6-2 
+  [2XWordMonoidOfRewritingSystem[102X 2.2-3 
+  [2XWordTargetDFA[102X 4.1-16 
+  [2XWriteFSA[102X 4.1-4 
+  
+  
+  -------------------------------------------------------

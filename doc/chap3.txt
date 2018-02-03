@@ -1,0 +1,289 @@
+  
+  [1X3 [33X[0;0YThe Knuth-Bendix program on cosets[133X[101X
+  
+  [33X[0;0YIt  is  possible  to use the Knuth-Bendix and Automatic Structure program on
+  cosets  of  a  specified  subgroup  [22XH[122X  of  [22XG[122X.  Most  of the functions in the
+  preceding  chapter have analogues for cosets rather than for elements. It is
+  also possible sometimes to compute a complete rewriting system or a subgroup
+  presentation of [22XH[122X.[133X
+  
+  
+  [1X3.1 [33X[0;0YSubgroups, cosets and subgroup presentations[133X[101X
+  
+  [33X[0;0YThe  functions  in  this  section  are  currently  only  applicable when the
+  rewriting system is defined from a group [22XG[122X.[133X
+  
+  [1X3.1-1 SubgroupOfKBMAGRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XSubgroupOfKBMAGRewritingSystem[102X( [3Xrws[103X, [3XH[103X ) [32X function[133X
+  
+  [33X[0;0YThe  subgroup  [22XH[122X  of  the  group [22XG[122X (= [10XSemigroupOfRewritingSystem(rws)[110X ) from
+  which  [22Xrws[122X  is  defined  can be specified either as a subgroup of [22XG[122X; or as a
+  list  of  elements  of  [22XG[122X  that  generate  [22XH[122X;  or  as  a  subgroup  of  [22XF[122X  =
+  [10XFreeStructureOfRewritingSystem(rws)[110X  that  maps  onto  [22XH[122X;  or  as  a list of
+  elements of [22XF[122X that generate a subgroup mapping onto [22XH[122X.[133X
+  
+  [33X[0;0Y[2XSubgroupOfKBMAGRewritingSystem[102X  returns a rewriting system [10Xsubrws[110X for [22XH[122X, but
+  [10Xsubrws[110X  has  no rules, and is only intended to be used as a parameter in the
+  functions that follow.[133X
+  
+  [1X3.1-2 ResetRewritingSystemOnCosets[101X
+  
+  [33X[1;0Y[29X[2XResetRewritingSystemOnCosets[102X( [3Xrws[103X, [3Xsubrws[103X ) [32X function[133X
+  
+  [33X[0;0YThis  function  resets  [10Xsubrws[110X  back  to  its  form  as  it  was  before the
+  application  of  [2XKnuthBendixOnCosets[102X  ([14X3.2-1[114X)  or [2XAutomaticStructureOnCosets[102X
+  ([14X3.3-1[114X).  The  normal  form  and  reduction  algorithms  on  cosets  will be
+  unavailable after this call.[133X
+  
+  [33X[0;0YAny  optional control parameters set for [22Xrws[122X will automatically be used when
+  applying  the Knuth-Bendix and Automatic Structure functions on cosets, that
+  are now to be described.[133X
+  
+  
+  [1X3.2 [33X[0;0YThe Knuth-Bendix program on cosets[133X[101X
+  
+  [1X3.2-1 KnuthBendixOnCosets[101X
+  
+  [33X[1;0Y[29X[2XKnuthBendixOnCosets[102X( [3Xrws[103X, [3Xsubrws[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XKnuthBendixOnCosetsWithSubgroupRewritingSystem[102X( [3Xrws[103X, [3Xsubrws[103X ) [32X operation[133X
+  
+  [33X[0;0Y[10XKnuthBendixOnCosets[110X  runs the external Knuth-Bendix program on the rewriting
+  system  [22Xrws[122X  with  respect  to  the  cosets of the subgroup corresponding to
+  [10Xsubrws[110X.  It  returns  [10Xtrue[110X if it finds a confluent rewriting system on coset
+  representatives, and otherwise [10Xfalse[110X.[133X
+  
+  [33X[0;0YIf  [2XKnuthBendixOnCosets[102X  halts without finding a confluent system, but still
+  manages  to output the current system and update [22Xrws[122X, then it is possible to
+  use  the  resulting  rewriting  system  to reduce coset representatives, and
+  count  and  enumerate  the  irreducible  coset representatives; it cannot be
+  guaranteed  that  the  irreducible  coset  representatives are all in normal
+  form, however.[133X
+  
+  [33X[0;0Y[2XKnuthBendixOnCosetsWithSubgroupRewritingSystem[102X   does   the   same  and,  in
+  addition, tries to compute a confluent rewriting system for the subgroup [22XH[122X.[133X
+  
+  [1X3.2-2 RewritingSystemOfSubgroupOfKBMAGRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XRewritingSystemOfSubgroupOfKBMAGRewritingSystem[102X( [3Xrws[103X, [3Xsubrws[103X ) [32X function[133X
+  
+  [33X[0;0YUse        this        after        a        successful        call       of
+  [2XKnuthBendixOnCosetsWithSubgroupRewritingSystem[102X   ([14X3.2-1[114X).   It   returns   a
+  confluent  rewriting  system  for [22XH[122X on a generating set corresponding to the
+  generators of [22XH[122X that were used to define [10Xsubrws[110X.[133X
+  
+  [1X3.2-3 IsConfluentOnCosets[101X
+  
+  [33X[1;0Y[29X[2XIsConfluentOnCosets[102X( [3Xrws[103X ) [32X operation[133X
+  
+  [33X[0;0YThis  operation  returns [10Xtrue[110X if [22Xrws[122X is a rewriting system on cosets that is
+  known to be confluent.[133X
+  
+  
+  [1X3.3 [33X[0;0YThe automatic cosets program[133X[101X
+  
+  [1X3.3-1 AutomaticStructureOnCosets[101X
+  
+  [33X[1;0Y[29X[2XAutomaticStructureOnCosets[102X( [3Xrws[103X, [3Xsubrws[103X[, [3Xlarge[103X, [3Xfilestore[103X, [3Xdiff1[103X] ) [32X function[133X
+  [33X[1;0Y[29X[2XAutomaticStructureOnCosetsWithSubgroupPresentation[102X( [3Xrws[103X, [3Xsubrws[103X[, [3Xlarge[103X, [3Xfilestore[103X, [3Xdiff1[103X] ) [32X function[133X
+  
+  [33X[0;0Y[10XAutomaticStructureOnCosets[110X runs the external automatic cosets program on the
+  rewriting system [22Xrws[122X with respect to the cosets of the subgroup [22XH[122X from which
+  [10Xsubrws[110X was defined. It returns [10Xtrue[110X if successful and [10Xfalse[110X otherwise.[133X
+  
+  [33X[0;0YThe  optional  parameters  to [2XAutomaticStructureOnCosets[102X are the same as for
+  [2XAutomaticStructure[102X ([14X2.6-1[114X).[133X
+  
+  [33X[0;0YThe ordering of [22Xrws[122X must be [12Xshortlex[112X.[133X
+  
+  [33X[0;0Y[2XAutomaticStructureOnCosetsWithSubgroupPresentation[102X  does  the  same  and, in
+  addition, tries to compute a presentation of the subgroup [22XH[122X.[133X
+  
+  [1X3.3-2 PresentationOfSubgroupOfKBMAGRewritingSystem[101X
+  
+  [33X[1;0Y[29X[2XPresentationOfSubgroupOfKBMAGRewritingSystem[102X( [3Xrws[103X, [3Xsubrws[103X ) [32X function[133X
+  
+  [33X[0;0YUse        this        after        a        successful        call       of
+  [2XAutomaticStructureOnCosetsWithSubgroupPresentation[102X  ([14X3.3-1[114X).  It  returns  a
+  presentation for [22XH[122X, but this is not on the generators used to define [22XH[122X.[133X
+  
+  
+  [1X3.4 [33X[0;0YWord reduction on cosets[133X[101X
+  
+  [1X3.4-1 IsReducedCosetRepresentative[101X
+  
+  [33X[1;0Y[29X[2XIsReducedCosetRepresentative[102X( [3Xrws[103X, [3Xsubrws[103X, [3Xw[103X ) [32X operation[133X
+  
+  [33X[0;0YThis   operation  tests  whether  the  word  [22Xw[122X  in  the  generators  of  the
+  freestructure  [10XFreeStructure(rws)[110X  of  the  rewriting  system  system [22Xrws[122X is
+  reduced  or not as a coset representative of the subgroup [22XH[122X of [22XG[122X. It returns
+  [10Xtrue[110X or [10Xfalse[110X.[133X
+  
+  [33X[0;0Y[2XIsReducedCosetRepresentative[102X  can  only  be  used  after [2XKnuthBendixOnCosets[102X
+  ([14X3.2-1[114X)  or  [2XAutomaticStructureOnCosets[102X ([14X3.3-1[114X) has been run successfully on
+  [22Xrws[122X  and [10Xsubrws[110X. In the former case, if [10XKnuthBendixOnCosets[110X halted without a
+  confluent set of rules, then irreducible words are not necessarily in normal
+  form   (but   reducible  words  are  definitely  not  in  normal  form).  If
+  [10XKnuthBendixOnCosets[110X   completes   with   a  confluent  rewriting  system  or
+  [10XAutomaticStructureOnCosets[110X  completes  successfully,  then  it is guaranteed
+  that all irreducible words are in normal form.[133X
+  
+  [1X3.4-2 ReducedCosetRepresentative[101X
+  
+  [33X[1;0Y[29X[2XReducedCosetRepresentative[102X( [3Xrws[103X, [3Xsubrws[103X, [3Xw[103X ) [32X operation[133X
+  [33X[1;0Y[29X[2XReducedFormOfCosetRepresentative[102X( [3Xrws[103X, [3Xsubrws[103X, [3Xw[103X ) [32X operation[133X
+  
+  [33X[0;0Y[10XReducedCosetRepresentative[110X  reduces the word [22Xw[122X in the generators of the free
+  structure  [10XFreeStructure(rws)[110X  of  the  rewriting  system  [22Xrws[122X  as  a  coset
+  representative  of the subgroup [22XH[122X from which [10Xsubrws[110X was defined, and returns
+  the result.[133X
+  
+  [33X[0;0Y[2XReducedFormOfCosetRepresentative[102X  can only be used after [2XKnuthBendixOnCosets[102X
+  ([14X3.2-1[114X)  or  [2XAutomaticStructureOnCosets[102X ([14X3.3-1[114X) has been run successfully on
+  [22Xrws[122X  and [10Xsubrws[110X. In the former case, if [10XKnuthBendixOnCosets[110X halted without a
+  confluent   set  of  rules,  then  the  irreducible  word  returned  is  not
+  necessarily   in  normal  form.  If  [10XKnuthBendixOnCosets[110X  completes  with  a
+  confluent   rewriting   system   or   [10XAutomaticStructureOnCosets[110X   completes
+  successfully, then it is guaranteed that all irreducible words are in normal
+  form.[133X
+  
+  
+  [1X3.5 [33X[0;0YCounting and enumerating irreducible words for cosets[133X[101X
+  
+  [1X3.5-1 Index[101X
+  
+  [33X[1;0Y[29X[2XIndex[102X( [3Xrws[103X, [3Xsubrws[103X ) [32X method[133X
+  
+  [33X[0;0YReturns  the  number  of  irreducible words for coset representatives of the
+  subgroup [22XH[122X of [22XG[122X corresponding to [10Xsubrws[110X.[133X
+  
+  [33X[0;0Y[2XIndex[102X    can   only   be   used   after   [2XKnuthBendixOnCosets[102X   ([14X3.2-1[114X)   or
+  [2XAutomaticStructureOnCosets[102X  ([14X3.3-1[114X)  has  been  run  successfully on [22Xrws[122X and
+  [10Xsubrws[110X.  In  the  former  case,  if  [10XKnuthBendixOnCosets[110X  halted  without  a
+  confluent  set of rules, then the number of irreducible words may be greater
+  than the number of words in normal form (which is equal to the index of [22XH[122X in
+  [22XG[122X).  If  [10XKnuthBendixOnCosets[110X  completes with a confluent rewriting system or
+  [10XAutomaticStructureOnCosets[110X  completes  successfully,  then  it is guaranteed
+  that [2XIndex[102X will return the correct index of [22XH[122X in [22XG[122X.[133X
+  
+  [1X3.5-2 EnumerateReducedCosetRepresentatives[101X
+  
+  [33X[1;0Y[29X[2XEnumerateReducedCosetRepresentatives[102X( [3Xrws[103X, [3Xsubrws[103X, [3Xmin[103X, [3Xmax[103X ) [32X operation[133X
+  
+  [33X[0;0YEnumerate  all  irreducible  words for coset representatives of [22XH[122X in [22XG[122X, that
+  have  lengths  between [10Xmin[110X and [10Xmax[110X (inclusive), which should be non-negative
+  integers.  The  result is returned as a list of words. The enumeration is by
+  depth-first search of a finite state automaton, and so the words in the list
+  returned     are    ordered    lexicographically    (not    by    [12Xshortlex[112X).
+  [2XEnumerateReducedCosetRepresentatives[102X     can     only    be    used    after
+  [2XKnuthBendixOnCosets[102X  ([14X3.2-1[114X)  or [2XAutomaticStructureOnCosets[102X ([14X3.3-1[114X) has been
+  run   successfully   on   [22Xrws[122X   and   [10Xsubrws[110X.   In   the   former  case,  if
+  [10XKnuthBendixOnCosets[110X  halted  without  a confluent set of rules, then not all
+  irreducible  words  in the list returned will necessarily be in normal form.
+  If  [10XKnuthBendixOnCosets[110X  completes  with  a  confluent  rewriting  system or
+  [10XAutomaticStructureOnCosets[110X  completes  successfully,  then  it is guaranteed
+  that all words in the list will be in normal form.[133X
+  
+  [1X3.5-3 GrowthFunctionOfCosetRepresentatives[101X
+  
+  [33X[1;0Y[29X[2XGrowthFunctionOfCosetRepresentatives[102X( [3Xrws[103X, [3Xsubrws[103X ) [32X function[133X
+  
+  [33X[0;0YReturns  the  growth  function  of  the  set  of irreducible words for coset
+  representatives  of  [22XH[122X  in [22XG[122X, where [10Xsubrws[110X and [22Xrws[122X are the rewriting systems
+  for [22XH[122X and [22XG[122X. This is a rational function, of which the coefficient of [22Xx^n[122X in
+  its  Taylor  expansion is equal to the number of coset representatives words
+  of length [22Xn[122X.[133X
+  
+  [33X[0;0YIf  the  coefficients  in this rational function are larger than about [22X16000[122X
+  then strange error messages will appear and [10Xfail[110X will be returned.[133X
+  
+  [33X[0;0Y[2XGrowthFunctionOfCosetRepresentatives[102X     can     only    be    used    after
+  [2XKnuthBendixOnCosets[102X  ([14X3.2-1[114X)  or [2XAutomaticStructureOnCosets[102X ([14X3.3-1[114X) has been
+  run   successfully   on   [22Xrws[122X   and   [10Xsubrws[110X.   In   the   former  case,  if
+  [10XKnuthBendixOnCosets[110X  halted  without  a confluent set of rules, then not all
+  irreducible  words  in the list returned will necessarily be in normal form.
+  If  [10XKnuthBendixOnCosets[110X  completes  with  a  confluent  rewriting  system or
+  [10XAutomaticStructureOnCosets[110X  completes  successfully,  then  it is guaranteed
+  that all words in the list will be in normal form.[133X
+  
+  
+  [1X3.6 [33X[0;0YExamples of the use of Rewriting System on Cosets[133X[101X
+  
+  [33X[0;0YHere are two examples to illustrate the operations described above.[133X
+  
+  
+  [1X3.6-1 [33X[0;0YExample 1[133X[101X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XF := FreeGroup( "a", "b", "c" );;[127X[104X
+    [4X[25Xgap>[125X [27Xa := F.1;;  b := F.2;;  c := F.3;;[127X[104X
+    [4X[25Xgap>[125X [27XG := F/[b^3,c^3,(b*c)^4,(b*c^-1)^5,a^-1*b^-1*c*b*c*b^-1*c*b*c^-1];[127X[104X
+    [4X[28X<fp group on the generators [ a, b, c ]>[128X[104X
+    [4X[25Xgap>[125X [27XR := KBMAGRewritingSystem( G );[127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X      silent := true,[128X[104X
+    [4X[28X  generatorOrder := [_g1,_g2,_g3,_g4,_g5,_g6],[128X[104X
+    [4X[28X    inverses := [_g2,_g1,_g4,_g3,_g6,_g5],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X       equations := [[128X[104X
+    [4X[28X     [_g3^2,_g4],[128X[104X
+    [4X[28X     [_g5^2,_g6],[128X[104X
+    [4X[28X     [_g3*_g5*_g3*_g5,_g6*_g4*_g6*_g4],[128X[104X
+    [4X[28X     [_g3*_g6*_g3*_g6*_g3,_g5*_g4*_g5*_g4*_g5],[128X[104X
+    [4X[28X     [_g2*_g4*_g5*_g3*_g5,_g5*_g4*_g6*_g3][128X[104X
+    [4X[28X       ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[25Xgap>[125X [27XS := SubgroupOfKBMAGRewritingSystem( R, [ a^3, c*a^2 ] );  [127X[104X
+    [4X[28Xrec([128X[104X
+    [4X[28X       isRWS := true,[128X[104X
+    [4X[28X      silent := true,[128X[104X
+    [4X[28X  generatorOrder := [_x1,_X1,_x2,_X2],[128X[104X
+    [4X[28X    inverses := [_X1,_x1,_X2,_x2],[128X[104X
+    [4X[28X    ordering := "shortlex",[128X[104X
+    [4X[28X       equations := [[128X[104X
+    [4X[28X       ][128X[104X
+    [4X[28X)[128X[104X
+    [4X[25Xgap>[125X [27XKnuthBendixOnCosetsWithSubgroupRewritingSystem( R, S );[127X[104X
+    [4X[28Xtrue[128X[104X
+    [4X[25Xgap>[125X [27XIndex( R, S );[127X[104X
+    [4X[28X18[128X[104X
+    [4X[25Xgap>[125X [27XIsReducedCosetRepresentative( R, S, b*a*b*a );[127X[104X
+    [4X[28Xfalse[128X[104X
+    [4X[25Xgap>[125X [27XReducedFormOfCosetRepresentative( R, S, b*a*b*a );[127X[104X
+    [4X[28Xb^-1*a^-1[128X[104X
+    [4X[25Xgap>[125X [27XEnumerateReducedCosetRepresentatives( R, S, 0, 4 );[127X[104X
+    [4X[28X[ <identity ...>, a, a*b, a*b*c, a*b^-1, a^-1, a^-1*b, a^-1*b*c, a^-1*b^-1, [128X[104X
+    [4X[28X  b, b*c, b*c*a, b*c*a^-1, b*c^-1, b^-1, b^-1*a, b^-1*a^-1, b^-1*a^-1*b ][128X[104X
+    [4X[25Xgap>[125X [27XSS := RewritingSystemOfSubgroupOfKBMAGRewritingSystem( R, S );;[127X[104X
+    [4X[25Xgap>[125X [27XSize( SS );[127X[104X
+    [4X[28X60[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
+  
+  [1X3.6-2 [33X[0;0YExample 2[133X[101X
+  
+  [33X[0;0YWe find a free subgroup of the Fibonacci group [22XF(2,8)[122X. This example may take
+  about [22X20[122X minutes to run on a typical WorkStation.[133X
+  
+  [4X[32X  Example  [32X[104X
+    [4X[28X[128X[104X
+    [4X[25Xgap>[125X [27XF := FreeGroup( 8 );;[127X[104X
+    [4X[25Xgap>[125X [27Xa := F.1;  b := F.2;  c := F.3;  d := F.4; [127X[104X
+    [4X[25Xgap>[125X [27Xe := F.5;  f := F.6;  g := F.7;  h := F.8;[127X[104X
+    [4X[25Xgap>[125X [27XG := F/[a*b*c^-1, b*c*d^-1, c*d*e^-1, d*e*f^-1,[127X[104X
+    [4X[25X>[125X [27X           e*f*g^-1, f*g*h^-1, g*h*a^-1, h*a*b^-1];[127X[104X
+    [4X[25Xgap>[125X [27XR := KBMAGRewritingSystem( G );;[127X[104X
+    [4X[25Xgap>[125X [27XS := SubgroupOfKBMAGRewritingSystem( R, [a,e] );;[127X[104X
+    [4X[25Xgap>[125X [27XAutomaticStructureOnCosetsWithSubgroupPresentation( R, S );[127X[104X
+    [4X[25Xgap>[125X [27XP := PresentationOfSubgroupOfKBMAGRewritingSystem( R, S );[127X[104X
+    [4X[28X<fp group on the generators [ f1, f3 ]>[128X[104X
+    [4X[25Xgap>[125X [27XRelatorsOfFpGroup( P );[127X[104X
+    [4X[28X[  ][128X[104X
+    [4X[25Xgap>[125X [27XIndex( R, S );                 [127X[104X
+    [4X[28Xinfinity[128X[104X
+    [4X[28X[128X[104X
+  [4X[32X[104X
+  
