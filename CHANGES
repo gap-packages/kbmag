@@ -1,11 +1,9 @@
 This file describes changes in the kbmag package.
 
-1.5.x (2018-01-17) 
-  - Converted the KBMag manual to GAPDoc format. 
-  - makedoc.g now using AutoDoc. 
-
-X.Y (2017-12-XX)
-  - Fixed a crash in the gpmakefsa tools, used e.g. by AutomaticStructure
+1.5.5 (2018-02-04)
+  - Converted the KBMag manual to GAPDoc format (many thanks to Chris Wensley!)
+  - makedoc.g now uses AutoDoc
+  - Fix crash in the gpmakefsa tools, used e.g. by AutomaticStructure
     (long-standing bug in kbmag which was exposed by modern compiler
     optimizing more aggressively)
   - Internal change: completed conversion of C code to ANSI C, fixed
