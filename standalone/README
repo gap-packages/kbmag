@@ -186,9 +186,9 @@ All that is left to do now is to run  LaTeX and bibtex:
 
 
 When this is finished you should be able to use kbmag from within GAP
-via the GAP function RequirePackage():
+via the GAP function LoadPackage():
 
-    gap> RequirePackage("kbmag");
+    gap> LoadPackage("kbmag");
 
 Typing 
     
