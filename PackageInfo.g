@@ -120,7 +120,7 @@ Keywords := [
   "Automatic Groups"
 ],
 
-#TestFile := "tst/testall.g",
+TestFile := "tst/testall.g",
 
 AutoDoc := rec(
     TitlePage := rec(
