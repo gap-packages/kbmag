@@ -2,8 +2,8 @@
 set -ex
 
 # ensure coverage is turned on
-export CFLAGS="$CFLAGS -fprofile-arcs -ftest-coverage"
-export LDFLAGS="$LDFLAGS -fprofile-arcs"
+export CFLAGS="$CFLAGS --coverage"
+export LDFLAGS="$LDFLAGS --coverage"
 
 if [[ $ABI = 32 ]]; then
     export CFLAGS="$CFLAGS -m32"
@@ -17,7 +17,7 @@ if [[ -x autogen.sh ]]; then
     make -j4 V=1
 elif [[ -x configure ]]; then
     ./configure $GAPROOT
-    make -j4
+    make -j4 COPTS="$COPTS"
 fi
 
 # trick to allow the package directory to be used as a GAP root dir

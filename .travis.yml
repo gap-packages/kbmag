@@ -3,6 +3,7 @@ env:
   global:
     - GAPROOT=gaproot
     - COVDIR=coverage
+    - COPTS="-O2 --coverage"
 
 addons:
   apt_packages:
