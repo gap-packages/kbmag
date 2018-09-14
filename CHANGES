@@ -1,5 +1,8 @@
 This file describes changes in the kbmag package.
 
+1.5.6 (2018-09-14)
+  - Set the GAP team as new package maintainer
+
 1.5.5 (2018-02-04)
   - Converted the KBMag manual to GAPDoc format (many thanks to Chris Wensley!)
   - makedoc.g now uses AutoDoc
