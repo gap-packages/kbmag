@@ -2,8 +2,8 @@ SetPackageInfo( rec(
 
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
-Version := "1.5.5",
-Date := "04/02/2018",
+Version := "1.5.6",
+Date := "14/09/2018",
 
 Persons := [
   rec(
@@ -18,38 +18,13 @@ Persons := [
                        "University of Warwick\n",
                        "Coventry CV4 7AL\n", "UK" ] )
   ),
+
   rec(
-    LastName      := "Horn",
-    FirstNames    := "Max",
+    LastName      := "GAP Team",
+    FirstNames    := "The",
     IsAuthor      := false,
     IsMaintainer  := true,
-    Email         := "max.horn@math.uni-giessen.de",
-    WWWHome       := "http://www.quendi.de/math",
-    PostalAddress := Concatenation(
-                       "AG Algebra\n",
-                       "Mathematisches Institut\n",
-                       "Justus-Liebig-Universität Gießen\n",
-                       "Arndtstraße 2\n",
-                       "35392 Gießen\n",
-                       "Germany" ),
-    Place         := "Gießen",
-    Institution   := "Justus-Liebig-Universität Gießen"
-  ),
-  rec(
-    LastName      := "Pfeiffer",
-    FirstNames    := "Markus",
-    IsAuthor      := false,
-    IsMaintainer  := true,
-    Email         := "markusp@mcs.st-andrews.ac.uk",
-    WWWHome       := "http://www.morphism.de/~markusp",
-    PostalAddress := Concatenation( [
-                       "School of Computer Science\n",
-                       "University of St Andrews\n",
-                       "Jack Cole Building, North Haugh\n",
-                       "St Andrews, Fife, KY16 9SX\n",
-                       "United Kingdom" ] ),
-    Place         := "St Andrews",
-    Institution   := "University of St Andrews"
+    Email         := "support@gap-system.org",
   ),
 ],
 
@@ -63,7 +38,7 @@ SourceRepository := rec(
 ),
 IssueTrackerURL := Concatenation( ~.SourceRepository.URL, "/issues" ),
 PackageWWWHome  := Concatenation( "https://gap-packages.github.io/", ~.PackageName ),
-README_URL      := Concatenation( ~.PackageWWWHome, "/README" ),
+README_URL      := Concatenation( ~.PackageWWWHome, "/README.md" ),
 PackageInfoURL  := Concatenation( ~.PackageWWWHome, "/PackageInfo.g" ),
 ArchiveURL      := Concatenation( ~.SourceRepository.URL,
                                  "/releases/download/v", ~.Version,
@@ -120,7 +95,7 @@ Keywords := [
   "Automatic Groups"
 ],
 
-#TestFile := "tst/testall.g",
+TestFile := "tst/testall.g",
 
 AutoDoc := rec(
     TitlePage := rec(
