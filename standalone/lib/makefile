@@ -3,7 +3,9 @@ SHELL = /bin/sh
 RANLIB = ranlib
 RM = /bin/rm
 CC = gcc
-COPTS = -O2 -Wall -Wno-char-subscripts -Wno-maybe-uninitialized -Werror -fPIC
+LD = ld
+DCOPTS = -O2 -Wall -Wno-char-subscripts -Wno-uninitialized -Werror -fPIC
+COPTS = 
 #COPTS= -O -Wall -Wno-char-subscripts -Wno-maybe-uninitialized -Wstrict-prototypes -Wextra -Werror
 LIB = fsalib
 LIBOBJ = $(LIB).o
@@ -19,11 +21,11 @@ $(STATIC): $(OBJS)
 	ar cr $(STATIC) $(OBJS)
 	if  which ranlib > /dev/null 2> /dev/null; then ranlib $(STATIC); fi
 $(SHARED): $(OBJS)
-	ld -r $(OBJS) -o $(LIBOBJ)
+	$(LD) -r $(OBJS) -o $(LIBOBJ)
 	$(CC) -shared $(LIBOBJ) -o $(SHARED)
 kbfns.o: kbfns.c
-	$(CC) -c $(COPTS) kbfns.c
+	$(CC) -c $(DCOPTS) $(COPTS) kbfns.c
 .c.o:
-	${CC} -c $(COPTS) $*.c
+	$(CC) -c $(DCOPTS) $(COPTS) $*.c
 clean:
 	$(RM) -f $(OBJS) $(LIBOBJ) $(STATIC) $(SHARED)
