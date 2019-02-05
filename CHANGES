@@ -1,5 +1,8 @@
 This file describes changes in the kbmag package.
 
+1.5.7 (2019-02-05)
+  - Set the GAP team as new package maintainer
+
 1.5.6 (2018-09-14)
   - Set the GAP team as new package maintainer
 

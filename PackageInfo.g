@@ -2,8 +2,8 @@ SetPackageInfo( rec(
 
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
-Version := "1.5.6",
-Date := "14/09/2018",
+Version := "1.5.7",
+Date := "05/02/2019",
 
 Persons := [
   rec(
