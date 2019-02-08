@@ -9,6 +9,9 @@
 /standalone/doc/manual.synctex.gz
 /standalone/doc/manual.toc
 
+*.gcno
+*.gcov
+
 /gh-pages/
 /tmp/
 
