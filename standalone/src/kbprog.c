@@ -542,6 +542,7 @@ int main(int argc, char *argv[])
   if (kbprog(rwsptr) == -1)
     exit(1);
   output_and_exit_kbprog(rwsptr);
+  return 0;
 }
 
 static void output_and_exit_kbprog(rewriting_system *rwsptr)

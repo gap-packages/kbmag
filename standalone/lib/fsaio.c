@@ -1416,8 +1416,10 @@ void compressed_transitions_read(fsa *fsaptr, FILE *rfile)
     fsa_table_init(fsaptr->table, ns, ne);
     table = fsaptr->table->table_data_ptr;
     for (i = 1; i <= ns; i++)
-      for (j = 1; j <= ne; j++)
-        fread((void *)(table[j] + i), sizeof(int), (size_t)1, rfile);
+      for (j = 1; j <= ne; j++) {
+        size_t s = fread((void *)(table[j] + i), sizeof(int), (size_t)1, rfile);
+        (void)s; // HACK to silence compiler warning
+      }
   }
   else {
     tmalloc(fsaptr->table->table_data_ptr, int *, ns + 2);
