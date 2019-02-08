@@ -1,7 +1,11 @@
 This file describes changes in the kbmag package.
 
+1.5.8 (2019-02-09)
+  - More build system changes
+
 1.5.7 (2019-02-05)
-  - Set the GAP team as new package maintainer
+  - Modify the build system to allow building a shared library
+    out of the standalone C code
 
 1.5.6 (2018-09-14)
   - Set the GAP team as new package maintainer
