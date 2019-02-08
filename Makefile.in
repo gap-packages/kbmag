@@ -13,8 +13,8 @@ EXTRA_CFLAGS += -Wno-char-subscripts
 
 all:
 	mkdir -p bin/@GAPARCH@;
-	cd standalone/lib; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) $(EXTRA_CFLAGS)"
-	cd standalone/src; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) $(EXTRA_CFLAGS)" BIN="../../$(BIN)"
+	cd standalone/lib; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) $(EXTRA_CFLAGS)" LDFLAGS="$(LDFLAGS)"
+	cd standalone/src; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) $(EXTRA_CFLAGS)" LDFLAGS="$(LDFLAGS)" BIN="../../$(BIN)"
 
 clean:
 	cd standalone/lib; $(MAKE) clean
