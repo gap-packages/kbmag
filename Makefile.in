@@ -2,8 +2,8 @@
 # all executables are put into the bin directory.
 BIN = bin/@GAPARCH@
 
-CC = gcc
-CFLAGS = -O2 -g
+CC ?= gcc
+CFLAGS ?= -O2 -g
 
 EXTRA_CFLAGS += -Wall
 EXTRA_CFLAGS += -Wno-char-subscripts
