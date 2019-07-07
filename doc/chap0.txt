@@ -6,15 +6,13 @@
                  [1X Knuth-Bendix on Monoids and Automatic Groups [101X
   
   
-                                     1.5.8
+                                     1.5.9
   
   
-                                19 February 2019
+                                  7 July 2019
   
   
                                    Derek Holt
-  
-                                  The GAP Team
   
   
   
@@ -27,8 +25,6 @@
                 [33X[0;14YUK[133X
   
   
-  The GAP Team
-      Email:    [7Xmailto:support@gap-system.org[107X
   
   -------------------------------------------------------
   [1XAbstract[101X
