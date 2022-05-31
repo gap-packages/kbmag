@@ -114,7 +114,7 @@ AutoDoc := rec(
             "Bug reports, comments, suggestions for additional features, and ", 
             "offers to implement some of these, will all be very welcome.<P/>", 
             "Please submit any issues at ", 
-            "<File>https://github.com/gap-packages/kbmag/issues/</File>.<P/>" 
+            "<URL>https://github.com/gap-packages/kbmag/issues/</URL>.<P/>" 
             ), 
         Acknowledgements := Concatenation( 
             "This documentation was prepared with the ", 
