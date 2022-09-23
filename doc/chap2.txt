@@ -162,7 +162,7 @@
   
   [1X2.4-1 InfoRWS[101X
   
-  [33X[1;0Y[29X[2XInfoRWS[102X[32X info class[133X
+  [33X[1;0Y[29X[2XInfoRWS[102X [32X info class[133X
   
   [33X[0;0YThis  `Info'  variable  can  be  set  to  [22X0,1,2[122X or [22X3[122X to control the level of
   diagnostic output.[133X

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/gap-packages/kbmag.svg?branch=master)](https://travis-ci.org/gap-packages/kbmag)
+[![Build Status](https://github.com/gap-packages/kbmag/workflows/CI/badge.svg?branch=master)](https://github.com/gap-packages/kbmag/actions?query=workflow%3ACI+branch%3Amaster)
 [![Code Coverage](https://codecov.io/github/gap-packages/kbmag/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/kbmag)
 
 # The GAP 4 package 'KBMAG'

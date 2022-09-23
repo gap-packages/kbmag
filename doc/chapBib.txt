@@ -7,10 +7,10 @@
   Bartlett (1992).
   
   [[20XGH17[120X]  [16XGutsche,  S. and Horn, M.[116X, [17XAutoDoc - Generate documentation from GAP
-  source    code   (Version   2017.09.15)[117X   (2017),   ((GAP   package,   \href
+  source    code    (Version   2017.09.15)[117X   (2017),   (GAP   package,   \href
   {https://github.com/gap-packages/AutoDoc}
   {\texttt{https://github.com/}\discretionary
-  {}{}{}\texttt{gap-packages/}\discretionary {}{}{}\texttt{AutoDoc}})).
+  {}{}{}\texttt{gap-packages/}\discretionary {}{}{}\texttt{AutoDoc}}).
   
   [[20XHER91[120X] [16XHolt, D. F., Epstein, D. B. A. and Rees, S.[116X, [17XThe use of Knuth-Bendix
   methods  to  solve  the  word  problem  in  automatic  groups[117X,  [18XJ.  Symbolic
@@ -21,20 +21,20 @@
   appear).
   
   [[20XHor17[120X] [16XHorn, M.[116X, [17XGitHubPagesForGAP - Template for easily using GitHub Pages
-  within   GAP   packages   (Version   0.2)[117X   (2017),   ((GAP  package,  \href
+  within   GAP   packages   (Version   0.2)[117X   (2017),   (GAP   package,  \href
   {https://gap-system.github.io/GitHubPagesForGAP/}
   {\texttt{https://gap-system.github.io/}\discretionary
-  {}{}{}\texttt{GitHubPagesForGAP/}})).
+  {}{}{}\texttt{GitHubPagesForGAP/}}).
   
   [[20XLeC86[120X]  [16XLeChenadec,  P.[116X,  [17XCanonical  Forms  in Finitely Presented Algebras[117X,
   London Pitman and New York, Wiley (1986).
   
   [[20XLN17[120X]  [16XL{\"u}beck,  F.  and  Neunh{\"o}ffer, M.[116X, [17XGAPDoc (Version 1.6)[117X, RWTH
-  Aachen            (2017),           ((GAP           package,           \href
+  Aachen            (2017),            (GAP           package,           \href
   {http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc/index.html}
   {\texttt{http://www.math.rwth-aachen.de/}\discretionary
   {}{}{}\texttt{\texttt{\symbol{126}}Frank.Luebeck/}\discretionary
-  {}{}{}\texttt{GAPDoc/}\discretionary {}{}{}\texttt{index.html}})).
+  {}{}{}\texttt{GAPDoc/}\discretionary {}{}{}\texttt{index.html}}).
   
   [[20XSim94[120X]  [16XSims,  C. C.[116X, [17XComputation with Finitely Presented Groups[117X, Cambridge
   (1994).

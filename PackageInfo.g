@@ -2,8 +2,8 @@ SetPackageInfo( rec(
 
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
-Version := "1.5.9",
-Date := "07/07/2019", # dd/mm/yyyy format
+Version := "1.5.10",
+Date := "23/09/2022", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
@@ -56,7 +56,7 @@ AbstractHTML :=
 PackageDoc := rec(
   BookName  := "kbmag",
   ArchiveURLSubset := ["doc"],
-  HTMLStart := "doc/chap0.html",
+  HTMLStart := "doc/chap0_mj.html",
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Knuth-Bendix on Monoids and Automatic Groups",
@@ -114,7 +114,7 @@ AutoDoc := rec(
             "Bug reports, comments, suggestions for additional features, and ", 
             "offers to implement some of these, will all be very welcome.<P/>", 
             "Please submit any issues at ", 
-            "<File>https://github.com/gap-packages/kbmag/issues/</File>.<P/>" 
+            "<URL>https://github.com/gap-packages/kbmag/issues/</URL>.<P/>" 
             ), 
         Acknowledgements := Concatenation( 
             "This documentation was prepared with the ", 

@@ -6,10 +6,10 @@
                  [1X Knuth-Bendix on Monoids and Automatic Groups [101X
   
   
-                                     1.5.9
+                                     1.5.10
   
   
-                                  7 July 2019
+                               23 September 2022
   
   
                                    Derek Holt
@@ -36,7 +36,7 @@
   [33X[0;0YBug  reports,  comments,  suggestions for additional features, and offers to
   implement some of these, will all be very welcome.[133X
   
-  [33X[0;0YPlease submit any issues at [11Xhttps://github.com/gap-packages/kbmag/issues/[111X.[133X
+  [33X[0;0YPlease submit any issues at [7Xhttps://github.com/gap-packages/kbmag/issues/[107X.[133X
   
   
   -------------------------------------------------------

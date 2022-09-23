@@ -309,7 +309,7 @@
   
   [33X[1;0Y[29X[2XLEnumerateDFA[102X( [3Xfsa[103X, [3Xmin[103X, [3Xmax[103X ) [32X function[133X
   
-  [33X[0;0YThe  words in the language of [22Xfsa[122X of length [22Xl[122X satisfying [22Xmin le l le max[122X are
+  [33X[0;0YThe  words  in  the language of [22Xfsa[122X of length [22Xl[122X satisfying [22Xmin ≤ l ≤ max[122X are
   returned  in  a list. The words will either be lists of integers, for [13Xsimple[113X
   type alphabets, of lists of words in the underlying free group or monoid for
   alphabets of type [13Xidentifiers[113X.[133X
