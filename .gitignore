@@ -18,7 +18,7 @@
 /doc/chap* 
 /doc/*.css
 /doc/*.js
-/doc/_AutoDocMainFile.xml
+/doc/_*.xml
 /doc/chooser.html
 /doc/kbmag.aux
 /doc/kbmag.bbl
@@ -39,5 +39,3 @@
 /doc/manual.six
 /doc/manual.example-1.tst
 /doc/title.xml
-/doc/tthmacros.tex
-/doc/tthout
