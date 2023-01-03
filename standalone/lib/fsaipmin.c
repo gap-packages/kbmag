@@ -1,7 +1,7 @@
 /* file fsaipmin.c - 12. 12. 94.
  * This file contains the routines fsa_ip_minimize and fsa_ip_labeled_minimize.
  * They are based on the minimization functions in fsa.c, but instead of
- * holding the whole of the transtion table of the fsa to be minimized in
+ * holding the whole of the transition table of the fsa to be minimized in
  * store, they read it in from file with each iteration.
  * The reading part is as in "compressed_transitions_read".
  */

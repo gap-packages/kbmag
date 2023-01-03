@@ -1,5 +1,5 @@
 /* diffredwl.c  15/1/95
- * 6/8/98 large-scale re-organisation to elimiante externals.
+ * 6/8/98 large-scale re-organisation to eliminate externals.
  * 23/9/96 - adapted for V2 of kbmag.
  * Modification of diffreduce.c to cope with wtlex ordering.
  * Copied from old automata package and edited.

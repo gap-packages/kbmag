@@ -36,5 +36,5 @@ int kbm_gen_no[65536]; /* changed 9/1/98 */
 boolean kbm_large = FALSE;
 boolean kbm_huge = FALSE;
 /* Means the problem is believed to be large/huge in some sense - the
- * intial size of the hash-tables are made larger.
+ * initial size of the hash-tables are made larger.
  */

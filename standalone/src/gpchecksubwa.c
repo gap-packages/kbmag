@@ -614,7 +614,7 @@ void read_subgpgens(void)
   } while (delim != ']');
 }
 
-/* *existsptr and subwa are unequal. We nedd to find some words accepted
+/* *existsptr and subwa are unequal. We need to find some words accepted
  * by subwa but not by *existsptr.
  * The function words_and_not will do this.
  * We then output the words, along with the original subgroup generators,

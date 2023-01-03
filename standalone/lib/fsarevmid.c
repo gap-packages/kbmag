@@ -8,7 +8,7 @@
  * singleton accept states of the input fsa as initial states.
  *
  * This file contains the routine fsa_reverse.
- * It  takes a determinstic fsa F as input.
+ * It  takes a deterministic fsa F as input.
  * fsa_reverse returns an fsa that accepts a word a_1a_2...a_n  if and only
  * if F accepts a_n...a_2a_1.
  */
@@ -46,7 +46,7 @@ static fsa *fsa_miexists2_int(fsa *fsaptr, storage_type op_table_type,
  * backwards.
  * If subsets is true, then the returned fsa will have state-set of type
  * "list of integers", where the list represents the subset of the state-set
- * of *fsaptr that correponds to the state of the returned fsa.
+ * of *fsaptr that corresponds to the state of the returned fsa.
  */
 fsa *fsa_reverse(fsa *fsaptr, storage_type op_table_type, boolean destroy,
                  boolean subsets, char *tempfilename)

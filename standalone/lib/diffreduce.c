@@ -1,5 +1,5 @@
 /* diffreduce.c  1/11/95
- * 6/8/98 large-scale re-organisation to elimiante externals.
+ * 6/8/98 large-scale re-organisation to eliminate externals.
  * 9/1/98 type of generator changed from char to `gen'
  * Copied from old automata package and edited.
  * This file contains the procedure for reducing a word using a

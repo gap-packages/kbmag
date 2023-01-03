@@ -99,7 +99,7 @@ void fsa_init(fsa *fsaptr)
   fsaptr->table->comment_state_numbers = FALSE;
 }
 
-/* Intialize the table_data_ptr field of fsaptr->table,
+/* Initialize the table_data_ptr field of fsaptr->table,
  * for maxstates states, with table-type dense.
  * ne is the size of the alphabet.
  */
@@ -1206,7 +1206,7 @@ int fsa_labeled_minimize(fsa *fsaptr)
       hash_clear(&ht);
   } while (ns_new > ns_final || num_iterations == 1);
   /* We must have at least two iterations, because the first time through
-   * we have the lables rather than the states in the transition table.
+   * we have the labels rather than the states in the transition table.
    */
 
   /* At this stage, either ns_final = ns_new, or the fsa has empty accepted
@@ -1467,7 +1467,7 @@ int fsa_count(fsa *fsaptr)
  * If putcomma is true, then the first word to be printed is preceded by comma
  * and carriage-return (to handle the case when this function is called
  * repeatedly).
- * If stateno is 1, then the number of the accept state reched by an
+ * If stateno is 1, then the number of the accept state reached by an
  * accepted word is printed.
  * If stateno is 2, then fsaptr->states should have type 'labeled', and
  * the labels of the accept-states reached by the words are printed.

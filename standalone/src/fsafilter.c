@@ -18,7 +18,7 @@
  *              value of table->printing_format, in the fsa.
  * -v           verbose
  * -silent      no diagnostics
- * -csn		comment-state-numbers. Follow each state in the transtion
+ * -csn		comment-state-numbers. Follow each state in the transition
  *		table by a comment giving the number of the state, to aid
  *		readability of the table.
  */

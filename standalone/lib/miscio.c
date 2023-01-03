@@ -16,7 +16,7 @@
  * This file contains some miscellaneous input and output functions that
  * are used by both automata and string-rewriting programs.
  * Also we recode the standard function strlen as stringlen to avoid
- * some type incompatabilities resulting in warning messages on solaris!
+ * some type incompatibilities resulting in warning messages on solaris!
  */
 
 #include <stdio.h>

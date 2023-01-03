@@ -59,7 +59,7 @@ an automatic structure for G.
 I can show using kbmag that H is coset automatic with respect to the
 subgroup K. This means that we can choose T (in fact we take the
 shortlex least representatives of the cosets of K in H as members of T)
-to be a regular langauge, such that the set of pairs (t_1,t_2) in T x T
+to be a regular language, such that the set of pairs (t_1,t_2) in T x T
 with the property that Kt_1x = Kt_2, for some (monoid) generator x of H
 is also a regular language.
 
@@ -153,7 +153,7 @@ my  attempts to replace B-S relations and found a completely new
 approach to the problem (the paper has been submitted to a journal, you
 can download it from 
 http://www.math.unl.edu/~msapir, it is big, about 100 pages). Thus this
-group turned out not to be very usefull. But the fact that you proved
+group turned out not to be very useful. But the fact that you proved
 that it is automatic saved me some time: insteads of proving that the
 Dehn function of this group is polynomial, I could concentrate on "my
 property". This is the history of this group. 

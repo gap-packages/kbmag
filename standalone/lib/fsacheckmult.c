@@ -105,7 +105,7 @@ static int fsa_checkmult_short(fsa *multptr, reduction_equation *eqnptr,
     return -1;
   }
 
-  /* We are not actually going to costruct a new fsa - we just go through the
+  /* We are not actually going to construct a new fsa - we just go through the
    * motions of constructing the hash-table that represents its states.
    */
   ne = multptr->alphabet->size;
@@ -391,7 +391,7 @@ static int fsa_checkmult_int(fsa *multptr, reduction_equation *eqnptr,
     return -1;
   }
 
-  /* We are not actually going to costruct a new fsa - we just go through the
+  /* We are not actually going to construct a new fsa - we just go through the
    * motions of constructing the hash-table that represents its states.
    */
   ne = multptr->alphabet->size;

@@ -33,7 +33,7 @@ User-level functions have also been provided to carry out this
 conversion explicitly if required. 
 <P/>
 The user should also be aware of a peculiarity in the way that
-rewriting sytems are displayed, which is really a hangover from
+rewriting systems are displayed, which is really a hangover from
 the &GAP;3 interface. They are displayed nicely as a record, which gives
 a useful description of the system, but it does not correspond at
 all to the way that they are actually stored internally!

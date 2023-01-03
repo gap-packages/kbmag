@@ -47,7 +47,7 @@ static fsa *nfa_exists_int(fsa *fsaptr, storage_type op_table_type,
  * transitions.
  * If subsets is true, then the returned fsa will have state-set of type
  * "list of integers", where the list represents the subset of the state-set
- * of *fsaptr that correponds to the state of the returned fsa.
+ * of *fsaptr that corresponds to the state of the returned fsa.
  */
 fsa *nfa_determinize(fsa *fsaptr, storage_type op_table_type, boolean eps_trans,
                      boolean destroy, boolean subsets, char *tempfilename)
@@ -639,7 +639,7 @@ static fsa *nfa_determinize_int(fsa *fsaptr, storage_type op_table_type,
   return det;
 }
 
-/* Version of nfa_determinize for transtition tables stored compactly.
+/* Version of nfa_determinize for transition tables stored compactly.
  * FOR THE MOMENT WE ASSUME NO EPSILON TRANSITIONS
  * The fsa *fsaptr must be an fsa with compact table.
  * The returned fsa accepts the same language but is deterministic.

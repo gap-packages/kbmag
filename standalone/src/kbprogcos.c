@@ -47,7 +47,7 @@ Introduce array subwordsG of words in G-generators for subgroup gens.
 
 31/1/95 - bug corrected due to building full table when one lhs is a prefix
 of another. Patch by doing repeated tidyings before building full table.
-Also introduced variable lostinfo - this is set true if an equation is dicarded
+Also introduced variable lostinfo - this is set true if an equation is discarded
 because it is too long during tidying - when this happens, the monoid may have
 changed.
 Warning message printed at end when this occurs.
@@ -58,7 +58,7 @@ Warning message printed at end when this occurs.
  option -mrl n  to set rws.maxreducelen
  file rwsio.c reorganised and split into rwsio.c and rwsio2.c.
 
-13/1/95 introduced exit code 0 for "successful" completeion.
+13/1/95 introduced exit code 0 for "successful" completion.
 
 24/12/94 introduced variable current.maxstates -
 unlike rws.maxstates, this may be increased (doubled) if necessary.
@@ -172,7 +172,7 @@ OPTIONS
     -wd    After each tidying, calculate word-differences and re-order
     equations so that those which result in the word-difference
     fsa changing get higher priority in the Knuth-Bendix.
-    On completeion, the word-difference machines are output
+    On completion, the word-difference machines are output
     instead of the updated rewriting system.
     -vwd        (verbose word-differences) out put new word-differences
                 as they are found, together with the equation they come from.

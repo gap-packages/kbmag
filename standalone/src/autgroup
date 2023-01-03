@@ -8,7 +8,7 @@ if test -f ${DIR}kbprog
                 # found the necessary programs, so do nothing.
                 :
         else
-                # Cant find the programs used in automata so give a warning.
+                # Can't find the programs used in automata so give a warning.
                 echo Warning. Running ${DIR}automata
                 echo ${DIR}kbprog not found
                 echo Using versions in path.

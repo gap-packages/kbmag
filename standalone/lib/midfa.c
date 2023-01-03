@@ -929,7 +929,7 @@ int midfa_labeled_minimize(fsa *fsaptr)
       hash_clear(&ht);
   } while (ns_new > ns_final || num_iterations == 1);
   /* We must have at least two iterations, because the first time through
-   * we have the lables rather than the states in the transition table.
+   * we have the labels rather than the states in the transition table.
    */
 
   /* At this stage, either ns_final = ns_new, or the fsa has empty accepted

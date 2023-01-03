@@ -51,7 +51,7 @@ end;
 
 #############################################################################
 ##
-#F  IsInitializedFSA(<x>) . . . . . . . test whether x is an intialized fsa
+#F  IsInitializedFSA(<x>) . . . . . . . test whether x is an initialized fsa
 ##
 ##  Public function.
 IsInitializedFSA := function ( x )
@@ -536,7 +536,7 @@ end;
 #F  WordToStringSR( <word>, <gens>, <names> )
 ##                                     . . . . . converts <word> to a string
 ##
-## <word> is a word in genrators <gens>.
+## <word> is a word in generators <gens>.
 ## <names> is a list of printing strings for <gens>.
 ## The word is converted into a string representing the word for printing.
 WordToStringSR := function ( word, gens, names )
@@ -606,7 +606,7 @@ WriteSetRecordSR := function ( arg )
     sr := arg[1];
     if (sr.type="identifiers" or sr.type="words" or sr.type="list of words")
          and not IsBound(sr.printingStrings) then
-    ## To find out what the printing strings should be, the ony way is to
+    ## To find out what the printing strings should be, the only way is to
     ## output the identifiers as strings to a temporary file and read back in.
        tempfn:=TmpName();
        if sr.type="identifiers" then
@@ -3311,7 +3311,7 @@ end;
 #############################################################################
 ##
 #F  SwapCoordsFSA(<fsa>)
-##     . . . call external program to swap co-ordinates of fsa <fsa>
+##     . . . call external program to swap coordinates of fsa <fsa>
 ##
 ## Here <fsa> must be a 2-variable FSA.
 ## An 2-variable FSA is returned in which (w1,w2) is accepted iff 

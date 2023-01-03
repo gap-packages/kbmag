@@ -73,7 +73,7 @@ corresponds to the final set of initial states that occur in the midfa version
 of the generalised multiplier.) It is hoped that it
 will eventually be possible to compute such a presentation on the set
 generators of $H$ originally specified by the user in the file defining $H$.
-The presentation will be highly redundant, with multiple occurences of each
+The presentation will be highly redundant, with multiple occurrences of each
 relator and its cyclic conjugates. It is therefore output as a {\GAP}
 definition of a finitely presented group, so that it can read in by {\GAP}
 and simplified if required.
@@ -97,7 +97,7 @@ rewriting-system for $G$, in the format described in Chapter "Introduction".
 Since $G$ is a group $G$, all monoid generators must have
 inverses listed explicitly. The second input file should contain a record
 defining a subgroup $H$ of $G$ in the format described in Chapter
-"Subgroup and Coset Files", andthe 'subGeneratorNames' field must be present.
+"Subgroup and Coset Files", and the 'subGeneratorNames' field must be present.
 Output is to the files <groupname>'.'<cosname>'.midiff1',
 <groupname>'.'<cosname>'.midiff2' (midfa word-difference machines),
 <groupname>'.'<cosname>'.wa' (coset word-acceptor),
@@ -191,7 +191,7 @@ As with 'kbprog -wd', this program will not usually complete with a
 confluent set of equations, but will continue indefinitely, and so halting
 criteria have to be chosen. This can only be usefully done if the sets of
 word-differences and initial states arising from the equations are both
-finite. This is known theoreticaly to be the case for quasiconvex subgroups
+finite. This is known theoretically to be the case for quasiconvex subgroups
 of word-hyperbolic groups, but fortunately it appears to be true also
 for many other subgroups of short-lex automatic groups.
 The general idea is to wait until these sets appears to have become constant,
@@ -203,7 +203,7 @@ halting criteria with command-line options, are essentially the same as for
 The other options are also the same as there.
 
 *Exit status*\\
-The exit staus is 0 if 'kbprog' completes with a confluent set of equations,
+The exit status is 0 if 'kbprog' completes with a confluent set of equations,
 or if it halts because the condition in the '-hf <halting\_factor>' option
 has been fulfilled,
 2 if it halts and outputs because some other limit has
@@ -227,7 +227,7 @@ Input is from <groupname>.<cosname>'.midiff2' and, if
 the '-diff1' option is called, also from <groupname>.<cosname>'.midiff1'. The
 coset word-acceptor is output to <groupname>.<cosname>'.wa' and the general
 coset multiplier to <groupname>.<cosname>'.migm' and
-<groupname>.<cosname>'.gm' in its midfa and determinstic versions,
+<groupname>.<cosname>'.gm' in its midfa and deterministic versions,
 respectively.  Certain correctness tests are carried out on the
 constructed automata. If they fail, then new word-differences will be
 found and <groupname>.<cosname>'.midiff2' (and possibly also
@@ -245,7 +245,7 @@ options ('-diff2' is the default) is essentially the same as
 for 'gpmakefsa' without the '-cos' option; see Section "gpmakefsa".
 The correctness check on the multiplier is also similar. The
 midfa version of the multiplier is constructed first, and the
-determinstic version is constructed from this, and used for the
+deterministic version is constructed from this, and used for the
 correctness test. Thus both versions need to be constructed for
 each call of the correctness test.
 All other options are as for 'gpmakefsa', but note that the
@@ -296,7 +296,7 @@ The labels for the initial states of these multipliers correspond
 precisely to the generators of $H$ on which a presentation of $H$
 can be calculated by the program 'gpsubpres' (see below). They are
 described as words in the $G$-generators in the file
-<groupname>.<cosname>.'migm', but in the individual mutliplier
+<groupname>.<cosname>.'migm', but in the individual multiplier
 files, they are given new and distinct names of the form
 <prefix>'1', <prefix>'2', etc.
 The string <prefix> can be set with the '-pref' option, the

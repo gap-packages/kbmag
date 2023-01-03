@@ -554,7 +554,7 @@ void srec_read(FILE *rfile, srec *srptr, int maxsize)
       else if (strcmp(kbm_buffer, "identifiers") == 0)
         srptr->type = IDENTIFIERS;
       else if (strcmp(kbm_buffer, "group generators") == 0) {
-        /* put in for compatability with a variant (by Paul Sanders).
+        /* put in for compatibility with a variant (by Paul Sanders).
          * Here the "names" field becomes "generatorOrder", and the
          * format field is omitted, with dense format assumed.
          */

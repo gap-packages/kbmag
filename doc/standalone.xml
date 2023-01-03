@@ -506,7 +506,7 @@ complement of that of &fsa;.
      Arg = "fsa" /> 
 <Description>
 Returns a &fsa; whose language is <M>L^{*}</M>, where <M>L</M> 
-is the langauge of &fsa;.
+is the language of &fsa;.
 </Description>
 </ManSection>
 

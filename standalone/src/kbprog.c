@@ -2,7 +2,7 @@
 
 2/6/98  - large-scale re-organisation. Abolish almost all global variables
           and make them components of the rws structure.
-17/1/98 - changes resulting from intorduction of `gen' type in palce of
+17/1/98 - changes resulting from introduction of `gen' type in place of
           char for generators.
 
 8/8/96  - -ve option to print all equations as found to stdout.
@@ -28,8 +28,8 @@
 
 31/1/95 - bug corrected due to building full table when one lhs is a prefix
 of another. Patch by doing repeated tidyings before building full table.
-Also introduced variable lostinfo - this is set true if an equation is dicarded
-because it is too long during tidying - when this haapens, the monoid may have
+Also introduced variable lostinfo - this is set true if an equation is discarded
+because it is too long during tidying - when this happens, the monoid may have
 changed.
 Warning message printed at end when this occurs.
 
@@ -39,7 +39,7 @@ Warning message printed at end when this occurs.
  option -mrl n  to set maxreducelen
  file rwsio.c reorganised and split into rwsio.c and rwsio2.c.
 
-13/1/95 introduced exit code 0 for "successful" completeion.
+13/1/95 introduced exit code 0 for "successful" completion.
 
 24/12/94 introduced variable current_maxstates -
 unlike maxstates, this may be increased (doubled) if necessary.
@@ -152,8 +152,8 @@ OPTIONS
     efficient than the other in particular examples.
 
     -wtlex  Weighted short-lexicographical ordering
-    A generalisation of shortlex. All genertors have a weight
-    (specified in the input file), and the weightsof the generators
+    A generalisation of shortlex. All generators have a weight
+    (specified in the input file), and the weights of the generators
     in a word are added up to determine the "length" of the word.
     So shortlex is the special case where all weights are 1.
 
@@ -189,7 +189,7 @@ OPTIONS
     -wd    After each tidying, calculate word-differences and re-order
     equations so that those which result in the word-difference
     fsa changing get higher priority in the Knuth-Bendix.
-    On completeion, the word-difference machines are output
+    On completion, the word-difference machines are output
     instead of the updated rewriting system.
     -vwd        (verbose word-differences) out put new word-differences
                 as they are found, together with the equation they come from.
@@ -204,7 +204,7 @@ OPTIONS
 
 EXIT STATUS:
   0 if completion is successful, in the sense that either a confluent set
-  is produced, or the halting-factor conditions are satsified when word-
+  is produced, or the halting-factor conditions are satisfied when word-
   differences are being computed. This is for use in the "automata" shellscript.
   1 for badusage_kbprog, failure of malloc, etc.,
   2 if there is output, but completion is not successful in the sense above.

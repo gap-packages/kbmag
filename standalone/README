@@ -5,7 +5,7 @@ KBMAG stands for Knuth-Bendix on Monoids and Automatic Groups.
 The package has three principal applications:
 (i)  A standalone Knuth-Bendix program for finitely presented monoids;
 (ii) A package for calculating the automatic structure of a short-lex
-     automatic group, which supercedes the existing Warwick "Automata" package;
+     automatic group, which supersedes the existing Warwick "Automata" package;
 (iii) A few programs for manipulating finite state automata.
      (This now includes a program, written by Laurent Bartholdi, for
       computing the growth function of a finite state automaton.)
@@ -21,7 +21,7 @@ and the new features in Version 2.*,
 
 All programs are in standard 'C', but there are three Bourne shell scripts
 (which are not completely essential for using the package).
-It is designed to run on any Unix sytem.
+It is designed to run on any Unix system.
  
 NEW in Version 2.3: It is now possible to use kbmag with more than the
 previous default number of 127 generators. To use up to 65535 generators,

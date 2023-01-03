@@ -666,7 +666,7 @@ AutCosets := function ( arg )
   if subpres then
   # read subgroup presentation
     if READ(Concatenation(_KBTmpFileName,".sub.pres")) then
-      #Presentation is very redundant, so simplfy.
+      #Presentation is very redundant, so simplify.
       rws!.subgroups[ns]!.presentation :=
                                    SimplifiedFpGroup(_xg/_x_relators);
     fi;
@@ -708,7 +708,7 @@ PresentationOfSubgroupRWS := function (  rws, subrws )
  "Second argument of RWSOfSubgroup is not a subRWS of first.");
   fi;
   if not IsBound(rws!.subgroups[ns]!.presentation) then
-    Error("RWS or subRWS unavaliable. You must call AutCosets first.");
+    Error("RWS or subRWS unavailable. You must call AutCosets first.");
   fi;
   return rws!.subgroups[ns]!.presentation;
 end;
@@ -817,7 +817,7 @@ ReduceWordCosetsWD := function ( wd, w, subgpword )
     #        substitution starts at the beginning of the word and both strings
     #        are equal up to that point.
     # We put in some immediate vertices at level 1 for the non-identity
-    # inital states of the word-difference machine.
+    # initial states of the word-difference machine.
     gct := 0;
     for i in [2..Length(wd.initial)] do
       gct := gct+1;

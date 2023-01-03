@@ -5,7 +5,7 @@
  * 2/10/95 changed state-label type for genmult fsa from identifiers to
  * list of words in the normal case - this makes it consistent with the
  * cosets case, and also allows us to assign more than one generator to
- * a label if soem of the generators happen to be equal.
+ * a label if some of the generators happen to be equal.
  * Also abolished the parameter idlabel, which is always true.
  *
  * This file contains the routine fsa_triples, which is used to construct the
@@ -424,7 +424,7 @@ static fsa *fsa_triples_short(fsa *waptr, fsa *diffptr,
   /* All states whose label has length <=1 will be classed as accept states,
    * since they are accept-states for some generator.
    * We need to mark them specifically in the "mi" case, since the information
-   * is needed by the minimsation function midfa_labeled_minimize".
+   * is needed by the minimisation function midfa_labeled_minimize".
    */
   tmalloc(triples->is_accepting, boolean, ns + 1);
   for (i = 1; i <= ns; i++)
@@ -846,7 +846,7 @@ static fsa *fsa_triples_int(fsa *waptr, fsa *diffptr,
   /* All states whose label has length <=1 will be classed as accept states,
    * since they are accept-states for some generator.
    * We need to mark them specifically in the "mi" case, since the information
-   * is needed by the minimsation function midfa_labeled_minimize".
+   * is needed by the minimisation function midfa_labeled_minimize".
    */
   tmalloc(triples->is_accepting, boolean, ns + 1);
   for (i = 1; i <= ns; i++)

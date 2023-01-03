@@ -526,7 +526,7 @@ static int fsa_checkgeowa_short(fsa *geowaptr, fsa *diffptr,
   /* This is used to store the defining transition for the states.
    * If definition[i] = v, then state i is defined by the transition from
    * state v.state, with generator (v.g1,v.g2) -
-   * but we don't need to rememeber g2.
+   * but we don't need to remember g2.
    * State 1 does not have a definition.
    */
 
@@ -709,7 +709,7 @@ static int fsa_checkgeowa_int(fsa *geowaptr, fsa *diffptr,
   /* This is used to store the defining transition for the states.
    * If definition[i] = v, then state i is defined by the transition from
    * state v.state, with generator (v.g1,v.g2) -
-   * but we don't need to rememeber g2.
+   * but we don't need to remember g2.
    * State 1 does not have a definition.
    */
 

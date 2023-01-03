@@ -913,7 +913,7 @@ static fsa *fsa_mitriples_int(fsa *waptr, fsa *diffptr,
   /* All states whose label has length <=1 will be classed as accept states,
    * since they are accept-states for some generator.
    * We need to mark them specifically in the "mi" case, since the information
-   * is needed by the minimsation function midfa_labeled_minimize".
+   * is needed by the minimisation function midfa_labeled_minimize".
    */
   tmalloc(mitriples->is_accepting, boolean, ns + 1);
   for (i = 1; i <= ns; i++)

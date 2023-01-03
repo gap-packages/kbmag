@@ -14,7 +14,7 @@
  * *fsaptr  is the word-difference machine.
  * The returned fsa accepts a word w_1 iff  w_1 contains no subword  x_1 such
  * that (x_1,x_2) is accepted by *fsaptr using initial state identity
- * only or using all intial states where x_1 is a prefix of w_1,
+ * only or using all initial states where x_1 is a prefix of w_1,
  * and w_2 < w_1 in the shortlex ordering,
  * for some word w_2 (with the usual padding conventions).
  * It is based on the function fsa_exists.

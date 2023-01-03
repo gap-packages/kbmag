@@ -292,7 +292,7 @@ int words_and_not(fsa *fsaptr1, fsa *fsaptr2, gen **words, int maxwords)
   } * definition, *newdef;
   /* This is used to store the defining transition for the states of the new
    * fsa. If definition[i] = v, then state i is defined by the transition from
-   * state v.state, with forst generator v.g (the second generator (from
+   * state v.state, with first generator v.g (the second generator (from
    * *fsaptr2) does not need to be remembered). State 1 does not have a
    * definition.
    */

@@ -105,7 +105,7 @@ fsa *fsa_minred(fsa *waptr, storage_type op_table_type, boolean destroy,
    * by *waptr but whose maximal suffix is.
    * Thus, on the lhs, transitions to 0 in *waptr will go to a new accept-
    * state nsi1 instead (with no transitions from nsi1) whereas on the rhs
-   * the first transition will be back to the intiial state.
+   * the first transition will be back to the initial state.
    * The initial state itself is non-accept.
    */
   while (++cstate <= ht.num_recs) {

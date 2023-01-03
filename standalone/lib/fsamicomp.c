@@ -1025,7 +1025,7 @@ int fsa_mimakemult(fsa *migmptr, int g, char *prefix)
  * This merely involves locating the accept states.
  * This procedure alters its arguments and does not return anything.
  * prefix is the prefix of the names of the subgroup generators to be used -
- * For a particular group, this MUST be the same throughtout for all calls of
+ * For a particular group, this MUST be the same throughout for all calls of
  * fsa_migm2, fsa_mimakemult and fsa_mimakemult2.
  */
 int fsa_mimakemult2(fsa *migm2ptr, int g1, int g2, char *prefix)
