@@ -1,5 +1,8 @@
 This file describes changes in the kbmag package.
 
+1.5.11 (2023-01-03)
+  - Enhance the `configure` script to accept `--with-gaproot=PATH`
+
 1.5.10 (2022-09-23)
   - janitorial changes
 
