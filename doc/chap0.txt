@@ -6,10 +6,10 @@
                  [1X Knuth-Bendix on Monoids and Automatic Groups [101X
   
   
-                                     1.5.10
+                                     1.5.11
   
   
-                               23 September 2022
+                                 3 January 2023
   
   
                                    Derek Holt

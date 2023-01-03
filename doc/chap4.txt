@@ -344,7 +344,7 @@
   
   [33X[1;0Y[29X[2XStarFSA[102X( [3Xfsa[103X ) [32X function[133X
   
-  [33X[0;0YReturns a [22Xfsa[122X whose language is [22XL^*[122X, where [22XL[122X is the langauge of [22Xfsa[122X.[133X
+  [33X[0;0YReturns a [22Xfsa[122X whose language is [22XL^*[122X, where [22XL[122X is the language of [22Xfsa[122X.[133X
   
   [1X4.2-5 ReverseFSA[101X
   
