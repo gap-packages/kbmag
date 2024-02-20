@@ -1,5 +1,6 @@
 name: kbmag
-version: 1.5.11
+version: "1.5.11"
+license: "GPL-2.0-or-later"
 date: 2023-01-03
 description: |
     Knuth-Bendix on Monoids and Automatic Groups
@@ -28,3 +29,31 @@ abstract: |
 status: accepted
 doc-html: doc/chap0_mj.html
 doc-pdf: doc/manual.pdf
+keywords: |
+    Knuth-Bendix, Automatic Groups.
+citeas: |
+    <p class='BibEntry'>
+    [<span class='BibKey'>HT23</span>]   <b class='BibAuthor'>Holt, D. and GAP Team, T.</b>,
+     <i class='BibTitle'>kbmag, Knuth-Bendix on Monoids and Automatic Groups,
+             Version 1.5.11</i>
+     (<span class='BibYear'>2023</span>)<br />
+    (<span class='BibNote'>Refereed GAP package</span>),
+    <span class='BibHowpublished'><a href="https://gap-packages.github.io/kbmag">https://gap-packages.github.io/kbmag</a></span>.
+    </p>
+    
+
+bibtex: |
+    @misc{ kbmag1.5.11,
+      author =           {Holt, D. and GAP Team, T.},
+      title =            {{kbmag}, Knuth-Bendix on Monoids and Automatic Groups,
+                          {V}ersion 1.5.11},
+      month =            {Jan},
+      year =             {2023},
+      note =             {Refereed GAP package},
+      howpublished =     {\href           {https://gap-packages.github.io/kbmag}
+                          {\texttt{https://gap-packages.github.io/}\discretionary
+                          {}{}{}\texttt{kbmag}}},
+      keywords =         {Knuth-Bendix; Automatic Groups},
+      printedkey =       {HT23}
+    }
+
