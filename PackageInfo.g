@@ -76,14 +76,10 @@ AvailabilityTest := function()
     path:=DirectoriesPackagePrograms("kbmag");
     file:=Filename(path,"kbprog");
     if file=fail then
-      Info(InfoWarning,1,
-     "Package ``kbmag'': The program `kbprog' (for example) is not compiled");
-      Info(InfoWarning,1,
-        "`kbmag' is thus unavailable");
-      Info(InfoWarning,1,
-        "See the installation instructions; ",
-        "type: ?Installing the package");
-      return fail;
+      LogPackageLoadingMessage(PACKAGE_WARNING,
+                               ["The program `kbprog' (for example) is not compiled, ",
+                                "the package cannot be loaded."]);
+      return false;
     fi;
     return true;
   end,
