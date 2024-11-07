@@ -60,7 +60,6 @@ PackageDoc := rec(
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Knuth-Bendix on Monoids and Automatic Groups",
-  Autoload  := true
 ),
 
 
@@ -89,7 +88,6 @@ AvailabilityTest := function()
     return true;
   end,
 
-Autoload := false,
 
 Keywords := [
   "Knuth-Bendix",
