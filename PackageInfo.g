@@ -67,7 +67,7 @@ Dependencies := rec(
   GAP := ">=4.7",
   NeededOtherPackages := [ ],
   SuggestedOtherPackages := [ ],
-  ExternalConditions := ["Unix only"]
+  ExternalConditions := [ ]
 ),
 
 AvailabilityTest := function()
