@@ -22,7 +22,7 @@ env:
 jobs:
   # The CI test job
   test:
-    name: ${{ matrix.gap-branch }} ${{ matrix.ABI }}
+    name: ${{ matrix.gap-branch }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -36,17 +36,12 @@ jobs:
           - stable-4.11
           - stable-4.10
           - stable-4.9
-        ABI: ['']
-        include:
-          - gap-branch: master
-            ABI: 32
 
     steps:
       - uses: actions/checkout@v6
       - uses: gap-actions/setup-gap@v2
         with:
           GAPBRANCH: ${{ matrix.gap-branch }}
-          ABI: ${{ matrix.ABI }}
       - uses: gap-actions/build-pkg@v1
       - uses: gap-actions/run-pkg-tests@v3
       - uses: gap-actions/run-pkg-tests@v3
