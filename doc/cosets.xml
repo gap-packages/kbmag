@@ -316,8 +316,7 @@ Here are two examples to illustrate the operations described above.
 <Subsection Label="subsec-example1-cosets">
 <Heading>Example 1</Heading>
 
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> F := FreeGroup( "a", "b", "c" );;
 gap> a := F.1;;  b := F.2;;  c := F.3;;
 gap> G := F/[b^3,c^3,(b*c)^4,(b*c^-1)^5,a^-1*b^-1*c*b*c*b^-1*c*b*c^-1];
@@ -361,8 +360,7 @@ gap> EnumerateReducedCosetRepresentatives( R, S, 0, 4 );
 gap> SS := RewritingSystemOfSubgroupOfKBMAGRewritingSystem( R, S );;
 gap> Size( SS );
 60
-]]>
-</Example>
+]]></Example>
 </Subsection>
 
 
@@ -372,8 +370,7 @@ gap> Size( SS );
 We find a free subgroup of the Fibonacci group <M>F(2,8)</M>. 
 This example may take about <M>20</M> minutes to run on a typical WorkStation.
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> F := FreeGroup( 8 );;
 gap> a := F.1;  b := F.2;  c := F.3;  d := F.4; 
 gap> e := F.5;  f := F.6;  g := F.7;  h := F.8;
@@ -388,8 +385,7 @@ gap> RelatorsOfFpGroup( P );
 [  ]
 gap> Index( R, S );                 
 infinity
-]]>
-</Example>
+]]></Example>
 
 </Subsection>
 

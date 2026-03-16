@@ -40,13 +40,11 @@ the other rewriting system functions. For example, there is the type
 and <C>names</C> are necessary.
 For example: 
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> M := FreeMonoid( 3 );;
 gap> alph := rec( type := "identifiers", size := 3,
 >                 format := "dense", names := [M.1,M.2,M.3] );;
-]]>
-</Example>
+]]></Example>
 defines a valid alphabet for an &fsa;.
 The members of the alphabet are referred to as <C>letters</C>, and can be
 represented either by a positive integer or by their name (usually
@@ -65,12 +63,10 @@ In the latter case, the user must immediately call
 <Ref Func="InitializeFSA"/> on the record that has been read in. 
 For example, running &GAP; from the package directory:
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> Read( "standalone/fsa_data/fsa_2" );
 gap> InitializeFSA( fsa_2 );
-]]>
-</Example>
+]]></Example>
 
 <ManSection>
    <Func Name="IsInitializedFSA" 

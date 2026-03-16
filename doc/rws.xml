@@ -671,8 +671,7 @@ Here are five examples to illustrate the operations described above.
 <Index Key="alternating group A4 example"></Index> 
 We start with a easy example - the alternating group <M>A_4</M>.
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> F := FreeGroup( "a", "b" );;
 gap> a := F.1;;  b := F.2;;
 gap> G := F/[a^2, b^3, (a*b)^3];;
@@ -687,13 +686,11 @@ rec(
      [_g1*_g2*_g1,_g3*_g1*_g3]
    ]
 )
-]]>
-</Example>
+]]></Example>
 Notice that monoid generators, printed as <C>_g1, _g2, _g3</C>, are used
 internally. These correspond to the group generators <M>a, b, b^{-1}</M>.
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> KnuthBendix( R );
 true
 gap> R;
@@ -717,20 +714,17 @@ rec(
      [_g1*_g3*_g1*_g2,_g2*_g1*_g3]
    ]
 )
-]]>
-</Example>
+]]></Example>
 The <E>equations</E> field of <M>R</M> is now a complete system 
 of rewriting rules. 
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> Size( R );
 12
 gap> EnumerateReducedWords( R, 0, 12 );
 [ <identity ...>, a, a*b, a*b*a, a*b^-1, a*b^-1*a, b, b*a, b*a*b^-1, b^-1, 
   b^-1*a, b^-1*a*b ]
-]]>
-</Example>
+]]></Example>
 We have enumerated all of the elements of the group - note that they
 are returned as words in the free group <M>F</M>.
 </Subsection>
@@ -745,8 +739,7 @@ defined by a semigroup rather than a group presentation.
 Interestingly these define the same structure (although
 they would not do so for <M>F(2,r)</M> with <M>r</M> even).
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> S := FreeSemigroup( 5 );; 
 gap> a := S.1;;  b := S.2;;  c := S.3;;  d := S.4;;  e := S.5;;
 gap> Q := S/[ [a*b,c], [b*c,d], [c*d,e], [d*e,a], [e*a,b] ];
@@ -772,12 +765,10 @@ gap> Size( R );
 11
 gap> EnumerateReducedWords( R, 0, 4 );
 [ s1, s1^2, s1^2*s4, s1*s3, s1*s4, s2, s2^2, s2*s5, s3, s4, s5 ]
-]]>
-</Example>
+]]></Example>
 Let's do the same thing using the &recursive; ordering.
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> SetOrderingOfKBMAGRewritingSystem( R, "recursive" );
 gap> KnuthBendix( R );
 true
@@ -785,8 +776,7 @@ gap> Size( R );
 11
 gap> EnumerateReducedWords( R, 0, 11 );
 [ s1, s1^2, s1^3, s1^4, s1^5, s1^6, s1^7, s1^8, s1^9, s1^10, s1^11 ]
-]]>
-</Example>
+]]></Example>
 
 </Subsection>
 
@@ -802,8 +792,7 @@ ordering, and reverse our initial order of generators. (Alternatively,
 we  could avoid this reversal, by using a &wreathprod; ordering, and
 setting the levels of the generators to be <M>6,5,4,3,2,1</M>.)
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> F := FreeGroup("x","y","z");;
 gap> x := F.1;;  y := F.2;;  z := F.3;;
 gap> G := F/[Comm(y,x)*z^-1, Comm(z,x), Comm(z,y)];;
@@ -877,8 +866,7 @@ gap> ReducedForm( R, z*y*x );
 x*y*z^2
 gap> IsReducedForm( R, x*y*z^2 );
 true
-]]>
-</Example>
+]]></Example>
 
 </Subsection>
 
@@ -916,8 +904,7 @@ Knuth-Bendix program.  Again we  use the &recursive; ordering, but  this
 time we will  be careful to  introduce the  generators  in the correct
 order in the first place!
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> F := FreeGroup( "h", "g", "f", "e", "d", "c", "b", "a" );;
 gap> h := F.1;;  g := F.2;;  f := F.3;;  e := F.4;; 
 gap> d := F.5;;  c := F.6;;  b := F.7;;  a := F.8;;
@@ -943,14 +930,12 @@ rec(
      [_g8*_g16,_g16*_g8]
    ]
 )
-]]>
-</Example>
+]]></Example>
 A little experimentation reveals that this example works  best  when
 only those equations with left and right hand sides of lengths at most
 <M>10</M> are kept.
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> SetOrderingOfKBMAGRewritingSystem( R, "recursive" );
 gap> O := OptionsRecordOfKBMAGRewritingSystem( R );
 gap> O.maxstoredlen := [10,10];;
@@ -993,13 +978,11 @@ WARNING: The monoid defined by the presentation may have changed,
 # to check!
 #I  System computed is NOT confluent.
 false
-]]>
-</Example>
+]]></Example>
 Now it is essential to re-run with the <C>maxstoredlen</C> limit removed
 to check that the system really is confluent.
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> Unbind( O.maxstoredlen );
 gap> KnuthBendix( R );
   # 101 eqns; total len: lhs, rhs = 200, 239; 15 states; 0 secs.
@@ -1010,8 +993,7 @@ gap> KnuthBendix( R );
 #I  External Knuth-Bendix program complete.
 #I  System computed is confluent.
 true
-]]>
-</Example>
+]]></Example>
 In fact, in this case, we did have a confluent set already.
 <P/>
 Inspection  of the confluent  set now  reveals it   to be  precisely a
@@ -1054,8 +1036,7 @@ successfully,  then the correctness of   the automata has been proved,
 and they can be used for correct word-reduction and enumeration in the
 group.
 <P/>
-<Example>
-<![CDATA[
+<Example><![CDATA[
 gap> F := FreeGroup( "a", "b", "c" );;
 gap> a := F.1;;  b := F.2;;  c := F.3;;
 gap> G := F/[Comm(a,Comm(a,b))*c^-1, Comm(b,Comm(b,c))*a^-1,
@@ -1109,8 +1090,7 @@ gap> Order( R, a );
 infinity
 gap> Order( R, Comm(a,b) );
 infinity
-]]>
-</Example>
+]]></Example>
 </Subsection>
 
 </Section> 
