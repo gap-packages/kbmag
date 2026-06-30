@@ -29,6 +29,7 @@ jobs:
       matrix:
         gap-version:
           - 'devel'
+          - '4.16'
           - '4.15'
           - '4.14'
           - '4.13'
