@@ -371,7 +371,7 @@ end;
 ##  An error message results if the external program aborts without outputting.
 ##  Public function.
 KBCosets := function ( arg )
-  local rws, subrws, subgens, ns, ng, nsg, callstring, filename, cosrws,
+  local rws, subrws, subgens, ns, ng, nsg, args, status, filename, cosrws,
         M, subfreegp, is, nst, sr, nsgg, i, j, mnames, gf, eq, eqns,
         gtom, igtom, fam;
 
@@ -428,63 +428,49 @@ KBCosets := function ( arg )
   cosrws!.options := rec();
   
   WriteSubgroupRWS(rws,subrws,_KBTmpFileName);
-  callstring := Filename(_KBExtDir,"makecosfile");
+  args := [];
   if subgens then
-     callstring := Concatenation(callstring," -sg ");
+     Add(args,"-sg");
   fi;
-  callstring := Concatenation(callstring," ",_KBTmpFileName," sub");
-  Info(InfoRWS,3,"  ",callstring);
-  Exec(callstring);
+  Append(args,[_KBTmpFileName,"sub"]);
+  _KBExecChecked(InfoRWS,"makecosfile",args);
 
-  callstring :=  Filename(_KBExtDir,"kbprogcos");
-  callstring := Concatenation(callstring," ");
   #This time optional parameters will be added in the command-line.
+  args := [];
   if IsBound(rws!.options.maxeqns) then
-    callstring := Concatenation(callstring,"-me ",
-                                  String(rws!.options.maxeqns)," ");
+    Append(args,["-me",String(rws!.options.maxeqns)]);
   fi;
   if IsBound(rws!.options.tidyint) then
-    callstring := Concatenation(callstring,"-t ",
-                                  String(rws!.options.tidyint)," ");
+    Append(args,["-t",String(rws!.options.tidyint)]);
   fi;
   if IsBound(rws!.options.confnum) then
-    callstring := Concatenation(callstring,"-cn ",
-                                  String(rws!.options.confnum)," ");
+    Append(args,["-cn",String(rws!.options.confnum)]);
   fi;
   if IsBound(rws!.options.maxstoredlen) then
-    callstring := Concatenation(callstring,"-mlr ",
-        String(rws!.options.maxstoredlen[1])," ",
-                                  String(rws!.options.maxstoredlen[2])," ");
+    Append(args,["-mlr",String(rws!.options.maxstoredlen[1]),
+                        String(rws!.options.maxstoredlen[2])]);
   fi;
   if IsBound(rws!.options.maxoverlaplen) then
-  callstring := Concatenation(callstring,"-mo ",
-                                  String(rws!.options.maxoverlaplen)," ");
+    Append(args,["-mo",String(rws!.options.maxoverlaplen)]);
   fi;
   if IsBound(rws!.options.maxreducelen) then
-  callstring := Concatenation(callstring,"-mrl ",
-                                  String(rws!.options.maxreducelen)," ");
+    Append(args,["-mrl",String(rws!.options.maxreducelen)]);
   fi;
   if IsBound(rws!.options.maxstates) then
-    callstring := Concatenation(callstring,"-ms ",
-                           String(rws!.options.maxstates)," ");
+    Append(args,["-ms",String(rws!.options.maxstates)]);
   fi;
-  if InfoLevel(InfoRWS)=0 then
-    callstring := Concatenation(callstring,"-silent ");
-  fi;
-  if InfoLevel(InfoRWS)>1 then
-    callstring := Concatenation(callstring,"-v ");
-  fi;
-  if InfoLevel(InfoRWS)>2 then
-    callstring := Concatenation(callstring,"-vv ");
-  fi;
-
-  callstring := Concatenation(callstring,_KBTmpFileName," cos");
+  if InfoLevel(InfoRWS)=0 then Add(args,"-silent"); fi;
+  if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+  if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+  Append(args,[_KBTmpFileName,"cos"]);
   Info(InfoRWS,1,"Calling external Knuth-Bendix cosets program.\n");
-  Info(InfoRWS,3,"  ",callstring);
-  Exec(callstring);
+  status := _KBExec(InfoRWS,"kbprogcos",args);
+  if status = 1 then
+    Error("The external Knuth-Bendix cosets program failed.");
+  fi;
   filename := Concatenation(_KBTmpFileName,".cos");
   UpdateRWS(cosrws,filename,true,true);
-  Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+  _KBRemoveTmpFiles(_KBTmpFileName);
   Info(InfoRWS,1,"External Knuth-Bendix cosets program complete.\n");
 
   if cosrws!.isConfluent then
@@ -592,8 +578,8 @@ end;
 ##  <diff1> is necessary on some examples - see manual for information.
 ##  Public function.
 AutCosets := function ( arg )
-  local  narg, rws, subrws, subpres, large, filestore, diff1, callstring,
-         optstring, filename, cosrws, ns, ng, nsg, i;
+  local  narg, rws, subrws, subpres, large, filestore, diff1, args,
+         filename, cosrws, ns, ng, nsg, i;
   narg := Number(arg);
   if narg<2 then
      Error("AutCosets needs at least two arguments.");
@@ -642,27 +628,21 @@ AutCosets := function ( arg )
   cosrws!.equations := [];
 
   WriteSubgroupRWS(rws,subrws,_KBTmpFileName);
-  callstring := Concatenation(Filename(_KBExtDir,"makecosfile"),"  -sg ");
-  callstring := Concatenation(callstring,_KBTmpFileName," sub");
-  Info(InfoRWS,3,"  ",callstring);
-  Exec(callstring);
+  _KBExecChecked(InfoRWS,"makecosfile",["-sg",_KBTmpFileName,"sub"]);
 
-  callstring := Filename(_KBExtDir,"autcos");
-  optstring := " ";
-  if subpres then optstring := Concatenation(optstring," -p "); fi;
-  if large then optstring := Concatenation(optstring," -l "); fi;
-  if filestore then optstring := Concatenation(optstring," -f "); fi;
-  if diff1 then optstring := Concatenation(optstring," -d "); fi;
-  if InfoLevel(InfoRWS)=0 then
-                      optstring := Concatenation(optstring," -s "); fi;
-  if InfoLevel(InfoRWS)>1 then
-                      optstring := Concatenation(optstring," -v "); fi;
-  if InfoLevel(InfoRWS)>2 then
-                      optstring := Concatenation(optstring," -vv "); fi;
-  callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+  args := [];
+  if subpres then Add(args,"-p"); fi;
+  if large then Add(args,"-l"); fi;
+  if filestore then Add(args,"-f"); fi;
+  if diff1 then Add(args,"-d"); fi;
+  if InfoLevel(InfoRWS)=0 then Add(args,"-s"); fi;
+  if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+  if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+  Add(args,_KBTmpFileName);
   Info(InfoRWS,1,"Calling external automatic cosets groups program.\n");
-  Info(InfoRWS,3,"  ",callstring);
-  Exec(callstring);
+  #A nonzero exit status just means the computation was inconclusive;
+  #the `.success' file below is what decides.
+  _KBExec(InfoRWS,"autcos",args);
   if subpres then
   # read subgroup presentation
     if READ(Concatenation(_KBTmpFileName,".sub.pres")) then
@@ -676,7 +656,7 @@ AutCosets := function ( arg )
    Info(InfoRWS,1,
       "Computation was successful - automatic coset structure computed.\n");
     UpdateRWS(cosrws,filename,false,true);
-    #Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    #_KBRemoveTmpFiles(_KBTmpFileName);
     cosrws!.KBRun := true;
     cosrws!.isAvailableNormalForm := true;
     cosrws!.isAvailableNormalForm := true;
@@ -686,7 +666,7 @@ AutCosets := function ( arg )
     cosrws!.warningOn := false;
     return true;
   else
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    _KBRemoveTmpFiles(_KBTmpFileName);
     Info(InfoRWS,1,"Computation was not successful.\n");
     return false;
   fi;

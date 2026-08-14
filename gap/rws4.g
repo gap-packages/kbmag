@@ -388,9 +388,9 @@ ReadRWS := function ( arg )
     else
       semigp := false;
     fi;
-    Exec(Concatenation(Filename(_KBExtDir,"ppgap4")," ",filename));
+    _KBExecChecked(InfoRWS,"ppgap4",[filename]);
     Read(Concatenation(filename,".gap4"));
-    Exec(Concatenation("/bin/rm -f ",filename,".gap4")); 
+    RemoveFile(Concatenation(filename,".gap4")); 
  
     rfgm := _RWS.FreeGpMonSgp;
                   #This is about to get overwritten, so we remember it! 
@@ -1510,7 +1510,7 @@ end;
 ##  An error message results if the external program aborts without outputting.
 ##  Public function.
 KBRWS := function ( rws )
-    local O, callstring;
+    local O, status;
     if not IsKBMAGRewritingSystemRep(rws)  then
        Error("First argument is not a rewriting system.");
     fi;
@@ -1527,12 +1527,13 @@ KBRWS := function ( rws )
       rws!.originalEquations := StructuralCopy(rws!.equations);
     fi;
     WriteRWS(rws,_KBTmpFileName);
-    callstring := Concatenation(Filename(_KBExtDir,"kbprog")," ",_KBTmpFileName);
     Info(InfoRWS,1,"Calling external Knuth-Bendix program.");
-    Info(InfoRWS,3,"  ", callstring);
-    Exec(callstring);
+    status := _KBExec(InfoRWS,"kbprog",[_KBTmpFileName]);
+    if status = 1 then
+      Error("The external Knuth-Bendix program failed - see its output above.");
+    fi;
     UpdateRWS(rws,_KBTmpFileName,true);
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    _KBRemoveTmpFiles(_KBTmpFileName);
     Info(InfoRWS,1,"External Knuth-Bendix program complete.");
     
     if rws!.isConfluent then
@@ -1576,7 +1577,7 @@ end;
 ##  <diff1> is necessary on some examples - see manual for information.
 ##  Public function.
 AutRWS := function ( arg )
-    local  narg, rws, large, filestore, diff1, callstring, optstring;
+    local  narg, rws, large, filestore, diff1, args;
     narg := Number(arg);
     if narg<1  or  not IsKBMAGRewritingSystemRep(arg[1]) then
        Error("First argument is not a rewriting system.");
@@ -1598,44 +1599,36 @@ AutRWS := function ( arg )
     if narg>=3 and arg[3]=true then filestore:=true; fi;
     if narg>=4 and arg[4]=true then diff1:=true; fi;
     WriteRWS(rws,_KBTmpFileName);
-    callstring := Filename(_KBExtDir,"autgroup");
-    optstring := " ";
-    if large then optstring := Concatenation(optstring," -l "); fi;
-    if filestore then optstring := Concatenation(optstring," -f "); fi;
-    if diff1 then optstring := Concatenation(optstring," -d "); fi;
-    if InfoLevel(InfoRWS)=0 then
-                      optstring := Concatenation(optstring," -s "); fi;
-    if InfoLevel(InfoRWS)>1 then
-                      optstring := Concatenation(optstring," -v "); fi;
-    if InfoLevel(InfoRWS)>2 then
-                      optstring := Concatenation(optstring," -vv "); fi;
-    callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+    args := [];
+    if large then Add(args,"-l"); fi;
+    if filestore then Add(args,"-f"); fi;
+    if diff1 then Add(args,"-d"); fi;
+    if InfoLevel(InfoRWS)=0 then Add(args,"-s"); fi;
+    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+    Add(args,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external automatic groups program.");
-    Info(InfoRWS,3,"  ", callstring);
-    Exec(callstring);
-    callstring := Filename(_KBExtDir,"gpminkb");
-    optstring := " ";
-    if InfoLevel(InfoRWS)=0 then
-                      optstring := Concatenation(optstring," -s "); fi;
-    if InfoLevel(InfoRWS)>1 then
-                      optstring := Concatenation(optstring," -v "); fi;
-    if InfoLevel(InfoRWS)>2 then
-                      optstring := Concatenation(optstring," -vv "); fi;
-    callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+    #A nonzero exit status just means the computation was inconclusive;
+    #the `.success' file below is what decides.
+    _KBExec(InfoRWS,"autgroup",args);
+    args := [];
+    if InfoLevel(InfoRWS)=0 then Add(args,"-s"); fi;
+    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+    Add(args,_KBTmpFileName);
     if READ(Concatenation(_KBTmpFileName,".success")) then
      Info(InfoRWS,1,
          "Computation was successful - automatic structure computed.");
-      Info(InfoRWS,3,"  ", callstring);
-      Exec(callstring);
+      _KBExecChecked(InfoRWS,"gpminkb",args);
       UpdateRWS(rws,_KBTmpFileName,false);
-      Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+      _KBRemoveTmpFiles(_KBTmpFileName);
       rws!.isAvailableNormalForm := true;
       rws!.isAvailableReduction := true;
       rws!.isAvailableSize := true;
       rws!.warningOn := false;
       return true;
     else
-      Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+      _KBRemoveTmpFiles(_KBTmpFileName);
       Info(InfoRWS,1,"Computation was not successful.");
       return false;
     fi;
@@ -1655,7 +1648,7 @@ end;
 ##  An error message results if the external program aborts without outputting.
 ##  Public function.
 KBWD := function ( arg )
-    local narg,rws, haltingfactor,large, callstring, optstring, mg, IdWord;
+    local narg,rws, haltingfactor,large, args, status, mg, IdWord;
     narg := Number(arg);
     if narg<1  or  not IsKBMAGRewritingSystemRep(arg[1]) then
        Error("First argument is not a rewriting system.");
@@ -1672,23 +1665,20 @@ KBWD := function ( arg )
     if narg>1 then haltingfactor := arg[2]; fi;
     if narg>2 then large := arg[3]; fi;
     WriteRWS(rws,_KBTmpFileName);
-    callstring := Concatenation(Filename(_KBExtDir,"kbprog")," -wd -hf ");
-    callstring := Concatenation(callstring,String(haltingfactor)," ");
-    optstring := "";
+    args := ["-wd","-hf",String(haltingfactor)];
     if large then 
-       optstring := Concatenation(optstring," -cn 0 -me 262144 -t 500 "); 
+       Append(args,["-cn","0","-me","262144","-t","500"]); 
     fi;
-    if InfoLevel(InfoRWS)=0 then
-                      optstring := Concatenation(optstring," -silent "); fi;
-    if InfoLevel(InfoRWS)>1 then
-                      optstring := Concatenation(optstring," -v "); fi;
-    if InfoLevel(InfoRWS)>2 then
-                      optstring := Concatenation(optstring," -vv "); fi;
-    callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+    if InfoLevel(InfoRWS)=0 then Add(args,"-silent"); fi;
+    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+    Add(args,_KBTmpFileName);
     Info(InfoRWS,1,
         "Calling external Knuth-Bendix program for word-differences.");
-    Info(InfoRWS,3,"  ", callstring);
-    Exec(callstring);
+    status := _KBExec(InfoRWS,"kbprog",args);
+    if status = 1 then
+      Error("The external Knuth-Bendix program failed - see its output above.");
+    fi;
     Info(InfoRWS,1,"External Knuth-Bendix program complete.");
 
     StoreNamesRWS(rws,_KBTmpFileName);
@@ -1728,7 +1718,7 @@ KBWD := function ( arg )
     fi;
     rws!.isAvailableReduction := true;
     rws!.warningOn := true;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    _KBRemoveTmpFiles(_KBTmpFileName);
     return true;
 end;
 
@@ -1740,7 +1730,7 @@ end;
 ##  This assumes that KBWD has already been called on rws
 ##  Public function.
 GpWA := function ( arg )
-    local  narg, rws, large, filestore, diff1, callstring, optstring;
+    local  narg, rws, large, filestore, diff1, args, status;
     narg := Number(arg);
     if narg<1  or  not IsKBMAGRewritingSystemRep(arg[1]) then
        Error("First argument is not a rewriting system.");
@@ -1760,24 +1750,16 @@ GpWA := function ( arg )
       WriteFSA(
           rws!.diff2,"_RWS.diff2",Concatenation(_KBTmpFileName,".diff2"),";");
     fi;
-    callstring := Filename(_KBExtDir,"gpwa");
-    optstring := " ";
-    if large then optstring := Concatenation(optstring," -l "); fi;
-    if filestore then optstring := Concatenation(optstring," -f "); fi;
-    if diff1 then optstring := Concatenation(optstring," -d "); fi;
-    if InfoLevel(InfoRWS)=0 then
-      optstring := Concatenation(optstring," -silent ");
-    fi;
-    if InfoLevel(InfoRWS)>1 then
-      optstring := Concatenation(optstring," -v ");
-    fi;
-    if InfoLevel(InfoRWS)>2 then
-      optstring := Concatenation(optstring," -vv ");
-    fi;
-    callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+    args := [];
+    if large then Add(args,"-l"); fi;
+    if filestore then Add(args,"-f"); fi;
+    if diff1 then Add(args,"-d"); fi;
+    if InfoLevel(InfoRWS)=0 then Add(args,"-silent"); fi;
+    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+    Add(args,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external word-acceptor program.");
-    Info(InfoRWS,3,"  ", callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoRWS,"gpwa",args);
     Info(InfoRWS,1,"External word-acceptor program complete.");
 
     StoreNamesRWS(rws,_KBTmpFileName);
@@ -1791,7 +1773,7 @@ GpWA := function ( arg )
     rws!.wa.alphabet.printingStrings:=List(rws!.alphabet,x->String(x));
     rws!.isAvailableSize := true;
     rws!.warningOn := true;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    _KBRemoveTmpFiles(_KBTmpFileName);
 end;
 
 #############################################################################
@@ -1802,7 +1784,7 @@ end;
 ##  This assumes that KBWD and GpWA have already been called on rws
 ##  Public function.
 GpGenMult := function ( arg )
-    local  narg, rws, large, filestore, diff1, callstring, optstring;
+    local  narg, rws, large, filestore, diff1, args, status;
     narg := Number(arg);
     if narg<1  or  not IsKBMAGRewritingSystemRep(arg[1]) then
        Error("First argument is not a rewriting system.");
@@ -1819,21 +1801,21 @@ GpGenMult := function ( arg )
         rws!.wa,"_RWS.wa",Concatenation(_KBTmpFileName,".wa"),";");
     WriteFSA(
         rws!.diff2,"_RWS.diff2",Concatenation(_KBTmpFileName,".diff2"),";");
-    callstring := Filename(_KBExtDir,"gpgenmult");
-    optstring := " ";
-    if large then optstring := Concatenation(optstring," -l "); fi;
-    if filestore then optstring := Concatenation(optstring," -f "); fi;
-    if diff1 then optstring := Concatenation(optstring," -c "); fi;
-    if InfoLevel(InfoRWS)=0 then
-                      optstring := Concatenation(optstring," -silent "); fi;
-    if InfoLevel(InfoRWS)>1 then
-                      optstring := Concatenation(optstring," -v "); fi;
-    if InfoLevel(InfoRWS)>2 then
-                      optstring := Concatenation(optstring," -vv "); fi;
-    callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+    args := [];
+    if large then Add(args,"-l"); fi;
+    if filestore then Add(args,"-f"); fi;
+    if diff1 then Add(args,"-c"); fi;
+    if InfoLevel(InfoRWS)=0 then Add(args,"-silent"); fi;
+    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+    Add(args,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external generalised multiplier program.");
-    Info(InfoRWS,3,"  ", callstring);
-    Exec(callstring);
+    #Exit status 2 means new word-differences were found, which is dealt
+    #with below; only 1 signals a genuine failure.
+    status := _KBExec(InfoRWS,"gpgenmult",args);
+    if status = 1 then
+      Error("The external generalised multiplier program failed.");
+    fi;
     Info(InfoRWS,1,"External generalised-multiplier program complete.");
 
     StoreNamesRWS(rws,_KBTmpFileName);
@@ -1854,7 +1836,7 @@ GpGenMult := function ( arg )
          Unbind(rws!.diff1.sparseTable);
        fi;
        Print("Could not open gm file - try re-running GpWA.\n");
-       Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+       _KBRemoveTmpFiles(_KBTmpFileName);
        return false;
     fi;
     rws!.gm := _RWS.gm;
@@ -1863,7 +1845,7 @@ GpGenMult := function ( arg )
     InitializeFSA(rws!.gm);
     rws!.gm.alphabet.base.printingStrings:=List(rws!.alphabet,x->String(x));
     rws!.gm.states.labels.printingStrings:=List(rws!.alphabet,x->String(x));
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    _KBRemoveTmpFiles(_KBTmpFileName);
     return true;
 end;
 
@@ -1875,7 +1857,7 @@ end;
 ##  This assumes that KBWD, GpWA and GpGenMult have already been called on rws
 ##  Public function.
 GpCheckMult := function ( arg )
-    local  narg, rws, large, filestore, callstring, optstring;
+    local  narg, rws, large, filestore, args, status;
     narg := Number(arg);
     if narg<1  or  not IsKBMAGRewritingSystemRep(arg[1]) then
        Error("First argument is not a rewriting system.");
@@ -1891,26 +1873,24 @@ GpCheckMult := function ( arg )
         rws!.gm,"_RWS.gm",Concatenation(_KBTmpFileName,".gm"),";");
     WriteFSA(
         rws!.wa,"_RWS.wa",Concatenation(_KBTmpFileName,".wa"),";");
-    callstring := Filename(_KBExtDir,"gpcheckmult");
-    optstring := " ";
-    if large then optstring := Concatenation(optstring," -l "); fi;
-    if filestore then optstring := Concatenation(optstring," -f "); fi;
-    if rws!.ordering="wtlex" then
-       optstring := Concatenation(optstring," -wtlex ");
-    fi;
+    args := [];
+    if large then Add(args,"-l"); fi;
+    if filestore then Add(args,"-f"); fi;
+    if rws!.ordering="wtlex" then Add(args,"-wtlex"); fi;
     if IsBound(rws!.options.outputWords) and rws!.options.outputWords then
-      optstring := Concatenation(optstring," -ow ");
+      Add(args,"-ow");
     fi; 
-    if InfoLevel(InfoRWS)=0 then
-                      optstring := Concatenation(optstring," -silent "); fi;
-    if InfoLevel(InfoRWS)>1 then
-                      optstring := Concatenation(optstring," -v "); fi;
-    if InfoLevel(InfoRWS)>2 then
-                      optstring := Concatenation(optstring," -vv "); fi;
-    callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+    if InfoLevel(InfoRWS)=0 then Add(args,"-silent"); fi;
+    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+    Add(args,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external multiplier checking program.");
-    Info(InfoRWS,3,"  ", callstring);
-    Exec(callstring);
+    #Exit status 2 means the validity test failed, which is dealt with
+    #below; only 1 signals a genuine failure.
+    status := _KBExec(InfoRWS,"gpcheckmult",args);
+    if status = 1 then
+      Error("The external multiplier checking program failed.");
+    fi;
     Info(InfoRWS,1,"External multiplier checking program complete.");
     if not READ(Concatenation(_KBTmpFileName,".cm.ec")) then
        Error("Could not open exit-code file");
@@ -1925,7 +1905,7 @@ GpCheckMult := function ( arg )
         fi;
         rws!.wg := _RWS.wg;
         RedefineNamesRWS(rws,_KBTmpFileName);
-        Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+        _KBRemoveTmpFiles(_KBTmpFileName);
         return false;
       fi;
       Print(
@@ -1942,12 +1922,12 @@ GpCheckMult := function ( arg )
       rws!.diff2.table.format:="dense deterministic";
       rws!.diff2.table.transitions:=rws!.diff2.denseDTable;
       Unbind(rws!.diff2.sparseTable);
-      Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+      _KBRemoveTmpFiles(_KBTmpFileName);
       return false;
     fi;
     Print(
        "#Validity test on generalised multiplier passed.\n");
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    _KBRemoveTmpFiles(_KBTmpFileName);
     return true;
 end;
 
@@ -2040,7 +2020,7 @@ end;
 ##  been called on rws
 ##  Public function.
 GpAxioms := function ( arg )
-    local  narg, rws, large, filestore, callstring, optstring;
+    local  narg, rws, large, filestore, args, status;
     narg := Number(arg);
     if narg<1  or  not IsKBMAGRewritingSystemRep(arg[1]) then
        Error("First argument is not a rewriting system.");
@@ -2052,28 +2032,25 @@ GpAxioms := function ( arg )
     WriteRWS(rws,_KBTmpFileName);
     WriteFSA(
           rws!.gm,"_RWS.gm",Concatenation(_KBTmpFileName,".gm"),";");
-    callstring := Filename(_KBExtDir,"gpaxioms");
-    optstring := " ";
+    args := [];
     if IsBound(rws!.sub) then
       WriteRWS(rws!.sub,Concatenation(_KBTmpFileName,"_x"));
-      optstring := Concatenation(optstring," -x ");
+      Add(args,"-x");
     fi;
-    if large then optstring := Concatenation(optstring," -l "); fi;
-    if filestore then optstring := Concatenation(optstring," -f "); fi;
-    #gpaxioms no longer needs a -wtlex flag, so omit following 3 lines.
-    #if rws!.ordering="wtlex" then
-    #   optstring := Concatenation(optstring," -wtlex ");
-    #fi;
-    if InfoLevel(InfoRWS)=0 then
-                      optstring := Concatenation(optstring," -silent "); fi;
-    if InfoLevel(InfoRWS)>1 then
-                      optstring := Concatenation(optstring," -v "); fi;
-    if InfoLevel(InfoRWS)>2 then
-                      optstring := Concatenation(optstring," -vv "); fi;
-    callstring := Concatenation(callstring,optstring,_KBTmpFileName);
+    if large then Add(args,"-l"); fi;
+    if filestore then Add(args,"-f"); fi;
+    #gpaxioms no longer needs a -wtlex flag.
+    if InfoLevel(InfoRWS)=0 then Add(args,"-silent"); fi;
+    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
+    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
+    Add(args,_KBTmpFileName);
     Info(InfoRWS,1,"Calling external axiom checking program.");
-    Info(InfoRWS,3,"  ", callstring);
-    Exec(callstring);
+    #Exit status 2 means the axiom check failed, which is dealt with below;
+    #only 1 signals a genuine failure.
+    status := _KBExec(InfoRWS,"gpaxioms",args);
+    if status = 1 then
+      Error("The external axiom checking program failed.");
+    fi;
     Info(InfoRWS,1,"External axiom checking program complete.");
     if not READ(Concatenation(_KBTmpFileName,".axioms.ec")) then
        Error("Could not open exit-code file");
@@ -2086,7 +2063,7 @@ GpAxioms := function ( arg )
     Print(
        "#Axiom checking succeeded.\n");
     rws!.warningOn:=false;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,"*"));
+    _KBRemoveTmpFiles(_KBTmpFileName);
     return true;
 end;
 
