@@ -205,5 +205,7 @@ If you have several computers with the same architecture sharing the
 same GAP directory it is sufficient to install GAP on one of them and
 create symbolic links in the directory bin for each of the others.
 
-Please report all problems, bugs, etc. to me.
-(Derek Holt, dfh@maths.warwick.ac.uk)
+KBMAG was written by Derek Holt, but is now maintained by the GAP Team.
+Please report all problems, bugs, etc. via the issue tracker at
+https://github.com/gap-packages/kbmag/issues, rather than contacting the
+original author.
