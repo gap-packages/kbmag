@@ -1598,6 +1598,9 @@ AutRWS := function ( arg )
     if narg>=2 and arg[2]=true then large:=true; fi;
     if narg>=3 and arg[3]=true then filestore:=true; fi;
     if narg>=4 and arg[4]=true then diff1:=true; fi;
+    #Wipe any files left behind by an earlier run: below we decide whether
+    #the computation succeeded by looking for a file that autgroup creates.
+    _KBRemoveTmpFiles(_KBTmpFileName);
     WriteRWS(rws,_KBTmpFileName);
     args := [];
     if large then Add(args,"-l"); fi;

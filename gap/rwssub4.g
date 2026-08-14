@@ -627,6 +627,9 @@ AutCosets := function ( arg )
   cosrws!.baseAlphabet := rws!.alphabet;
   cosrws!.equations := [];
 
+  #Wipe any files left behind by an earlier run: below we decide whether
+  #the computation succeeded by looking for files that autcos creates.
+  _KBRemoveTmpFiles(_KBTmpFileName);
   WriteSubgroupRWS(rws,subrws,_KBTmpFileName);
   _KBExecChecked(InfoRWS,"makecosfile",["-sg",_KBTmpFileName,"sub"]);
 
@@ -656,7 +659,7 @@ AutCosets := function ( arg )
    Info(InfoRWS,1,
       "Computation was successful - automatic coset structure computed.\n");
     UpdateRWS(cosrws,filename,false,true);
-    #_KBRemoveTmpFiles(_KBTmpFileName);
+    _KBRemoveTmpFiles(_KBTmpFileName);
     cosrws!.KBRun := true;
     cosrws!.isAvailableNormalForm := true;
     cosrws!.isAvailableNormalForm := true;
