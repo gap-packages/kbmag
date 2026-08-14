@@ -12,7 +12,10 @@
 #include "fsa.h"
 #include "rws.h"
 #include "externals.h"
-#define TESTWORDLEN 4096
+/* Words are reduced in place in buffers of this size, so it has to be
+ * bigger than any word a reduction can produce, i.e. than the largest
+ * maxreducelen (MAXREDUCELEN in kbfns.c); see set_maxreducelen. */
+#define TESTWORDLEN 32770
 
 extern int (*reduce_word)(gen *w, reduction_struct *rs_rws);
 
@@ -142,6 +145,11 @@ int add_wd_fsa(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
     if (image == 0) {
       stw = wd_fsaptr->states->words[state];
       l = genstrlen(stw);
+      if (l + 3 > TESTWORDLEN) {
+        fprintf(stderr, "#Error: word too long in word-difference machine. "
+                        "Cannot continue.\n");
+        return -1;
+      }
       if (g1 == size_pba) {
         genstrcpy(testword, stw);
         testword[l] = g2;

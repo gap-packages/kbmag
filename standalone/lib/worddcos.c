@@ -16,7 +16,10 @@
 #include "fsa.h"
 #include "rws.h"
 #include "externals.h"
-#define TESTWORDLEN 4096
+/* Words are reduced in place in buffers of this size, so it has to be
+ * bigger than any word a reduction can produce, i.e. than the largest
+ * maxreducelen (MAXREDUCELEN in kbfns.c); see set_maxreducelen. */
+#define TESTWORDLEN 32770
 #define Ggen(x) (x < rs->separator)
 
 extern int (*reduce_word)(gen *w, reduction_struct *rs_rws);
@@ -115,6 +118,13 @@ int build_wd_fsa_cos(fsa *wd_fsaptr, boolean *new_wd, reduction_struct *rs)
   return 0;
 }
 
+static int word_too_long(void)
+{
+  fprintf(stderr, "#Error: word too long in word-difference machine. "
+                  "Cannot continue.\n");
+  return -1;
+}
+
 /* Alter the word-difference machine to make it accept the equation *eqn
  * If reverse is true, then for all transitions added, the inverse transition
  * is also added.
@@ -147,15 +157,20 @@ int add_wd_fsa_cos(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
         fprintf(stderr, "Error: separator on LHS but not RHS of equation.\n");
         return -1;
       }
+      l = genstrlen(testword);
       if
         Ggen(*wd2)
         {
-          l = genstrlen(testword);
+          if (l + 2 > TESTWORDLEN)
+            return word_too_long();
           testword[l] = *wd2;
           testword[l + 1] = 0;
         }
-      else
+      else {
+        if (l + genstrlen(rs->rws->subwordsG[*wd2]) + 1 > TESTWORDLEN)
+          return word_too_long();
         genstrcat(testword, rs->rws->subwordsG[*wd2]);
+      }
       wd2++;
     }
     if ((*reduce_word)(testword, rs) == -1)
@@ -209,6 +224,8 @@ int add_wd_fsa_cos(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
     if (image == 0) {
       stw = wd_fsaptr->states->words[state];
       l = genstrlen(stw);
+      if (l + 3 > TESTWORDLEN)
+        return word_too_long();
       if (g1 == size_pba) {
         genstrcpy(testword, stw);
         testword[l] = g2;

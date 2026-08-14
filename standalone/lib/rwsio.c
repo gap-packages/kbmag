@@ -339,7 +339,7 @@ void read_kbinput(FILE *rfile, boolean check, rewriting_system *rwsptr)
     else if (strcmp(kbm_buffer, "maxreducelen") == 0) {
       read_int(rfile, &n, &delim);
       if (n > 4096 && !rwsptr->maxreducelenset)
-        rwsptr->maxreducelen = n;
+        set_maxreducelen(rwsptr, n);
     }
     else if (strcmp(kbm_buffer, "silent") == 0) {
       read_ident(rfile, kbm_buffer, &delim, FALSE);

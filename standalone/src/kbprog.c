@@ -323,7 +323,7 @@ void read_kbprog_command(int argc, char *argv[], rewriting_system *rwsptr)
       arg++;
       if (arg >= argc)
         badusage();
-      rwsptr->maxreducelen = atoi(argv[arg]);
+      set_maxreducelen(rwsptr, atoi(argv[arg]));
     }
     else if (strcmp(argv[arg], "-rec") == 0) {
       rwsptr->orderingset = TRUE;
