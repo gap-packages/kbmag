@@ -1530,7 +1530,9 @@ KBRWS := function ( rws )
     Info(InfoRWS,1,"Calling external Knuth-Bendix program.");
     status := _KBExec(InfoRWS,"kbprog",[_KBTmpFileName]);
     if status = 1 then
-      Error("The external Knuth-Bendix program failed - see its output above.");
+      Error("The external Knuth-Bendix program failed; it reported the reason ",
+            "above. Increasing the options maxreducelen or maxstoredlen may ",
+            "help.");
     fi;
     UpdateRWS(rws,_KBTmpFileName,true);
     _KBRemoveTmpFiles(_KBTmpFileName);
@@ -1680,7 +1682,9 @@ KBWD := function ( arg )
         "Calling external Knuth-Bendix program for word-differences.");
     status := _KBExec(InfoRWS,"kbprog",args);
     if status = 1 then
-      Error("The external Knuth-Bendix program failed - see its output above.");
+      Error("The external Knuth-Bendix program failed; it reported the reason ",
+            "above. Increasing the options maxreducelen or maxstoredlen may ",
+            "help.");
     fi;
     Info(InfoRWS,1,"External Knuth-Bendix program complete.");
 
