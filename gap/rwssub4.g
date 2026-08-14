@@ -205,6 +205,8 @@ WriteSubgroupRWS := function ( arg )
   line := Concatenation(line," := true,");
   LinePrintRWS(line,filename);
 
+  WriteOptionsRWS(rws,filename);
+
   line := Concatenation(String("generatorOrder",16)," := [");
   for i in [1..ng] do
     if i > 1 then

@@ -707,55 +707,13 @@ end;
 
 #############################################################################
 ##
-#F  WriteRWS(<rws>, [<filename>], [<endsymbol>])
-##           . . . . . . . . . . . .write an rws to a file in external format
+#F  WriteOptionsRWS(<rws>, <filename>) . . write the optional parameters
 ##
-##  WriteRWS prints the rws <rws> to the  file <filename> formatting nicely.
-##  It works by building up the material to be printed line by line as strings,
-##  and calling LinePrintRWS to print each individual line.
-##  If <filename> is not present, or empty, then writing is to the terminal
-##  and is simply of form rec(..).
-##  Otherwise, printing takes form _RWS := rec(...)<endsymbol>
-##  where <endsymbol> is a string which is ";" by default.
-##  (_RWS is a global variable.)
-##
-##  Public function.
-WriteRWS := function ( arg )
-    local rws, name, filename, gapfilename, line, i, eqn, endsymbol,
-          ng, en, gn, ls, ig;
-
-    if Length(arg)<1 then
-       Error("WriteRWS has 1, 2 or 3 arguments");
-    fi;
-    rws := arg[1];
-    filename := "";
-    if Length(arg)>=2 then filename := arg[2]; fi;
-    if filename="" then endsymbol := ""; else endsymbol := ";"; fi;
-    if Length(arg)>=3 then endsymbol := arg[3]; fi;
-    
-    if not IsKBMAGRewritingSystemRep(rws) then
-      Error("First argument is not an KBMAG rewriting system.");
-    fi;
-
-    ng := Length(rws!.alphabet);
-    en := List(rws!.alphabet,x->String(x));
-
-    #Now print main file
-    if filename="" then Print("rec(\n");
-    else PrintTo(filename,"_RWS := rec (\n");
-    fi;
-
-    line := String("isRWS",16);
-    line := Concatenation(line," := true,");
-    LinePrintRWS(line,filename);
-
-    if IsBound(rws!.isConfluent) then
-      line := String("isConfluent",16);
-      line := Concatenation(line," := ",String(rws!.isConfluent),",");
-      LinePrintRWS(line,filename);
-    fi;
-
-#Now come all of the optional parameters
+##  These are the fields of the options record of <rws> that the external
+##  programs read back, plus the verbosity implied by InfoRWS.
+##  Private function.
+WriteOptionsRWS := function ( rws, filename )
+    local line;
     if IsBound(rws!.options.tidyint) then
       line := String("tidyint",16);
       line := Concatenation(line," := ",String(rws!.options.tidyint),",");
@@ -818,6 +776,61 @@ WriteRWS := function ( arg )
       line := Concatenation(line," := true,");
       LinePrintRWS(line,filename);
     fi;
+
+end;
+
+#############################################################################
+##
+#F  WriteRWS(<rws>, [<filename>], [<endsymbol>])
+##           . . . . . . . . . . . .write an rws to a file in external format
+##
+##  WriteRWS prints the rws <rws> to the  file <filename> formatting nicely.
+##  It works by building up the material to be printed line by line as strings,
+##  and calling LinePrintRWS to print each individual line.
+##  If <filename> is not present, or empty, then writing is to the terminal
+##  and is simply of form rec(..).
+##  Otherwise, printing takes form _RWS := rec(...)<endsymbol>
+##  where <endsymbol> is a string which is ";" by default.
+##  (_RWS is a global variable.)
+##
+##  Public function.
+WriteRWS := function ( arg )
+    local rws, name, filename, gapfilename, line, i, eqn, endsymbol,
+          ng, en, gn, ls, ig;
+
+    if Length(arg)<1 then
+       Error("WriteRWS has 1, 2 or 3 arguments");
+    fi;
+    rws := arg[1];
+    filename := "";
+    if Length(arg)>=2 then filename := arg[2]; fi;
+    if filename="" then endsymbol := ""; else endsymbol := ";"; fi;
+    if Length(arg)>=3 then endsymbol := arg[3]; fi;
+    
+    if not IsKBMAGRewritingSystemRep(rws) then
+      Error("First argument is not an KBMAG rewriting system.");
+    fi;
+
+    ng := Length(rws!.alphabet);
+    en := List(rws!.alphabet,x->String(x));
+
+    #Now print main file
+    if filename="" then Print("rec(\n");
+    else PrintTo(filename,"_RWS := rec (\n");
+    fi;
+
+    line := String("isRWS",16);
+    line := Concatenation(line," := true,");
+    LinePrintRWS(line,filename);
+
+    if IsBound(rws!.isConfluent) then
+      line := String("isConfluent",16);
+      line := Concatenation(line," := ",String(rws!.isConfluent),",");
+      LinePrintRWS(line,filename);
+    fi;
+
+#The optional parameters
+    WriteOptionsRWS(rws,filename);
 
     line := Concatenation(String("generatorOrder",16)," := [");
     for i in [1..ng] do
