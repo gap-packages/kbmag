@@ -1,10 +1,6 @@
 /Makefile
 /bin/
 /obj/
-/standalone/bin/
-/standalone/lib/*.o
-/standalone/lib/*.a
-/standalone/src/*.o
 /standalone/doc/*.aux
 /standalone/doc/manual.log
 /standalone/doc/manual.synctex.gz

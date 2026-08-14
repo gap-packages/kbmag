@@ -58,9 +58,7 @@ following files:
 README 				(the file you are now reading)
 lib (directory)			.c files for library
 src (directory)			.c source files for executables
-bin (directory)			for executables - empty on distribution
 doc (directory)			documentation
-Makefile			general makefile to make all executables
 kb_data	(directory)		sample data files for Knuith-Bendix program
 ag_data	(directory)		sample data files for automatic groups program
 subgp_data (directory)		sample data files for subgroup & coset programs
@@ -68,44 +66,35 @@ fsa_data (directory)		sample data files for general fsa programs
 gap				some GAP library files
 gapdoc				documentation for the GAP3 share package
 
-You will probably want to put the bin directory into your path.
-
 
 MAKING THE PACKAGE
 ------------------
 
-By default, simply type "make" from within the kbmag directory
+The standalone programs are built together with the GAP package, from the
+package root directory:
 
-The default C-compiler is cc; to use gcc, type "make CC=gcc".
+        ./configure <path to GAP root>
+        make
 
-The default compiler option is -O; to use -g, for example (if you wish to do
-your own debugging), then type "make COPTS=-g".
+The executables land in bin/<architecture>; you will probably want to put
+that directory into your path.
 
-To make things in two steps instead of one, first go into the lib directory
-and type "make" (+ any options) and then go into the src directory and type
-"make". (This is what the general "make" does anyway.)
+The compiler and its options can be overridden as usual, for example
+"make CC=gcc" or "make CFLAGS=-g". To recompile a single program later, say
+kbprog, type "make bin/<architecture>/kbprog".
 
-To recompile individual programs later, for example "kbprog", go into the src
-directory and type "make ../bin/kbprog".
-(To do this, the file "fsalib.a" must be present in the lib directory - this
-may have been removed, if you have done "make clean" in the meantime, in which
-case you will need to go back into lib and type "make" again.)
+"make clean" removes the object files, "make distclean" everything that the
+build created.
 
-If successful, you can remove .o and .a files by typing "make clean".
-
-You can remove everything created by make (and a few other things besides,
-such as .dvi files) by typing "make distclean".
-
-To do a very quick test, type "make test".
+To do a very quick test, type "make check-standalone".
 You should get about 66 lines of output, with nothing which looks like
 an error message, ending with:
 #Subgroup word-acceptor is proved correct!
 If this succeeds, then things are probably working properly
 (although it is not a very thorough test).
 
-This package has not yet been compiled on a wide variety of machines, so
-you may encounter problems. If so, please let me know (and preferably sort the
-problem out yourself first).
+If you encounter problems building the package, please report them via the
+issue tracker (see the end of this file).
 
 
 DOCUMENTATION
