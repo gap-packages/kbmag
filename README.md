@@ -95,9 +95,12 @@ homepage at
   <https://gap-packages.github.io/kbmag/>
 
 
-## Bug reports and feature requests
+## Maintenance, bug reports and feature requests
 
-Please submit bug reports and feature requests via our GitHub issue tracker:
+kbmag was written by Derek Holt, and is now maintained by the GAP Team.
+Please submit bug reports and feature requests -- including ones about the
+stand-alone `C` programs -- via our GitHub issue tracker, rather than
+contacting the original author:
 
   <https://github.com/gap-packages/kbmag/issues>
 

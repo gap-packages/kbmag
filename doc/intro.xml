@@ -134,4 +134,10 @@ In the descriptions that follow functions declared in the main &GAP;
 library, for which additional methods are implemented, are referred to 
 as <E>library functions</E>. 
 <P/>
+&KBMAG; was written by Derek Holt, but is now maintained by the &GAP; Team.
+Please report bugs and feature requests, including ones about the stand-alone
+`C' programs, via the issue tracker at
+<URL>https://github.com/gap-packages/kbmag/issues</URL>, rather than
+contacting the original author.
+<P/>
 </Chapter>
