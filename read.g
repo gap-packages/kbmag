@@ -1,3 +1,5 @@
+ReadPackage("kbmag", "gap/util.g");
+
 ReadPackage("kbmag", "gap/correspondence.g");
 ReadPackage("kbmag", "gap/kbsmg.gd");
 

@@ -37,8 +37,6 @@ _FSA_swap_coords := rec();
 _FSA_and := rec();
 _FSA_or := rec();
 _FSA_concat := rec();
-_KBExtDir  :=  DirectoriesPackagePrograms("kbmag");
-_KBTmpFileName := TmpName();
 
 #############################################################################
 ##
@@ -622,7 +620,7 @@ WriteSetRecordSR := function ( arg )
        AppendTo(tempfn,"];\n");
        Read(tempfn);
        sr.printingStrings:=_RWST_;
-       Exec(Concatenation("/bin/rm -f ",tempfn));
+       RemoveFile(tempfn);
     fi; 
     filename := "";
     name := "";
@@ -3038,7 +3036,7 @@ end;
 ## Determinized FSA is returned.
 ## Public function.
 DeterminizeFSA := function(fsa)
-  local callstring, filename, alph;
+  local args, filename, alph;
     
     if not IsInitializedFSA(fsa) then
        InitializeFSA(fsa);
@@ -3053,21 +3051,20 @@ DeterminizeFSA := function(fsa)
     InitializeSR(fsa.alphabet);
     filename := Concatenation(_KBTmpFileName,".fsafordet");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"nfadeterminize");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",filename);
+    Add(args,filename);
     Info(InfoFSA,1,"Calling fsa determinization program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"nfadeterminize",args);
     Info(InfoFSA,1,"External fsa determinization program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsafordet.determinize")) then
        Error("Could not open determinized fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsafordet*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsafordet"));
     InitializeFSA(_FSA_determinize);
     fsa.alphabet := alph;
     _FSA_min.alphabet := alph;
@@ -3081,7 +3078,7 @@ end;
 ## Minimized FSA is returned.
 ## Public function.
 MinimizeFSA := function(fsa)
-  local callstring, filename, alph;
+  local args, filename, alph;
     
     if not IsInitializedFSA(fsa) then
        InitializeFSA(fsa);
@@ -3096,21 +3093,20 @@ MinimizeFSA := function(fsa)
     InitializeSR(fsa.alphabet);
     filename := Concatenation(_KBTmpFileName,".fsaformin");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"fsamin");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",filename);
+    Add(args,filename);
     Info(InfoFSA,1,"Calling fsa minimization program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsamin",args);
     Info(InfoFSA,1,"External fsa minimization program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaformin.min")) then
        Error("Could not open minimized fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaformin*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaformin"));
     InitializeFSA(_FSA_min);
     fsa.alphabet := alph;
     _FSA_min.alphabet := alph;
@@ -3125,7 +3121,7 @@ end;
 ## accepted by <fsa>.
 ## Public function.
 NotFSA := function(fsa)
-  local callstring, filename, alph;
+  local args, filename, alph;
     
     if not IsInitializedFSA(fsa) then
        InitializeFSA(fsa);
@@ -3140,21 +3136,20 @@ NotFSA := function(fsa)
     InitializeSR(fsa.alphabet);
     filename := Concatenation(_KBTmpFileName,".fsafornot");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"fsanot");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",filename);
+    Add(args,filename);
     Info(InfoFSA,1,"Calling fsa `not' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsanot",args);
     Info(InfoFSA,1,"External fsa `not' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsafornot.not")) then
        Error("Could not open `not' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsafornot*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsafornot"));
     InitializeFSA(_FSA_not);
     fsa.alphabet := alph;
     _FSA_not.alphabet := alph;
@@ -3169,7 +3164,7 @@ end;
 ## concatenation of 0 or more words accepted by <fsa>.
 ## Public function.
 StarFSA := function(fsa)
-  local callstring, filename, alph;
+  local args, filename, alph;
     
     if not IsInitializedFSA(fsa) then
        InitializeFSA(fsa);
@@ -3184,21 +3179,20 @@ StarFSA := function(fsa)
     InitializeSR(fsa.alphabet);
     filename := Concatenation(_KBTmpFileName,".fsaforstar");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"fsastar");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",filename);
+    Add(args,filename);
     Info(InfoFSA,1,"Calling fsa `star' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsastar",args);
     Info(InfoFSA,1,"External fsa `star' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaforstar.star")) then
        Error("Could not open `star' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforstar*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforstar"));
     InitializeFSA(_FSA_star);
     fsa.alphabet := alph;
     _FSA_star.alphabet := alph;
@@ -3216,7 +3210,7 @@ end;
 ## state-set to which they correspond.
 ## Public function.
 ReverseFSA := function(arg)
-  local callstring, filename, alph, fsa, subsets;
+  local args, filename, alph, fsa, subsets;
     
     fsa := arg[1];
     if not IsInitializedFSA(fsa) then
@@ -3236,24 +3230,23 @@ ReverseFSA := function(arg)
     InitializeSR(fsa.alphabet);
     filename := Concatenation(_KBTmpFileName,".fsaforreverse");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"fsareverse");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
     if subsets then
-      callstring := Concatenation(callstring," -s ");
+      Add(args,"-s");
     fi;
-    callstring := Concatenation(callstring," ",filename);
+    Add(args,filename);
     Info(InfoFSA,1,"Calling fsa `reverse' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsareverse",args);
     Info(InfoFSA,1,"External fsa `reverse' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaforreverse.reverse")) then
        Error("Could not open `reverse' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforreverse*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforreverse"));
     InitializeFSA(_FSA_reverse);
     fsa.alphabet := alph;
     _FSA_reverse.alphabet := alph;
@@ -3269,7 +3262,7 @@ end;
 ## (w1,w2) is accepted by <fsa> for some word w2.
 ## Public function.
 ExistsFSA := function(fsa)
-  local callstring, filename, alph;
+  local args, filename, alph;
     
     if not IsInitializedFSA(fsa) then
        InitializeFSA(fsa);
@@ -3287,21 +3280,20 @@ ExistsFSA := function(fsa)
     InitializeSR(fsa.alphabet.base);
     filename := Concatenation(_KBTmpFileName,".fsaforexists");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"fsaexists");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",filename);
+    Add(args,filename);
     Info(InfoFSA,1,"Calling fsa `exists' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsaexists",args);
     Info(InfoFSA,1,"External fsa `exists' program complete.\n");
     if not READ(Concatenation(_KBTmpFileName,".fsaforexists.exists")) then
        Error("Could not open `exists' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforexists*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforexists"));
     InitializeFSA(_FSA_exists);
     fsa.alphabet.base := alph;
     _FSA_exists.alphabet := alph;
@@ -3318,7 +3310,7 @@ end;
 ## (w2,w1) is accepted by <fsa>.
 ## Public function.
 SwapCoordsFSA := function(fsa)
-  local callstring, filename, alph;
+  local args, filename, alph;
     
     if not IsInitializedFSA(fsa) then
        InitializeFSA(fsa);
@@ -3336,23 +3328,21 @@ SwapCoordsFSA := function(fsa)
     InitializeSR(fsa.alphabet.base);
     filename := Concatenation(_KBTmpFileName,".fsaforswap_coords");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"fsaswapcoords");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",filename," ",filename,".o");
- #Print(callstring,"\n");
+    Append(args,[filename,Concatenation(filename,".o")]);
     Info(InfoFSA,1,"Calling fsa `swap_coords' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsaswapcoords",args);
     Info(InfoFSA,1,"External fsa `swap_coords' program complete.\n");
     if not
        READ(Concatenation(_KBTmpFileName,".fsaforswap_coords.o"))
           then Error("Could not open `swapcoords' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforswap_coords*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforswap_coords"));
     InitializeFSA(_FSA_swap_coords);
     fsa.alphabet.base := alph;
     _FSA_swap_coords.alphabet.base := alph;
@@ -3367,7 +3357,7 @@ end;
 ## accepted by both of the fsa's <fsa1> and <fsa2>.
 ## Public function.
 AndFSA := function(fsa1, fsa2)
-  local callstring, filename1, filename2, filename3, alph;
+  local args, filename1, filename2, filename3, alph;
     
     if not IsInitializedFSA(fsa1) then
        InitializeFSA(fsa1);
@@ -3393,22 +3383,20 @@ AndFSA := function(fsa1, fsa2)
     filename3 := Concatenation(_KBTmpFileName,".fsaforand3");
     WriteFSA(fsa1,"_FSA",filename1,";");
     WriteFSA(fsa2,"_FSA",filename2,";");
-    callstring := Filename(_KBExtDir,"fsaand");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",
-                     filename1," ",filename2," ",filename3);
+    Append(args,[filename1,filename2,filename3]);
     Info(InfoFSA,1,"Calling fsa `and' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsaand",args);
     Info(InfoFSA,1,"External fsa `and' program complete.\n");
     if not READ(filename3) then
        Error("Could not open `and' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforand*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforand"));
     InitializeFSA(_FSA_and);
     fsa1.alphabet := alph;
     fsa2.alphabet := alph;
@@ -3424,7 +3412,7 @@ end;
 ## accepted by either of the fsa's <fsa1> or <fsa2>.
 ## Public function.
 OrFSA := function(fsa1, fsa2)
-  local callstring, filename1, filename2, filename3, alph;
+  local args, filename1, filename2, filename3, alph;
     
     if not IsInitializedFSA(fsa1) then
        InitializeFSA(fsa1);
@@ -3450,22 +3438,20 @@ OrFSA := function(fsa1, fsa2)
     filename3 := Concatenation(_KBTmpFileName,".fsaforor3");
     WriteFSA(fsa1,"_FSA",filename1,";");
     WriteFSA(fsa2,"_FSA",filename2,";");
-    callstring := Filename(_KBExtDir,"fsaor");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",
-                     filename1," ",filename2," ",filename3);
+    Append(args,[filename1,filename2,filename3]);
     Info(InfoFSA,1,"Calling fsa `or' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsaor",args);
     Info(InfoFSA,1,"External fsa `or' program complete.\n");
     if not READ(filename3) then
        Error("Could not open `or' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforor*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforor"));
     InitializeFSA(_FSA_or);
     fsa1.alphabet := alph;
     fsa2.alphabet := alph;
@@ -3482,7 +3468,7 @@ end;
 ## of words accepted by the fsa's <fsa1> and <fsa2>.
 ## Public function.
 ConcatFSA := function(fsa1, fsa2)
-  local callstring, filename1, filename2, filename3, alph;
+  local args, filename1, filename2, filename3, alph;
     
     if not IsInitializedFSA(fsa1) then
        InitializeFSA(fsa1);
@@ -3508,22 +3494,20 @@ ConcatFSA := function(fsa1, fsa2)
     filename3 := Concatenation(_KBTmpFileName,".fsaforconcat3");
     WriteFSA(fsa1,"_FSA",filename1,";");
     WriteFSA(fsa2,"_FSA",filename2,";");
-    callstring := Filename(_KBExtDir,"fsaconcat");
+    args := [];
     if InfoLevel(InfoFSA)=0 then
-       callstring := Concatenation(callstring," -silent ");
+       Add(args,"-silent");
     elif InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",
-                     filename1," ",filename2," ",filename3);
+    Append(args,[filename1,filename2,filename3]);
     Info(InfoFSA,1,"Calling fsa `concat' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    _KBExecChecked(InfoFSA,"fsaconcat",args);
     Info(InfoFSA,1,"External fsa `concat' program complete.\n");
     if not READ(filename3) then
        Error("Could not open `concat' fsa file");
     fi;
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforconcat*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforconcat"));
     InitializeFSA(_FSA_concat);
     fsa1.alphabet := alph;
     fsa2.alphabet := alph;
@@ -3573,7 +3557,7 @@ end;
 ## 
 ## Public function.
 GrowthFSA := function(fsa)
-  local callstring, filename, alph, gf;
+  local args, status, filename, alph, gf;
     
     if not IsInitializedFSA(fsa) then
        InitializeFSA(fsa);
@@ -3588,17 +3572,23 @@ GrowthFSA := function(fsa)
     InitializeSR(fsa.alphabet);
     filename := Concatenation(_KBTmpFileName,".fsaforgrowth");
     WriteFSA(fsa,"_FSA",filename,";");
-    callstring := Filename(_KBExtDir,"fsagrowth");
+    args := [];
     if InfoLevel(InfoFSA)>1 then
-       callstring := Concatenation(callstring," -v ");
+       Add(args,"-v");
     fi;
-    callstring := Concatenation(callstring," ",filename);
+    Add(args,filename);
     Info(InfoFSA,1,"Calling fsa `growth' program.\n");
-    Info(InfoFSA,3,"  ",callstring);
-    Exec(callstring);
+    status := _KBExec(InfoFSA,"fsagrowth",args);
+    if status = 2 then
+      Print("#WARNING: the growth function may be wrong ",
+            "- see the output of the external program.\n");
+    elif status <> 0 then
+      Error("The external program `fsagrowth' failed with exit status ",
+            status, ".");
+    fi;
     Info(InfoFSA,1,"External fsa `growth' program complete.\n");
     gf := ReadAsFunction(Concatenation(_KBTmpFileName,".fsaforgrowth.growth"));
-    Exec(Concatenation("/bin/rm -f ",_KBTmpFileName,".fsaforgrowth*"));
+    _KBRemoveTmpFiles(Concatenation(_KBTmpFileName,".fsaforgrowth"));
     fsa.alphabet := alph;
     if gf=fail then
       return fail;
