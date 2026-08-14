@@ -20,6 +20,9 @@
 #define MAXREDUCELENFAC 200
 #define MAXCYCLES 16384
 #define TIDYINT 100
+/* Tidying scans every equation, so never tidy more often than every
+ * num_eqns/TIDYINTFAC new equations - see the comment in tidyup. */
+#define TIDYINTFAC 10
 #define MAXEQNS 32767
 #define INIT_FSASPACE 262144
 #define MAXWDIFFS 512
@@ -912,6 +915,18 @@ repeat:
   if (rwsptr->double_states)
     build_quicktable(rwsptr);
   /* otherwise maxstates won't get doubled! */
+
+  /* Each tidying scans all the equations, so tidying every tidyint of them
+   * makes the whole run quadratic in the number of equations. Tidying less
+   * often as the system grows removes that, and leaves short runs - where
+   * num_eqns never reaches TIDYINTFAC * tidyint - exactly as they were.
+   */
+  if (rwsptr->num_eqns > TIDYINTFAC * rwsptr->tidyint) {
+    rwsptr->tidyint = rwsptr->num_eqns / TIDYINTFAC;
+    if (kbm_print_level >= 2)
+      printf("  #tidyint increased to %d.\n", rwsptr->tidyint);
+  }
+
   struct rusage tmp;
   getrusage(RUSAGE_SELF, &tmp);
   i = tmp.ru_utime.tv_sec;
