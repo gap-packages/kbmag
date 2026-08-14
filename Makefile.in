@@ -65,6 +65,9 @@ check test:
 # exercises the programs that the GAP interface never calls
 check-standalone: all
 	cd standalone/kb_data; ../../$(BINDIR)/kbprog nilp2; rm nilp2.*
+	# k36 used to abort silently, without producing output - see issue #34
+	cd standalone/kb_data; ../../$(BINDIR)/kbprog -silent k36; \
+		test -f k36.kbprog; rm k36.*
 	cd standalone/ag_data; ../../$(BINDIR)/autgroup 235; \
 		../../$(BINDIR)/fsacount 235.wa; rm 235.*
 	cd standalone/subgp_data; ../../$(BINDIR)/autcos -p ab2; \

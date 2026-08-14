@@ -159,8 +159,10 @@ restart:
         }
         ptr1 += longer;
         if (genstrlen(w) > rwsptr->maxreducelen / 2)
-          return -1;
-        /* To save time when length is getting out of control */
+          return 0;
+        /* To save time when length is getting out of control.
+         * The caller checks the length of the result; returning -1 here
+         * would abort the whole run, silently. */
       }
       len -= genstrlen(eqn->lhs);
       midwd = w + len - 1;
