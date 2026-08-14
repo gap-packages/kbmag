@@ -42,7 +42,11 @@ jobs:
       - uses: gap-actions/run-pkg-tests@v4
         with:
           mode: onlyneeded
+      - name: Exercise the standalone-only programs
+        run: make check-standalone
       - uses: gap-actions/process-coverage@v3
+      - name: Process C coverage
+        run: gcov -pb obj/*/*.gcno
       - uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

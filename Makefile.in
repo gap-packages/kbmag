@@ -1,47 +1,88 @@
-# General makefile for GAP4 KBMAG share package -
-# all executables are put into the bin directory.
-BIN = bin/@GAPARCH@
+# Makefile for the GAP package kbmag.
+#
+# Generated from Makefile.in by ./configure; requires GNU make.
+# All executables are put into $(BINDIR).
+
+GAPPATH = @GAPPATH@
+GAPARCH = @GAPARCH@
+GAP ?= $(GAPPATH)/gap
+GAP_ARGS = -q --quitonbreak --packagedirs $(abspath .)
+
+LIBDIR = standalone/lib
+SRCDIR = standalone/src
+OBJDIR = obj
+BINDIR = bin/$(GAPARCH)
 
 CC ?= gcc
 CFLAGS ?= -O2 -g
 
 EXTRA_CFLAGS += -Wall
 EXTRA_CFLAGS += -Wno-char-subscripts
-# EXTRA_CFLAGS += -Wstrict-prototypes
-# EXTRA_CFLAGS += -Wextra
-# EXTRA_CFLAGS += -Werror
 
-all:
-	mkdir -p bin/@GAPARCH@;
-	cd standalone/lib; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) $(EXTRA_CFLAGS)" LDFLAGS="$(LDFLAGS)"
-	cd standalone/src; $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS) $(EXTRA_CFLAGS)" LDFLAGS="$(LDFLAGS)" BIN="../../$(BIN)"
+ALL_CFLAGS = $(CFLAGS) $(EXTRA_CFLAGS) -I$(LIBDIR) -MMD -MP
+
+# the fsa library, and one program per source file in $(SRCDIR)
+LIBOBJS = $(patsubst $(LIBDIR)/%.c,$(OBJDIR)/lib/%.o,$(wildcard $(LIBDIR)/*.c))
+PROGS = $(patsubst $(SRCDIR)/%.c,%,$(wildcard $(SRCDIR)/*.c))
+SCRIPTS = autcos autgroup gpsubwa
+
+all: $(addprefix $(BINDIR)/,$(PROGS) $(SCRIPTS))
+
+$(addprefix $(BINDIR)/,$(PROGS)): $(BINDIR)/%: $(OBJDIR)/src/%.o $(OBJDIR)/libfsa.a | $(BINDIR)
+	$(CC) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ $^
+
+$(addprefix $(BINDIR)/,$(SCRIPTS)): $(BINDIR)/%: $(SRCDIR)/% | $(BINDIR)
+	cp $< $@
+	chmod +x $@
+
+$(OBJDIR)/libfsa.a: $(LIBOBJS)
+	$(AR) cr $@ $^
+	if which ranlib > /dev/null 2> /dev/null; then ranlib $@; fi
+
+$(OBJDIR)/lib/%.o: $(LIBDIR)/%.c | $(OBJDIR)/lib
+	$(CC) $(ALL_CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/src/%.o: $(SRCDIR)/%.c | $(OBJDIR)/src
+	$(CC) $(ALL_CFLAGS) -c -o $@ $<
+
+$(BINDIR) $(OBJDIR)/lib $(OBJDIR)/src:
+	mkdir -p $@
+
+-include $(wildcard $(OBJDIR)/*/*.d)
+
+#
+# other targets
+#
+doc:
+	$(GAP) $(GAP_ARGS) makedoc.g
+
+html:
+	NOPDF=1 $(GAP) $(GAP_ARGS) makedoc.g
+
+check test:
+	$(GAP) $(GAP_ARGS) tst/testall.g
+
+# exercises the programs that the GAP interface never calls
+check-standalone: all
+	cd standalone/kb_data; ../../$(BINDIR)/kbprog nilp2; rm nilp2.*
+	cd standalone/ag_data; ../../$(BINDIR)/autgroup 235; \
+		../../$(BINDIR)/fsacount 235.wa; rm 235.*
+	cd standalone/subgp_data; ../../$(BINDIR)/autcos -p ab2; \
+		../../$(BINDIR)/fsacount ab2.cos.wa; \
+		../../$(BINDIR)/autgroup -silent ab2; ../../$(BINDIR)/gpsubwa ab2; \
+		rm -f ab2.[dgw]* ab2.sub.* ab2.suc* ab2.cos* ab2.*.ec
+
+run:
+	$(GAP) $(GAP_ARGS) -c 'LoadPackage("kbmag");'
 
 clean:
-	cd standalone/lib; $(MAKE) clean
-	cd standalone/src; $(MAKE) clean
+	rm -rf $(OBJDIR)
 
-distclean:
-	cd standalone/lib; $(MAKE) clean
-	cd standalone/src; $(MAKE) clean
+distclean: clean
 	rm -rf bin
-	rm standalone/ag_data/*.* 
-	rm standalone/kb_data/*.* 
-	rm standalone/fsa_data/*.* 
-	cd standalone/subgp_data; rm -f *.[a-r,t-z]* *.suc* *.sub*.* *.ec
-	cd standalone/doc; rm -f *.aux *.toc *.log *.dvi
-	cd doc; rm -f *.aux *.toc *.log *.dvi
+	rm -f Makefile
 
-test:
-	cd standalone/kb_data; ../../$(BIN)/kbprog nilp2; rm nilp2.*
-	cd standalone/ag_data; ../../$(BIN)/autgroup 235; ../../$(BIN)/fsacount 235.wa; rm 235.*
-	cd standalone/subgp_data; ../../$(BIN)/autcos -p ab2; ../../$(BIN)/fsacount ab2.cos.wa;\
-		../../$(BIN)/autgroup -silent ab2; ../../$(BIN)/gpsubwa ab2;\
-		rm ab2.[dgw]* ab2.sub.* ab2.suc* ab2.cos*
+Makefile: configure Makefile.in $(GAPPATH)/sysinfo.gap
+	./configure $(GAPPATH)
 
-doc:
-	cd doc && ./make_doc
-
-Makefile: configure Makefile.in
-	./configure "@GAPPATH@"
-
-.PHONY: all clean distclean test doc
+.PHONY: all check test check-standalone clean distclean doc html run
