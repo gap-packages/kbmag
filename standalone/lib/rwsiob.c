@@ -29,6 +29,11 @@ void read_kbinput_simple(FILE *rfile, boolean check, rewriting_system *rwsptr)
   int delim, n, i, j;
   boolean isRWS = FALSE, seengens = FALSE, seeneqns = FALSE;
 
+  /* Unlike read_kbinput, we never call initialise_eqns, so make sure the
+   * buffers it would allocate are null - rws_clear frees them. */
+  rwsptr->testword1 = 0;
+  rwsptr->testword2 = 0;
+
   read_ident(rfile, rwsptr->name, &delim, FALSE);
   if (delim != ':') {
     fprintf(stderr, "#Input error: file must contain a record assignment\n");
@@ -630,6 +635,12 @@ void read_subgens(FILE *rfile, gen **words, boolean names, boolean inverses,
       strcpy(rwsptr->gen_name[rwsptr->num_gens], kbm_buffer);
     }
   }
+
+  /* read_gens put the padding-symbol name after the last generator; the
+   * generators added above have overwritten it, so put it back - rws_clear
+   * frees gen_name up to and including that slot. */
+  tmalloc(rwsptr->gen_name[rwsptr->num_gens + 1], char, 2);
+  strcpy(rwsptr->gen_name[rwsptr->num_gens + 1], "_");
 }
 
 /* A simplified version of print_kboutput() when we have merely

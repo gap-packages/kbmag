@@ -1319,7 +1319,7 @@ static fsa *fsa_micomposite_short(fsa *mult1ptr, fsa *mult2ptr,
       tmalloc(labs->wordslist[ct], gen *, 2);
       l1 = genstrlen(labs1->wordslist[i][0]);
       l2 = genstrlen(labs2->wordslist[j][0]);
-      tmalloc(labs->wordslist[ct][0], gen, l1 * l2 + 1);
+      tmalloc(labs->wordslist[ct][0], gen, l1 + l2 + 1);
       genstrcpy(labs->wordslist[ct][0], labs1->wordslist[i][0]);
       genstrcat(labs->wordslist[ct][0], labs2->wordslist[j][0]);
       labs->wordslist[ct][1] = 0;

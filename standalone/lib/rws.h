@@ -204,6 +204,7 @@ void read_subgens(FILE *rfile, gen **words, boolean names, boolean inverses,
                   rewriting_system *rwsptr);
 
 void set_defaults(rewriting_system *rwsptr, boolean cosets);
+void set_maxreducelen(rewriting_system *rwsptr, int len);
 
 void build_quicktable(rewriting_system *rwsptr);
 int modify_table(int relno, rewriting_system *rwsptr);

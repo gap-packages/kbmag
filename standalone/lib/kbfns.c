@@ -51,6 +51,21 @@ int tidyup(int crelno, rewriting_system *rwsptr);
 int type_sort_eqns(int x, rewriting_system *rwsptr);
 int wd_sort_eqns(int x, rewriting_system *rwsptr);
 
+/* Set rwsptr->maxreducelen, but not beyond what the fixed-size word buffers
+ * in worddiff.c and worddcos.c can hold - a longer word would smash their
+ * stack, since reduction expands words in place.
+ */
+void set_maxreducelen(rewriting_system *rwsptr, int len)
+{
+  if (len > MAXREDUCELEN) {
+    fprintf(stderr, "#Warning: maxreducelen reduced to %d, the largest "
+                    "supported value.\n",
+            MAXREDUCELEN);
+    len = MAXREDUCELEN;
+  }
+  rwsptr->maxreducelen = len;
+}
+
 void set_defaults(rewriting_system *rwsptr, boolean cosets)
 {
   rwsptr->inv_of = 0;
