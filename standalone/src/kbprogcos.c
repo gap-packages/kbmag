@@ -370,11 +370,11 @@ void read_kbprogcos_command(int argc, char *argv[], rewriting_system *rwsptr)
       badusage();
     else if (!seengroupname) {
       seengroupname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(inf, "%s.%s", gpname, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s.%s", gpname, argv[arg]);
     }
     else {
       badusage();
@@ -385,23 +385,14 @@ void read_kbprogcos_command(int argc, char *argv[], rewriting_system *rwsptr)
     badusage();
 
   if (!seencosname) /* use default */
-    sprintf(inf, "%s.cos", gpname);
+    make_filename(inf, sizeof(inf), "%s.cos", gpname);
 
-  strcpy(outf, inf);
-  strcat(outf, ".");
-  strcat(outf, "kbprog");
-  strcpy(outfr, inf);
-  strcat(outfr, ".reduce");
+  make_filename(outf, sizeof(outf), "%s.kbprog", inf);
+  make_filename(outfr, sizeof(outfr), "%s.reduce", inf);
   if (rwsptr->worddiffs) {
-    strcpy(outf1, inf);
-    strcat(outf1, ".");
-    strcat(outf1, "midiff1");
-    strcpy(outf2, inf);
-    strcat(outf2, ".");
-    strcat(outf2, "midiff2");
-    strcpy(outflog, inf);
-    strcat(outflog, ".");
-    strcat(outflog, "log");
+    make_filename(outf1, sizeof(outf1), "%s.midiff1", inf);
+    make_filename(outf2, sizeof(outf2), "%s.midiff2", inf);
+    make_filename(outflog, sizeof(outflog), "%s.log", inf);
   }
 }
 

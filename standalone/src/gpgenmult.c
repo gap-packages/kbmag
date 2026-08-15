@@ -123,26 +123,22 @@ int main(int argc, char *argv[])
       if (strcmp(inf1, "") != 0)
         badusage();
       else
-        strcpy(inf1, argv[arg]);
+        make_filename(inf1, sizeof(inf1), "%s", argv[arg]);
     }
     arg++;
   }
 
-  strcpy(tempfilename, inf1);
-  strcat(tempfilename, "temp_triples_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_triples_XXX", inf1);
 
-  strcpy(inf2, inf1);
-  strcat(inf2, ".diff2");
+  make_filename(inf2, sizeof(inf2), "%s.diff2", inf1);
 
   if (correction) {
-    strcpy(inf3, inf1);
-    strcat(inf3, ".diff1");
+    make_filename(inf3, sizeof(inf3), "%s.diff1", inf1);
   }
 
-  strcpy(outf, inf1);
-  strcat(outf, ".gm");
+  make_filename(outf, sizeof(outf), "%s.gm", inf1);
 
-  strcat(inf1, ".wa");
+  append_filename(inf1, sizeof(inf1), ".wa");
 
   if ((rfile = fopen(inf1, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf1);
@@ -236,7 +232,7 @@ int main(int argc, char *argv[])
            genmultptr->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".gm");
+  append_filename(fsaname, sizeof(fsaname), ".gm");
   wfile = fopen(outf, "w");
   fsa_print(wfile, genmultptr, fsaname);
   fclose(wfile);

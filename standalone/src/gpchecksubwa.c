@@ -134,22 +134,23 @@ int main(int argc, char *argv[])
       if (strcmp(gpname, "") != 0 && strcmp(subname, "") != 0)
         badusage();
       if (strcmp(gpname, "") != 0)
-        strcpy(subname, argv[arg]);
+        make_filename(subname, sizeof(subname), "%s", argv[arg]);
       else
-        strcpy(gpname, argv[arg]);
+        make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     arg++;
   }
   if (stringlen(gpname) == 0)
     badusage();
   if (stringlen(subname) == 0)
-    strcpy(subname, "sub");
+    make_filename(subname, sizeof(subname), "sub");
 
-  sprintf(tempfilename, "%s_%stemp_axXXX", gpname, subname);
+  make_filename(tempfilename, sizeof(tempfilename), "%s_%stemp_axXXX",
+                gpname, subname);
 
 
   /* First read in the candidate for the subgroup automaton. */
-  sprintf(inf, "%s.%s.wa", gpname, subname);
+  make_filename(inf, sizeof(inf), "%s.%s.wa", gpname, subname);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -174,7 +175,7 @@ int main(int argc, char *argv[])
   process_names(names, ngens);
 
   /* Now we read in the subgroup generators. */
-  sprintf(inf, "%s.%s", gpname, subname);
+  make_filename(inf, sizeof(inf), "%s.%s", gpname, subname);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -219,7 +220,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    sprintf(inf, "%s.m%s", gpname, suff);
+    make_filename(inf, sizeof(inf), "%s.m%s", gpname, suff);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -254,8 +255,8 @@ int main(int argc, char *argv[])
      * types.
      */
     base_prefix(fsaname);
-    strcat(fsaname, ".submult");
-    sprintf(outf, "%s.%s.submult", gpname, subname);
+    append_filename(fsaname, sizeof(fsaname), ".submult");
+    make_filename(outf, sizeof(outf), "%s.%s.submult", gpname, subname);
     wfile = fopen(outf, "w");
     fsa_print(wfile, submultptr, fsaname);
     fclose(wfile);
@@ -336,7 +337,7 @@ int main(int argc, char *argv[])
         tfree(suff) else storedmult[++numstoredmult] = suff;
     }
     else {
-      sprintf(inf, "%s.m%s", gpname, suff);
+      make_filename(inf, sizeof(inf), "%s.m%s", gpname, suff);
       unlink(inf);
       tfree(suff);
     }
@@ -348,7 +349,7 @@ int main(int argc, char *argv[])
   tfree(badwords);
   if (keepfiles) {
     for (i = 1; i <= numstoredmult; i++) {
-      sprintf(outf, "%s.m%s", gpname, storedmult[i]);
+      make_filename(outf, sizeof(outf), "%s.m%s", gpname, storedmult[i]);
       unlink(outf);
       tfree(storedmult[i]);
     }
@@ -408,8 +409,7 @@ int subgen_multiplier(gen *w, char *s)
   l = genstrlen(w);
 
   if (l == 1) { /* Length 1 - use fsa_makemult */
-    strcpy(inf, gpname);
-    strcat(inf, ".gm");
+    make_filename(inf, sizeof(inf), "%s.gm", gpname);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -420,7 +420,7 @@ int subgen_multiplier(gen *w, char *s)
       return -1;
     if (fsa_minimize(&genmult) == -1)
       return -1;
-    sprintf(outf, "%s.m%s", gpname, s);
+    make_filename(outf, sizeof(outf), "%s.m%s", gpname, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, &genmult, fsaname);
     fclose(wfile);
@@ -513,14 +513,14 @@ int subgen_multiplier(gen *w, char *s)
       }
     }
     /* Read back in the two multipliers and form their composite */
-    sprintf(inf, "%s.m%s", gpname, suffl);
+    make_filename(inf, sizeof(inf), "%s.m%s", gpname, suffl);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
     }
     fsa_read(rfile, &mult1, ip_store, dr, 0, TRUE, fsaname);
     fclose(rfile);
-    sprintf(inf, "%s.m%s", gpname, suffr);
+    make_filename(inf, sizeof(inf), "%s.m%s", gpname, suffr);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -540,7 +540,7 @@ int subgen_multiplier(gen *w, char *s)
       if (fsa_ip_minimize(compmultptr) == -1)
         return -1;
     }
-    sprintf(outf, "%s.m%s", gpname, s);
+    make_filename(outf, sizeof(outf), "%s.m%s", gpname, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, compmultptr, fsaname);
     fclose(wfile);
@@ -554,9 +554,9 @@ int subgen_multiplier(gen *w, char *s)
         tfree(suffr) else storedmult[++numstoredmult] = suffr;
     }
     else {
-      sprintf(inf, "%s.m%s", gpname, suffl);
+      make_filename(inf, sizeof(inf), "%s.m%s", gpname, suffl);
       unlink(inf);
-      sprintf(inf, "%s.m%s", gpname, suffr);
+      make_filename(inf, sizeof(inf), "%s.m%s", gpname, suffr);
       unlink(inf);
       tfree(suffl);
       tfree(suffr);
@@ -631,7 +631,7 @@ int output_bad_words(void)
     fprintf(stderr, "Error: No offending subwords found!\n");
     return -1;
   }
-  sprintf(outf, "%s.%s.words", gpname, subname);
+  make_filename(outf, sizeof(outf), "%s.%s.words", gpname, subname);
   /* We first see if there is already a list of words in the output file.
    * If so, then we want to include them as well in the new output.
    */

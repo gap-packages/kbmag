@@ -200,11 +200,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
+      make_filename(cosgpname, sizeof(cosgpname), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -213,42 +213,40 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (cosets && !seencosname)
-    sprintf(cosgpname, "%s.cos", gpname);
+    make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   if (cosets)
-    strcpy(inf1, cosgpname);
+    make_filename(inf1, sizeof(inf1), "%s", cosgpname);
   else
-    strcpy(inf1, gpname);
+    make_filename(inf1, sizeof(inf1), "%s", gpname);
 
-  strcpy(tempfilename, inf1);
-  strcat(tempfilename, "temp_fsa_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_fsa_XXX", inf1);
 
-  strcpy(inf2, inf1);
-  strcpy(outf1, inf1);
-  strcpy(outf2, inf1);
+  make_filename(inf2, sizeof(inf2), "%s", inf1);
+  make_filename(outf1, sizeof(outf1), "%s", inf1);
+  make_filename(outf2, sizeof(outf2), "%s", inf1);
   if (diff1_ip) {
     if (cosets)
-      strcat(inf1, ".midiff1");
+      append_filename(inf1, sizeof(inf1), ".midiff1");
     else
-      strcat(inf1, ".diff1");
+      append_filename(inf1, sizeof(inf1), ".diff1");
   }
   else {
     if (cosets)
-      strcat(inf1, ".midiff2");
+      append_filename(inf1, sizeof(inf1), ".midiff2");
     else
-      strcat(inf1, ".diff2");
+      append_filename(inf1, sizeof(inf1), ".diff2");
   }
   if (cosets)
-    strcat(inf2, ".midiff2");
+    append_filename(inf2, sizeof(inf2), ".midiff2");
   else
-    strcat(inf2, ".diff2");
+    append_filename(inf2, sizeof(inf2), ".diff2");
 
-  strcat(outf1, ".wa");
+  append_filename(outf1, sizeof(outf1), ".wa");
   if (cosets) {
-    strcpy(outf2mi, outf2);
-    strcat(outf2mi, ".migm");
+    make_filename(outf2mi, sizeof(outf2mi), "%s.migm", outf2);
   }
-  strcat(outf2, ".gm");
+  append_filename(outf2, sizeof(outf2), ".gm");
 
   calc_wa = TRUE;
   while (calc_wa) {
@@ -277,7 +275,7 @@ int main(int argc, char *argv[])
              wa->states->size);
 
     base_prefix(fsaname);
-    strcat(fsaname, ".wa");
+    append_filename(fsaname, sizeof(fsaname), ".wa");
     wfile = fopen(outf1, "w");
     fsa_print(wfile, wa, fsaname);
     fclose(wfile);
@@ -455,11 +453,11 @@ int main(int argc, char *argv[])
 
       base_prefix(fsaname);
       if (cosets) {
-        strcat(fsaname, ".migm");
+        append_filename(fsaname, sizeof(fsaname), ".migm");
         wfile = fopen(outf2mi, "w");
       }
       else {
-        strcat(fsaname, ".gm");
+        append_filename(fsaname, sizeof(fsaname), ".gm");
         wfile = fopen(outf2, "w");
       }
       fsa_print(wfile, genmultptr, fsaname);
@@ -501,7 +499,7 @@ int main(int argc, char *argv[])
           printf("#General multiplier with %d states computed.\n",
                  genmultptr->states->size);
         base_prefix(fsaname);
-        strcat(fsaname, ".gm");
+        append_filename(fsaname, sizeof(fsaname), ".gm");
         wfile = fopen(outf2, "w");
         fsa_print(wfile, genmultptr, fsaname);
         fclose(wfile);

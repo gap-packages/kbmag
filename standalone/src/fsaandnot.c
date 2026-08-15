@@ -85,11 +85,11 @@ int main(int argc, char *argv[])
       if (strcmp(outf, ""))
         badusage();
       if (strcmp(inf1, "") == 0)
-        strcpy(inf1, argv[arg]);
+        make_filename(inf1, sizeof(inf1), "%s", argv[arg]);
       else if (strcmp(inf2, "") == 0)
-        strcpy(inf2, argv[arg]);
+        make_filename(inf2, sizeof(inf2), "%s", argv[arg]);
       else
-        strcpy(outf, argv[arg]);
+        make_filename(outf, sizeof(outf), "%s", argv[arg]);
     }
     arg++;
   }
@@ -110,8 +110,7 @@ int main(int argc, char *argv[])
   fsa_read(rfile, &fsa2, ip_store, dr, 0, TRUE, fsaname2);
   fclose(rfile);
 
-  strcpy(tempfilename, inf1);
-  strcat(tempfilename, "temp_andnot_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_andnot_XXX", inf1);
   fsaandnot = fsa_and_not(&fsa1, &fsa2, op_store, TRUE, tempfilename);
   if (fsaandnot == 0)
     exit(1);
@@ -126,7 +125,7 @@ int main(int argc, char *argv[])
            fsaandnot->states->size);
 
   base_prefix(fsaname1);
-  strcat(fsaname1, "_andnot");
+  append_filename(fsaname1, sizeof(fsaname1), "_andnot");
   wfile = fopen(outf, "w");
   fsa_print(wfile, fsaandnot, fsaname1);
   fclose(wfile);

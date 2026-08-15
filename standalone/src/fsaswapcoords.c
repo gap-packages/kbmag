@@ -66,9 +66,9 @@ int main(int argc, char *argv[])
       if (strcmp(outf, ""))
         badusage();
       if (strcmp(inf, "") == 0)
-        strcpy(inf, argv[arg]);
+        make_filename(inf, sizeof(inf), "%s", argv[arg]);
       else
-        strcpy(outf, argv[arg]);
+        make_filename(outf, sizeof(outf), "%s", argv[arg]);
     }
     arg++;
   }
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     testfsa.table->printing_format = op_format;
 
   base_prefix(fsaname);
-  strcat(fsaname, "_swap_coords");
+  append_filename(fsaname, sizeof(fsaname), "_swap_coords");
   if (stringlen(outf) == 0)
     wfile = stdout;
   else

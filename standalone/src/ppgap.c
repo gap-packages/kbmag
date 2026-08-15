@@ -48,9 +48,8 @@ int main(int argc, char *argv[])
 
   if (argc != 2)
     badusage();
-  strcpy(gpname, argv[1]);
-  strcpy(outf, gpname);
-  strcat(outf, ".gap");
+  make_filename(gpname, sizeof(gpname), "%s", argv[1]);
+  make_filename(outf, sizeof(outf), "%s.gap", gpname);
 
   /* First read in the defining relations for the group. */
   if ((rfile = fopen(gpname, "r")) == 0) {

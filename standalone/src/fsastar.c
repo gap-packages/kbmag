@@ -76,14 +76,13 @@ int main(int argc, char *argv[])
         badusage();
       if (strcmp(inf, ""))
         badusage();
-      strcpy(inf, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }
   if (stringlen(inf) == 0)
     badusage();
-  strcpy(outf, inf);
-  strcat(outf, ".star");
+  make_filename(outf, sizeof(outf), "%s.star", inf);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -98,8 +97,7 @@ int main(int argc, char *argv[])
 
 
   if (fsastarnd->flags[NFA]) {
-    strcpy(tempfilename, inf);
-    strcat(tempfilename, "temp_mid_XXX");
+    make_filename(tempfilename, sizeof(tempfilename), "%stemp_mid_XXX", inf);
     if (kbm_print_level > 1)
       printf("  #Number of states of fsastar before determinimization = %d.\n",
              fsastarnd->states->size);
@@ -122,7 +120,7 @@ int main(int argc, char *argv[])
     printf("  #Number of states of fsastar after minimization = %d.\n",
            fsastar->states->size);
 
-  strcat(fsaname, "_star");
+  append_filename(fsaname, sizeof(fsaname), "_star");
   wfile = fopen(outf, "w");
   fsa_print(wfile, fsastar, fsaname);
   fclose(wfile);

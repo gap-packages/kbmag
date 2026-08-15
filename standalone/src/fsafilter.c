@@ -88,14 +88,13 @@ int main(int argc, char *argv[])
         badusage();
       if (strcmp(inf, ""))
         badusage();
-      strcpy(inf, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }
 
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
-    strcat(outf, ".filter");
+    make_filename(outf, sizeof(outf), "%s.filter", inf);
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);

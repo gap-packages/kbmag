@@ -178,11 +178,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
+      make_filename(cosgpname, sizeof(cosgpname), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -196,20 +196,20 @@ int main(int argc, char *argv[])
     badusage();
   }
   if (cosets && !seencosname)
-    sprintf(cosgpname, "%s.cos", gpname);
+    make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   if (cosets)
-    strcpy(inf1, cosgpname);
+    make_filename(inf1, sizeof(inf1), "%s", cosgpname);
   else
-    strcpy(inf1, gpname);
+    make_filename(inf1, sizeof(inf1), "%s", gpname);
 
-  strcpy(inf2, inf1);
-  strcat(inf1, ".gm");
+  make_filename(inf2, sizeof(inf2), "%s", inf1);
+  append_filename(inf1, sizeof(inf1), ".gm");
 
   if (cosets)
-    sprintf(outfec, "%s.cm.ec", cosgpname);
+    make_filename(outfec, sizeof(outfec), "%s.cm.ec", cosgpname);
   else
-    sprintf(outfec, "%s.cm.ec", gpname);
+    make_filename(outfec, sizeof(outfec), "%s.cm.ec", gpname);
 
   if ((rfile = fopen(inf1, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf1);
@@ -227,10 +227,10 @@ int main(int argc, char *argv[])
     if (outputwords) {
       /* We do not update gpname.diff2, but output the offending words. */
       if (cosets)
-        strcpy(outfwg, cosgpname);
+        make_filename(outfwg, sizeof(outfwg), "%s", cosgpname);
       else
-        strcpy(outfwg, gpname);
-      strcat(outfwg, ".wg");
+        make_filename(outfwg, sizeof(outfwg), "%s", gpname);
+      append_filename(outfwg, sizeof(outfwg), ".wg");
       wfile = fopen(outfwg, "w");
       base_prefix(fsaname);
       fprintf(wfile, "%s.wg := [\n", fsaname);
@@ -264,10 +264,10 @@ int main(int argc, char *argv[])
     }
     fsa_clear(&genmult);
     if (cosets)
-      strcat(inf2, ".midiff2");
+      append_filename(inf2, sizeof(inf2), ".midiff2");
     else
-      strcat(inf2, ".diff2");
-    strcpy(outf, inf2);
+      append_filename(inf2, sizeof(inf2), ".diff2");
+    make_filename(outf, sizeof(outf), "%s", inf2);
     if (kbm_print_level > 1)
       printf("  #Altering wd-machine to make it accept new equations.\n");
     if ((rfile = fopen(inf2, "r")) == 0) {
@@ -296,8 +296,7 @@ int main(int argc, char *argv[])
         weight[i] = rws.weight[i];
       weight[rws.num_gens + 1] = 0; /* padding symbol */
       rws_clear(&rws);
-      strcpy(inf3, gpname);
-      strcat(inf3, ".wa");
+      make_filename(inf3, sizeof(inf3), "%s.wa", gpname);
       if ((rfile = fopen(inf3, "r")) == 0) {
         fprintf(stderr, "Cannot open file %s.\n", inf3);
         exit(1);

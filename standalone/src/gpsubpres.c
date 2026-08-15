@@ -140,11 +140,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seensubname) {
       seensubname = TRUE;
-      strcpy(subname, argv[arg]);
+      make_filename(subname, sizeof(subname), "%s", argv[arg]);
     }
     else
       badusage();
@@ -153,24 +153,21 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (!seensubname)
-    strcpy(subname, "sub");
+    make_filename(subname, sizeof(subname), "sub");
   if (strncmp(subname, "sub", 3) == 0) {
-    strcpy(cosgpname, gpname);
-    strcat(cosgpname, ".cos");
-    strcat(cosgpname, subname + 3);
+    make_filename(cosgpname, sizeof(cosgpname), "%s", gpname);
+    append_filename(cosgpname, sizeof(cosgpname), ".cos");
+    append_filename(cosgpname, sizeof(cosgpname), "%s", subname + 3);
   }
   else {
-    strcpy(cosgpname, gpname);
-    strcat(cosgpname, ".");
-    strcat(cosgpname, subname);
-    strcat(cosgpname, "_cos");
+    make_filename(cosgpname, sizeof(cosgpname), "%s.%s_cos", gpname, subname);
   }
 
-  strcpy(tablefilename, cosgpname);
-  strcat(tablefilename, "temp_axXXX");
+  make_filename(tablefilename, sizeof(tablefilename), "%s", cosgpname);
+  append_filename(tablefilename, sizeof(tablefilename), "temp_axXXX");
 
   /* First read in the defining relations for the group. */
-  strcpy(inf, gpname);
+  make_filename(inf, sizeof(inf), "%s", gpname);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -185,8 +182,7 @@ int main(int argc, char *argv[])
   /* Now read in the general multiplier, and see how many subgroup generators
    * there are (which is just the number of initial states - 1).
    */
-  strcpy(inf, cosgpname);
-  strcat(inf, ".migm");
+  make_filename(inf, sizeof(inf), "%s.migm", cosgpname);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -198,7 +194,7 @@ int main(int argc, char *argv[])
   /* The first initial state always corresponds to the identity.
    * Now we can open the output file and commence the output in GAP format.
    */
-  sprintf(outfp, "%s.%s.pres", gpname, subname);
+  make_filename(outfp, sizeof(outfp), "%s.%s.pres", gpname, subname);
   wfilep = fopen(outfp, "w");
   fprintf(wfilep, "%sg := FreeGroup(%d);\n", prefix, nsubgens);
   for (i = 1; i <= nsubgens; i++)
@@ -225,10 +221,8 @@ int main(int argc, char *argv[])
   if (kbm_print_level > 1)
     printf("  #Number of states of migm2 after minimization = %d.\n",
            migm2ptr->states->size);
-  strcpy(fsaname, rws.name);
-  strcat(fsaname, ".migm2");
-  strcpy(outf, cosgpname);
-  strcat(outf, ".migm2");
+  make_filename(fsaname, sizeof(fsaname), "%s.migm2", rws.name);
+  make_filename(outf, sizeof(outf), "%s.migm2", cosgpname);
   wfile = fopen(outf, "w");
   fsa_print(wfile, migm2ptr, fsaname);
   if (kbm_print_level > 0)
@@ -246,8 +240,9 @@ int main(int argc, char *argv[])
    * storedmult. We first form a rough upper bound on how long this list
    * could get - ngens + total relator length - 1.
    */
-  strcpy(fsaname, rws.name);
-  strcat(fsaname, ".mimult"); /* this is unimportant, since file is temporary */
+  make_filename(fsaname, sizeof(fsaname), "%s", rws.name);
+  /* this is unimportant, since the file is temporary */
+  append_filename(fsaname, sizeof(fsaname), ".mimult");
   if (keepfiles) {
     ct = ngens;
     for (i = 1; i <= neqns; i++)
@@ -306,14 +301,13 @@ int main(int argc, char *argv[])
 
   if (keepfiles) {
     for (i = 1; i <= numstoredmult; i++) {
-      sprintf(outf, "%s.mim%s", cosgpname, storedmult[i]);
+      make_filename(outf, sizeof(outf), "%s.mim%s", cosgpname, storedmult[i]);
       unlink(outf);
       tfree(storedmult[i]);
     }
     tfree(storedmult);
   }
-  strcpy(outf, cosgpname);
-  strcat(outf, ".migm2");
+  make_filename(outf, sizeof(outf), "%s.migm2", cosgpname);
   unlink(outf);
   rws_clear(&rws);
   exit(0);
@@ -377,7 +371,7 @@ int find_subrels(gen *r)
       return -1;
   }
   /* Now we read the composite multiplier in */
-  sprintf(inf, "%s.mim%s", cosgpname, suff);
+  make_filename(inf, sizeof(inf), "%s.mim%s", cosgpname, suff);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -446,8 +440,7 @@ int long_word_multiplier(gen *w, char *s)
   l = genstrlen(w);
 
   if (l == 1) { /* Length 1 - use fsa_mimakemult */
-    strcpy(inf, cosgpname);
-    strcat(inf, ".migm");
+    make_filename(inf, sizeof(inf), "%s.migm", cosgpname);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -458,15 +451,14 @@ int long_word_multiplier(gen *w, char *s)
       return -1;
     if (mimult_minimize(&migm) == -1)
       return -1;
-    sprintf(outf, "%s.mim%s", cosgpname, s);
+    make_filename(outf, sizeof(outf), "%s.mim%s", cosgpname, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, &migm, fsaname);
     fclose(wfile);
     fsa_clear(&migm);
   }
   else if (l == 2) { /* Length 2 - use fsa_mimakemult2 */
-    strcpy(inf, cosgpname);
-    strcat(inf, ".migm2");
+    make_filename(inf, sizeof(inf), "%s.migm2", cosgpname);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -476,7 +468,7 @@ int long_word_multiplier(gen *w, char *s)
     if (fsa_mimakemult2(&migm2, w[0], w[1], prefix) == -1)
       return -1;
     mimult_minimize(&migm2);
-    sprintf(outf, "%s.mim%s", cosgpname, s);
+    make_filename(outf, sizeof(outf), "%s.mim%s", cosgpname, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, &migm2, fsaname);
     fclose(wfile);
@@ -561,14 +553,14 @@ int long_word_multiplier(gen *w, char *s)
         return -1;
     }
     /* Read back in the two multipliers and form their composite */
-    sprintf(inf, "%s.mim%s", cosgpname, suffl);
+    make_filename(inf, sizeof(inf), "%s.mim%s", cosgpname, suffl);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
     }
     fsa_read(rfile, &mult1, ip_store, dr, 0, TRUE, fsaname);
     fclose(rfile);
-    sprintf(inf, "%s.mim%s", cosgpname, suffr);
+    make_filename(inf, sizeof(inf), "%s.mim%s", cosgpname, suffr);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -586,7 +578,7 @@ int long_word_multiplier(gen *w, char *s)
         else
           fsa_ip_minimize(compmult);
     */
-    sprintf(outf, "%s.mim%s", cosgpname, s);
+    make_filename(outf, sizeof(outf), "%s.mim%s", cosgpname, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, compmult, fsaname);
     fclose(wfile);
@@ -600,9 +592,9 @@ int long_word_multiplier(gen *w, char *s)
         tfree(suffr) else storedmult[++numstoredmult] = suffr;
     }
     else {
-      sprintf(inf, "%s.mim%s", cosgpname, suffl);
+      make_filename(inf, sizeof(inf), "%s.mim%s", cosgpname, suffl);
       unlink(inf);
-      sprintf(inf, "%s.mim%s", cosgpname, suffr);
+      make_filename(inf, sizeof(inf), "%s.mim%s", cosgpname, suffr);
       unlink(inf);
       tfree(suffl);
       tfree(suffr);

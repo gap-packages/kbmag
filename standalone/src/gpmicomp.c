@@ -92,26 +92,26 @@ int main(int argc, char *argv[])
       if (strcmp(outf, "") != 0)
         badusage();
       else if (strcmp(inf1, "") == 0)
-        strcpy(inf1, argv[arg]);
+        make_filename(inf1, sizeof(inf1), "%s", argv[arg]);
       else if (strcmp(inf2, "") == 0)
-        strcpy(inf2, argv[arg]);
+        make_filename(inf2, sizeof(inf2), "%s", argv[arg]);
       else
-        strcpy(outf, argv[arg]);
+        make_filename(outf, sizeof(outf), "%s", argv[arg]);
     }
     arg++;
   }
   if (stringlen(inf1) == 0 || stringlen(inf2) == 0 || stringlen(outf) == 0)
     badusage();
 
-  strcpy(tempfilename, inf1);
+  make_filename(tempfilename, sizeof(tempfilename), "%s", inf1);
   /* The next lines avoid a potential problem when "inf2" contains a '/' */
   inf2ptr = inf2 + strlen(inf2);
   while (--inf2ptr >= inf2)
     if (*inf2ptr == '/')
       break;
   inf2ptr++;
-  strcat(tempfilename, inf2ptr);
-  strcat(tempfilename, "_tempXXX");
+  append_filename(tempfilename, sizeof(tempfilename), "%s", inf2ptr);
+  append_filename(tempfilename, sizeof(tempfilename), "_tempXXX");
 
   if ((rfile = fopen(inf1, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf1);
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
            micompmult->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".micomp");
+  append_filename(fsaname, sizeof(fsaname), ".micomp");
   wfile = fopen(outf, "w");
   fsa_print(wfile, micompmult, fsaname);
   fclose(wfile);

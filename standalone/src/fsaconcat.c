@@ -80,11 +80,11 @@ int main(int argc, char *argv[])
       if (strcmp(outf, ""))
         badusage();
       if (strcmp(inf1, "") == 0)
-        strcpy(inf1, argv[arg]);
+        make_filename(inf1, sizeof(inf1), "%s", argv[arg]);
       else if (strcmp(inf2, "") == 0)
-        strcpy(inf2, argv[arg]);
+        make_filename(inf2, sizeof(inf2), "%s", argv[arg]);
       else
-        strcpy(outf, argv[arg]);
+        make_filename(outf, sizeof(outf), "%s", argv[arg]);
     }
     arg++;
   }
@@ -111,8 +111,7 @@ int main(int argc, char *argv[])
 
 
   if (fsaconcatnd->flags[NFA]) {
-    strcpy(tempfilename, inf1);
-    strcat(tempfilename, "temp_mid_XXX");
+    make_filename(tempfilename, sizeof(tempfilename), "%stemp_mid_XXX", inf1);
     if (kbm_print_level > 1)
       printf(
           "  #Number of states of fsaconcat before determinimization = %d.\n",
@@ -137,7 +136,7 @@ int main(int argc, char *argv[])
            fsaconcat->states->size);
 
   base_prefix(fsaname1);
-  strcat(fsaname1, "_concat");
+  append_filename(fsaname1, sizeof(fsaname1), "_concat");
   wfile = fopen(outf, "w");
   fsa_print(wfile, fsaconcat, fsaname1);
   fclose(wfile);

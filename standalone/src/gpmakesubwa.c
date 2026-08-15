@@ -185,9 +185,9 @@ int main(int argc, char *argv[])
       if (strcmp(suffix, ""))
         badusage();
       if (strcmp(gpname, "") == 0)
-        strcpy(gpname, argv[arg]);
+        make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
       else
-        strcpy(suffix, argv[arg]);
+        make_filename(suffix, sizeof(suffix), "%s", argv[arg]);
     }
     arg++;
   }
@@ -196,30 +196,25 @@ int main(int argc, char *argv[])
     badusage();
 
   if (stringlen(suffix) == 0)
-    strcpy(suffix, "sub");
-  strcpy(inf_sub, gpname);
-  strcat(inf_sub, ".");
-  strcat(inf_sub, suffix);
-  strcpy(outf, inf_sub);
-  strcat(outf, ".wa");
+    make_filename(suffix, sizeof(suffix), "sub");
+  make_filename(inf_sub, sizeof(inf_sub), "%s.%s", gpname, suffix);
+  make_filename(outf, sizeof(outf), "%s.wa", inf_sub);
   if (wordfile)
-    strcat(inf_sub, ".words");
+    append_filename(inf_sub, sizeof(inf_sub), ".words");
 
-  strcpy(tempfilename, inf_sub);
-  strcat(tempfilename, "temp_wa_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_wa_XXX", inf_sub);
 
   /* First sort out the reduction automaton and routine for the group */
-  strcpy(inf_gred, gpname);
+  make_filename(inf_gred, sizeof(inf_gred), "%s", gpname);
   if (diff1_ip)
-    strcat(inf_gred, ".diff1");
+    append_filename(inf_gred, sizeof(inf_gred), ".diff1");
   else if (diff2_ip)
-    strcat(inf_gred, ".diff2");
+    append_filename(inf_gred, sizeof(inf_gred), ".diff2");
   else if (diff1c_ip)
-    strcat(inf_gred, ".diff1c");
+    append_filename(inf_gred, sizeof(inf_gred), ".diff1c");
   else {
     diff2_ip = TRUE;
-    strcpy(inf_gred, gpname);
-    strcat(inf_gred, ".diff2");
+    make_filename(inf_gred, sizeof(inf_gred), "%s.diff2", gpname);
   }
 
   if ((rfile = fopen(inf_gred, "r")) == 0) {
@@ -240,26 +235,23 @@ int main(int argc, char *argv[])
 
   /* Now the word-reduction machine for cosets */
   if (strncmp(suffix, "sub", 3) == 0) {
-    strcpy(inf_cosred, gpname);
-    strcat(inf_cosred, ".cos");
-    strcat(inf_cosred, suffix + 3);
+    make_filename(inf_cosred, sizeof(inf_cosred), "%s", gpname);
+    append_filename(inf_cosred, sizeof(inf_cosred), ".cos");
+    append_filename(inf_cosred, sizeof(inf_cosred), "%s", suffix + 3);
   }
   else {
-    strcpy(inf_cosred, gpname);
-    strcat(inf_cosred, ".");
-    strcat(inf_cosred, suffix);
-    strcat(inf_cosred, "_cos");
+    make_filename(inf_cosred, sizeof(inf_cosred), "%s.%s_cos", gpname, suffix);
   }
 
   open = FALSE;
   if (rws_ipcos)
-    strcat(inf_cosred, ".kbprog");
+    append_filename(inf_cosred, sizeof(inf_cosred), ".kbprog");
   else if (diff1_ipcos)
-    strcat(inf_cosred, ".midiff1");
+    append_filename(inf_cosred, sizeof(inf_cosred), ".midiff1");
   else if (diff2_ipcos)
-    strcat(inf_cosred, ".midiff2");
+    append_filename(inf_cosred, sizeof(inf_cosred), ".midiff2");
   else {
-    strcat(inf_cosred, ".kbprog");
+    append_filename(inf_cosred, sizeof(inf_cosred), ".kbprog");
     rfile = fopen(inf_cosred, "r");
     if (rfile) {
       rws_ipcos = TRUE;
@@ -267,7 +259,9 @@ int main(int argc, char *argv[])
     }
     else {
       diff2_ipcos = TRUE;
-      strcpy(inf_cosred + stringlen(inf_cosred) - 6, "midiff2");
+      /* replace the last six characters of the name */
+      inf_cosred[stringlen(inf_cosred) - 6] = '\0';
+      append_filename(inf_cosred, sizeof(inf_cosred), "midiff2");
     }
   }
 
@@ -281,7 +275,8 @@ int main(int argc, char *argv[])
     read_kbinput_simple(rfile, FALSE, rwsptr);
     fclose(rfile);
     tmalloc(rwsptr->reduction_fsa, fsa, 1);
-    strcpy(inf_cosred + stringlen(inf_cosred) - 6, "reduce");
+    inf_cosred[stringlen(inf_cosred) - 6] = '\0';
+    append_filename(inf_cosred, sizeof(inf_cosred), "reduce");
     if ((rfile = fopen(inf_cosred, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf_cosred);
       exit(1);
@@ -308,8 +303,7 @@ int main(int argc, char *argv[])
   reduce_word_cos = rws_ipcos ? rws_reduce : diff_reduce_cos;
 
   /* Now read the word-acceptor for the group */
-  strcpy(inf_wa, gpname);
-  strcat(inf_wa, ".wa");
+  make_filename(inf_wa, sizeof(inf_wa), "%s.wa", gpname);
   if ((rfile = fopen(inf_wa, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf_wa);
     exit(1);
@@ -505,7 +499,7 @@ int main(int argc, char *argv[])
     exit(1);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".wa");
+  append_filename(fsaname, sizeof(fsaname), ".wa");
   wfile = fopen(outf, "w");
   fsa_print(wfile, subgwa, fsaname);
   fclose(wfile);

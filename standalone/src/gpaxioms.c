@@ -161,11 +161,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
+      make_filename(cosgpname, sizeof(cosgpname), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -174,21 +174,21 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (cosets && !seencosname)
-    sprintf(cosgpname, "%s.cos", gpname);
+    make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   if (cosets)
-    sprintf(outfec, "%s.axioms.ec", cosgpname);
+    make_filename(outfec, sizeof(outfec), "%s.axioms.ec", cosgpname);
   else
-    sprintf(outfec, "%s.axioms.ec", gpname);
+    make_filename(outfec, sizeof(outfec), "%s.axioms.ec", gpname);
 
   rwsfilename = cosets ? cosgpname : gpname;
-  strcpy(tablefilename, rwsfilename);
-  strcat(tablefilename, "temp_axXXX");
+  make_filename(tablefilename, sizeof(tablefilename), "%s", rwsfilename);
+  append_filename(tablefilename, sizeof(tablefilename), "temp_axXXX");
 
   /* First read in the defining relations for the group. */
-  strcpy(inf, gpname);
+  make_filename(inf, sizeof(inf), "%s", gpname);
   if (xset)
-    strcat(inf, "_x");
+    append_filename(inf, sizeof(inf), "_x");
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -220,8 +220,7 @@ int main(int argc, char *argv[])
      * If allshort is true, we don't need the transitions - only the state
      * labels.
      */
-    strcpy(inf, rwsfilename);
-    strcat(inf, ".gm");
+    make_filename(inf, sizeof(inf), "%s.gm", rwsfilename);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -259,10 +258,8 @@ int main(int argc, char *argv[])
       if (kbm_print_level > 1)
         printf("  #Number of states of genmult2 after minimization = %d.\n",
                genmult2ptr->states->size);
-      strcpy(fsaname, rws.name);
-      strcat(fsaname, ".gm2");
-      strcpy(outf, rwsfilename);
-      strcat(outf, ".gm2");
+      make_filename(fsaname, sizeof(fsaname), "%s.gm2", rws.name);
+      make_filename(outf, sizeof(outf), "%s.gm2", rwsfilename);
       wfile = fopen(outf, "w");
       fsa_print(wfile, genmult2ptr, fsaname);
       if (kbm_print_level > 0)
@@ -309,8 +306,9 @@ int main(int argc, char *argv[])
      * multipliers in storedmult. We first form a rough upper bound on how long
      * this list could get - ngens + total relator length - 1.
      */
-    strcpy(fsaname, rws.name);
-    strcat(fsaname, ".mult"); /* this is unimportant, since file is temporary */
+    make_filename(fsaname, sizeof(fsaname), "%s", rws.name);
+    /* this is unimportant, since the file is temporary */
+    append_filename(fsaname, sizeof(fsaname), ".mult");
     if (keepfiles) {
       ct = usegm2 ? ngens : 2 * ngens;
       for (i = 1; i <= neqns; i++)
@@ -347,14 +345,13 @@ int main(int argc, char *argv[])
       }
     if (keepfiles) {
       for (i = 1; i <= numstoredmult; i++) {
-        sprintf(outf, "%s.m%s", rwsfilename, storedmult[i]);
+        make_filename(outf, sizeof(outf), "%s.m%s", rwsfilename, storedmult[i]);
         unlink(outf);
         tfree(storedmult[i]);
       }
       tfree(storedmult);
     }
-    strcpy(outf, rwsfilename);
-    strcat(outf, ".gm2");
+    make_filename(outf, sizeof(outf), "%s.gm2", rwsfilename);
     unlink(outf);
   }
   tfree(genmult2ptr);
@@ -505,7 +502,7 @@ int check_long_relation(void)
       return -1;
   }
   /* Read in the two multipliers and compare them */
-  sprintf(inf, "%s.m%s", rwsfilename, suffl);
+  make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffl);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -513,7 +510,7 @@ int check_long_relation(void)
   }
   fsa_read(rfile, &mult1, ip_store, 0, 0, TRUE, fsaname);
   fclose(rfile);
-  sprintf(inf, "%s.m%s", rwsfilename, suffr);
+  make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffr);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -541,9 +538,9 @@ int check_long_relation(void)
       tfree(suffr) else storedmult[++numstoredmult] = suffr;
   }
   else {
-    sprintf(inf, "%s.m%s", rwsfilename, suffl);
+    make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffl);
     unlink(inf);
-    sprintf(inf, "%s.m%s", rwsfilename, suffr);
+    make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffr);
     unlink(inf);
     tfree(suffl);
     tfree(suffr);
@@ -606,8 +603,7 @@ int long_word_multiplier(gen *w, char *s)
   l = genstrlen(w);
 
   if (l <= 1) { /* Length <=1 - use fsa_makemult */
-    strcpy(inf, rwsfilename);
-    strcat(inf, ".gm");
+    make_filename(inf, sizeof(inf), "%s.gm", rwsfilename);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -618,15 +614,14 @@ int long_word_multiplier(gen *w, char *s)
       return -1;
     if (fsa_minimize(&genmult) == -1)
       return -1;
-    sprintf(outf, "%s.m%s", rwsfilename, s);
+    make_filename(outf, sizeof(outf), "%s.m%s", rwsfilename, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, &genmult, fsaname);
     fclose(wfile);
     fsa_clear(&genmult);
   }
   else if (usegm2 && l == 2) { /* Length 2 - use fsa_makemult2 */
-    strcpy(inf, rwsfilename);
-    strcat(inf, ".gm2");
+    make_filename(inf, sizeof(inf), "%s.gm2", rwsfilename);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -637,7 +632,7 @@ int long_word_multiplier(gen *w, char *s)
       return -1;
     if (fsa_minimize(&genmult2) == -1)
       return -1;
-    sprintf(outf, "%s.m%s", rwsfilename, s);
+    make_filename(outf, sizeof(outf), "%s.m%s", rwsfilename, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, &genmult2, fsaname);
     fclose(wfile);
@@ -730,14 +725,14 @@ int long_word_multiplier(gen *w, char *s)
       }
     }
     /* Read back in the two multipliers and form their composite */
-    sprintf(inf, "%s.m%s", rwsfilename, suffl);
+    make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffl);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
     }
     fsa_read(rfile, &mult1, ip_store, dr, 0, TRUE, fsaname);
     fclose(rfile);
-    sprintf(inf, "%s.m%s", rwsfilename, suffr);
+    make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffr);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -759,7 +754,7 @@ int long_word_multiplier(gen *w, char *s)
       if (fsa_ip_minimize(compmult) == -1)
         return -1;
     }
-    sprintf(outf, "%s.m%s", rwsfilename, s);
+    make_filename(outf, sizeof(outf), "%s.m%s", rwsfilename, s);
     wfile = fopen(outf, "w");
     fsa_print(wfile, compmult, fsaname);
     fclose(wfile);
@@ -773,9 +768,9 @@ int long_word_multiplier(gen *w, char *s)
         tfree(suffr) else storedmult[++numstoredmult] = suffr;
     }
     else {
-      sprintf(inf, "%s.m%s", rwsfilename, suffl);
+      make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffl);
       unlink(inf);
-      sprintf(inf, "%s.m%s", rwsfilename, suffr);
+      make_filename(inf, sizeof(inf), "%s.m%s", rwsfilename, suffr);
       unlink(inf);
       tfree(suffl);
       tfree(suffr);

@@ -85,14 +85,13 @@ int main(int argc, char *argv[])
         badusage();
       if (strcmp(inf, ""))
         badusage();
-      strcpy(inf, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }
 
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
-    strcat(outf, ".min");
+    make_filename(outf, sizeof(outf), "%s.min", inf);
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -118,7 +117,7 @@ int main(int argc, char *argv[])
 
   if (op_format_set)
     testfsa.table->printing_format = op_format;
-  strcat(fsaname, "_min");
+  append_filename(fsaname, sizeof(fsaname), "_min");
 
   if (stringlen(inf) != 0)
     wfile = fopen(outf, "w");

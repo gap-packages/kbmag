@@ -89,16 +89,16 @@ int main(int argc, char *argv[])
         badusage();
       if (strcmp(inf, ""))
         badusage();
-      strcpy(inf, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
+    make_filename(outf, sizeof(outf), "%s", inf);
     if (all_initial)
-      strcat(outf, ".iprune");
+      append_filename(outf, sizeof(outf), ".iprune");
     else
-      strcat(outf, ".prune");
+      append_filename(outf, sizeof(outf), ".prune");
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
 
   if (op_format_set)
     testfsa.table->printing_format = op_format;
-  strcat(fsaname, "_prune");
+  append_filename(fsaname, sizeof(fsaname), "_prune");
 
   if (stringlen(inf) != 0)
     wfile = fopen(outf, "w");

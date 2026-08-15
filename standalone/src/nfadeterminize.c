@@ -74,13 +74,12 @@ int main(int argc, char *argv[])
         badusage();
       if (strcmp(inf, ""))
         badusage();
-      strcpy(inf, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
-    strcat(outf, ".determinize");
+    make_filename(outf, sizeof(outf), "%s.determinize", inf);
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -101,8 +100,7 @@ int main(int argc, char *argv[])
     fsa_copy(fsadeterminize, &fsain);
   }
   else {
-    strcpy(tempfilename, inf);
-    strcat(tempfilename, "temp_mid_XXX");
+    make_filename(tempfilename, sizeof(tempfilename), "%stemp_mid_XXX", inf);
     fsadeterminize =
         nfa_determinize(&fsain, op_store, TRUE, TRUE, subsets, tempfilename);
   }
@@ -125,7 +123,7 @@ int main(int argc, char *argv[])
              fsadeterminize->states->size);
   }
 
-  strcat(fsaname, "_determinize");
+  append_filename(fsaname, sizeof(fsaname), "_determinize");
   if (stringlen(inf) != 0)
     wfile = fopen(outf, "w");
   else

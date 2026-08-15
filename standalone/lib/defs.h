@@ -90,6 +90,8 @@ int genstrlen(gen *c);
 int int_len(int n);
 int stringlen(char *c);
 void add_to_buffer(int n, char *w);
+void make_filename(char *dest, size_t size, const char *fmt, ...);
+void append_filename(char *dest, size_t size, const char *fmt, ...);
 void check_next_char(FILE *rfile, int c);
 void genstrcat(gen *c, gen *d);
 void genstrcpy(gen *c, gen *d);

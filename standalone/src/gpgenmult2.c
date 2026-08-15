@@ -90,20 +90,18 @@ int main(int argc, char *argv[])
       if (strcmp(inf, "") != 0)
         badusage();
       else
-        strcpy(inf, argv[arg]);
+        make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }
   if (stringlen(inf) == 0)
     badusage();
 
-  strcpy(tablefilename, inf);
-  strcat(tablefilename, ".gm2_ut");
+  make_filename(tablefilename, sizeof(tablefilename), "%s.gm2_ut", inf);
 
-  strcpy(outf, inf);
-  strcat(outf, ".gm2");
+  make_filename(outf, sizeof(outf), "%s.gm2", inf);
 
-  strcat(inf, ".gm");
+  append_filename(inf, sizeof(inf), ".gm");
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -132,7 +130,7 @@ int main(int argc, char *argv[])
     printf("  #Number of states of genmult2 after minimization = %d.\n",
            genmult2ptr->states->size);
   base_prefix(fsaname);
-  strcat(fsaname, ".gm2");
+  append_filename(fsaname, sizeof(fsaname), ".gm2");
   wfile = fopen(outf, "w");
   fsa_print(wfile, genmult2ptr, fsaname);
   fclose(wfile);

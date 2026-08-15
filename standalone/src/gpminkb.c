@@ -92,20 +92,17 @@ int main(int argc, char *argv[])
         badusage();
       if (strcmp(gpname, ""))
         badusage();
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     arg++;
   }
   if (stringlen(gpname) == 0)
     badusage();
 
-  strcpy(inf, gpname);
-  strcat(inf, ".wa");
-  strcpy(outf, gpname);
-  strcat(outf, ".minred");
+  make_filename(inf, sizeof(inf), "%s.wa", gpname);
+  make_filename(outf, sizeof(outf), "%s.minred", gpname);
 
-  strcpy(tempfilename, gpname);
-  strcat(tempfilename, "temp_min_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_min_XXX", gpname);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -128,7 +125,7 @@ int main(int argc, char *argv[])
            minred->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".minred");
+  append_filename(fsaname, sizeof(fsaname), ".minred");
   wfile = fopen(outf, "w");
   fsa_print(wfile, minred, fsaname);
   fclose(wfile);
@@ -138,10 +135,8 @@ int main(int argc, char *argv[])
 
 
   /* Now do the second part - construct the minimal KB-rules machine. */
-  strcpy(inf, gpname);
-  strcat(inf, ".diff2");
-  strcpy(outf, gpname);
-  strcat(outf, ".minkb");
+  make_filename(inf, sizeof(inf), "%s.diff2", gpname);
+  make_filename(outf, sizeof(outf), "%s.minkb", gpname);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -170,7 +165,7 @@ int main(int argc, char *argv[])
            minkb->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".minkb");
+  append_filename(fsaname, sizeof(fsaname), ".minkb");
   wfile = fopen(outf, "w");
   fsa_print(wfile, minkb, fsaname);
   fclose(wfile);
@@ -182,10 +177,8 @@ int main(int argc, char *argv[])
   fsa_clear(minkb);
 
   /* Now the third part - construct the correct diff1 machine. */
-  strcpy(inf, gpname);
-  strcat(inf, ".minkb");
-  strcpy(outf, gpname);
-  strcat(outf, ".diff1c");
+  make_filename(inf, sizeof(inf), "%s.minkb", gpname);
+  make_filename(outf, sizeof(outf), "%s.diff1c", gpname);
 
   /* We re-read the minkb machine to get it into dense format. */
   if ((rfile = fopen(inf, "r")) == 0) {
@@ -204,7 +197,7 @@ int main(int argc, char *argv[])
            diffc->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".diff1c");
+  append_filename(fsaname, sizeof(fsaname), ".diff1c");
   wfile = fopen(outf, "w");
   fsa_print(wfile, diffc, fsaname);
   fclose(wfile);
@@ -219,10 +212,8 @@ int main(int argc, char *argv[])
   tfree(diffc);
 
   /* Now the final part - construct the correct diff2 machine. */
-  strcpy(inf, gpname);
-  strcat(inf, ".gm");
-  strcpy(outf, gpname);
-  strcat(outf, ".diff2c");
+  make_filename(inf, sizeof(inf), "%s.gm", gpname);
+  make_filename(outf, sizeof(outf), "%s.diff2c", gpname);
 
   /* Read in general multiplier */
   if ((rfile = fopen(inf, "r")) == 0) {
@@ -241,7 +232,7 @@ int main(int argc, char *argv[])
            diffc->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".diff2c");
+  append_filename(fsaname, sizeof(fsaname), ".diff2c");
   wfile = fopen(outf, "w");
   fsa_print(wfile, diffc, fsaname);
   fclose(wfile);

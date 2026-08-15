@@ -105,11 +105,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(inf, "%s.%s", gpname, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -118,15 +118,13 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (!seencosname)
-    sprintf(inf, "%s.cos", gpname);
+    make_filename(inf, sizeof(inf), "%s.cos", gpname);
 
-  strcpy(tablefilename, inf);
-  strcat(tablefilename, ".migm2_ut");
+  make_filename(tablefilename, sizeof(tablefilename), "%s.migm2_ut", inf);
 
-  strcpy(outf, inf);
-  strcat(outf, ".migm2");
+  make_filename(outf, sizeof(outf), "%s.migm2", inf);
 
-  strcat(inf, ".migm");
+  append_filename(inf, sizeof(inf), ".migm");
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -151,7 +149,7 @@ int main(int argc, char *argv[])
     printf("  #Number of states of migenmult2 after minimization = %d.\n",
            migm2ptr->states->size);
   base_prefix(fsaname);
-  strcat(fsaname, ".gm2");
+  append_filename(fsaname, sizeof(fsaname), ".gm2");
   wfile = fopen(outf, "w");
   fsa_print(wfile, migm2ptr, fsaname);
   fclose(wfile);
