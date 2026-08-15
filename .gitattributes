@@ -1,0 +1,4 @@
+# The configure script, the makefiles and the shell scripts in standalone/src
+# have to run under Cygwin, where a CRLF checkout breaks them: bash reports
+# "$'\r': command not found". Keep text files as LF whatever the platform.
+* text=auto eol=lf
