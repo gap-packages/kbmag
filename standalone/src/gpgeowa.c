@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
   fsa temp, *waptr, *geowaptr, *geodiffptr, *tdiffptr, *gmptr, *gpp,
       *geopairsptr, *tgpp;
   reduction_equation *eqnptr;
-  reduction_struct rs_wd;
+  reduction_struct rs_wd = {0}; /* only some fields get set below */
   storage_type op_store1 = DENSE;
   storage_type op_store2 = SPARSE;
   boolean diff1_ip = FALSE, readback = TRUE;

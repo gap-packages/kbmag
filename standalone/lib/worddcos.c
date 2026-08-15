@@ -167,6 +167,13 @@ int add_wd_fsa_cos(fsa *wd_fsaptr, reduction_equation *eqn, int *inv,
           testword[l + 1] = 0;
         }
       else {
+        /* Only kbprogcos builds subwordsG, so only it can hand us an
+         * equation whose right hand side mentions an H-generator. */
+        if (rs->rws == 0 || rs->rws->subwordsG == 0) {
+          fprintf(stderr, "Error: add_wd_fsa_cos needs the subgroup words, "
+                          "but the caller has no rewriting system.\n");
+          return -1;
+        }
         if (l + genstrlen(rs->rws->subwordsG[*wd2]) + 1 > TESTWORDLEN)
           return word_too_long();
         genstrcat(testword, rs->rws->subwordsG[*wd2]);

@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
   gen testword[MAXREDUCELEN]; /* for word reduction */
   char **names; /* generator names in case we need to output words */
   reduction_equation *eqnptr;
-  reduction_struct rs_wd;
+  reduction_struct rs_wd = {0}; /* only some fields get set below */
   storage_type ip_store = DENSE;
   int dr = 0;
   boolean seengpname, seencosname;

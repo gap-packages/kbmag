@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
       outf2[100], outf2mi[100], fsaname[100], tempfilename[100];
   int maxeqns1, maxeqns2;
   reduction_equation *eqnptr;
-  reduction_struct rs_wd;
+  reduction_struct rs_wd = {0}; /* only some fields get set below */
   fsa *wd_fsa; /* This is for word-reduction in the case that we correct
                 * the diff1 or diff2 machine.
                 * It will be in groupname.diff2 or groupname.midiff2.

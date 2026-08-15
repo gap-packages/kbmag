@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   int arg;
   fsa fsaip, *difflabsptr;
   char inf1[100], inf2[100], outf[100], fsaname[100], tempfilename[100];
-  reduction_struct rs_wd;
+  reduction_struct rs_wd = {0}; /* only some fields get set below */
   storage_type op_store = SPARSE;
   boolean diff1_ip, diff1c_ip, diff2_ip;
   boolean readback = TRUE;
