@@ -9,11 +9,23 @@
 *.gcno
 *.gcov
 
+# Output of the standalone programs, which is written next to the sample
+# input. Every file tracked in these directories has no suffix, apart from
+# the .sub* subgroup generator files in subgp_data.
+/standalone/ag_data/*.*
+/standalone/fsa_data/*.*
+/standalone/kb_data/*.*
+/standalone/subgp_data/*.*
+!/standalone/subgp_data/*.sub
+!/standalone/subgp_data/*.sub?
+!/standalone/subgp_data/*.subind6
+
 /doc/chap* 
 /doc/*.css
 /doc/*.js
 /doc/_*.tex
 /doc/_*.xml
+/doc/_main.*
 /doc/chooser.html
 /doc/kbmag.aux
 /doc/kbmag.bbl
