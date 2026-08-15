@@ -21,7 +21,7 @@ and the new features in Version 2.*,
 
 All programs are in standard 'C', but there are three Bourne shell scripts
 (which are not completely essential for using the package).
-It is designed to run on any Unix system.
+It is designed to run on any Unix system, and on Windows under Cygwin.
  
 NEW in Version 2.3: It is now possible to use kbmag with more than the
 previous default number of 127 generators. To use up to 65535 generators,

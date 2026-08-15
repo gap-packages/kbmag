@@ -14,7 +14,7 @@
 
 &KBMAG;  (pronounced ``Kay-bee-mag'') stands  for 
 <E>Knuth--Bendix on Monoids, and Automatic Groups</E>.  
-It  is a stand-alone package  written in `C', for use under UNIX, 
+It  is a stand-alone package  written in `C', 
 with an interface to &GAP;.  
 Chapters <Ref Chap="chap-rws"/> and <Ref Chap="chap-cosets"/>
 describe its use as  an external library from within &GAP;.

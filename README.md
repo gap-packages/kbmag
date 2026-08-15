@@ -3,15 +3,15 @@
 
 # The GAP 4 package 'KBMAG'
 
-This package uses external binaries and currently works only under
-UNIX/LINUX systems.
+This package uses external binaries. It is tested on Linux, macOS and, via
+Cygwin, on Windows.
 
 
 ## Package description
 
 KBMAG (pronounced `Kay-bee-mag`) stands for `Knuth-Bendix on Monoids, and
-Automatic Groups`. It is a stand-alone package written in C, for use under
-UNIX, with an interface to GAP. There are interfaces for the use of KBMAG with
+Automatic Groups`. It is a stand-alone package written in C, with an interface
+to GAP. There are interfaces for the use of KBMAG with
 finitely presented groups, monoids and semigroups defined within GAP. The
 package also contains a collection of routines for manipulating finite state
 automata, which can be accessed via the GAP interface.
@@ -58,9 +58,6 @@ independent interest.
 
 
 ## Installation
-
-This package uses external binaries and currently works only under
-UNIX/LINUX systems.
 
 It will work only on GAP versions >= 4.7.
 
