@@ -153,24 +153,21 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (!seensubname)
-    strcpy(subname, "sub");
+    make_filename(subname, sizeof(subname), "sub");
   if (strncmp(subname, "sub", 3) == 0) {
-    strcpy(cosgpname, gpname);
-    strcat(cosgpname, ".cos");
-    strcat(cosgpname, subname + 3);
+    make_filename(cosgpname, sizeof(cosgpname), "%s", gpname);
+    append_filename(cosgpname, sizeof(cosgpname), ".cos");
+    append_filename(cosgpname, sizeof(cosgpname), "%s", subname + 3);
   }
   else {
-    strcpy(cosgpname, gpname);
-    strcat(cosgpname, ".");
-    strcat(cosgpname, subname);
-    strcat(cosgpname, "_cos");
+    make_filename(cosgpname, sizeof(cosgpname), "%s.%s_cos", gpname, subname);
   }
 
-  strcpy(tablefilename, cosgpname);
-  strcat(tablefilename, "temp_axXXX");
+  make_filename(tablefilename, sizeof(tablefilename), "%s", cosgpname);
+  append_filename(tablefilename, sizeof(tablefilename), "temp_axXXX");
 
   /* First read in the defining relations for the group. */
-  strcpy(inf, gpname);
+  make_filename(inf, sizeof(inf), "%s", gpname);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -185,8 +182,7 @@ int main(int argc, char *argv[])
   /* Now read in the general multiplier, and see how many subgroup generators
    * there are (which is just the number of initial states - 1).
    */
-  strcpy(inf, cosgpname);
-  strcat(inf, ".migm");
+  make_filename(inf, sizeof(inf), "%s.migm", cosgpname);
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -225,10 +221,8 @@ int main(int argc, char *argv[])
   if (kbm_print_level > 1)
     printf("  #Number of states of migm2 after minimization = %d.\n",
            migm2ptr->states->size);
-  strcpy(fsaname, rws.name);
-  strcat(fsaname, ".migm2");
-  strcpy(outf, cosgpname);
-  strcat(outf, ".migm2");
+  make_filename(fsaname, sizeof(fsaname), "%s.migm2", rws.name);
+  make_filename(outf, sizeof(outf), "%s.migm2", cosgpname);
   wfile = fopen(outf, "w");
   fsa_print(wfile, migm2ptr, fsaname);
   if (kbm_print_level > 0)
@@ -246,8 +240,9 @@ int main(int argc, char *argv[])
    * storedmult. We first form a rough upper bound on how long this list
    * could get - ngens + total relator length - 1.
    */
-  strcpy(fsaname, rws.name);
-  strcat(fsaname, ".mimult"); /* this is unimportant, since file is temporary */
+  make_filename(fsaname, sizeof(fsaname), "%s", rws.name);
+  /* this is unimportant, since the file is temporary */
+  append_filename(fsaname, sizeof(fsaname), ".mimult");
   if (keepfiles) {
     ct = ngens;
     for (i = 1; i <= neqns; i++)
@@ -312,8 +307,7 @@ int main(int argc, char *argv[])
     }
     tfree(storedmult);
   }
-  strcpy(outf, cosgpname);
-  strcat(outf, ".migm2");
+  make_filename(outf, sizeof(outf), "%s.migm2", cosgpname);
   unlink(outf);
   rws_clear(&rws);
   exit(0);
@@ -446,8 +440,7 @@ int long_word_multiplier(gen *w, char *s)
   l = genstrlen(w);
 
   if (l == 1) { /* Length 1 - use fsa_mimakemult */
-    strcpy(inf, cosgpname);
-    strcat(inf, ".migm");
+    make_filename(inf, sizeof(inf), "%s.migm", cosgpname);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -465,8 +458,7 @@ int long_word_multiplier(gen *w, char *s)
     fsa_clear(&migm);
   }
   else if (l == 2) { /* Length 2 - use fsa_mimakemult2 */
-    strcpy(inf, cosgpname);
-    strcat(inf, ".migm2");
+    make_filename(inf, sizeof(inf), "%s.migm2", cosgpname);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);

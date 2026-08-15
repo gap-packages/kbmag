@@ -116,8 +116,7 @@ int main(int argc, char *argv[])
   if (stringlen(inf) == 0)
     rfile = stdin;
   else {
-    strcpy(outf, inf);
-    strcat(outf, ".enumerate");
+    make_filename(outf, sizeof(outf), "%s.enumerate", inf);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -126,7 +125,7 @@ int main(int argc, char *argv[])
   fsa_read(rfile, &testfsa, ip_store, 0, 0, TRUE, fsaname);
   if (stringlen(inf))
     fclose(rfile);
-  strcat(fsaname, ".words");
+  append_filename(fsaname, sizeof(fsaname), ".words");
 
   if (labels && stateno) {
     fprintf(stderr, "Error: cannot use -s and -l together.\n");

@@ -130,8 +130,7 @@ int main(int argc, char *argv[])
       if (arg >= argc)
         badusage();
       make_filename(inf2, sizeof(inf2), "%s", argv[arg]);
-      strcpy(outf, inf2);
-      strcat(outf, ".reduced");
+      make_filename(outf, sizeof(outf), "%s.reduced", inf2);
     }
     else if (argv[arg][0] == '-')
       badusage();
@@ -155,36 +154,36 @@ int main(int argc, char *argv[])
     make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   if (cosets)
-    strcpy(inf1, cosgpname);
+    make_filename(inf1, sizeof(inf1), "%s", cosgpname);
   else
-    strcpy(inf1, gpname);
+    make_filename(inf1, sizeof(inf1), "%s", gpname);
 
   rwsptr->maxreducelen *= 2;
   /* Since rws-reduction returns when half of this length is exceeded. */
   open = FALSE;
   if (rws_ip)
-    strcat(inf1, ".kbprog");
+    append_filename(inf1, sizeof(inf1), ".kbprog");
   else if (diff1_ip) {
     if (cosets)
-      strcat(inf1, ".midiff1");
+      append_filename(inf1, sizeof(inf1), ".midiff1");
     else
-      strcat(inf1, ".diff1");
+      append_filename(inf1, sizeof(inf1), ".diff1");
   }
   else if (diff2_ip) {
     if (cosets)
-      strcat(inf1, ".midiff2");
+      append_filename(inf1, sizeof(inf1), ".midiff2");
     else
-      strcat(inf1, ".diff2");
+      append_filename(inf1, sizeof(inf1), ".diff2");
   }
   else if (diff1c_ip) {
     if (cosets) {
       fprintf(stderr, "Sorry, diff1c coset reduction is not yet supported.\n");
       exit(1);
     }
-    strcat(inf1, ".diff1c");
+    append_filename(inf1, sizeof(inf1), ".diff1c");
   }
   else {
-    strcat(inf1, ".kbprog");
+    append_filename(inf1, sizeof(inf1), ".kbprog");
     rfile = fopen(inf1, "r");
     if (rfile) {
       rws_ip = TRUE;
@@ -193,12 +192,10 @@ int main(int argc, char *argv[])
     else {
       diff2_ip = TRUE;
       if (cosets) {
-        strcpy(inf1, cosgpname);
-        strcat(inf1, ".midiff2");
+        make_filename(inf1, sizeof(inf1), "%s.midiff2", cosgpname);
       }
       else {
-        strcpy(inf1, gpname);
-        strcat(inf1, ".diff2");
+        make_filename(inf1, sizeof(inf1), "%s.diff2", gpname);
       }
     }
   }
@@ -215,10 +212,10 @@ int main(int argc, char *argv[])
     read_kbinput_simple(rfile, FALSE, rwsptr);
     fclose(rfile);
     if (cosets)
-      strcpy(inf1, cosgpname);
+      make_filename(inf1, sizeof(inf1), "%s", cosgpname);
     else
-      strcpy(inf1, gpname);
-    strcat(inf1, ".reduce");
+      make_filename(inf1, sizeof(inf1), "%s", gpname);
+    append_filename(inf1, sizeof(inf1), ".reduce");
     if ((rfile = fopen(inf1, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf1);
       exit(1);

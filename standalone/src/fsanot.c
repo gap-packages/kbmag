@@ -86,8 +86,7 @@ int main(int argc, char *argv[])
   }
   if (stringlen(inf) == 0)
     badusage();
-  strcpy(outf, inf);
-  strcat(outf, ".not");
+  make_filename(outf, sizeof(outf), "%s.not", inf);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -111,7 +110,7 @@ int main(int argc, char *argv[])
     printf("  #Number of states of fsanot after minimisation = %d.\n",
            fsanot->states->size);
 
-  strcat(fsaname, "_not");
+  append_filename(fsaname, sizeof(fsaname), "_not");
   wfile = fopen(outf, "w");
   fsa_print(wfile, fsanot, fsaname);
   fclose(wfile);

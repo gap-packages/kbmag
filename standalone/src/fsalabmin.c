@@ -87,8 +87,7 @@ int main(int argc, char *argv[])
   }
 
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
-    strcat(outf, ".labmin");
+    make_filename(outf, sizeof(outf), "%s.labmin", inf);
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -114,7 +113,7 @@ int main(int argc, char *argv[])
 
   if (op_format_set)
     testfsa.table->printing_format = op_format;
-  strcat(fsaname, "_labmin");
+  append_filename(fsaname, sizeof(fsaname), "_labmin");
 
   if (stringlen(inf) != 0)
     wfile = fopen(outf, "w");

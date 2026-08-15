@@ -99,27 +99,25 @@ int main(int argc, char *argv[])
     make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   if (cosets)
-    strcpy(inf, cosgpname);
+    make_filename(inf, sizeof(inf), "%s", cosgpname);
   else
-    strcpy(inf, gpname);
+    make_filename(inf, sizeof(inf), "%s", gpname);
 
-  strcpy(outf, inf);
-  strcat(outf, ".wa");
+  make_filename(outf, sizeof(outf), "%s.wa", inf);
 
-  strcpy(tempfilename, inf);
-  strcat(tempfilename, "temp_wa_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_wa_XXX", inf);
 
   if (diff1_ip) {
     if (cosets)
-      strcat(inf, ".midiff1");
+      append_filename(inf, sizeof(inf), ".midiff1");
     else
-      strcat(inf, ".diff1");
+      append_filename(inf, sizeof(inf), ".diff1");
   }
   else {
     if (cosets)
-      strcat(inf, ".midiff2");
+      append_filename(inf, sizeof(inf), ".midiff2");
     else
-      strcat(inf, ".diff2");
+      append_filename(inf, sizeof(inf), ".diff2");
   }
 
   tmalloc(fsawd, fsa, 1);
@@ -147,7 +145,7 @@ int main(int argc, char *argv[])
            gpwa->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".wa");
+  append_filename(fsaname, sizeof(fsaname), ".wa");
   wfile = fopen(outf, "w");
   fsa_print(wfile, gpwa, fsaname);
   fclose(wfile);

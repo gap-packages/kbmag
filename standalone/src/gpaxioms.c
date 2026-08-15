@@ -182,13 +182,13 @@ int main(int argc, char *argv[])
     make_filename(outfec, sizeof(outfec), "%s.axioms.ec", gpname);
 
   rwsfilename = cosets ? cosgpname : gpname;
-  strcpy(tablefilename, rwsfilename);
-  strcat(tablefilename, "temp_axXXX");
+  make_filename(tablefilename, sizeof(tablefilename), "%s", rwsfilename);
+  append_filename(tablefilename, sizeof(tablefilename), "temp_axXXX");
 
   /* First read in the defining relations for the group. */
-  strcpy(inf, gpname);
+  make_filename(inf, sizeof(inf), "%s", gpname);
   if (xset)
-    strcat(inf, "_x");
+    append_filename(inf, sizeof(inf), "_x");
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
     exit(1);
@@ -220,8 +220,7 @@ int main(int argc, char *argv[])
      * If allshort is true, we don't need the transitions - only the state
      * labels.
      */
-    strcpy(inf, rwsfilename);
-    strcat(inf, ".gm");
+    make_filename(inf, sizeof(inf), "%s.gm", rwsfilename);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -259,10 +258,8 @@ int main(int argc, char *argv[])
       if (kbm_print_level > 1)
         printf("  #Number of states of genmult2 after minimization = %d.\n",
                genmult2ptr->states->size);
-      strcpy(fsaname, rws.name);
-      strcat(fsaname, ".gm2");
-      strcpy(outf, rwsfilename);
-      strcat(outf, ".gm2");
+      make_filename(fsaname, sizeof(fsaname), "%s.gm2", rws.name);
+      make_filename(outf, sizeof(outf), "%s.gm2", rwsfilename);
       wfile = fopen(outf, "w");
       fsa_print(wfile, genmult2ptr, fsaname);
       if (kbm_print_level > 0)
@@ -309,8 +306,9 @@ int main(int argc, char *argv[])
      * multipliers in storedmult. We first form a rough upper bound on how long
      * this list could get - ngens + total relator length - 1.
      */
-    strcpy(fsaname, rws.name);
-    strcat(fsaname, ".mult"); /* this is unimportant, since file is temporary */
+    make_filename(fsaname, sizeof(fsaname), "%s", rws.name);
+    /* this is unimportant, since the file is temporary */
+    append_filename(fsaname, sizeof(fsaname), ".mult");
     if (keepfiles) {
       ct = usegm2 ? ngens : 2 * ngens;
       for (i = 1; i <= neqns; i++)
@@ -353,8 +351,7 @@ int main(int argc, char *argv[])
       }
       tfree(storedmult);
     }
-    strcpy(outf, rwsfilename);
-    strcat(outf, ".gm2");
+    make_filename(outf, sizeof(outf), "%s.gm2", rwsfilename);
     unlink(outf);
   }
   tfree(genmult2ptr);
@@ -606,8 +603,7 @@ int long_word_multiplier(gen *w, char *s)
   l = genstrlen(w);
 
   if (l <= 1) { /* Length <=1 - use fsa_makemult */
-    strcpy(inf, rwsfilename);
-    strcat(inf, ".gm");
+    make_filename(inf, sizeof(inf), "%s.gm", rwsfilename);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);
@@ -625,8 +621,7 @@ int long_word_multiplier(gen *w, char *s)
     fsa_clear(&genmult);
   }
   else if (usegm2 && l == 2) { /* Length 2 - use fsa_makemult2 */
-    strcpy(inf, rwsfilename);
-    strcat(inf, ".gm2");
+    make_filename(inf, sizeof(inf), "%s.gm2", rwsfilename);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);

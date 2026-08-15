@@ -46,6 +46,27 @@ void make_filename(char *dest, size_t size, const char *fmt, ...)
   }
 }
 
+/* Append to the file name in <dest>, which has room for <size> characters
+ * including the terminator, with the same check as make_filename.
+ */
+void append_filename(char *dest, size_t size, const char *fmt, ...)
+{
+  va_list args;
+  size_t used = stringlen(dest);
+  int len;
+  if (used >= size) {
+    fprintf(stderr, "Error: file name too long.\n");
+    exit(1);
+  }
+  va_start(args, fmt);
+  len = vsnprintf(dest + used, size - used, fmt, args);
+  va_end(args);
+  if (len < 0 || used + (size_t)len >= size) {
+    fprintf(stderr, "Error: file name too long.\n");
+    exit(1);
+  }
+}
+
 /* Note: '.' is not included in list of delimiters, since identifiers may
  * contain dots.
  * Integers are exceptional, however, in that they may be terminated by a

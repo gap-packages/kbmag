@@ -89,8 +89,7 @@ int main(int argc, char *argv[])
   if (stringlen(groupname) == 0)
     badusage();
 
-  strcpy(inf, groupname);
-  strcat(inf, ".gm");
+  make_filename(inf, sizeof(inf), "%s.gm", groupname);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);

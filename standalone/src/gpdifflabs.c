@@ -87,9 +87,7 @@ int main(int argc, char *argv[])
         make_filename(inf2, sizeof(inf2), "%s", argv[arg]);
       }
       else {
-        strcpy(inf1, inf2);
-        strcat(inf1, ".");
-        strcat(inf1, argv[arg]);
+        make_filename(inf1, sizeof(inf1), "%s.%s", inf2, argv[arg]);
       }
     }
     arg++;
@@ -98,18 +96,16 @@ int main(int argc, char *argv[])
   if (stringlen(inf1) == 0)
     badusage();
 
-  strcpy(tempfilename, inf1);
-  strcat(tempfilename, "temp_d_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_d_XXX", inf1);
 
   if (diff1_ip)
-    strcat(inf2, ".diff1");
+    append_filename(inf2, sizeof(inf2), ".diff1");
   else if (diff1c_ip)
-    strcat(inf2, ".diff1c");
+    append_filename(inf2, sizeof(inf2), ".diff1c");
   else
-    strcat(inf2, ".diff2");
+    append_filename(inf2, sizeof(inf2), ".diff2");
 
-  strcpy(outf, inf1);
-  strcat(outf, ".difflabs");
+  make_filename(outf, sizeof(outf), "%s.difflabs", inf1);
 
   /* First read word-difference machine for word-reduction */
   if ((rfile = fopen(inf2, "r")) == 0) {
@@ -150,7 +146,7 @@ int main(int argc, char *argv[])
            difflabsptr->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".difflabs");
+  append_filename(fsaname, sizeof(fsaname), ".difflabs");
   wfile = fopen(outf, "w");
   fsa_print(wfile, difflabsptr, fsaname);
   fclose(wfile);

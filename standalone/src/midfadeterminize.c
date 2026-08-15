@@ -88,8 +88,7 @@ int main(int argc, char *argv[])
     arg++;
   }
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
-    strcat(outf, ".midfadeterminize");
+    make_filename(outf, sizeof(outf), "%s.midfadeterminize", inf);
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -102,8 +101,7 @@ int main(int argc, char *argv[])
   if (stringlen(inf) != 0)
     fclose(rfile);
 
-  strcpy(tempfilename, inf);
-  strcat(tempfilename, "temp_mid_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_mid_XXX", inf);
   midfadeterminize = midfa_determinize(&fsain, op_store, TRUE, tempfilename);
   if (midfadeterminize == 0)
     exit(1);
@@ -120,7 +118,7 @@ int main(int argc, char *argv[])
     printf("  #Number of states of midfadeterminize after minimisation = %d.\n",
            midfadeterminize->states->size);
 
-  strcat(fsaname, "_midfadeterminize");
+  append_filename(fsaname, sizeof(fsaname), "_midfadeterminize");
 
   if (stringlen(inf) != 0)
     wfile = fopen(outf, "w");

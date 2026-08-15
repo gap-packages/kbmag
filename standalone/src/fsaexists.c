@@ -88,8 +88,7 @@ int main(int argc, char *argv[])
   if (stringlen(inf) == 0)
     badusage();
 
-  strcpy(outf, inf);
-  strcat(outf, ".exists");
+  make_filename(outf, sizeof(outf), "%s.exists", inf);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -102,8 +101,7 @@ int main(int argc, char *argv[])
     exit(1);
   }
 
-  strcpy(tempfilename, inf);
-  strcat(tempfilename, "temp_exists_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_exists_XXX", inf);
   fsaexists = fsa_exists(&fsain, op_store, TRUE, tempfilename);
   if (fsaexists == 0)
     exit(1);
@@ -117,7 +115,7 @@ int main(int argc, char *argv[])
     printf("  Number of states of fsaexists after minimisation = %d.\n",
            fsaexists->states->size);
 
-  strcat(fsaname, "_exists");
+  append_filename(fsaname, sizeof(fsaname), "_exists");
   wfile = fopen(outf, "w");
   fsa_print(wfile, fsaexists, fsaname);
   fclose(wfile);

@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
   if (stringlen(gpname) == 0)
     badusage();
   if (stringlen(subname) == 0)
-    strcpy(subname, "sub");
+    make_filename(subname, sizeof(subname), "sub");
 
   make_filename(tempfilename, sizeof(tempfilename), "%s_%stemp_axXXX",
                 gpname, subname);
@@ -255,7 +255,7 @@ int main(int argc, char *argv[])
      * types.
      */
     base_prefix(fsaname);
-    strcat(fsaname, ".submult");
+    append_filename(fsaname, sizeof(fsaname), ".submult");
     make_filename(outf, sizeof(outf), "%s.%s.submult", gpname, subname);
     wfile = fopen(outf, "w");
     fsa_print(wfile, submultptr, fsaname);
@@ -409,8 +409,7 @@ int subgen_multiplier(gen *w, char *s)
   l = genstrlen(w);
 
   if (l == 1) { /* Length 1 - use fsa_makemult */
-    strcpy(inf, gpname);
-    strcat(inf, ".gm");
+    make_filename(inf, sizeof(inf), "%s.gm", gpname);
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);
       exit(1);

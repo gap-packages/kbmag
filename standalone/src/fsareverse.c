@@ -108,11 +108,11 @@ int main(int argc, char *argv[])
     exit(1);
   }
 
-  strcpy(outf, inf);
+  make_filename(outf, sizeof(outf), "%s", inf);
   if (midfa)
-    strcat(outf, ".mireverse");
+    append_filename(outf, sizeof(outf), ".mireverse");
   else
-    strcat(outf, ".reverse");
+    append_filename(outf, sizeof(outf), ".reverse");
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -120,8 +120,7 @@ int main(int argc, char *argv[])
   }
   fsa_read(rfile, &fsain, ip_store, dr, 0, TRUE, fsaname);
 
-  strcpy(tempfilename, inf);
-  strcat(tempfilename, "temp_reverse_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_reverse_XXX", inf);
   if (midfa)
     fsareverse = fsa_mireverse(&fsain, op_store, TRUE, tempfilename);
   else
@@ -156,9 +155,9 @@ int main(int argc, char *argv[])
   }
 
   if (midfa)
-    strcat(fsaname, "_mireverse");
+    append_filename(fsaname, sizeof(fsaname), "_mireverse");
   else
-    strcat(fsaname, "_reverse");
+    append_filename(fsaname, sizeof(fsaname), "_reverse");
   wfile = fopen(outf, "w");
   fsa_print(wfile, fsareverse, fsaname);
   fclose(wfile);

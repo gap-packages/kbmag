@@ -142,21 +142,17 @@ int main(int argc, char *argv[])
   if (!seencosname)
     make_filename(inf1, sizeof(inf1), "%s.cos", gpname);
 
-  strcpy(tempfilename, inf1);
-  strcat(tempfilename, "temp_triples_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_triples_XXX", inf1);
 
-  strcpy(inf2, inf1);
-  strcat(inf2, ".midiff2");
+  make_filename(inf2, sizeof(inf2), "%s.midiff2", inf1);
 
   if (correction) {
-    strcpy(inf3, inf1);
-    strcat(inf3, ".midiff1");
+    make_filename(inf3, sizeof(inf3), "%s.midiff1", inf1);
   }
 
-  strcpy(outf, inf1);
-  strcat(outf, ".migm");
+  make_filename(outf, sizeof(outf), "%s.migm", inf1);
 
-  strcat(inf1, ".wa");
+  append_filename(inf1, sizeof(inf1), ".wa");
 
   if ((rfile = fopen(inf1, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf1);
@@ -265,7 +261,7 @@ int main(int argc, char *argv[])
            migenmultptr->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".migm");
+  append_filename(fsaname, sizeof(fsaname), ".migm");
   wfile = fopen(outf, "w");
   fsa_print(wfile, migenmultptr, fsaname);
   fclose(wfile);

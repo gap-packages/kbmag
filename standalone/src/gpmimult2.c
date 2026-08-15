@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
   if (!seencosname)
     make_filename(inf, sizeof(inf), "%s.cos", gpname);
   make_filename(outf, sizeof(outf), "%s.mim%d_%d", inf, g1, g2);
-  strcat(inf, ".migm2");
+  append_filename(inf, sizeof(inf), ".migm2");
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);

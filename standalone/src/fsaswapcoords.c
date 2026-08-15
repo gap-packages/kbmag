@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     testfsa.table->printing_format = op_format;
 
   base_prefix(fsaname);
-  strcat(fsaname, "_swap_coords");
+  append_filename(fsaname, sizeof(fsaname), "_swap_coords");
   if (stringlen(outf) == 0)
     wfile = stdout;
   else

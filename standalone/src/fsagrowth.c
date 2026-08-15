@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
       arg++;
       if (arg >= argc)
         badusage();
-      strcpy(var, argv[arg]);
+      make_filename(var, sizeof(var), "%s", argv[arg]);
     }
     else if (strcmp(argv[arg], "-v") == 0)
       kbm_print_level = 2;
@@ -79,8 +79,7 @@ int main(int argc, char *argv[])
       if (arg >= argc)
         badusage();
       nprimes = 0;
-      strcpy(primestr, argv[arg]);
-      strcat(primestr, ",");
+      make_filename(primestr, sizeof(primestr), "%s,", argv[arg]);
       for (pptr = p = primestr; *p; p++)
         if (*p < '0' || *p > '9') {
           *p = 0;
@@ -99,8 +98,7 @@ int main(int argc, char *argv[])
     arg++;
   }
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
-    strcat(outf, ".growth");
+    make_filename(outf, sizeof(outf), "%s.growth", inf);
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);

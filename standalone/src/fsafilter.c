@@ -94,8 +94,7 @@ int main(int argc, char *argv[])
   }
 
   if (stringlen(inf) != 0) {
-    strcpy(outf, inf);
-    strcat(outf, ".filter");
+    make_filename(outf, sizeof(outf), "%s.filter", inf);
 
     if ((rfile = fopen(inf, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf);

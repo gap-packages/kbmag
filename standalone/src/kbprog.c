@@ -420,23 +420,13 @@ void read_kbprog_command(int argc, char *argv[], rewriting_system *rwsptr)
       if (argv[arg][0] == '-')
         badusage();
       make_filename(inf, sizeof(inf), "%s", argv[arg]);
-      strcpy(outf, inf);
-      strcat(outf, ".");
-      strcat(outf, "kbprog");
-      strcpy(outfec, outf);
-      strcat(outfec, ".ec");
-      strcpy(outfr, inf);
-      strcat(outfr, ".reduce");
+      make_filename(outf, sizeof(outf), "%s.kbprog", inf);
+      make_filename(outfec, sizeof(outfec), "%s.ec", outf);
+      make_filename(outfr, sizeof(outfr), "%s.reduce", inf);
       if (rwsptr->worddiffs) {
-        strcpy(outf1, inf);
-        strcat(outf1, ".");
-        strcat(outf1, "diff1");
-        strcpy(outf2, inf);
-        strcat(outf2, ".");
-        strcat(outf2, "diff2");
-        strcpy(outflog, inf);
-        strcat(outflog, ".");
-        strcat(outflog, "log");
+        make_filename(outf1, sizeof(outf1), "%s.diff1", inf);
+        make_filename(outf2, sizeof(outf2), "%s.diff2", inf);
+        make_filename(outflog, sizeof(outflog), "%s.log", inf);
       }
     }
     arg++;

@@ -112,8 +112,7 @@ int main(int argc, char *argv[])
   if (!seencosname)
     make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
-  strcpy(inf, cosgpname);
-  strcat(inf, ".migm");
+  make_filename(inf, sizeof(inf), "%s.migm", cosgpname);
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);

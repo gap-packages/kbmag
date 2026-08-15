@@ -84,9 +84,9 @@ int main(int argc, char *argv[])
     badusage();
   if (!seencosname)
     make_filename(inf, sizeof(inf), "%s.cos", gpname);
-  strcpy(outf, inf);
-  strcat(inf, ".migm");
-  strcat(outf, ".gm");
+  make_filename(outf, sizeof(outf), "%s", inf);
+  append_filename(inf, sizeof(inf), ".migm");
+  append_filename(outf, sizeof(outf), ".gm");
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);
@@ -95,8 +95,7 @@ int main(int argc, char *argv[])
   fsa_read(rfile, &fsain, ip_store, dr, 0, TRUE, fsaname);
   fclose(rfile);
 
-  strcpy(tempfilename, inf);
-  strcat(tempfilename, "temp_mid_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_mid_XXX", inf);
   gpmigmdet = migm_determinize(&fsain, op_store, TRUE, tempfilename);
   if (gpmigmdet == 0)
     exit(1);
@@ -110,7 +109,7 @@ int main(int argc, char *argv[])
     printf("  #Number of states of gpmigmdet after minimisation = %d.\n",
            gpmigmdet->states->size);
 
-  strcat(fsaname, "d");
+  append_filename(fsaname, sizeof(fsaname), "d");
   wfile = fopen(outf, "w");
   fsa_print(wfile, gpmigmdet, fsaname);
   fclose(wfile);

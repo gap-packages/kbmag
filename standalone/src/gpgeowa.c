@@ -142,18 +142,16 @@ int main(int argc, char *argv[])
 
   if (diff1_ip) {
     /* We need to copy the diff1 machine to the file groupname.tdiff  */
-    strcpy(inf2, inf1);
-    strcat(inf2, ".diff1");
+    make_filename(inf2, sizeof(inf2), "%s.diff1", inf1);
     if ((rfile = fopen(inf2, "r")) == 0) {
       fprintf(stderr, "Cannot open file %s.\n", inf2);
       exit(1);
     }
     fsa_read(rfile, &temp, DENSE, 0, 0, TRUE, fsaname);
     fclose(rfile);
-    strcpy(outf4, inf1);
-    strcat(outf4, ".tdiff");
+    make_filename(outf4, sizeof(outf4), "%s.tdiff", inf1);
     base_prefix(fsaname);
-    strcat(fsaname, ".tdiff");
+    append_filename(fsaname, sizeof(fsaname), ".tdiff");
     wfile = fopen(outf4, "w");
     fsa_print(wfile, &temp, fsaname);
     fclose(wfile);
@@ -161,28 +159,19 @@ int main(int argc, char *argv[])
 
   tmalloc(eqnptr, reduction_equation, maxeqns);
 
-  strcpy(tempfilename, inf1);
-  strcat(tempfilename, "temp_triples_XXX");
+  make_filename(tempfilename, sizeof(tempfilename), "%stemp_triples_XXX", inf1);
 
-  strcpy(inf2, inf1);
-  strcat(inf2, ".diff2");
-  strcpy(inf3, inf1);
-  strcat(inf3, ".gm");
+  make_filename(inf2, sizeof(inf2), "%s.diff2", inf1);
+  make_filename(inf3, sizeof(inf3), "%s.gm", inf1);
 
-  strcpy(outf1, inf1);
-  strcat(outf1, ".geowa");
-  strcpy(outf2, inf1);
-  strcat(outf2, ".geopairs");
-  strcpy(outf3, inf1);
-  strcat(outf3, ".geodiff");
-  strcpy(outf4, inf1);
-  strcat(outf4, ".tdiff");
-  strcpy(outf5, inf1);
-  strcat(outf5, ".near_geopairs");
-  strcpy(outf6, inf1);
-  strcat(outf6, ".near_geodiff");
+  make_filename(outf1, sizeof(outf1), "%s.geowa", inf1);
+  make_filename(outf2, sizeof(outf2), "%s.geopairs", inf1);
+  make_filename(outf3, sizeof(outf3), "%s.geodiff", inf1);
+  make_filename(outf4, sizeof(outf4), "%s.tdiff", inf1);
+  make_filename(outf5, sizeof(outf5), "%s.near_geopairs", inf1);
+  make_filename(outf6, sizeof(outf6), "%s.near_geodiff", inf1);
 
-  strcat(inf1, ".wa");
+  append_filename(inf1, sizeof(inf1), ".wa");
 
   /* First read in the second-word difference machine for word-reduction */
   tmalloc(rs_wd.wd_fsa, fsa, 1);
@@ -201,7 +190,7 @@ int main(int argc, char *argv[])
     /* Write this fsa to  the temporary file as first approximation to *tdiffptr
      */
     base_prefix(fsaname);
-    strcat(fsaname, ".tdiff");
+    append_filename(fsaname, sizeof(fsaname), ".tdiff");
     wfile = fopen(outf4, "w");
     fsa_print(wfile, rs_wd.wd_fsa, fsaname);
     fclose(wfile);
@@ -253,7 +242,7 @@ int main(int argc, char *argv[])
              geopairsptr->states->size);
 
     base_prefix(fsaname);
-    strcat(fsaname, ".geopairs");
+    append_filename(fsaname, sizeof(fsaname), ".geopairs");
     wfile = fopen(outf2, "w");
     fsa_print(wfile, geopairsptr, fsaname);
     fclose(wfile);
@@ -286,7 +275,7 @@ int main(int argc, char *argv[])
       printf("  #Number of states of geowa after minimisation = %d.\n",
              geowaptr->states->size);
     base_prefix(fsaname);
-    strcat(fsaname, ".geowa");
+    append_filename(fsaname, sizeof(fsaname), ".geowa");
     wfile = fopen(outf1, "w");
     fsa_print(wfile, geowaptr, fsaname);
     fclose(wfile);
@@ -339,7 +328,7 @@ int main(int argc, char *argv[])
         printf("  #Geodesic word-difference machine now has %d states.\n",
                tdiffptr->states->size);
       base_prefix(fsaname);
-      strcat(fsaname, ".tdiff");
+      append_filename(fsaname, sizeof(fsaname), ".tdiff");
       wfile = fopen(outf4, "w");
       fsa_print(wfile, tdiffptr, fsaname);
       fclose(wfile);
@@ -387,7 +376,7 @@ int main(int argc, char *argv[])
            geopairsptr->states->size);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".geopairs");
+  append_filename(fsaname, sizeof(fsaname), ".geopairs");
   wfile = fopen(outf2, "w");
   fsa_print(wfile, geopairsptr, fsaname);
   fclose(wfile);
@@ -402,7 +391,7 @@ int main(int argc, char *argv[])
   tfree(geopairsptr);
 
   base_prefix(fsaname);
-  strcat(fsaname, ".geodiff");
+  append_filename(fsaname, sizeof(fsaname), ".geodiff");
   wfile = fopen(outf3, "w");
   fsa_print(wfile, geodiffptr, fsaname);
   fclose(wfile);
@@ -454,7 +443,7 @@ int main(int argc, char *argv[])
 
   /* write *geopairsptr and re-read to get dense storage type */
   base_prefix(fsaname);
-  strcat(fsaname, ".near_geopairs");
+  append_filename(fsaname, sizeof(fsaname), ".near_geopairs");
   wfile = fopen(outf5, "w");
   fsa_print(wfile, geopairsptr, fsaname);
   fclose(wfile);
@@ -489,7 +478,7 @@ int main(int argc, char *argv[])
   /*
     geodiffptr=fsa_diff(gpp,&rs_wd,op_store2);
     base_prefix(fsaname);
-    strcat(fsaname,".near_geodiff");
+    append_filename(fsaname, sizeof(fsaname), ".near_geodiff");
     wfile = fopen(outf6,"w");
     fsa_print(wfile,geodiffptr,fsaname);
     fclose(wfile);

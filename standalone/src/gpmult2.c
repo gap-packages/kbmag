@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
     badusage();
 
   make_filename(outf, sizeof(outf), "%s.m%d_%d", inf, g1, g2);
-  strcat(inf, ".gm2");
+  append_filename(inf, sizeof(inf), ".gm2");
 
   if ((rfile = fopen(inf, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf);

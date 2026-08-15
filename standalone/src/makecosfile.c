@@ -110,21 +110,15 @@ int main(int argc, char *argv[])
   }
   if (stringlen(gpname) == 0)
     badusage();
-  strcpy(inf, gpname);
-  strcat(inf, ".");
+  make_filename(inf, sizeof(inf), "%s.", gpname);
   if (stringlen(subname) == 0)
-    strcpy(subname, "sub");
-  strcat(inf, subname);
+    make_filename(subname, sizeof(subname), "sub");
+  append_filename(inf, sizeof(inf), "%s", subname);
   if (strncmp(subname, "sub", 3) == 0) {
-    strcpy(outf, gpname);
-    strcat(outf, ".cos");
-    strcat(outf, subname + 3);
+    make_filename(outf, sizeof(outf), "%s.cos%s", gpname, subname + 3);
   }
   else {
-    strcpy(outf, gpname);
-    strcat(outf, ".");
-    strcat(outf, subname);
-    strcat(outf, "_cos");
+    make_filename(outf, sizeof(outf), "%s.%s_cos", gpname, subname);
   }
   if (!subgens)
     invsubgens = FALSE;
