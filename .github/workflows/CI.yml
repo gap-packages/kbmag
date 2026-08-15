@@ -16,14 +16,14 @@ concurrency:
   # Cancel intermediate builds, but only if it is a pull request build.
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
-env:
-  EXTRA_CFLAGS: "--coverage" # enable coverage tracking in C binaries
-
 jobs:
   # The CI test job
   test:
-    name: ${{ matrix.gap-version }}
-    runs-on: ubuntu-latest
+    name: "${{ matrix.os }}: GAP ${{ matrix.gap-version }}"
+    runs-on: ${{ matrix.os }}-latest
+    env:
+      # coverage tracking in the C binaries, on the jobs that report it
+      EXTRA_CFLAGS: ${{ matrix.os == 'ubuntu' && '--coverage' || '' }}
     strategy:
       fail-fast: false
       matrix:
@@ -31,23 +31,44 @@ jobs:
           - 'devel'   # current GAP development version from git
           - 'latest'  # latest GAP release
           - 'minimal' # oldest GAP release supported by this package
+        os:
+          - ubuntu
+        # The GAP code writes files for the external programs to read and
+        # runs them as subprocesses, which is where the systems differ. One
+        # job per system shows that up; crossing it with every GAP version
+        # would not.
+        include:
+          - gap-version: 'devel'
+            os: macos
+          - gap-version: 'devel'
+            os: windows
 
     steps:
       - uses: actions/checkout@v6
+      - uses: gap-actions/setup-cygwin@v2
+        if: ${{ runner.os == 'Windows' }}
       - uses: gap-actions/setup-gap@v3
         with:
           gap-version: ${{ matrix.gap-version }}
       - uses: gap-actions/build-pkg@v3
       - uses: gap-actions/run-pkg-tests@v4
       - uses: gap-actions/run-pkg-tests@v4
+        if: ${{ runner.os != 'Windows' }}
         with:
           mode: onlyneeded
       - name: Exercise the standalone-only programs
+        # setup-cygwin puts its own bash first on PATH; without this the step
+        # would run in PowerShell, which knows nothing of the Cygwin paths
+        shell: bash
         run: make check-standalone
+      # gcov is only set up to work on the Linux jobs
       - uses: gap-actions/process-coverage@v3
+        if: ${{ runner.os == 'Linux' }}
       - name: Process C coverage
+        if: ${{ runner.os == 'Linux' }}
         run: gcov -pb obj/*/*.gcno
       - uses: codecov/codecov-action@v6
+        if: ${{ runner.os == 'Linux' }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
