@@ -1,5 +1,22 @@
 This file describes changes in the kbmag package.
 
+1.6.0 (2026-08-15)
+  - Support Windows, through Cygwin: the package is no longer UNIX only, and
+    is now tested on Linux, macOS and Windows
+  - Call the external programs with `Process` instead of `Exec`, and check
+    their exit status, so that a failure is reported as one
+  - Fix a Knuth-Bendix run aborting with "Could not open output of external
+    Knuth-Bendix program" when a word grew too long while being reduced
+  - Fix a failed `AutomaticStructureOnCosets` reporting success, when an
+    earlier successful run had left its files behind
+  - Fix several crashes caused by writing past the end of a fixed-size buffer
+  - Pass the options record on to the coset programs, which ignored it
+  - Tidy less often as the number of equations grows: long Knuth-Bendix runs
+    were quadratic in it
+  - Replace the recursive build system by a single Makefile, and add `check`,
+    `check-standalone`, `doc` and `html` targets
+  - janitorial changes
+
 1.5.11 (2023-01-03)
   - Enhance the `configure` script to accept `--with-gaproot=PATH`
 
