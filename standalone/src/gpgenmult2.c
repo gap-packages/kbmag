@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
       if (strcmp(inf, "") != 0)
         badusage();
       else
-        strcpy(inf, argv[arg]);
+        make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }

@@ -22,10 +22,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdarg.h>
 #include "defs.h"
 #include "fsa.h"
 #include "rws.h"
 #include "externals.h"
+
+/* Build a file name in <dest>, which has room for <size> characters
+ * including the terminator. The names are held in fixed-size buffers and
+ * are built up by appending suffixes to a name given on the command line,
+ * so refuse anything that does not fit rather than writing past the end.
+ */
+void make_filename(char *dest, size_t size, const char *fmt, ...)
+{
+  va_list args;
+  int len;
+  va_start(args, fmt);
+  len = vsnprintf(dest, size, fmt, args);
+  va_end(args);
+  if (len < 0 || (size_t)len >= size) {
+    fprintf(stderr, "Error: file name too long.\n");
+    exit(1);
+  }
+}
 
 /* Note: '.' is not included in list of delimiters, since identifiers may
  * contain dots.

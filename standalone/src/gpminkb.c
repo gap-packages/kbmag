@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
         badusage();
       if (strcmp(gpname, ""))
         badusage();
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     arg++;
   }

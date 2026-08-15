@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
       if (strcmp(inf2, ""))
         badusage();
       if (strcmp(inf1, "") == 0)
-        strcpy(inf1, argv[arg]);
+        make_filename(inf1, sizeof(inf1), "%s", argv[arg]);
       else
-        strcpy(inf2, argv[arg]);
+        make_filename(inf2, sizeof(inf2), "%s", argv[arg]);
     }
     arg++;
   }

@@ -127,11 +127,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(inf1, "%s.%s", gpname, argv[arg]);
+      make_filename(inf1, sizeof(inf1), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (!seencosname)
-    sprintf(inf1, "%s.cos", gpname);
+    make_filename(inf1, sizeof(inf1), "%s.cos", gpname);
 
   strcpy(tempfilename, inf1);
   strcat(tempfilename, "temp_triples_XXX");

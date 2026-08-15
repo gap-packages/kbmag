@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
       if (argv[arg][0] == '-')
         badusage();
       if (strcmp(inf2, "") == 0) {
-        strcpy(inf2, argv[arg]);
+        make_filename(inf2, sizeof(inf2), "%s", argv[arg]);
       }
       else {
         strcpy(inf1, inf2);

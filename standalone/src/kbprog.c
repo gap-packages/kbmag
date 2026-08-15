@@ -419,7 +419,7 @@ void read_kbprog_command(int argc, char *argv[], rewriting_system *rwsptr)
     else {
       if (argv[arg][0] == '-')
         badusage();
-      strcpy(inf, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s", argv[arg]);
       strcpy(outf, inf);
       strcat(outf, ".");
       strcat(outf, "kbprog");

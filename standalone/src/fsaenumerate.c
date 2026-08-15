@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
         maxset = TRUE;
       }
       else
-        strcpy(inf, argv[arg]);
+        make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }

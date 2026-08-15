@@ -91,14 +91,14 @@ int main(int argc, char *argv[])
       else if (strcmp(inf, "") != 0)
         badusage();
       else
-        strcpy(inf, argv[arg]);
+        make_filename(inf, sizeof(inf), "%s", argv[arg]);
     }
     arg++;
   }
   if (g1 == 0 || g2 == 0 || stringlen(inf) == 0)
     badusage();
 
-  sprintf(outf, "%s.m%d_%d", inf, g1, g2);
+  make_filename(outf, sizeof(outf), "%s.m%d_%d", inf, g1, g2);
   strcat(inf, ".gm2");
 
   if ((rfile = fopen(inf, "r")) == 0) {
@@ -111,7 +111,8 @@ int main(int argc, char *argv[])
     printf("  #Number of states of genmult2 = %d.\n", genmult2.states->size);
 
   base_prefix(fsaname);
-  sprintf(fsaname + stringlen(fsaname), ".m%d_%d", g1, g2);
+  make_filename(fsaname + stringlen(fsaname),
+                sizeof(fsaname) - stringlen(fsaname), ".m%d_%d", g1, g2);
   if (fsa_makemult2(&genmult2, g1, g2) == -1)
     exit(1);
   if (fsa_minimize(&genmult2) == -1)

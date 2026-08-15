@@ -70,11 +70,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(inf, "%s.%s", gpname, argv[arg]);
+      make_filename(inf, sizeof(inf), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (!seencosname)
-    sprintf(inf, "%s.cos", gpname);
+    make_filename(inf, sizeof(inf), "%s.cos", gpname);
   strcpy(outf, inf);
   strcat(inf, ".migm");
   strcat(outf, ".gm");

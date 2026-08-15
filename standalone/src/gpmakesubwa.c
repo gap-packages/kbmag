@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
       if (strcmp(suffix, ""))
         badusage();
       if (strcmp(gpname, "") == 0)
-        strcpy(gpname, argv[arg]);
+        make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
       else
         strcpy(suffix, argv[arg]);
     }

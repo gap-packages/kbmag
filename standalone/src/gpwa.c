@@ -83,11 +83,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
+      make_filename(cosgpname, sizeof(cosgpname), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (cosets && !seencosname)
-    sprintf(cosgpname, "%s.cos", gpname);
+    make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   if (cosets)
     strcpy(inf, cosgpname);

@@ -110,8 +110,9 @@ int main(int argc, char *argv[])
       exit(1);
 
     base_prefix(fsaname);
-    sprintf(fsaname + stringlen(fsaname), ".m%d", g);
-    sprintf(outf, "%s.m%d", groupname, g);
+    make_filename(fsaname + stringlen(fsaname),
+                  sizeof(fsaname) - stringlen(fsaname), ".m%d", g);
+    make_filename(outf, sizeof(outf), "%s.m%d", groupname, g);
 
     if (op_format_set)
       mult->table->printing_format = op_format;

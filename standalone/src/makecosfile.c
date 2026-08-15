@@ -102,9 +102,9 @@ int main(int argc, char *argv[])
       if (strcmp(gpname, "") != 0 && strcmp(subname, "") != 0)
         badusage();
       if (strcmp(gpname, "") != 0)
-        strcpy(subname, argv[arg]);
+        make_filename(subname, sizeof(subname), "%s", argv[arg]);
       else
-        strcpy(gpname, argv[arg]);
+        make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     arg++;
   }

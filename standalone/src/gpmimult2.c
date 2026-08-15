@@ -106,11 +106,11 @@ int main(int argc, char *argv[])
         g2 = atoi(argv[arg]);
       else if (!seengpname) {
         seengpname = TRUE;
-        strcpy(gpname, argv[arg]);
+        make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
       }
       else if (!seencosname) {
         seencosname = TRUE;
-        sprintf(inf, "%s.%s", gpname, argv[arg]);
+        make_filename(inf, sizeof(inf), "%s.%s", gpname, argv[arg]);
       }
       else
         badusage();
@@ -120,8 +120,8 @@ int main(int argc, char *argv[])
   if (g1 == 0 || g2 == 0 || !seengpname)
     badusage();
   if (!seencosname)
-    sprintf(inf, "%s.cos", gpname);
-  sprintf(outf, "%s.mim%d_%d", inf, g1, g2);
+    make_filename(inf, sizeof(inf), "%s.cos", gpname);
+  make_filename(outf, sizeof(outf), "%s.mim%d_%d", inf, g1, g2);
   strcat(inf, ".migm2");
 
   if ((rfile = fopen(inf, "r")) == 0) {
@@ -134,7 +134,8 @@ int main(int argc, char *argv[])
     printf("  #Number of states of migm2 = %d.\n", migm2.states->size);
 
   base_prefix(fsaname);
-  sprintf(fsaname + stringlen(fsaname), ".m%d_%d", g1, g2);
+  make_filename(fsaname + stringlen(fsaname),
+                sizeof(fsaname) - stringlen(fsaname), ".m%d_%d", g1, g2);
   if (fsa_mimakemult2(&migm2, g1, g2, prefix) == -1)
     exit(1);
   if (mimult_minimize(&migm2) == -1)

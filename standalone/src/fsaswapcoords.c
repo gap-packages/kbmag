@@ -66,9 +66,9 @@ int main(int argc, char *argv[])
       if (strcmp(outf, ""))
         badusage();
       if (strcmp(inf, "") == 0)
-        strcpy(inf, argv[arg]);
+        make_filename(inf, sizeof(inf), "%s", argv[arg]);
       else
-        strcpy(outf, argv[arg]);
+        make_filename(outf, sizeof(outf), "%s", argv[arg]);
     }
     arg++;
   }

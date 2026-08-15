@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
       if (strcmp(inf1, "") != 0)
         badusage();
       else
-        strcpy(inf1, argv[arg]);
+        make_filename(inf1, sizeof(inf1), "%s", argv[arg]);
     }
     arg++;
   }

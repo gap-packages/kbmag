@@ -97,11 +97,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
+      make_filename(cosgpname, sizeof(cosgpname), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
   if (!seengpname)
     badusage();
   if (!seencosname)
-    sprintf(cosgpname, "%s.cos", gpname);
+    make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   strcpy(inf, cosgpname);
   strcat(inf, ".migm");
@@ -133,8 +133,9 @@ int main(int argc, char *argv[])
       exit(1);
 
     base_prefix(fsaname);
-    sprintf(fsaname + stringlen(fsaname), ".mim%d", g);
-    sprintf(outf, "%s.mim%d", cosgpname, g);
+    make_filename(fsaname + stringlen(fsaname),
+                  sizeof(fsaname) - stringlen(fsaname), ".mim%d", g);
+    make_filename(outf, sizeof(outf), "%s.mim%d", cosgpname, g);
 
     if (op_format_set)
       mimult->table->printing_format = op_format;

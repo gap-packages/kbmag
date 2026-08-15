@@ -178,11 +178,11 @@ int main(int argc, char *argv[])
       badusage();
     else if (!seengpname) {
       seengpname = TRUE;
-      strcpy(gpname, argv[arg]);
+      make_filename(gpname, sizeof(gpname), "%s", argv[arg]);
     }
     else if (!seencosname) {
       seencosname = TRUE;
-      sprintf(cosgpname, "%s.%s", gpname, argv[arg]);
+      make_filename(cosgpname, sizeof(cosgpname), "%s.%s", gpname, argv[arg]);
     }
     else
       badusage();
@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
     badusage();
   }
   if (cosets && !seencosname)
-    sprintf(cosgpname, "%s.cos", gpname);
+    make_filename(cosgpname, sizeof(cosgpname), "%s.cos", gpname);
 
   if (cosets)
     strcpy(inf1, cosgpname);
@@ -207,9 +207,9 @@ int main(int argc, char *argv[])
   strcat(inf1, ".gm");
 
   if (cosets)
-    sprintf(outfec, "%s.cm.ec", cosgpname);
+    make_filename(outfec, sizeof(outfec), "%s.cm.ec", cosgpname);
   else
-    sprintf(outfec, "%s.cm.ec", gpname);
+    make_filename(outfec, sizeof(outfec), "%s.cm.ec", gpname);
 
   if ((rfile = fopen(inf1, "r")) == 0) {
     fprintf(stderr, "Cannot open file %s.\n", inf1);
