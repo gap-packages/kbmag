@@ -57,6 +57,9 @@ jobs:
         with:
           mode: onlyneeded
       - name: Exercise the standalone-only programs
+        # setup-cygwin puts its own bash first on PATH; without this the step
+        # would run in PowerShell, which knows nothing of the Cygwin paths
+        shell: bash
         run: make check-standalone
       # gcov is only set up to work on the Linux jobs
       - uses: gap-actions/process-coverage@v3
