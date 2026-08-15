@@ -16,8 +16,8 @@ BINDIR = bin/$(GAPARCH)
 CC ?= gcc
 CFLAGS ?= -O2 -g
 
-EXTRA_CFLAGS += -Wall
-EXTRA_CFLAGS += -Wno-char-subscripts
+EXTRA_CFLAGS += -Wall -Wextra
+EXTRA_CFLAGS += -Wno-char-subscripts -Wno-unused-parameter -Wno-sign-compare
 
 ALL_CFLAGS = $(CFLAGS) $(EXTRA_CFLAGS) -I$(LIBDIR) -MMD -MP
 
