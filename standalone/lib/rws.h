@@ -8,7 +8,6 @@
 #ifndef KBMAG_RWS_H
 #define KBMAG_RWS_H
 
-#include <sys/times.h>
 
 #include "fsa.h"
 
