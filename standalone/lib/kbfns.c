@@ -7,8 +7,24 @@
  * across from src/kbprog.c
  */
 
+#ifdef _WIN32
+#include <time.h>
+#else
 #include <sys/time.h>
 #include <sys/resource.h>
+#endif
+
+// CPU time consumed so far, in seconds
+static int kbm_cpu_seconds(void)
+{
+#ifdef _WIN32
+    return clock() / CLOCKS_PER_SEC;
+#else
+    struct rusage tmp;
+    getrusage(RUSAGE_SELF, &tmp);
+    return tmp.ru_utime.tv_sec;
+#endif
+}
 
 #define MAXCYCLES 16384
 #include "defs.h"
@@ -927,9 +943,7 @@ repeat:
       printf("  #tidyint increased to %d.\n", rwsptr->tidyint);
   }
 
-  struct rusage tmp;
-  getrusage(RUSAGE_SELF, &tmp);
-  i = tmp.ru_utime.tv_sec;
+  i = kbm_cpu_seconds();
   if (kbm_print_level >= 2)
     printf("  #%d eqns; total len: lhs, rhs = %d, %d; %d states; %d secs.\n",
            rwsptr->num_eqns, totlenl, totlenr, rwsptr->num_states, i);
@@ -1990,9 +2004,7 @@ int wd_sort_eqns(int x, rewriting_system *rwsptr)
 void should_we_halt(rewriting_system *rwsptr)
 {
   int i, ndiff, t;
-  struct rusage tmp;
-  getrusage(RUSAGE_SELF, &tmp);
-  t = tmp.ru_utime.tv_sec;
+  t = kbm_cpu_seconds();
   rwsptr->num_cycles++;
   if (rwsptr->num_cycles >= MAXCYCLES) {
     rwsptr->halting = TRUE;

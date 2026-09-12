@@ -195,7 +195,6 @@ EXIT STATUS:
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-#include <sys/times.h>
 
 #include "defs.h"
 #include "fsa.h"
@@ -403,8 +402,9 @@ void interrupt_kbprogcos(int sig)
 {
   kbm_onintr = TRUE;
   signal(SIGINT, SIG_DFL);
-  signal(SIGKILL, SIG_DFL);
+#ifdef SIGQUIT
   signal(SIGQUIT, SIG_DFL);
+#endif
 }
 
 int main(int argc, char *argv[])
@@ -611,8 +611,9 @@ int main(int argc, char *argv[])
   }
 
   signal(SIGINT, interrupt_kbprogcos);
-  signal(SIGKILL, interrupt_kbprogcos);
+#ifdef SIGQUIT
   signal(SIGQUIT, interrupt_kbprogcos);
+#endif
 
   if (kbprog(rwsptr) == -1)
     exit(1);
