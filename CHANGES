@@ -1,5 +1,8 @@
 This file describes changes in the kbmag package.
 
+1.6.1 (2026-11-13)
+  - Add support Windows with Mingw as well
+
 1.6.0 (2026-08-15)
   - Declare Windows with Cygwin as supported
   - Call the external programs with `Process` instead of `Exec`, and check
