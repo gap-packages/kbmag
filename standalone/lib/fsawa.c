@@ -144,7 +144,7 @@ static fsa *fsa_wa_short(fsa *fsaptr, storage_type op_table_type,
     fprintf(stderr, "Hash-initialisation problem in fsa_wa.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -315,7 +315,7 @@ static fsa *fsa_wa_short(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(wa, tempfile);
   fclose(tempfile);
 
@@ -408,7 +408,7 @@ static fsa *fsa_wa_int(fsa *fsaptr, storage_type op_table_type, boolean destroy,
     fprintf(stderr, "Hash-initialisation problem in fsa_wa.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -579,7 +579,7 @@ static fsa *fsa_wa_int(fsa *fsaptr, storage_type op_table_type, boolean destroy,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(wa, tempfile);
   fclose(tempfile);
 

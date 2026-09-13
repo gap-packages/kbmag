@@ -505,7 +505,7 @@ static fsa *fsa_migm2_short(fsa *migmptr, storage_type op_table_type,
       }
     }
 
-  if ((tempfile = fopen(migm2filename, "w")) == 0) {
+  if ((tempfile = fopen(migm2filename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", migm2filename);
     return 0;
   }
@@ -893,7 +893,7 @@ static fsa *fsa_migm2_short(fsa *migmptr, storage_type op_table_type,
   short_hash_clear(&labelht);
 
   if (readback) {
-    tempfile = fopen(migm2filename, "r");
+    tempfile = fopen(migm2filename, "rb");
     compressed_transitions_read(migm2ptr, tempfile);
     fclose(tempfile);
     unlink(migm2filename);
@@ -1347,7 +1347,7 @@ static fsa *fsa_micomposite_short(fsa *mult1ptr, fsa *mult2ptr,
       }
     }
 
-  if ((tempfile = fopen(compfilename, "w")) == 0) {
+  if ((tempfile = fopen(compfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", compfilename);
     return 0;
   }
@@ -1598,7 +1598,7 @@ static fsa *fsa_micomposite_short(fsa *mult1ptr, fsa *mult2ptr,
   for (i = ni + 1; i <= ns; i++)
     micompositeptr->states->setToLabels[i] = 0;
   if (readback) {
-    tempfile = fopen(compfilename, "r");
+    tempfile = fopen(compfilename, "rb");
     compressed_transitions_read(micompositeptr, tempfile);
     fclose(tempfile);
     unlink(compfilename);

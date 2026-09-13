@@ -350,7 +350,7 @@ static fsa *fsa_binop(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type,
     fprintf(stderr, "Hash-initialisation problem in fsa_binop.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -454,7 +454,7 @@ static fsa *fsa_binop(fsa *fsaptr1, fsa *fsaptr2, storage_type op_table_type,
     fsa_clear(fsaptr2);
   }
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(and_or_not, tempfile);
   fclose(tempfile);
 
@@ -929,7 +929,7 @@ static fsa *fsa_exists_short(fsa *fsaptr, storage_type op_table_type,
     fprintf(stderr, "Hash-initialisation problem in fsa_exists.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -1098,7 +1098,7 @@ static fsa *fsa_exists_short(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(exists, tempfile);
   fclose(tempfile);
 
@@ -1189,7 +1189,7 @@ fsa *fsa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy,
     fprintf(stderr, "Hash-initialisation problem in fsa_exists.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -1358,7 +1358,7 @@ fsa *fsa_exists_int(fsa *fsaptr, storage_type op_table_type, boolean destroy,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(exists, tempfile);
   fclose(tempfile);
 

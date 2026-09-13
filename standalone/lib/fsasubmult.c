@@ -141,7 +141,7 @@ fsa *fsa_submult(fsa *subwaptr, fsa *multptr, storage_type op_table_type,
     fprintf(stderr, "Hash-initialisation problem in fsa_submult.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -259,7 +259,7 @@ fsa *fsa_submult(fsa *subwaptr, fsa *multptr, storage_type op_table_type,
   tfree(fsarow);
   /* Now read the transition table back in */
   if (readback) {
-    tempfile = fopen(tempfilename, "r");
+    tempfile = fopen(tempfilename, "rb");
     compressed_transitions_read(submultptr, tempfile);
     fclose(tempfile);
     unlink(tempfilename);

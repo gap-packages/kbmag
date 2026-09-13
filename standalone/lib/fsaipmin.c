@@ -79,7 +79,7 @@ int fsa_ip_minimize(fsa *fsaptr)
   num_iterations = 0;
   /* The main refinement loop follows. */
   do {
-    if ((rfile = fopen(fsaptr->table->filename, "r")) == 0) {
+    if ((rfile = fopen(fsaptr->table->filename, "rb")) == 0) {
       fprintf(stderr, "#Cannot open file %s.\n", fsaptr->table->filename);
       return -1;
     }
@@ -290,7 +290,7 @@ int fsa_ip_labeled_minimize(fsa *fsaptr)
         num_iterations = 0;
   /* The main refinement loop follows. */
   do {
-    if ((rfile = fopen(fsaptr->table->filename, "r")) == 0) {
+    if ((rfile = fopen(fsaptr->table->filename, "rb")) == 0) {
       fprintf(stderr, "#Cannot open file %s.\n", fsaptr->table->filename);
       return -1;
     }
