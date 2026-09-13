@@ -1,267 +1,112 @@
-# GitHubPagesForGAP
+[![CI](https://github.com/gap-packages/kbmag/actions/workflows/CI.yml/badge.svg)](https://github.com/gap-packages/kbmag/actions/workflows/CI.yml)
+[![Code Coverage](https://codecov.io/github/gap-packages/kbmag/coverage.svg?branch=master&token=)](https://codecov.io/gh/gap-packages/kbmag)
 
-This repository can be used to quickly set up a website hosted by
-[GitHub](https://github.com/) for GAP packages using a GitHub repository.
-Specifically, this uses [GitHub pages](https://pages.github.com/)
-by adding a `gh-pages` branch to your package repository which
-contains data generated from the `PackageInfo.g` file of your package.
+# The GAP 4 package 'KBMAG'
 
-## Initial setup
+This package uses external binaries. It is tested on Linux, macOS and, via
+Cygwin, on Windows.
 
-The easiest way to do this is to run the `setup-gh-pages` shell script
-provided in the [GitHubPagesForGAP]() from within a git clone of your
-package's GitHub repository.
 
-In case this does not work, or if you want to really know what's going
-on, you can also follow the manual instructions described after the fold.
+## Package description
 
-------
+KBMAG (pronounced `Kay-bee-mag`) stands for `Knuth-Bendix on Monoids, and
+Automatic Groups`. It is a stand-alone package written in C, with an interface
+to GAP. There are interfaces for the use of KBMAG with
+finitely presented groups, monoids and semigroups defined within GAP. The
+package also contains a collection of routines for manipulating finite state
+automata, which can be accessed via the GAP interface.
 
-The following instructions assume you do not already have a `gh-pages`
-branch in your repository. If you do have one, you should delete it before
-following these instructions.
+The overall objective of KBMAG is to construct a normal form for the elements
+of a finitely presented group G in terms of the given generators together with
+a word reduction algorithm for calculating the normal form representation of
+an element in G, given as a word in the generators. If this can be achieved,
+then it is also possible to enumerate the words in normal form up to a given
+length, and to determine the order of the group, by counting the number of
+words in normal form. In most serious applications, this will be infinite,
+since finite groups are (with some exceptions) usually handled better by
+Todd-Coxeter related methods. In fact a finite state automaton W is calculated
+that accepts precisely the language of words in the group generators that are
+in normal form, and W is used for the enumeration and counting functions. It
+is possible to inspect W directly if required; for example, it is often
+possible to use W to determine whether an element in G has finite or infinite
+order.
 
-1. Go into your clone of your package repository.
+The normal form for an element g in G is defined to be the least word in the
+group generators (and their inverses) that represents G, with respect to a
+specified ordering on the set of all words in the group generators.
 
-2. Setup a `gh-pages` branch in a `gh-pages` subdirectory.
+KBMAG offers two possible means of achieving these objectives. The first is to
+apply the Knuth-Bendix algorithm to the group presentation, with one of the
+available orderings on words, and hope that the algorithm will complete with a
+finite confluent presentation. (If the group is finite, then it is guaranteed
+to complete eventually but, like the Todd-Coxeter procedure, it may take a
+long time, or require more space than is available.) The second is to use the
+automatic group program. This also uses the Knuth-Bendix procedure as one
+component of the algorithm, but it aims to compute certain finite state
+automata rather than to obtain a finite confluent rewriting system, and it
+completes successfully on many examples for which such a finite system does
+not exist. In the current implementation, its use is restricted to the
+shortlex ordering on words. That is, words are ordered first by increasing
+length, and then words of equal length are ordered lexicographically, using
+the specified ordering of the generators.
 
-   Users with a recent enough git version (recommended is >= 2.7.0)
-   can do this using a "worktree", via the following commands:
+The GAP4 version of KBMAG also offers extensive facilities for finding
+confluent presentations and finding automatic structures relative to a
+specified finitely generated subgroup of the group G. Finally, there is a
+collection of functions for manipulating finite state automata that may be of
+independent interest.
 
-   ```sh
-   # Add a new remote pointing to the GitHubPagesForGAP repository
-   git remote add -f gh-gap https://github.com/gap-system/GitHubPagesForGAP
 
-   # Create a fresh gh-pages branch from the new remote
-   git branch gh-pages gh-gap/gh-pages --no-track
+## Installation
 
-   # Create a new worktree and change into it
-   git worktree add gh-pages gh-pages
-   cd gh-pages
-   ```
+It will work only on GAP versions >= 4.7.
 
-   Everybody else should instead do the following, with the URL
-   in the initial clone command suitably adjusted:
+To complete the installation of the `kbmag` package go to the
+directory `kbmag` created (the directory contains a copy of this
+README file) and call
 
-   ```sh
-   # Create a fresh clone of your repository, and change into it
-   git clone https://github.com/USERNAME/REPOSITORY gh-pages
-   cd gh-pages
+    ./configure <PATH>
 
-   # Add a new remote pointing to the GitHubPagesForGAP repository
-   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
-   git fetch gh-gap
+where `PATH` is a path to the main GAP root directory; so normally you
+would call
 
-   # Create a fresh gh-pages branch from the new remote
-   git checkout -b gh-pages gh-gap/gh-pages --no-track
-   ```
+    ./configure ../..
 
-5. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
+and then call
 
-   ```
-   cp -f ../PackageInfo.g ../README* .
-   cp -f ../doc/*.{css,html,js,txt} doc/
-   ```
+    make
 
-6. Now run the `update.g` GAP script. This extracts data from your
-   `PackageInfo.g` file and puts that data into `_data/package.yml`.
-   From this, the website template can populate the web pages with
-   some sensible default values.
+to compile the binary.
 
-   ```
-   gap update.g
-   ```
+If you installed GAP on several architectures, you must execute this
+configure/make step for the `kbmag` package on each of the architectures
+immediately after configuring GAP itself on this architecture.
 
-7. Commit and push everything.
 
-   ```
-   git add PackageInfo.g README* doc/ _data/package.yml
-   git commit -m "Setup gh-pages based on GitHubPagesForGAP"
-   git push --set-upstream origin gh-pages
-   ```
+## Documentation
 
-That's it. You can now see your new package website under
-https://USERNAME.github.io/REPOSITORY/ (of course after
-adjusting USERNAME and REPOSITORY suitably).
+Full information and documentation can be found in the manual, available
+as PDF `doc/manual.pdf` or as HTML `doc/chap0.html`, or on the package
+homepage at
 
+  <https://gap-packages.github.io/kbmag/>
 
-## Using an existing gh-pages branch
 
-If you previously set up [GitHubPagesForGAP]() and thus already have a `gh-pages`
-branch, you may on occasion have need to make a fresh clone of your package
-repository, and then also would like to recreate the `gh-pages` directory.
+## Maintenance, bug reports and feature requests
 
-The easiest way to do this is to run the `setup-gh-pages` shell script
-provided in the [GitHubPagesForGAP]() from within a git clone of your
-package's GitHub repository.
+kbmag was written by Derek Holt, and is now maintained by the GAP Team.
+Please submit bug reports and feature requests -- including ones about the
+stand-alone `C` programs -- via our GitHub issue tracker, rather than
+contacting the original author:
 
-In case this does not work, or if you want to really know what's going
-on, you can also follow the manual instructions described after the fold.
+  <https://github.com/gap-packages/kbmag/issues>
 
-------
 
-Users with a recent enough git version (recommended is >= 2.7)
-can do this using a "worktree", via the following commands:
+## License
 
-   ```sh
-   git branch gh-pages origin/gh-pages
-   git worktree add gh-pages gh-pages
-   ```
+kbmag is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-If you are using an older version of git, you can instead use a second clone
-of your repository instead:
-
-   ```sh
-   git clone -b gh-pages https://github.com/USERNAME/REPOSITORY gh-pages
-   ```
-
-
-## Adjusting the content and layout
-
-[GitHubPagesForGAP]() tries to automatically provide good defaults for
-most packages. However, you can tweak everything about it:
-
-* To adjust the page layout, edit the files `stylesheets/styles.css`
-and `_layouts/default.html`.
-
-* To adjust the content of the front page, edit `index.md` (resp.
-  for the content of the sidebar, edit `_layouts/default.html`
-
-* You can also add additional pages, in various formats (HTML,
-Markdown, Textile, ...).
-
-For details, please consult the [Jekyll](http://jekyllrb.com/)
-manual.
-
-
-## Testing the site locally
-
-If you would like to test your site on your own machine, without
-uploading it to GitHub (where it is visible to the public), you can do
-so by installing [Jekyll](http://jekyllrb.com/), the static web site
-generator used by GitHub to power GitHub Pages.
-
-Once you have installed Jekyll as described on its homepage, you can
-test the website locally as follows:
-
-1. Go to the `gh-pages` directory we created above.
-
-2. Run jekyll (this launches a tiny web server on your machine):
-
-   ```
-   jekyll serve -w
-   ```
-
-3. Visit the URL http://localhost:4000 in a web browser.
-
-
-## Updating after you made a release
-
-Whenever you make a release of your package (and perhaps more often than
-that), you will want to update your website. The easiest way is to use
-the `release` script from the [ReleaseTools][], which performs all
-the necessary steps for you, except for the very last of actually
-publishing the package (and it can do even that for you, if you
-pass the `-p` option to it).
-
-However, you can also do it manually. The steps for doing it are quite
-similar to the above:
-
-1. Go to the `gh-pages` directory we created above.
-
-2. Add in copies of your `PackageInfo.g`, `README` (or `README.md`) and manual:
-
-   ```
-   cp -f ../PackageInfo.g ../README* .
-   cp -f ../doc/*.{css,html,js,txt} doc/
-   ```
-
-3. Now run the `update.g` GAP script.
-
-4. Commit and push the work we have just done.
-
-   ```
-   git add PackageInfo.g README* doc/ _data/package.yml
-   git commit -m "Update web pages"
-   git push
-   ```
-
-A few seconds after you have done this, your changes will be online
-under https://USERNAME.github.io/REPOSITORY/ .
-
-
-## Updating to a newer version of GitHubPagesForGAP
-
-Normally you should not have to ever do this. However, if you really want to,
-you can attempt to update to the most recent version of [GitHubPagesForGAP]() via
-the following instructions. The difficulty of such an update depends on how
-much you tweaked the site after initially cloning [GitHubPagesForGAP]().
-
-1. Go to the `gh-pages` directory we created above.
-   Make sure that there are no uncommitted changes, as they will be lost
-   when following these instructions.
-
-2. Make sure the `gh-gap` remote exists and has the correct URL. If in doubt,
-   just re-add it:
-   ```
-   git remote remove gh-gap
-   git remote add gh-gap https://github.com/gap-system/GitHubPagesForGAP
-   ```
-
-3. Attempt to merge the latest GitHubPagesForGAP.
-   ```
-   git pull gh-gap gh-pages
-   ```
-
-4. If this produced no errors and just worked, skip to the next step.
-   But it is quite likely that you will have conflicts in the file
-   `_data/package.yml`, or in your `README` or `PackageInfo.g` files.
-   These can usually be resolved by entering this:
-   ```
-   cp ../PackageInfo.g ../README* .
-   gap update.g
-   git add PackageInfo.g README* _data/package.yml
-   ```
-   If you are lucky, these were the only conflicts (check with `git status`).
-   If no merge conflicts remain, finish with this command:
-   ```
-   git commit -m "Merge gh-gap/gh-pages"
-   ```
-   If you still have merge conflicts, and don't know how to resolve them, or
-   get stuck some other way, you can abort the merge process and revert to the
-   original state by issuing this command:
-   ```
-   git merge --abort
-   ```
-
-5. You should be done now. Don't forget to push your changes if you want them
-   to become public.
-
-
-## Packages using GitHubPagesForGAP
-
-The majority of packages listed on <https://gap-packages.github.io> use
-[GitHubPagesForGAP](). If you want some specific examples, here are some:
-
-* <https://gap-packages.github.io/anupq>
-* <https://gap-packages.github.io/cvec>
-* <https://gap-packages.github.io/genss>
-* <https://gap-packages.github.io/io>
-* <https://gap-packages.github.io/NormalizInterface>
-* <https://gap-packages.github.io/nq>
-* <https://gap-packages.github.io/orb>
-* <https://gap-packages.github.io/polenta>
-* <https://gap-packages.github.io/recog>
-
-
-## Contact
-
-Please submit bug reports, suggestions for improvements and patches via
-the [issue tracker](https://github.com/gap-system/GitHubPagesForGAP/issues).
-
-You can also contact me directly via [email](max@quendi.de).
-
-Copyright (c) 2013-2025 Max Horn
-
-[GitHubPagesForGAP]: https://github.com/gap-system/GitHubPagesForGAP
-[ReleaseTools]: https://github.com/gap-system/ReleaseTools
+For details see the file LICENSE.
