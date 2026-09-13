@@ -1,12 +1,6 @@
 This file describes changes in the kbmag package.
 
-Unreleased
-  - Run the automatic group programs from GAP instead of the shell scripts
-    `autgroup` and `autcos`, which Windows with MinGW cannot run
-  - Open binary work files in binary mode; on Windows, text mode corrupted
-    them and crashed e.g. `AutomaticStructure( R, true )`
-
-1.6.1 (2026-11-13)
+1.6.1 (2026-09-14)
   - Add support Windows with Mingw as well
 
 1.6.0 (2026-08-15)

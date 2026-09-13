@@ -3,7 +3,7 @@ SetPackageInfo( rec(
 PackageName := "kbmag",
 Subtitle := "Knuth-Bendix on Monoids and Automatic Groups",
 Version := "1.6.1",
-Date := "13/11/2026", # dd/mm/yyyy format
+Date := "14/09/2026", # dd/mm/yyyy format
 License := "GPL-2.0-or-later",
 
 Persons := [
