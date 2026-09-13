@@ -1613,28 +1613,16 @@ AutRWS := function ( arg )
     if narg>=2 and arg[2]=true then large:=true; fi;
     if narg>=3 and arg[3]=true then filestore:=true; fi;
     if narg>=4 and arg[4]=true then diff1:=true; fi;
-    #Wipe any files left behind by an earlier run: below we decide whether
-    #the computation succeeded by looking for a file that autgroup creates.
+    #Wipe any files left behind by an earlier run.
     _KBRemoveTmpFiles(_KBTmpFileName);
     WriteRWS(rws,_KBTmpFileName);
-    args := [];
-    if large then Add(args,"-l"); fi;
-    if filestore then Add(args,"-f"); fi;
-    if diff1 then Add(args,"-d"); fi;
-    if InfoLevel(InfoRWS)=0 then Add(args,"-s"); fi;
-    if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
-    if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
-    Add(args,_KBTmpFileName);
-    Info(InfoRWS,1,"Calling external automatic groups program.");
-    #A nonzero exit status just means the computation was inconclusive;
-    #the `.success' file below is what decides.
-    _KBExec(InfoRWS,"autgroup",args);
+    Info(InfoRWS,1,"Calling external automatic groups programs.");
     args := [];
     if InfoLevel(InfoRWS)=0 then Add(args,"-s"); fi;
     if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
     if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
     Add(args,_KBTmpFileName);
-    if READ(Concatenation(_KBTmpFileName,".success")) then
+    if _KBAutomatic(InfoRWS, false, large, filestore, diff1) then
      Info(InfoRWS,1,
          "Computation was successful - automatic structure computed.");
       _KBExecChecked(InfoRWS,"gpminkb",args);
