@@ -161,7 +161,7 @@ static fsa *fsa_difflabs_short(fsa *fsaptr, reduction_struct *rs_wdptr,
     fprintf(stderr, "Hash-initialisation problem in fsa_difflabs.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -290,7 +290,7 @@ static fsa *fsa_difflabs_short(fsa *fsaptr, reduction_struct *rs_wdptr,
   tfree(fsarow);
   /* Now read the transition table back in */
   if (readback) {
-    tempfile = fopen(tempfilename, "r");
+    tempfile = fopen(tempfilename, "rb");
     compressed_transitions_read(difflabs, tempfile);
     fclose(tempfile);
     unlink(tempfilename);

@@ -130,7 +130,7 @@ static fsa *fsa_reverse_short(fsa *fsaptr, storage_type op_table_type,
     fprintf(stderr, "Hash-initialisation problem in fsa_reverse.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -258,7 +258,7 @@ static fsa *fsa_reverse_short(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(reverse, tempfile);
   fclose(tempfile);
 
@@ -378,7 +378,7 @@ static fsa *fsa_mireverse_short(fsa *fsaptr, storage_type op_table_type,
       return 0;
     }
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -502,7 +502,7 @@ static fsa *fsa_mireverse_short(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(reverse, tempfile);
   fclose(tempfile);
 
@@ -635,7 +635,7 @@ static fsa *fsa_miexists1_short(fsa *fsaptr, storage_type op_table_type,
    * The subsets will be stored as variable-length records in the hash-table,
    * always in increasing order.
    */
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     exit(1);
   }
@@ -767,7 +767,7 @@ static fsa *fsa_miexists1_short(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(miexists1, tempfile);
   fclose(tempfile);
 
@@ -901,7 +901,7 @@ static fsa *fsa_miexists2_short(fsa *fsaptr, storage_type op_table_type,
    * The subsets will be stored as variable-length records in the hash-table,
    * always in increasing order.
    */
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     exit(1);
   }
@@ -1033,7 +1033,7 @@ static fsa *fsa_miexists2_short(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(miexists2, tempfile);
   fclose(tempfile);
 

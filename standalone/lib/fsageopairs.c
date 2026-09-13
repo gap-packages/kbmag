@@ -159,7 +159,7 @@ static fsa *fsa_geopairs_short(fsa *waptr, fsa *diffptr,
   for (g1 = 1; g1 <= ngens; g1++)
     set_dense_dtarget(difftable, g1, g1, identity, identity);
 
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -254,7 +254,7 @@ static fsa *fsa_geopairs_short(fsa *waptr, fsa *diffptr,
   short_hash_clear(&ht);
   tfree(fsarow);
   if (readback) {
-    tempfile = fopen(tempfilename, "r");
+    tempfile = fopen(tempfilename, "rb");
     compressed_transitions_read(geopairsptr, tempfile);
     fclose(tempfile);
     unlink(tempfilename);
@@ -365,7 +365,7 @@ static fsa *fsa_geopairs_int(fsa *waptr, fsa *diffptr,
   for (g1 = 1; g1 <= ngens; g1++)
     set_dense_dtarget(difftable, g1, g1, identity, identity);
 
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -460,7 +460,7 @@ static fsa *fsa_geopairs_int(fsa *waptr, fsa *diffptr,
   hash_clear(&ht);
   tfree(fsarow);
   if (readback) {
-    tempfile = fopen(tempfilename, "r");
+    tempfile = fopen(tempfilename, "rb");
     compressed_transitions_read(geopairsptr, tempfile);
     fclose(tempfile);
     unlink(tempfilename);

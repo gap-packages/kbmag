@@ -160,7 +160,7 @@ static fsa *fsa_genmult2_short(fsa *genmultptr, storage_type op_table_type,
     return 0;
   }
   if (keeptable)
-    if ((tablefile = fopen(genmult2filename, "w")) == 0) {
+    if ((tablefile = fopen(genmult2filename, "wb")) == 0) {
       fprintf(stderr, "Error: cannot open file %s\n", genmult2filename);
       return 0;
     }
@@ -499,7 +499,7 @@ static fsa *fsa_genmult2_short(fsa *genmultptr, storage_type op_table_type,
     fsa_clear(genmultptr);
 
   if (readback) {
-    tablefile = fopen(genmult2filename, "r");
+    tablefile = fopen(genmult2filename, "rb");
     compressed_transitions_read(genmult2ptr, tablefile);
     fclose(tablefile);
     unlink(genmult2filename);
@@ -606,7 +606,7 @@ static fsa *fsa_genmult2_int(fsa *genmultptr, storage_type op_table_type,
     return 0;
   }
   if (keeptable)
-    if ((tablefile = fopen(genmult2filename, "w")) == 0) {
+    if ((tablefile = fopen(genmult2filename, "wb")) == 0) {
       fprintf(stderr, "Error: cannot open file %s\n", genmult2filename);
       return 0;
     }
@@ -945,7 +945,7 @@ static fsa *fsa_genmult2_int(fsa *genmultptr, storage_type op_table_type,
     fsa_clear(genmultptr);
 
   if (readback) {
-    tablefile = fopen(genmult2filename, "r");
+    tablefile = fopen(genmult2filename, "rb");
     compressed_transitions_read(genmult2ptr, tablefile);
     fclose(tablefile);
     unlink(genmult2filename);
@@ -1239,7 +1239,7 @@ static fsa *fsa_composite_short(fsa *mult1ptr, fsa *mult2ptr,
     fprintf(stderr, "Hash-initialisation problem in fsa_composite.\n");
     return 0;
   }
-  if ((tempfile = fopen(compfilename, "w")) == 0) {
+  if ((tempfile = fopen(compfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", compfilename);
     return 0;
   }
@@ -1484,7 +1484,7 @@ static fsa *fsa_composite_short(fsa *mult1ptr, fsa *mult2ptr,
   }
 
   if (readback) {
-    tempfile = fopen(compfilename, "r");
+    tempfile = fopen(compfilename, "rb");
     compressed_transitions_read(compositeptr, tempfile);
     fclose(tempfile);
     unlink(compfilename);
@@ -1588,7 +1588,7 @@ static fsa *fsa_composite_int(fsa *mult1ptr, fsa *mult2ptr,
     fprintf(stderr, "Hash-initialisation problem in fsa_composite.\n");
     return 0;
   }
-  if ((tempfile = fopen(compfilename, "w")) == 0) {
+  if ((tempfile = fopen(compfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", compfilename);
     return 0;
   }
@@ -1833,7 +1833,7 @@ static fsa *fsa_composite_int(fsa *mult1ptr, fsa *mult2ptr,
   }
 
   if (readback) {
-    tempfile = fopen(compfilename, "r");
+    tempfile = fopen(compfilename, "rb");
     compressed_transitions_read(compositeptr, tempfile);
     fclose(tempfile);
     unlink(compfilename);

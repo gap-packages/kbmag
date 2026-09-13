@@ -115,7 +115,7 @@ static fsa *midfa_determinize_short(fsa *fsaptr, storage_type op_table_type,
     fprintf(stderr, "Hash-initialisation problem in midfa_determinize.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -228,7 +228,7 @@ static fsa *midfa_determinize_short(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(det, tempfile);
   fclose(tempfile);
 
@@ -315,7 +315,7 @@ static fsa *midfa_determinize_int(fsa *fsaptr, storage_type op_table_type,
     fprintf(stderr, "Hash-initialisation problem in midfa_determinize.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -428,7 +428,7 @@ static fsa *midfa_determinize_int(fsa *fsaptr, storage_type op_table_type,
     fsa_clear(fsaptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(det, tempfile);
   fclose(tempfile);
 

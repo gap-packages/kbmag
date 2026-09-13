@@ -85,7 +85,7 @@ fsa *fsa_minred(fsa *waptr, storage_type op_table_type, boolean destroy,
     fprintf(stderr, "Hash-initialisation problem in fsa_minred.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -181,7 +181,7 @@ fsa *fsa_minred(fsa *waptr, storage_type op_table_type, boolean destroy,
     fsa_clear(waptr);
 
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(minred, tempfile);
   fclose(tempfile);
 
@@ -310,7 +310,7 @@ fsa *fsa_minkb(fsa *minredptr, fsa *waptr, fsa *diffptr,
     fprintf(stderr, "Hash-initialisation problem in fsa_minkbptr.\n");
     return 0;
   }
-  if ((tempfile = fopen(tempfilename, "w")) == 0) {
+  if ((tempfile = fopen(tempfilename, "wb")) == 0) {
     fprintf(stderr, "Error: cannot open file %s\n", tempfilename);
     return 0;
   }
@@ -417,7 +417,7 @@ fsa *fsa_minkb(fsa *minredptr, fsa *waptr, fsa *diffptr,
     fsa_clear(diffptr);
   }
   /* Now read the transition table back in */
-  tempfile = fopen(tempfilename, "r");
+  tempfile = fopen(tempfilename, "rb");
   compressed_transitions_read(minkbptr, tempfile);
   fclose(tempfile);
 
