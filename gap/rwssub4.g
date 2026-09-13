@@ -581,7 +581,7 @@ end;
 ##  Public function.
 AutCosets := function ( arg )
   local  narg, rws, subrws, subpres, large, filestore, diff1, args,
-         filename, cosrws, ns, ng, nsg, i;
+         filename, cosrws, ns, ng, nsg, i, success;
   narg := Number(arg);
   if narg<2 then
      Error("AutCosets needs at least two arguments.");
@@ -629,26 +629,20 @@ AutCosets := function ( arg )
   cosrws!.baseAlphabet := rws!.alphabet;
   cosrws!.equations := [];
 
-  #Wipe any files left behind by an earlier run: below we decide whether
-  #the computation succeeded by looking for files that autcos creates.
+  #Wipe any files left behind by an earlier run.
   _KBRemoveTmpFiles(_KBTmpFileName);
   WriteSubgroupRWS(rws,subrws,_KBTmpFileName);
   _KBExecChecked(InfoRWS,"makecosfile",["-sg",_KBTmpFileName,"sub"]);
 
-  args := [];
-  if subpres then Add(args,"-p"); fi;
-  if large then Add(args,"-l"); fi;
-  if filestore then Add(args,"-f"); fi;
-  if diff1 then Add(args,"-d"); fi;
-  if InfoLevel(InfoRWS)=0 then Add(args,"-s"); fi;
-  if InfoLevel(InfoRWS)>1 then Add(args,"-v"); fi;
-  if InfoLevel(InfoRWS)>2 then Add(args,"-vv"); fi;
-  Add(args,_KBTmpFileName);
-  Info(InfoRWS,1,"Calling external automatic cosets groups program.\n");
-  #A nonzero exit status just means the computation was inconclusive;
-  #the `.success' file below is what decides.
-  _KBExec(InfoRWS,"autcos",args);
-  if subpres then
+  Info(InfoRWS,1,"Calling external automatic cosets groups programs.\n");
+  success := _KBAutomatic(InfoRWS, true, large, filestore, diff1);
+  if subpres and success then
+    args := [];
+    if large then Add(args,"-l"); fi;
+    if filestore then Append(args,["-ip","s"]); fi;
+    Append(args,_KBVerbosityFlags(InfoRWS));
+    Append(args,[_KBTmpFileName,"sub"]);
+    _KBExec(InfoRWS,"gpsubpres",args);
   # read subgroup presentation
     if READ(Concatenation(_KBTmpFileName,".sub.pres")) then
       #Presentation is very redundant, so simplify.
@@ -657,7 +651,7 @@ AutCosets := function ( arg )
     fi;
   fi;
   filename := Concatenation(_KBTmpFileName,".cos");
-  if READ(Concatenation(filename,".success")) then
+  if success then
    Info(InfoRWS,1,
       "Computation was successful - automatic coset structure computed.\n");
     UpdateRWS(cosrws,filename,false,true);
