@@ -1,67 +1,80 @@
 This file describes changes in the kbmag package.
 
-1.6.1 (2026-09-14)
-  - Add support Windows with Mingw as well
+## 1.6.1 (2026-09-14)
 
-1.6.0 (2026-08-15)
-  - Declare Windows with Cygwin as supported
-  - Call the external programs with `Process` instead of `Exec`, and check
-    their exit status, so that a failure is reported as one
-  - Fix a Knuth-Bendix run aborting with "Could not open output of external
-    Knuth-Bendix program" when a word grew too long while being reduced
-  - Fix a failed `AutomaticStructureOnCosets` reporting success, when an
-    earlier successful run had left its files behind
-  - Fix several crashes caused by writing past the end of a fixed-size buffer
-  - Pass the options record on to the coset programs, which ignored it
-  - Tidy less often as the number of equations grows: long Knuth-Bendix runs
-    were quadratic in it
-  - Replace the recursive build system by a single Makefile, and add `check`,
-    `check-standalone`, `doc` and `html` targets
-  - Janitorial changes
+- Add support Windows with Mingw as well
 
-1.5.11 (2023-01-03)
-  - Enhance the `configure` script to accept `--with-gaproot=PATH`
+## 1.6.0 (2026-08-15)
 
-1.5.10 (2022-09-23)
-  - Janitorial changes
+- Declare Windows with Cygwin as supported
+- Call the external programs with `Process` instead of `Exec`, and check
+  their exit status, so that a failure is reported as one
+- Fix a Knuth-Bendix run aborting with "Could not open output of external
+  Knuth-Bendix program" when a word grew too long while being reduced
+- Fix a failed `AutomaticStructureOnCosets` reporting success, when an
+  earlier successful run had left its files behind
+- Fix several crashes caused by writing past the end of a fixed-size buffer
+- Pass the options record on to the coset programs, which ignored it
+- Tidy less often as the number of equations grows: long Knuth-Bendix runs
+  were quadratic in it
+- Replace the recursive build system by a single Makefile, and add `check`,
+  `check-standalone`, `doc` and `html` targets
+- Janitorial changes
 
-1.5.9 (2019-07-07)
-  - Allow CC and CFLAGS to be overridden
+## 1.5.11 (2023-01-03)
 
-1.5.8 (2019-02-19)
-  - More build system changes
+- Enhance the `configure` script to accept `--with-gaproot=PATH`
 
-1.5.7 (2019-02-05)
-  - Modify the build system to allow building a shared library
-    out of the standalone C code
+## 1.5.10 (2022-09-23)
 
-1.5.6 (2018-09-14)
-  - Set the GAP team as new package maintainer
+- Janitorial changes
 
-1.5.5 (2018-02-04)
-  - Converted the KBMag manual to GAPDoc format (many thanks to Chris Wensley!)
-  - makedoc.g now uses AutoDoc
-  - Fix crash in the gpmakefsa tools, used e.g. by AutomaticStructure
-    (long-standing bug in kbmag which was exposed by modern compiler
-    optimizing more aggressively)
-  - Internal change: completed conversion of C code to ANSI C, fixed
-    many more warnings and a few (harmless) coding mistakes.
+## 1.5.9 (2019-07-07)
 
-1.5.4 (2017-02-01)
-  - Stop accessing the obsolete global variable `Revision`
-  - Other minor internal cleanup
+- Allow CC and CFLAGS to be overridden
 
-1.5.3 (2016-01-16)
-  - Update README
-  - Clarify that the package is licensed under the GPL v2 or later
+## 1.5.8 (2019-02-19)
 
-1.5.2 (2016-01-15)
-  - Add Markus Pfeiffer and Max Horn as maintainers
-  - Convert C functions from K&R to ANSI C
+- More build system changes
 
-1.5.1 (2016-01-14)
-  - Moved package homepage to https://gap-packages.github.io/kbmag/
-  - Added GPL v2 license
-  - Improve build system
-  - Fix many warnings in the C code
-  - Add HTML version of the manual
+## 1.5.7 (2019-02-05)
+
+- Modify the build system to allow building a shared library
+  out of the standalone C code
+
+## 1.5.6 (2018-09-14)
+
+- Set the GAP team as new package maintainer
+
+## 1.5.5 (2018-02-04)
+
+- Converted the KBMag manual to GAPDoc format (many thanks to Chris Wensley!)
+- makedoc.g now uses AutoDoc
+- Fix crash in the gpmakefsa tools, used e.g. by AutomaticStructure
+  (long-standing bug in kbmag which was exposed by modern compiler
+  optimizing more aggressively)
+- Internal change: completed conversion of C code to ANSI C, fixed
+  many more warnings and a few (harmless) coding mistakes.
+
+## 1.5.4 (2017-02-01)
+
+- Stop accessing the obsolete global variable `Revision`
+- Other minor internal cleanup
+
+## 1.5.3 (2016-01-16)
+
+- Update README
+- Clarify that the package is licensed under the GPL v2 or later
+
+## 1.5.2 (2016-01-15)
+
+- Add Markus Pfeiffer and Max Horn as maintainers
+- Convert C functions from K&R to ANSI C
+
+## 1.5.1 (2016-01-14)
+
+- Moved package homepage to https://gap-packages.github.io/kbmag/
+- Added GPL v2 license
+- Improve build system
+- Fix many warnings in the C code
+- Add HTML version of the manual
